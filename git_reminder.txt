@@ -29,3 +29,9 @@ This file (without the quote marks) would tell git to ignore any file with the .
 
 
 --- Configuring on GitHub ---
+git remote "link" : connects the local repository to the online one via the link. Can also use SSH but requires additional options (but provides more security).
+git remote -v : displays links to/from this repository.
+
+git push origin master : pushes changes from the local repository to the origin repository (and to master branch).
+
+git pull origin master : pulls changes from the origin repository (master branch) to the local repository.
