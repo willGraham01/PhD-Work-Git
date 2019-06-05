@@ -1,0 +1,49 @@
+\documentclass[11pt]{report}
+
+\usepackage{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ... 
+
+%for figures and graphics
+\usepackage{graphicx}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+%\input imports all commands from the target files
+\input{PreambleMaths.tex} %maths commands, variables, and other packages
+\input{PreambleTikz.tex} %tikz things, including importing tikz itself
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+%reminders of things to fill in
+%\newcommand{\tstk}[1]{\textbf{#1}\newline}
+
+\title{All Work and Results}  % Declares the document's title.
+\author{Will Graham (W.Graham@bath.ac.uk) \cite{graham2018citation}}      % Declares the author's name.
+\date{\today}      % commenting out this command produces today's date.
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+%TITLE AND CONTENTS ETC
+\maketitle %create title
+\tableofcontents %have a contents page
+\newpage %begin the actual report on a new page
+
+%REPORT BEGINS
+
+%\input chapters one at a time; the references should all match up and can even cross-reference; however you won't get prompts for references across files when editing.
+%NB: Can use \include for speed, but then the directory fills up with useless .aux files.
+
+\input{Ch1-Intro}
+
+\input{Ch2-ScalarCase}
+
+\input{Ch3-VectorCase}
+
+\newpage %have a new page to start the bibliography
+\bibliographystyle{unsrt}
+\bibliography{Bibliography}
+
+\end{document}

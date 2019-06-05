@@ -1,0 +1,50 @@
+\chapter{Introduction}
+
+\section{Motivation}
+Splice some of the next sections into this one as appropriate.
+
+\section{Background}
+In physical applications the 2D cross section is often composed of one or more material inclusions, which can give rise to interesting phenomena in the resulting wave propagation problems (such as band-gap spectra).
+These inclusions themselves are often arranged in a periodic structure (where applicable), and the model that one considers for a waveguide will inevitably depend on how one chooses to treat these inclusions.
+For our approach we shall define a ``waveguide surface" on which to pose our wave propagation problem, and appropriate boundary conditions at the inclusion interfaces.
+Such a problem can be arrived at from appropriate treatment of ``high-contrast" media problems; which reduce a problem on a domain with inclusions to a problem on the inclusions with altered boundary data, representing the information from the original problem.
+However in the approach we shall be taking, we will look to formulate our model from a measure-theoretic perspective, which will allow us to retain a level of generality surrounding the geometry we choose to impose on our waveguide. 
+In the domains with periodic structure in the $\bracs{x_1,x_2}$-plane, we will often assume this periodic structure to extend infinitely and possess a finite period cell, rather than a periodic pattern extending over a finite region of space.
+This is because tools such as the Gelfand transform allow us to reduce a problem on an infinite periodic structure to a family of problems on the period cell which parametrised by the so-called quasi-momentum, which we will elaborate on later.
+\tstk{this is more about making sure we have some meaning behind being on the spectrum of operators, so might be better kept for that section}
+\tstk{literature review, both David's papers on existing modelling techniques and fibre specs, plus from the analysis side (Zhikov etc).}
+
+\section{Setup} \label{sec:Setup}
+We wish to study wave propagation problems on waveguide-like structures in a variety of physical contexts, including \tstk{the aforementioned?}
+\begin{itemize}
+	\item Electromagnetism (photonic crystal fibres),
+	\item Elasticity,
+	\item Piezo-elasticity.
+\end{itemize}
+To this end, we shall consider domains of the form $\dddom = \ddom\times I$ where $I\subset\reals$.
+The domain $\dddom$ represents the space the waveguide occupies; $\ddom$ represents the 2-dimensional cross-section of the waveguide in the $\bracs{x_1,x_2}$-plane, which is translation invariant along the axis of the waveguide in the $x_3$ direction.
+An illustration of this is provided in figure \ref{fig:IntroStrucDiagram}.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		%2d plane $\ddom$
+		\filldraw[pattern=hexagons] (0.5,0.866025) -- (1,0) -- (0.5,-0.866025) -- (-0.5,-0.866025) -- (-1,0) -- (-0.5,0.866025) -- cycle;
+		\node[anchor=south east, align=center] at (-1,0) {$\ddom$ with \\ cross-sectional \\ structure};
+		
+		%1d extension as fibre/waveguide
+		\draw[red] (-0.5,0.866025) -- (3, 2.866025);		
+		\draw[red] (0.5,0.866025) -- (4, 2.866025);
+		\draw[red] (1,0) -- (4.5, 2);
+		\draw[red] (0.5,-0.866025) -- (4,2-0.866025);
+		\draw[dashed, red] (-0.5,-0.866025) -- (3,2-0.866025);
+		\draw[dashed, red] (-1,0) -- (2.5,2);
+		\node[anchor=north west, align=center] at (2,0) {$I$, waveguide \\ axis in $x_3$-direction};
+		
+		%axes labels
+		\draw[->] (5,1) -- (7,1) node[anchor=west] {$x_1$};
+		\draw[->] (5,1) -- (5,3) node[anchor=south] {$x_2$};
+		\draw[->] (5,1) -- (7,1+8/7) node[anchor=south west] {$x_3$};
+	\end{tikzpicture}
+	\caption{\label{fig:IntroStrucDiagram} Illustration of the waveguide domains that we shall be considering. The domains consist of cross-sectional structure in the $\bracs{x_1,x_2}$-plane which is translation invariant in $x_3$, the direction down the waveguide. The specifics of the structure in the $\bracs{x_1,x_2}$-plane depend on the waveguide we wish to model.}
+\end{figure}
+The choice of $I$ dictates how we choose to treat the structure we are modelling mathematically; $I=[0,\infty)$ represents a waveguide with an ``entrance" or ``beginning", the choice of $I=\reals$ in the $x_3$-direction represents an ``infinitely long waveguide", and the choice of $I$ being a finite interval represents a waveguide linking two locations. \newline

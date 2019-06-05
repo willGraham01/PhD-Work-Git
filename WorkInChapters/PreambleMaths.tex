@@ -1,0 +1,63 @@
+%The idea behind this file is that it will be used to store all the maths-related macros that I concoct; so that I can import all the commands by \input{this file} in the preamble of any file that I want to use them in.
+%This should make the top-level files look a lot cleaner, and the preamble much shorter!
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%theorems and lemma etc setup using amsthm
+\usepackage{amsthm}
+\newcommand{\tstk}[1]{\textbf{#1} \newline}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{plain}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{plain}
+\newtheorem{prop}[theorem]{Proposition}
+
+\allowdisplaybreaks %allows equations in the same align environment to split over multiple pages.
+
+%begin the macros via newcommand. Try to group them up reasonably!
+
+%standard sets
+\newcommand{\naturals}{\mathbb{N}}			%natural numbers
+\newcommand{\integers}{\mathbb{Z}}			%integers
+\newcommand{\rationals}{\mathbb{Q}}			%rational numbers
+\newcommand{\reals}{\mathbb{R}}				%real numbers
+\newcommand{\complex}{\mathbb{C}}			%complex numbers
+
+%brackets and norms
+\newcommand{\bracs}[1]{\left( #1 \right)}				%encloses input in brackets
+\newcommand{\sqbracs}[1]{\left[ #1 \right]}				%encloses input in square brackets
+\newcommand{\clbracs}[1]{\left\{ #1 \right\}}			%encloses input in curly bracers
+\newcommand{\abs}[1]{\lvert #1 \rvert}					%absolute value
+\newcommand{\norm}[2]{\lvert\lvert #1 \rvert\rvert}		%norm (double line)
+
+%function sets
+\newcommand{\ltwo}[2]{L^{2}\bracs{#1,\mathrm{d}#2}}						%general L^2 space
+\newcommand{\gradSob}[2]{H^1_\mathrm{grad}\bracs{#1, \mathrm{d}#2}}		%gradient Sobolev space
+\newcommand{\curlSob}[2]{H^1_\mathrm{curl}\bracs{#1, \mathrm{d}#2}}		%curl Sobolev space
+\newcommand{\kSob}[2]{H^1_{k,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
+
+%grad and curl sets
+\newcommand{\gradZero}[2]{\mathcal{G}_{ #1, \mathrm{d}#2}\bracs{0}}		%gradients of zero for domain #1 with measure #2
+\newcommand{\curlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}\bracs{0}}	%curls of zero for domain #1 with measure #2
+
+%derivatives and grad-like symbols
+\newcommand{\diff}[2]{\dfrac{\mathrm{d}#1}{\mathrm{d}#2}}			%complete derivative d#1/d#2
+\newcommand{\pdiff}[2]{\dfrac{\partial #1}{\partial #2}}			%partial derivative p#1/p#2
+\newcommand{\ddiff}[2]{\dfrac{\mathrm{d}^2 #1}{\mathrm{d}^2 #2}}	%2nd deriv
+\newcommand{\grad}{\nabla}											%grad operator
+\newcommand{\curl}[1]{\grad_{#1}\wedge}								%curl with measure subscript #1
+
+%displaying integrals
+\newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3
+
+%notation for variable use throughout the file
+\newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
+\newcommand{\ddom}{\Omega}						%2D domain notation
+\newcommand{\dddmes}{\widetilde{\mu}}			%3D measure
+\newcommand{\ddmes}{\mu}						%2D measure
+
+\newcommand{\graph}{\mathbb{G}}					%graph variable
