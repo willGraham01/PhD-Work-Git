@@ -7,7 +7,11 @@ git config --list : will list all the set options on this machine
 git status : lists the status of the current repository. Will highlight anything that warrants attention.
 "Untracked files" - files in the repository that git is not tracking. Can be added with the "add" command.
 
-git add : add the listed file(s) to the git repository for tracking
+git add : add the listed file(s) to the git repository for tracking. Need to do this before a commit to save the changes to any modified files.
+Can cal git add by feeding in a directory, to speed up multiple file changes!
 
 git commit : commits changes made to tracked files in the repository.
-git commit -m "message" : will assign a message to this commit to remind yourself of what you did. Running git commit without this optional flag will bring up the default text editor so that you can write a longer message.
+git commit -m "message" : will assign a message to this commit to remind yourself of what you did.
+Running git commit without this optional flag will bring up the default text editor so that you can write a longer message.
+git log : can be used to remind yourself of the previous commits.
+git diff : lists the changes made from the previous commit (checkpoint) to those that will be committed in the next git commit command call.
