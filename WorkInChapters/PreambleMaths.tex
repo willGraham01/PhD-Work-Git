@@ -59,7 +59,10 @@
 \newcommand{\lconv}[1]{\overset{#1}{\longrightarrow}}				%convergence with #1 above the rightarrow
 \newcommand{\toInfty}[1]{ \ \text{as} \ #1 \rightarrow\infty}		%writes out "as #1 tends to infty"
 
-%notation for variable use throughout the file
+%notation and variable use throughout the file
+\renewcommand{\vec}[1]{\mathbf{#1}}				%vectors are bold, not overline arrow
+\newcommand{\recip}[1]{\frac{1}{#1}}			%fast reciprocal as a fraction
+
 \newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
 \newcommand{\ddom}{\Omega}						%2D domain notation
 \newcommand{\dddmes}{\widetilde{\mu}}			%3D measure
