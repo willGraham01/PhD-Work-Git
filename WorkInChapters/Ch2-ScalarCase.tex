@@ -71,6 +71,60 @@ As one might expect with this construction we have the following ``separation of
 	\end{align*}
 	for some $\grad_\ddmes U$.
 \end{prop}
+\begin{proof}
+	As $U\in\gradSob{\ddom}{\ddmes}$ and $W\in\gradSob{I}{x_3}$ we can find two sequences of functions, $\phi_{k}\in\smooth{\ddom}$ and $\psi_{k}\in\smooth{I}$ such that
+	\begin{align*}
+		\phi_k \lconv{\ltwo{\ddom}{\ddmes}} U, &\quad \grad\phi_k \lconv{\ltwo{\ddom}{\ddmes}^2} \grad_{\ddmes}U \\
+		\psi_k \lconv{\ltwo{I}{x_3}} W, &\quad \psi'_k \lconv{\ltwo{I}{x_3}} W' \\
+	\end{align*}
+	for some $\grad_\ddmes U$.
+	We define $\varphi_k = \phi_k\psi_k$ for each $k\in\naturals$, this is a product of smooth functions so is a smooth function of $x_1, x_2, x_3$, and has gradient
+	\begin{align*}
+		\grad\varphi_k = 
+		\begin{pmatrix}
+			\psi_k\grad\phi_k \\
+			\phi_k\psi'_k
+		\end{pmatrix}.
+	\end{align*}
+	We claim that $\varphi_k\lconv{\ltwo{\dddom}{\dddmes}}u$; and working directly we find that
+	\begin{align*}
+		\begin{split}
+			\integral{\dddom}{\abs{\varphi_k-u}^2}{\dddmes} &= \integral{\dddom}{\abs{\phi_k\psi_k-\psi_k U + \psi_k U - UW}^2}{\dddmes} \\
+			&\leq 2\integral{\dddom}{\abs{\phi_k\psi_k - \psi_k U}^2}{\dddmes} + 2\integral{\dddom}{\abs{\psi_k U - UW}^2}{\dddmes} \\
+			&= 2\int_{\ddom}\int_{I}\abs{\psi_k}^2\abs{\phi_k - U}^2 + \abs{U}^2 \abs{\psi_k - W}^2 \ \mathrm{d}x_3 \ \mathrm{d}\ddmes \\
+			&= 2\bracs{\integral{I}{\abs{\psi_k}^2}{x_3}}\bracs{\integral{\ddom}{\abs{\phi_k - U}^2}{\ddmes}} \\
+			&+ 2\bracs{\integral{\ddom}{\abs{U}^2}{\ddmes}}\bracs{\integral{I}{\abs{\psi_k - W}^2}{x_3}} \\
+			&= 2\norm{\psi_k}_{\ltwo{I}{x_3}}^2\norm{\phi_k - U}_{\ltwo{\ddom}{\ddmes}}^2 \\
+			&+ 2\norm{U}_{\ltwo{\ddom}{\ddmes}}^2\norm{\psi_k - W}_{\ltwo{I}{x_3}}^2 \\
+			&\rightarrow 0 \toInfty{k}.
+		\end{split}
+	\end{align*}
+	Note that $\norm{\psi_k}_{\ltwo{I}{x_3}}$ is convergent to $\norm{W}_{\ltwo{I}{x_3}}$ so in particular is bounded, hence doesn't affect the limit.
+	This means that $\grad\varphi_k$ converges to a gradient of $u$ with respect to $\dddmes \toInfty{k}$.
+	We claim that it converges to $v := \begin{pmatrix} W \grad_\ddmes U \\	U W' \end{pmatrix}$.
+	To see this, note that
+	\begin{align*}
+		\abs{\grad\varphi_k - v}^2 &= \abs{\psi_k\grad\phi_k - W\grad_\ddmes U}^2 + \abs{\phi_k\psi'_k-UW'}^2.
+	\end{align*}
+	Then we can control the integral of each term on the right hand side using a similar technique to before,
+	\begin{align*}
+		\begin{split}
+			\integral{\dddom}{\abs{\phi_k\psi'_k-UW'}^2}{\dddmes} &\leq 2\int_{\ddom}\int_{I}\abs{\psi'_k}^2\abs{\phi_k - U}^2 + \abs{U}^2\abs{\psi'_k - W'}^2 \ \mathrm{d}x_3 \ \mathrm{d}\ddmes \\
+			&= 2\norm{\psi'_k}_{\ltwo{I}{x_3}}^2\norm{\phi_k - U}_{\ltwo{\ddom}{\ddmes}}^2 \\
+			&+ 2\norm{U}_{\ltwo{\ddom}{\ddmes}}^2\norm{\psi'_k - W'}_{\ltwo{I}{x_3}}^2 \\
+			&\rightarrow 0 \toInfty{k}, \text{ and also} \\
+			\integral{\dddom}{\abs{\psi_k\grad\phi_k - W\grad_\ddmes U}^2}{\dddmes} &\leq 2\norm{W}_{\ltwo{I}{x_3}}^2\norm{\grad\phi_k - \grad_\ddmes U}_{\ltwo{\ddom}{\ddmes}^2}^2 \\
+			&+ 2\norm{\grad\phi_k}_{\ltwo{\ddom}{\ddmes}^2}^2\norm{\psi_k - W}_{\ltwo{I}{x_3}}^2 \\
+			&\rightarrow 0 \toInfty{k}.
+		\end{split}
+	\end{align*}
+	This in turn demonstrates that
+	\begin{align*}
+		\integral{\dddom}{\abs{\grad\varphi_k - v}^2}{\dddmes} &\rightarrow 0 \toInfty{k},
+	\end{align*}
+	and hence $v$ is a gradient of $u$ with respect to $\dddmes$.
+\tstk{but this doesn't show that ANY $\grad_{\dddmes}u$ has this form... only those that are constructed in this way! Fix this!}
+\end{proof}
 
 
 In our approach that follows, $\ddmes$ will be used to describe the structure of the cross-section of the waveguide and so we shall need to understand the set 

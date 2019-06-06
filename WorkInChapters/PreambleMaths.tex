@@ -32,7 +32,7 @@
 \newcommand{\sqbracs}[1]{\left[ #1 \right]}				%encloses input in square brackets
 \newcommand{\clbracs}[1]{\left\{ #1 \right\}}			%encloses input in curly bracers
 \newcommand{\abs}[1]{\lvert #1 \rvert}					%absolute value
-\newcommand{\norm}[2]{\lvert\lvert #1 \rvert\rvert}		%norm (double line)
+\newcommand{\norm}[1]{\lvert\lvert #1 \rvert\rvert}		%norm (double line)
 
 %function sets
 \newcommand{\smooth}[1]{C^{\infty}\bracs{#1}}							%smooth functions
@@ -54,6 +54,10 @@
 
 %displaying integrals
 \newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3
+
+%convergence
+\newcommand{\lconv}[1]{\overset{#1}{\longrightarrow}}				%convergence with #1 above the rightarrow
+\newcommand{\toInfty}[1]{ \ \text{as} \ #1 \rightarrow\infty}		%writes out "as #1 tends to infty"
 
 %notation for variable use throughout the file
 \newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
