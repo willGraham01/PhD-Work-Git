@@ -1,10 +1,76 @@
-\chapter{Scalar Equations}
-This file should include the work on scalar-gradient equations. This will include construction of the scalar Sobolev spaces, the general theory, and then move into the more specific graph-structure and the edge-equations that we obtain.
+\chapter{Scalar Equations} \label{ch:2ScalarEqns}
+\tstk{This file should include the work on scalar-gradient equations. This will include construction of the scalar Sobolev spaces, the general theory, and then move into the more specific graph-structure and the edge-equations that we obtain.}
 
-\section{Setup}
-testing some maths commands...
+In this chapter we look at scalar wave equations in our waveguide-like geometry, treating the cross-sectional structure as singular.
+We base our approach largely off the work of Zhikov \cite{zhikov2000extension}, in that we consider what can be colloquially described as ``differential equations with respect to a measure $\dddmes$".
+We will give a rigorous definition of the kinds of problems and spaces that this colloquialism covers in the following sections.
+The purpose of this chapter is to highlight the techniques that are available to us, and how we shall adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:3VectorEqns}.
+We will also highlight some of the details that must be considered when taking this approach; however do not extensively work to fill in these details here - this will again be done when we consider vector systems.
 
+\section{The Scalar Sobolev Spaces} \label{sec:ScalarSobSpaces}
+In this section we look to construct the function spaces that we shall be working with throughout the chapter.
+What we present is a synopsis of the work of Zhikov presented in \tstk{cite his (2?) papers?}, although with an adapted notation to suit our needs and with an omission of some details - the interested reader is directed to the references provided. 
+Let $n\in\naturals$, $D\subset\reals^n$ and $\nu$ be a (Borel) measure on $D$.
+Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\nu}$ be the closure of the set of pairs $\bracs{\phi,\grad\phi}$ in $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^n$ where $\phi\in\smooth{D}$.
+That is
+\begin{align*}
+	W = W\bracs{D,\nu} &= \overline{\clbracs{\bracs{\phi,\grad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\nu}\times\ltwo{D}{\nu}^n.
+\end{align*}
+An element of $W$ is a pair $\bracs{u,z}$; we denote the component $z$ by $z=\grad_\nu u$ and refer to it as a ``gradient of $u$ with respect to $\nu$", although as we shall shortly discuss this terminology requires some qualification.
+The Sobolev space $\gradSob{D}{\nu}$ is then the collection of first components $u$,
+\begin{align*}
+	\gradSob{D}{\nu} &= \clbracs{u \ \vert \ \bracs{u,z}\in W}.
+\end{align*}
 
-\section{The Scalar Sobolev Spaces}
+An important feature to note about $\gradSob{D}{\nu}$ is that any of its elements $u$ can (and indeed will) have multiple gradients with respect to $\nu$.
+That is to say that there will be multiple (distinct) functions $z\in\ltwo{D}{\nu}^n$ such that $\bracs{u,z}\in W$.
+Indeed if we have that $\bracs{u,z}\in W$ and $\bracs{0,y}\in W$, then we clearly have that $\bracs{u,z+y}\in W$ as well.
+This hints at the possibility that any $\grad_\nu u$ can be written as the sum of a gradient (with respect to $\nu$) of the zero function and a function that is orthogonal (in the $L^2$-norm) to the set of gradients (with respect to $\nu$) of zero.
+Denoting by $\gradZero{D}{\nu}$ the set of gradients (with respect to $\nu$) of the zero function,
+\begin{align*}
+	\gradZero{D}{\nu} = \clbracs{z \ \vert \ \bracs{0,z}\in W},
+\end{align*}
+this is to claim that for any $u\in\gradSob{D}{\nu}$,
+\begin{align*} \labelthis\label{eq:OrthogonalGradExpression}
+	\grad_\nu u &= g_\perp + g,
+\end{align*}
+where $g\in\gradZero{D}{\nu}$ and $g_\perp \perp \gradZero{D}{\nu}$.
+Indeed Zhikov \cite{zhikov2000extension} provides a stronger assertion that this; for each $u\in\gradSob{D}{\nu}$ there exists a unique $g_\perp \perp \gradZero{D}{\nu}$ such that for any $\grad_\nu u$ there exists some $g\in\gradZero{D}{\nu}$ such that \eqref{eq:OrthogonalGradExpression} holds.
+Namely there is precisely one function $g_\perp$ that results in \eqref{eq:OrthogonalGradExpression} holding, regardless of which gradient (with respect to $\nu$) of $u$ we consider (the element $g\in\gradZero{D}{\nu}$ is of course what changes depending on the considered gradient). \tstk{it would be good to provide an overview of the argument Zhikov employs to prove this.}
+This argument can be taken further to show that for any elliptic $n\times n$ matrix $A$, there is a unique $g_\perp$ such that $Ag_\perp \perp \gradZero{D}{\nu}$ - this extension is useful for discussing the so-called ``differential equations with respect to $\nu$", which we now turn our attention to. \newline
+
+Now that we have a concept of gradient with respect to $\nu$, it makes sense to discuss equations involving this object.
+For a function $f\in\ltwo{D}{\nu}$ and elliptic matrix $A$, we say that the pair $\bracs{u,\grad_\nu u}$ with $u\in\gradSob{D}{\nu}$ is a solution to the (elliptic) equation
+\begin{align} \label{eq:GeneralScalarStrongForm}
+	-\grad_\nu \cdot \bracs{A(x)\grad_\nu u(x)} &= f(x) \quad x\in D
+\end{align}
+if (and only if)
+\begin{align} \label{eq:GeneralScalarWeakForm}
+	\integral{D}{A\grad_\nu u \cdot \phi}{\nu} &= \integral{D}{f\phi}{\nu} \quad \forall \phi\in\smooth{D}.
+\end{align}
+One can draw analogues between the pair of equations \eqref{eq:GeneralScalarWeakForm},\eqref{eq:GeneralScalarStrongForm} and the strong and weak form of an ODE - indeed when $\nu$ is Lebesgue measure this is precisely what is happening.
+For general $\nu$ we do not necessarily have integration by parts, and so we can only refer to \eqref{eq:GeneralScalarWeakForm} as the ```weak form" of \eqref{eq:GeneralScalarStrongForm} formally.
+Moreover, \eqref{eq:GeneralScalarWeakForm} is the only way for us to assign a meaning to ```solutions to \eqref{eq:GeneralScalarStrongForm}"; the solution as a pair is also required due to the earlier discussion of gradients of $u\in\gradSob{D}{\nu}$.
+That being said, existence and uniqueness of the solution pair $\bracs{u,\grad_\nu u}$ is guaranteed by appealing to the Riesz representation theorem and the bilinear form defined by \eqref{eq:GeneralScalarWeakForm}.
+One can \tstk{again, give synopsis of Zhikov} importantly establish that the $\grad_\nu u$ in the solution pair coincides with the unique gradient of $u$ such that $A\grad_\nu u \perp \gradZero{D}{\nu}$; which means that understanding $\gradZero{D}{\nu}$ is crucial to determining solutions to \eqref{eq:GeneralScalarStrongForm}.
 
 \section{An Example System}
+To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, as well is highlight some of the other considerations we need to take into account, we now provide an archetypical example of a wave propagation problem.
+We consider domains as described in section \ref{sec:Setup} and illustrated in figure \ref{fig:IntroStrucDiagram}; we take a 2D-domain $\ddom\subset\reals^2$ and an interval $I\subset\reals$, and form the 3D domain $\dddom = \ddom\times I\subset\reals^3$.
+Recall that physically we interpret $\ddom$ as representing a unit cell of some 2D cross-section of the waveguide, whilst $I$ represents its length or extent.
+We equip $\ddom$ with a (Borel) measure $\ddmes$, and $I$ with the Lebesgue measure $\lambda_I$.
+$\dddom$ is then equipped with the product measure $\dddmes=\ddmes\otimes\lambda_I$.
+As one might expect with this construction we have the following ``separation of variables" style result.
+\begin{prop}[Separation of Variables]
+	Let $\dddom = \ddom\times I\subset\reals^3$, with $\ddom\subset\reals^2$ and $I\subset\reals$ an interval.
+	Equip $\ddom$ with a (Borel) measure $\ddmes$ and $I$ with Lebesgue measure $\lambda_I$, and $\dddom$ with the product measure $\dddmes=\ddmes\otimes\lambda_I$.
+	Suppose $U\in\gradSob{\ddom}{\ddmes}$ and $W\in\gradSob{I}{\lambda_I}=\gradSob{I}{x_3}$, and let $u\bracs{x_1,x_2,x_3}=U\bracs{x_1,x_2}W\bracs{x_3}$.
+	Then $u\in\gradSob{\dddom}{\dddmes}$ and any $\grad_{\dddmes} u$ has the form
+	\begin{align*}
+		\grad_{\dddmes} u &= \begin{pmatrix} W\grad_\ddmes U \\ U W' \end{pmatrix}
+	\end{align*}
+	for some $\grad_\ddmes U$.
+\end{prop}
+
+
+In our approach that follows, $\ddmes$ will be used to describe the structure of the cross-section of the waveguide and so we shall need to understand the set 

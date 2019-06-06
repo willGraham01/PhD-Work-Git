@@ -26,21 +26,22 @@
 
 \begin{document}
 
-%TITLE AND CONTENTS ETC
-\maketitle %create title
-\tableofcontents %have a contents page
-\newpage %begin the actual report on a new page
+%TITLE AND CONTENTS ETC; comment out to save computing time
+%\maketitle 					%create title
+%\tableofcontents 			%have a contents page
+%\newpage 					%begin the actual report on a new page
 
 %REPORT BEGINS
 
 %\input chapters one at a time; the references should all match up and can even cross-reference; however you won't get prompts for references across files when editing.
 %NB: Can use \include for speed, but then the directory fills up with useless .aux files.
+%To save time, comment out sections that aren't being edited. References may disappear but the file will still compile!
 
-\input{Ch1-Intro}
+%\input{Ch1-Intro}
 
-\input{Ch2-ScalarCase}
+\include{Ch2-ScalarCase}
 
-\input{Ch3-VectorCase}
+%\input{Ch3-VectorCase}
 
 \newpage %have a new page to start the bibliography
 \bibliographystyle{unsrt}
