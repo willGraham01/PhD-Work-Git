@@ -315,28 +315,102 @@ which are clearly both smooth functions by composition.
 	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_i}$ on a segment of length $\leq\frac{4}{n}$.
 \end{proof}
 
-%We are now ready to prove that $B\subset\gradset{\ddom}{0}$.
-%\begin{prop} \label{prop:BIncGrad0}
-%	For $B=\mathset{g\in\ltwo{\ddom}{\ddmes} \setST g\vert_{I_{ij}}\cdot e_{ij}=0 \ \forall I_{ij}\in E}$, we have
-%	\begin{align*}
-%		B \subset \gradset{\ddom}{0}
-%	\end{align*}
-%\end{prop}
-%\begin{proof}
-%	Take $g\in B$, and define a family of functions $g_{n}$ by
-%	\begin{align*}
-%		g_{n}\bracs{x} &= \recip{2}\sum_{i\in V}\sum_{i\sim j}\eta_{i}^{n}\bracs{x}\eta_{j}^{n}\bracs{x}g\vert_{I_{ij}}\bracs{x}
-%	\end{align*}
-%	where the notation $i\sim j$ means that there is an edge $(i,j)\in E$, and the sum is taken over such edges.
-%	Recall that $\graph$ was assumed finite, so there are no convergence issues with the double sum.
-%	Then for each $i,j$ with $i\sim j$, the function $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}$ satisfies the hypothesis of \ref{lem:SegGradExtend}, so $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\in\gradset{\ddom}{0}$.
-%	Furthermore, as $\gradset{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_{n}\in\gradset{\ddom}{0}$ too, for all $n$.
-%	By closure of $\gradset{\ddom}{0}$; $g_{n}$ converges in $\gradset{\ddom}{0}$ provided it converges at all, so it remains to show that $g_{n}\lconvN{2} g$ as $n\rightarrow\infty$.
-%	However with the result of \ref{lem:etaConv}, we have that $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\lconvN{2} g\vert_{I_{ij}}$ and hence
-%	\begin{align*}
-%		g_{n} \lconvN{2} &\recip{2}\sum_{i\in V}\sum_{j\sim i}g\vert_{I_{ij}} = g \text{ as } n\rightarrow\infty,
-%	\end{align*}
-%	so $g\in\gradset{\ddom}{0}$.
-%\end{proof}
+We are now ready to prove that $B\subset\gradZero{\ddom}{\ddmes}$.
+\begin{prop} \label{prop:BIncGrad0}
+	For $B=\clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{ij}}\cdot e_{ij}=0 \ \forall I_{ij}\in E}$, we have
+	\begin{align*}
+		B \subset \gradZero{\ddom}{\ddmes}
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Take $g\in B$, and define a family of functions $g_{n}$ by
+	\begin{align*}
+		g_{n}\bracs{x} &= \recip{2}\sum_{i\in V}\sum_{i\sim j}\eta_{i}^{n}\bracs{x}\eta_{j}^{n}\bracs{x}g\vert_{I_{ij}}\bracs{x}
+	\end{align*}
+	where the notation $i\sim j$ means that there is an edge $(i,j)\in E$, and the sum is taken over such edges.
+	Recall that $\graph$ was assumed finite, so there are no convergence issues with the double sum.
+	Then for each $i,j$ with $i\sim j$, the function $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}$ satisfies the hypothesis of \ref{lem:SegGradExtend}, so $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\in\gradZero{\ddom}{\ddmes}$.
+	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_{n}\in\gradZero{\ddom}{\ddmes}$ too, for all $n$.
+	By closure of $\gradZero{\ddom}{\ddmes}$; $g_{n}$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, so it remains to show that $g_{n}\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
+	However with the result of \ref{lem:etaConv}, we have that $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{ij}}$ and hence
+	\begin{align*}
+		g_{n} \lconv{\ltwo{\ddom}{\ddmes}^2} &\recip{2}\sum_{i\in V}\sum_{j\sim i}g\vert_{I_{ij}} = g \toInfty{n},
+	\end{align*}
+	so $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
 
+\subsection{Reduction to a system of scalar equations}
+We now turn our attention back to \eqref{eq:ScalarExampleStrongForm}.
+Recall that we interpret this in the weak sense, namely a pair $\bracs{u,\grad_\ddmes u}$ solves \eqref{eq:ScalarExampleStrongForm} if and only if
+\begin{align} \label{eq:ScalarExampleWeakForm}
+	\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi}{\ddmes} &= \omega^2\integral{\ddom}{u\phi}{\ddmes} \quad \forall\phi\in\smooth{\ddom}.
+\end{align}
+\tstk{again reiterate Gelfand/Fourier and the case we are considering. Also how can we guarantee solutions to this system?}
+We want to find an alternative but equivalent system to \eqref{eq:ScalarExampleWeakForm} that we can use in numerical schemes (as the measure $\ddmes$ prevents implementations via finite elements, for example) or is more tractable to an analytic approach.
+To this end we look to work from \eqref{eq:ScalarExampleWeakForm} and employ our previous analysis to find an alternative problem. \newline
 
+We begin by re-writing \eqref{eq:ScalarExampleWeakForm} by appealing to the nature of $\ddmes$;
+\begin{align} \label{eq:ScalarExampleSumOfInts}
+	0 &= \recip{2}\sum_{I_{ij}\in E}\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi - \omega^2 u\phi}{\lambda_{ij}}.
+\end{align}
+Note that $I_{ij},I_{ji}\in E$ are the same edge of the graph $\graph$, which is what gives us the factor of a half.
+Of course we may simply drop this factor of a half, and understand the sum as being over unique edges, which we henceforth do.
+Next recall the notation introduced for the edge $I_{ij}$; we denote by $e_{ij}$ the unit vector along $I_{ij}$ pointing from $v_i$ to $v_j$,
+\begin{align*}
+	e_{ij} = \frac{v_j-v_i}{\norm{v_j-v_i}_2}.
+\end{align*}
+We define the map 
+\begin{align*}
+	r_{ij}:\sqbracs{0,\abs{I_{ij}}} &\rightarrow I_{ij}, \\
+	r_{ij}\bracs{t} &= v_i + te_{ij}
+\end{align*}
+so $r'\bracs{t}=e_{ij}$.
+Note that $r$ is therefore an admissible change of variables from $\sqbracs{0,\abs{I_{ij}}}$ to $I_{ij}$.
+To prevent cluttered notation, we use an overhead tilde to denote composition with $r_{ij}$, so for example $\tilde{\phi}=\phi\circ r_{ij}$.
+We next look at how to deal with each integral term; without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_1$-axis by performing a rotation.
+Although we do not need to make this simplification since we have information about $\gradZero{\ddom}{\lambda_{ij}}$, it is helpful to do so in the following analysis.
+In fact the information about $\gradZero{\ddom}{\lambda_{ij}}$ is necessary to perform the rotation we would use, and retain equivalence of the resulting problem to the original. \newline
+
+With this simplification, we examine the term
+\begin{align*}
+	\integral{\ddom}{\grad_\ddmes u\cdot\grad\phi}{\lambda_{ij}}.
+\end{align*}
+We know that the solution to \eqref{eq:ScalarExampleWeakForm} satisfies $\grad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$ and so $\grad_\ddmes u\vert_{\ddom} \perp \gradZero{\ddom}{\lambda_{ij}}$ by our analysis of gradients of zero.
+Thus let us suppose that $\grad_\ddmes u\vert_{I_{ij}} = \bracs{\alpha, \beta}^{\top}$.
+Recalling the characterisation of $\gradZero{\ddom}{\lambda_{ij}}$ when $I_{ij}$ is parallel to the $x_1$-axis, we require that
+\begin{align*}
+	0 &= \integral{\ddom}{\grad_\ddmes u \cdot \begin{pmatrix} 0 \\ f \end{pmatrix}}{\lambda_{ij}} \quad \forall f\in\ltwo{\ddom}{\lambda_{ij}}, \\
+	\Rightarrow 0 &= \integral{I_{ij}}{\beta f}{\lambda_{ij}}
+	= \int_{0}^{\abs{I_{ij}}}\widetilde{\beta}\widetilde{f}\md t.
+\end{align*}
+As $\widetilde{f}$ is arbitrary, we conclude that $\widetilde{\beta}=0$ and hence $\beta=0$.
+Thus $\grad_\ddmes u\vert_{I_{ij}} = \bracs{\alpha, 0}^{\top}$; we now show that $\alpha$ is related to the distributional derivative of the function $\widetilde{u}$.
+Notice that for any smooth function $\phi$ we have that
+\begin{align*}
+	\partial_t\widetilde{\phi}(t) &= \grad\phi\bracs{r_{ij}(t)}\cdot r'_{ij}(t) = \partial_1\phi\bracs{r_{ij}(t)} \\
+	&= \partial_1\widetilde{\phi}(t),
+\end{align*}
+as $r'_{ij}=e_{ij}=\bracs{1,0}^{\top}$.
+Now as $u\in\gradSob{\ddom}{\lambda_{ij}}$ we can find smooth functions $\alpha_n$ such that
+\begin{align*}
+	\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}}u, \quad \grad\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}^2}\begin{pmatrix} \alpha \\ 0	\end{pmatrix}.
+\end{align*}
+Exploiting the change of variables $r_{ij}$ and writing these statements using integrals converging in $\reals$ implies
+\begin{align*}
+	\int_0^{\abs{I_{ij}}}\abs{\widetilde{\alpha}-\widetilde{u}}^2 \md t &\rightarrow 0, \\
+	\int_0^{\abs{I_{ij}}}\abs{\partial_t\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t = \int_0^{\abs{I_{ij}}}\abs{\partial_1\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t &\rightarrow 0, \\
+	\int_0^{\abs{I_{ij}}}\abs{\partial_2\widetilde{\alpha}_n}^2 \md t &\rightarrow 0, \toInfty{n}.
+\end{align*}
+In particular the first two convergences imply that $\widetilde{\alpha}=\widetilde{u}'$; that is that $\widetilde{\alpha}$ is the distributional derivative of $\widetilde{u}\in\gradSob{\sqbracs{0,\abs{I_{ij}}}}{t}$.
+Using the notation $u'$ for the $\ltwo{\ddom}{\lambda_{ij}}$ function such that $u' = \widetilde{u}'\circ r_{ij}^{-1}$, we can write $\grad_\ddmes u\vert_{I_{ij}} = \bracs{u', 0}^{\top}$.
+In light of this we see that
+\begin{align*}
+	\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi - \omega^2 u\phi}{\lambda_{ij}}
+	&= \int_0^{\abs{I_{ij}}}\widetilde{u}'\widetilde{\phi}' - \omega^2\widetilde{u}\widetilde{\phi} \md t.
+\end{align*}
+
+Equipped with this knowledge, we are able to transform \eqref{eq:ScalarExampleSumOfInts} into
+\begin{align}
+	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'\widetilde{\phi}' - \omega^2\widetilde{u}\widetilde{\phi} \md t.
+\end{align}
+Note that there is an implicit dependence on the current edge $I_{ij}$ in the $\widetilde{u}'$ term.
