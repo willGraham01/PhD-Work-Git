@@ -1,6 +1,4 @@
 \chapter{Scalar Equations} \label{ch:2ScalarEqns}
-\tstk{This file should include the work on scalar-gradient equations. This will include construction of the scalar Sobolev spaces, the general theory, and then move into the more specific graph-structure and the edge-equations that we obtain.}
-
 In this chapter we look at scalar wave equations in our waveguide-like geometry, treating the cross-sectional structure as singular.
 We base our approach largely off the work of Zhikov \cite{zhikov2000extension}, in that we consider what can be colloquially described as ``differential equations with respect to a measure $\dddmes$".
 We will give a rigorous definition of the kinds of problems and spaces that this colloquialism covers in the following sections.
@@ -55,7 +53,7 @@ That being said, existence and uniqueness of the solution pair $\bracs{u,\grad_\
 One can \tstk{again, give synopsis of Zhikov} importantly establish that the $\grad_\nu u$ in the solution pair coincides with the unique gradient of $u$ such that $A\grad_\nu u \perp \gradZero{D}{\nu}$; which means that understanding $\gradZero{D}{\nu}$ is crucial to determining solutions to \eqref{eq:GeneralScalarStrongForm}.
 One other property of $\gradZero{D}{\nu}$ that is worth noting is that it is a closed linear subspace of $\ltwo{D}{\nu}^n$; which is something we will exploit when looking into the structure of these spaces in the example that follows.
 
-\section{An Example System}
+\section{An Example System} \label{sec:ScalarExample}
 To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide some analysis of an example system.
 Let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$.
 By this we associate each vertex $v_i\in V$ with a point $\vec{v}_i\in\reals^2$, and each edge $\bracs{v_i,v_j}\in E$ to the segment $I_{ij}=\sqbracs{\vec{v}_i,\vec{v}_j}$.
@@ -367,50 +365,94 @@ We define the map
 so $r'\bracs{t}=e_{ij}$.
 Note that $r$ is therefore an admissible change of variables from $\sqbracs{0,\abs{I_{ij}}}$ to $I_{ij}$.
 To prevent cluttered notation, we use an overhead tilde to denote composition with $r_{ij}$, so for example $\tilde{\phi}=\phi\circ r_{ij}$.
-We next look at how to deal with each integral term; without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_1$-axis by performing a rotation.
+We next look at how to deal with each integral term.
+Without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_1$-axis by performing a rotation, and we denote by $u_{ij}\in\ltwo{\ddom}{\lambda_{ij}}$ the function such that $u_{ij}=u$ on the (potentially rotated) edge $I_{ij}$.
+$u_{ij}$ can be thought of as the $ij$\textsuperscript{th}-part of $u$, or the part of $u$ down the edge $I_{ij}$ - this separation of $u$ onto separate functions on the edges of $\graph$ will prove useful in what follows.
 Although we do not need to make this simplification since we have information about $\gradZero{\ddom}{\lambda_{ij}}$, it is helpful to do so in the following analysis.
 In fact the information about $\gradZero{\ddom}{\lambda_{ij}}$ is necessary to perform the rotation we would use, and retain equivalence of the resulting problem to the original. \newline
 
 With this simplification, we examine the term
 \begin{align*}
-	\integral{\ddom}{\grad_\ddmes u\cdot\grad\phi}{\lambda_{ij}}.
+	\integral{\ddom}{\grad_\ddmes u_{ij}\cdot\grad\phi}{\lambda_{ij}}.
 \end{align*}
-We know that the solution to \eqref{eq:ScalarExampleWeakForm} satisfies $\grad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$ and so $\grad_\ddmes u\vert_{\ddom} \perp \gradZero{\ddom}{\lambda_{ij}}$ by our analysis of gradients of zero.
-Thus let us suppose that $\grad_\ddmes u\vert_{I_{ij}} = \bracs{\alpha, \beta}^{\top}$.
+We know that the solution to \eqref{eq:ScalarExampleWeakForm} satisfies $\grad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$ and so $\grad_\ddmes u_{ij} \perp \gradZero{\ddom}{\lambda_{ij}}$ by our analysis of gradients of zero.
+Thus let us suppose that $\grad_\ddmes u_{ij} = \bracs{\alpha, \beta}^{\top}$.
 Recalling the characterisation of $\gradZero{\ddom}{\lambda_{ij}}$ when $I_{ij}$ is parallel to the $x_1$-axis, we require that
 \begin{align*}
-	0 &= \integral{\ddom}{\grad_\ddmes u \cdot \begin{pmatrix} 0 \\ f \end{pmatrix}}{\lambda_{ij}} \quad \forall f\in\ltwo{\ddom}{\lambda_{ij}}, \\
+	0 &= \integral{\ddom}{\grad_\ddmes u_{ij} \cdot \begin{pmatrix} 0 \\ f \end{pmatrix}}{\lambda_{ij}} \quad \forall f\in\ltwo{\ddom}{\lambda_{ij}}, \\
 	\Rightarrow 0 &= \integral{I_{ij}}{\beta f}{\lambda_{ij}}
 	= \int_{0}^{\abs{I_{ij}}}\widetilde{\beta}\widetilde{f}\md t.
 \end{align*}
 As $\widetilde{f}$ is arbitrary, we conclude that $\widetilde{\beta}=0$ and hence $\beta=0$.
-Thus $\grad_\ddmes u\vert_{I_{ij}} = \bracs{\alpha, 0}^{\top}$; we now show that $\alpha$ is related to the distributional derivative of the function $\widetilde{u}$.
+Thus $\grad_\ddmes u_{ij} = \bracs{\alpha, 0}^{\top}$; we now show that $\alpha$ is related to the distributional derivative of the function $\widetilde{u}_{ij}$.
 Notice that for any smooth function $\phi$ we have that
-\begin{align*}
+\begin{align*} \labelthis\label{eq:PartialToTDiff}
 	\partial_t\widetilde{\phi}(t) &= \grad\phi\bracs{r_{ij}(t)}\cdot r'_{ij}(t) = \partial_1\phi\bracs{r_{ij}(t)} \\
-	&= \partial_1\widetilde{\phi}(t),
+	&= \widetilde{\partial_1\phi}(t),
 \end{align*}
 as $r'_{ij}=e_{ij}=\bracs{1,0}^{\top}$.
-Now as $u\in\gradSob{\ddom}{\lambda_{ij}}$ we can find smooth functions $\alpha_n$ such that
+Now as $u_{ij}\in\gradSob{\ddom}{\lambda_{ij}}$ we can find smooth functions $\alpha_n$ such that
 \begin{align*}
-	\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}}u, \quad \grad\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}^2}\begin{pmatrix} \alpha \\ 0	\end{pmatrix}.
+	\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}}u_{ij}, \quad \grad\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}^2}\begin{pmatrix} \alpha \\ 0	\end{pmatrix}.
 \end{align*}
 Exploiting the change of variables $r_{ij}$ and writing these statements using integrals converging in $\reals$ implies
 \begin{align*}
-	\int_0^{\abs{I_{ij}}}\abs{\widetilde{\alpha}-\widetilde{u}}^2 \md t &\rightarrow 0, \\
+	\int_0^{\abs{I_{ij}}}\abs{\widetilde{\alpha}-\widetilde{u}_{ij}}^2 \md t &\rightarrow 0, \\
 	\int_0^{\abs{I_{ij}}}\abs{\partial_t\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t = \int_0^{\abs{I_{ij}}}\abs{\partial_1\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t &\rightarrow 0, \\
 	\int_0^{\abs{I_{ij}}}\abs{\partial_2\widetilde{\alpha}_n}^2 \md t &\rightarrow 0, \toInfty{n}.
 \end{align*}
-In particular the first two convergences imply that $\widetilde{\alpha}=\widetilde{u}'$; that is that $\widetilde{\alpha}$ is the distributional derivative of $\widetilde{u}\in\gradSob{\sqbracs{0,\abs{I_{ij}}}}{t}$.
-Using the notation $u'$ for the $\ltwo{\ddom}{\lambda_{ij}}$ function such that $u' = \widetilde{u}'\circ r_{ij}^{-1}$, we can write $\grad_\ddmes u\vert_{I_{ij}} = \bracs{u', 0}^{\top}$.
+In particular the first two convergences imply that $\widetilde{\alpha}=\widetilde{u}'_{ij}$; that is that $\widetilde{\alpha}$ is the distributional derivative of $\widetilde{u}_{ij}\in\gradSob{\sqbracs{0,\abs{I_{ij}}}}{t}$.
+Using the notation $u'_{ij}$ for the $\ltwo{\ddom}{\lambda_{ij}}$ function such that $u'_{ij} = \widetilde{u}'_{ij}\circ r_{ij}^{-1}$, we can write $\grad_\ddmes u_{ij} = \bracs{u'_{ij}, 0}^{\top}$.
 In light of this we see that
 \begin{align*}
-	\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi - \omega^2 u\phi}{\lambda_{ij}}
-	&= \int_0^{\abs{I_{ij}}}\widetilde{u}'\widetilde{\phi}' - \omega^2\widetilde{u}\widetilde{\phi} \md t.
+	\integral{\ddom}{\grad_\ddmes u_{ij} \cdot \grad\phi - \omega^2 u_{ij}\phi}{\lambda_{ij}}
+	&= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t.
 \end{align*}
 
 Equipped with this knowledge, we are able to transform \eqref{eq:ScalarExampleSumOfInts} into
-\begin{align}
-	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'\widetilde{\phi}' - \omega^2\widetilde{u}\widetilde{\phi} \md t.
+\begin{align} \label{eq:ScalarExampleLebesgueIntegrals}
+	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t.
 \end{align}
-Note that there is an implicit dependence on the current edge $I_{ij}$ in the $\widetilde{u}'$ term.
+The choice of $\phi$ was arbitrary so in particular \eqref{eq:ScalarExampleLebesgueIntegrals} must hold when $\mathrm{supp}\bracs{\phi}$ contains precisely one edge $I_{ij}$, meaning that we have
+\begin{align*}
+	0 &= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t, \quad \forall I_{ij}\in E, \ \forall \phi\in\smooth{\ddom}.
+\end{align*}
+That is to say, we have arrived at a system of differential equations (``edge equations") for $\widetilde{u}_{ij}$ (the ``edge solutions").
+This weak formulation admits numerical solution by (for example) finite elements, providing us with a method to recover the original function $u$.
+If we assume more regularly of $u$, for example assume that $u\in C^2\bracs{\ddom}$ so the second derivative of $u$ exists in the strong sense we can obtain a system of ODEs in the edge solutions $\widetilde{u}_{ij}$, complete with boundary conditions.
+We obtain one (second-order) differential equation for each edge $I_{ij}$ by integrating each edge equation by parts;
+\begin{align*}
+	0 &= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t, \quad \forall\phi\in\smooth{\ddom} \\
+	&= \int_0^{\abs{I_{ij}}} \bracs{\widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}}\widetilde{\phi} \md t. \\
+	\Rightarrow 0 &= \widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}.
+\end{align*}
+As we have assumed at least $C^2$ regularity of $u$ we require that $u$ be continuous at the vertices $v_i$ and so we must have that
+\begin{align*}
+	\widetilde{u}_{ij}\vert_{v_i} &= \widetilde{u}_{ik}\vert_{v_i} \quad \text{whenever } i\sim j \text{ and } i\sim k,
+\end{align*}
+which is simply a matching condition of the solution at the vertices.
+The vertical bar notation is used to denote evaluation, so $\widetilde{u}_{ij}\vert_{v_i}$ denotes evaluation of $\widetilde{u}_{ij}\bracs{t}$ at whichever $t$ such that $r_{ij}\bracs{t} = v_i$. 
+The other boundary conditions can be found by considering $\phi$ such that $\mathrm{supp}\bracs{\phi}$ contains precisely one of the vertices $v_k$, and then integrating \eqref{eq:ScalarExampleLebesgueIntegrals} by parts and considering the boundary term:
+\begin{align*}
+	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t \\
+	&= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}} \bracs{\widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}}\widetilde{\phi} \md t + \sum_{I_{ij}\in E}\sum_{i\sim j}\sqbracs{\widetilde{u}'_{ij}\widetilde{\phi}}\big\vert_{v_i} \\
+	&= \sum_{I_{ij}\in E}\sum_{i\sim j}\sqbracs{\widetilde{u}'_{ij}\widetilde{\phi}}\big\vert_{v_i} \\
+	&= \sum_{k\sim j}\widetilde{u}'_{kj}\vert_{v_k}\widetilde{\phi}\vert_{v_k}, \\
+	\Rightarrow 0 &= \sum_{k\sim j}\widetilde{u}'_{kj}\vert_{v_k}.
+\end{align*}
+That is we obtain a Kirchoff condition on the derivatives of the edge solutions at each of the vertices.
+These conditions provide us with a complete system of differential equations and boundary conditions; observe that for each edge equation we can select one of it's vertices and associate one matching condition and one Kirchoff condition at that vertex.
+
+\section{Chapter Summary}
+The work in this section largely builds off that of \tstk{references!!}, before pursuing an example that will be relevant in the later sections.
+We have introduced the theory behind the kinds of mathematical problems and their associated spaces.
+One constructs the Sobolev spaces $\gradSob{D}{\nu}$ using closure of the set of $\smooth{D}$ functions and their gradients, the cost of which is uniqueness of the $\nu$-gradients, $\grad_\nu$.
+However one can characterise all the gradients of a given function $u\in\gradSob{D}{\nu}$ by finding the unique $\grad_\nu u$ which is perpendicular to the set of $\nu$-gradients of 0, $\gradZero{D}{\nu}$.
+As such understanding the structure of $\gradZero{D}{\nu}$ is central to finding solutions to problems posed in $\gradSob{D}{\nu}$. \newline
+
+The example provided in section \ref{sec:ScalarExample} demonstrates how this theory can be employed to reduce an abstract problem involving $\nu$-gradients to an equivalent problem which involves more familiar (or ``classical") objects.
+Starting from the problem \eqref{eq:ScalarExampleStrongForm}, one can obtain the system \eqref{eq:ScalarExampleLebesgueIntegrals} which can be approached numerically via schemes like finite elements, and the solution to the original problem can be recovered.
+Under further regularly assumptions, one can even obtain systems of ODEs which may prove admissible to an analytic approach and even yield exact solutions. \newline
+
+We will be looking to extend the concepts introduced here when we move towards considering systems of vector-valued functions, which are widely used in the description of physical systems.
+Many of the argumentative techniques that we have employed in this section will provide inspiration for the arguments we employ in chapter \ref{ch:3VectorEqns}.

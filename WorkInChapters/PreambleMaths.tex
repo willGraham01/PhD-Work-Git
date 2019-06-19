@@ -3,6 +3,7 @@
 
 \usepackage{amssymb}
 \usepackage{amsmath}
+%\usepackage{mathtools}
 
 %theorems and lemma etc setup using amsthm
 \usepackage{amsthm}
@@ -44,6 +45,7 @@
 %grad and curl sets
 \newcommand{\gradZero}[2]{\mathcal{G}_{ #1, \mathrm{d}#2}\bracs{0}}		%gradients of zero for domain #1 with measure #2
 \newcommand{\curlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}\bracs{0}}	%curls of zero for domain #1 with measure #2
+\newcommand{\kcurlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}^{(k)}\bracs{0}}	%k-curls of zero for domain #1 with measure #2
 
 %derivatives and grad-like symbols
 \newcommand{\diff}[2]{\dfrac{\mathrm{d}#1}{\mathrm{d}#2}}			%complete derivative d#1/d#2
@@ -57,6 +59,7 @@
 \newcommand{\md}{\ \mathrm{d}}									%differential d
 
 %convergence
+%\newcommand{\lconv}[1]{\xrightarrow{#1}}							%convergence with #1 above the rightarrow - requires mathtools
 \newcommand{\lconv}[1]{\overset{#1}{\longrightarrow}}				%convergence with #1 above the rightarrow
 \newcommand{\toInfty}[1]{ \ \text{as} \ #1 \rightarrow\infty}		%writes out "as #1 tends to infty"
 
