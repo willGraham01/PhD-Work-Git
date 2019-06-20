@@ -172,7 +172,7 @@ Now we observe that $v\in\kcurlZero{\ddom}{\lambda_{I_2}}$ because the (smooth) 
 \end{align*}
 and additionally
 \begin{align*}
-	\integral{\ddom}{\abs{\curl{k}\phi - v}^2}{\lambda_{I_2}} &= \integral{\ddom}{\abs{\partial_2\phi_3 - ik\phi_2}^2}{\lambda_{I_2}} \\
+	\integral{\ddom}{\abs{\kcurl{\lambda_{I_2}}\phi - v}^2}{\lambda_{I_2}} &= \integral{\ddom}{\abs{\partial_2\phi_3 - ik\phi_2}^2}{\lambda_{I_2}} \\
 	&+ \integral{\ddom}{\abs{ik\phi_1 - \partial_1\phi_3 - u}^2}{\lambda_{I_2}} + \integral{\ddom}{\abs{\partial_1\phi_2 - \partial_2\phi_1}^2}{\lambda_{I_2}} \\
 	&= \integral{I_2}{x_1^2\abs{\partial_2 u}^2 + x_1^2\abs{\partial_1 u}^2}{\lambda_{I_2}} \\
 	&= 0.
@@ -180,7 +180,7 @@ and additionally
 Hence we have that
 \begin{align} \label{eq:Curl0SeqConv}
 	\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_{I_2}}^3},
-	&\quad \curl{k}\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_{I_2}}^3} v.
+	&\quad \kcurl{\lambda_{I_2}}\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_{I_2}}^3} v.
 \end{align}
 so $v\in\kcurlZero{\ddom}{\lambda_{I_2}}$.
 By a similar argument we can also deduce that $w=\bracs{0,0,u}\in\kcurlZero{\ddom}{\lambda_{I_2}}$, by taking the constant sequence $\varphi^{(n)}=\bracs{0,x_1 u,0}^{\top}$.
@@ -211,20 +211,145 @@ Namely that $\bracs{0, u}^{\top}\in\gradZero{\ddom}{\lambda_{I_2}}$.
 Thus by the characterisation of $\gradZero{\ddom}{\lambda_{I_2}}$, we conclude that $u=0$.
 Hence we have the desired result,
 \begin{align*}
-	\kcurlZero{\ddom}{\lambda_{I_2}} &= \mathrm{span}\clbracs{\begin{pmatrix} 0 \\ u \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 0 \\ u \end{pmatrix} \ \vert \ u\in\ltwo{\ddom}{\lambda_{I_2}}} \\
-	&= \clbracs{g\in\ltwo{\ddom}{\lambda_{I_2}}^3 \ \vert \ g\cdot n_{I_2} = 0}
+	\kcurlZero{\ddom}{\lambda_{I_2}} &= \mathrm{span}\clbracs{\begin{pmatrix} 0 \\ u \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 0 \\ u \end{pmatrix} \ \vert \ u\in\ltwo{\ddom}{\lambda_{I_2}}} \labelthis\label{eq:OneParallelSegmentCurl0Form}\\
+	&= \clbracs{g\in\ltwo{\ddom}{\lambda_{I_2}}^3 \ \vert \ g\cdot n_{I_2} = 0} 
 \end{align*}
-where $n_I$ denotes the vector in $\reals^3$ that is normal to the plane $\clbracs{0}\times I_2\times[0\infty)$ \tstk{remark about how this is one of the F.T'ed planes in our waveguide.}
+where $n_{I_2}$ denotes the vector in $\reals^3$ that is normal to the plane $\clbracs{0}\times I_2\times[0, \infty)$. \tstk{remark about how this is one of the F.T'ed planes in our waveguide.}
 
-\tstk{now what happens if we rotate?}
+\tstk{now what happens if we rotate? I think we can transform as normal, effectively extending the 2-by-2 rotation matrix $R$ to a 3-by-3 by adding a one at position 3-3 and zeros elsewhere... but need to be careful as we're not rotating curl, but are rotating $k$-curl!}
 We now consider the case when $\ddmes$ supports a segment $I\subset\ddom$ which is not necessarily parallel to the $x_2$-axis, so $\ddmes=\lambda_I$.
-Let $I$ have the orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ parallel to $I$.
+Let $I$ have the orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_2$ parallel to $I$, and let $R$ be the orthogonal matrix that transforms between $x=\bracs{x_1,x_2}$ co-ordinates and $y$ co-ordinates by $x=Ry$.
+Suppose that $v\in\kcurlZero{\ddom}{\lambda_I}$ - then as usual we can find a sequence of smooth functions $\phi^{(n)}\in\smooth{\ddom}^3$ such that
+\begin{align*}
+	\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_I}^3} 0, &\quad \kcurl{y}\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_I}^3} v \toInfty{n}.
+\end{align*}
+Here we use the subscript $y$ to denote the co-ordinate system on which $\kcurl{}$ is taken with respect to.
+Define the matrix $\hat{R}$ by
+\begin{align*}
+	\hat{R} &= 
+	\begin{pmatrix}
+		R & 0 \\
+		0 & 1
+	\end{pmatrix}
+\end{align*}
+so $\hat{R}$ is a $3\times3$ orthogonal matrix.
+Define $\psi^{(n)}\bracs{x} = \phi^{(n)}\bracs{R^\top x}$, and let $I_2 = R^\top I$ which is parallel to the $x_2$-axis by construction.
+Then by change of variables
+\begin{align*}
+	\integral{I_2}{\abs{\psi^{(n)}}^2}{\lambda_{I_2}}
+	&= \integral{I}{\abs{\phi^{(n)}}^2}{\lambda_I} \\
+	&\rightarrow0 \toInfty{n},
+\end{align*}
+and
+\begin{align*}
+	\integral{I_2}{\abs{\kcurl{x}\psi^{(n)}\bracs{x}-\hat{R}^\top v\bracs{R^\top x}}^2}{\lambda_{I_2}}
+	&= \integral{I_2}{\abs{\hat{R}\kcurl{x}\psi^{(n)}\bracs{x}- v\bracs{R^\top x}}^2}{\lambda_{I_2}} \\
+	&= \integral{I_2}{\abs{\kcurl{y}\phi^{(n)}\bracs{R^\top x}- v\bracs{R^\top x}}^2}{\lambda_{I_2}} \\
+	&= \integral{I}{\abs{\kcurl{y}\phi^{(n)}\bracs{y}- v\bracs{y}}^2}{\lambda_I} \\
+	&\rightarrow0 \toInfty{n}.
+\end{align*}
+Thus the function $w\bracs{x} = \hat{R}^\top v\bracs{R^\top x}$ belongs to $\kcurlZero{R\ddom}{\lambda_{I_2}}$, and has the form as in \eqref{eq:OneParallelSegmentCurl0Form}.
+So we can write $w=\bracs{0, w_2, w_3}^\top$ for some $w_2,w_3\in\ltwo{R\ddom}{\lambda_{I_2}}$, and thus we have that
+\begin{align*}
+	v\bracs{y} = \hat{R}\begin{pmatrix} 0 \\ v_2 \\ v_3	\end{pmatrix}
+\end{align*}
+for functions $v_2,v_3\in\ltwo{\ddom}{\lambda_I}$ (which are related to $w_2, w_3$ by the change of variables $R$).
+Hence we conclude that
+\begin{align} \label{eq:OneArbitrarySegmentCurl0Form}
+	\kcurlZero{\ddom}{\lambda_I} &= \clbracs{g\in\ltwo{\ddom}{\lambda_I}^3 \ \vert \ g\cdot n_I = 0},
+\end{align}
+where $n_I$ denotes the vector in $\reals^3$ that is normal to the plane $\clbracs{0}\times I\times[0, \infty)$; similar to before.
+We now utilise these results to characterise the $k$-curl on a graph-like structure by it's structure on each of the edges, akin to the scalar-gradient case.
+
+\subsubsection{$k$-Curls on Finite Graphs}
+Suppose now that $\ddmes$ supports an embedded graph $\graph$ in $\ddom$.
+We look to prove that
+\begin{align} \label{eq:kCurlZeroSetEquivalence}
+	\kcurlZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ g\vert_{I_{ij}}\cdot n_{ij} = 0 \ \forall I_{ij}\in E},
+\end{align}
+where $n_{ij}$ denotes the unit vector that is normal to the plane induced by the segment $I_{ij}$ and the $x_3$-axis.
+Denote the set on the right hand side of \eqref{eq:kCurlZeroSetEquivalence} by $B$.
+As when we were considering gradients (see section \ref{sec:ScalarExample}) the inclusion $\kcurlZero{\ddom}{\ddmes}\subset B$ follows quickly.
+\begin{prop} \label{prop:Curl0IncB}
+	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ g\vert_{I_{ij}}\cdot n_{ij} = 0 \ \forall I_{ij}\in E}$, we have that
+	\begin{align*}
+		\kcurlZero{\ddom}{\ddmes}\subset B.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Let $g\in\kcurlZero{\ddom}{\ddmes}$.
+	Then there exist smooth functions $\phi^{(n)}$ such that
+	\begin{align*}
+		\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} 0, 
+		&\quad \kcurl{}\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} g \toInfty{n}.
+	\end{align*}
+	Thus we find that
+	\begin{align*}
+		\sum_{I_{ij}\in E}\integral{I_{ij}}{\abs{\phi^{(n)}}^2}{\lambda_{ij}} &= \integral{\ddom}{\abs{\phi^{(n)}}^2}{\ddmes} \rightarrow 0 \toInfty{n}, \\
+		\Rightarrow \integral{I_{ij}}{\abs{\phi^{(n)}}^2}{\lambda_{ij}} &\rightarrow0 \toInfty{n} \ \forall I_{ij}\in E,
+	\end{align*}
+	and that
+	\begin{align*}
+		\sum_{I_{ij}\in E}\integral{I_{ij}}{\abs{\kcurl{}\phi^{(n)}-g\vert_{I_{ij}}}^2}{\lambda_{ij}} &= \integral{\ddom}{\abs{\kcurl{}\phi^{(n)}-g}^2}{\ddmes} \rightarrow 0 \toInfty{n}, \\
+		\Rightarrow \integral{I_{ij}}{\abs{\kcurl{}\phi^{(n)}-g\vert_{I_{ij}}}^2}{\lambda_{ij}} &\rightarrow0 \toInfty{n} \ \forall I_{ij}\in E.
+	\end{align*}
+	Hence 
+	\begin{align*}
+			g\in\kcurlZero{\ddom}{\lambda_{ij}} \ \forall I_{ij}\in E
+	\end{align*}
+	and so by \eqref{eq:OneArbitrarySegmentCurl0Form} we conclude that $g\vert_{I_{ij}}\cdot n_{ij} = 0$ for every edge $I_{ij}$.
+	That is, $g\in B$.
+\end{proof}
+
+The reverse inclusion requires some further preliminary results before it can be proven; but the method of our argument follows much the same vein as the one used when considering gradients, in section \ref{sec:ScalarExample}.
+\begin{lemma}[Extension of $k$-Curls on Segments to Whole Graph] \label{lem:SegkCurlExtend}
+	Let $I_{ij}^n=\clbracs{ x\in I_{ij} \ \vert \ \mathrm{dist}\bracs{x,I_{ij}}\geq\recip{n} }$.
+	Suppose $g\in\ltwo{\ddom}{\ddmes}^3$ with $g=0$ on $\ddom\setminus I_{ij}^n$ and $g\cdot n_{ij}=0$ on $I_{ij}^n$.
+	Then $g\in\kcurlZero{\ddom}{\ddmes}$.
+\end{lemma}
+\begin{proof}
+	As $g\cdot n_{ij}=0$ on $I_{ij}^n$ and $g=0$ on $\ddom\setminus I_{ij}^n$ we have that $g\vert_{I_{ij}}\cdot n_{ij}=0$ so $g\in\kcurlZero{\ddom}{\lambda_{ij}}$.
+	Thus there exist smooth functions $\phi^{(l)}$ with the usual convergence properties.
+	Let $\chi_{ij}^n\in\smooth{\ddom}$ be the smooth function such that
+	\begin{align*}
+		\chi_{ij}^n\bracs{x} &= \sqbracs{0,1}, \\
+		\chi_{ij}^n\bracs{x} &= 1 \text{ when } \mathrm{dist}\bracs{x,I_{ij}^n}\leq \recip{3n}, \\
+		\chi_{ij}^n\bracs{x} &= 0 \text{ when } \mathrm{dist}\bracs{x,I_{ij}^n}\geq\frac{2}{3n}.
+	\end{align*}
+	Then consider the sequence of smooth functions $\psi^{(l)}=\chi_{ij}^n\phi^{(l)}$.
+	Clearly
+	\begin{align*}
+		\integral{\ddom}{\abs{\psi^{(l)}}^2}{\ddmes} \leq \integral{\ddom}{\abs{\phi^{(l)}}^2}{\lambda_{ij}} \rightarrow0 \toInfty{l}.
+	\end{align*}
+	Additionally we have that
+	\got_to_here
+\end{proof}
+
+We next recall the function $\eta$ defined in section \ref{sec:ScalarExample}; $\eta\in\smooth{\ddom}$ has the properties
+\begin{align*}
+	\eta\bracs{x} &\in [0,1], \\
+	\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
+	\eta = 1 &\text{ whenever } \abs{x}\geq 2.
+\end{align*}
+Then for each $v_i\in V$ and $n\in\naturals$, we define
+\begin{align*}
+	\eta_i\bracs{x} = \eta\bracs{x-v_i}, &\quad \eta_i^n\bracs{x} = \eta_i\bracs{nx}
+\end{align*}
+which are clearly both smooth functions by composition.
+Recall lemma \ref{lem:etaConv} which proves convergence of $\eta_i^n$ to the constant function $1$ in $\ltwo{\ddom}{\ddmes}$.
+We are now ready to prove that $B\subset\kcurlZero{\ddom}{\ddmes}$.
+\begin{prop} \label{prop:BInckCurl0}
+
+\end{prop}
+\begin{proof}
+
+\end{proof}
 
 \subsection{Tangential $k$-Curl} \label{sec:TangKCurl}
 Now that we have a characterisation of $\kcurlZero{\ddom}{\ddmes}$ we can study those $k$-curls which are orthogonal to this set.
-So we take some $u\in\kSob{\ddom}{\ddmes}$ and write $\curl{k}u=\bracs{v_1,v_2,v_3}^{\top}$, and study the implications of the condition
+So we take some $u\in\kSob{\ddom}{\ddmes}$ and write $\kcurl{\ddmes}u=\bracs{v_1,v_2,v_3}^{\top}$, and study the implications of the condition
 \begin{align*}
-	\integral{\ddom}{\bracs{\curl{k}u}\cdot\phi}{\ddmes} = 0 \quad\forall\phi\in\kcurlZero{\ddom}{\ddmes}
+	\integral{\ddom}{\bracs{\kcurl{\ddmes}u}\cdot\phi}{\ddmes} = 0 \quad\forall\phi\in\kcurlZero{\ddom}{\ddmes}
 \end{align*}
 on the $v_j$.
 By the characterisation of $\kcurlZero{\ddom}{\ddmes}$ we know that $\phi=\bracs{0,\phi_2, \phi_3}$ for some $\phi_2,\phi_3\in\ltwo{\ddom}{\ddmes}$, which leaves us with the requirement that
@@ -242,11 +367,11 @@ Finally recall (an analogue of) \eqref{eq:PartialToTDiff}, for a differentiable 
 	&= \widetilde{\partial_2\varphi}(t).
 \end{align}
 
-By our earlier deduction we know that a tangential $k$-curl has the form $\curl{k}u=\bracs{v_1,0,0}^{\top}$.
+By our earlier deduction we know that a tangential $k$-curl has the form $\kcurl{\ddmes}u=\bracs{v_1,0,0}^{\top}$.
 By definition we can therefore find a sequence of smooth functions $\phi^{(n)}$ such that 
 \begin{align*}
 	\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} u,
-	&\quad \curl{k}\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} v_1 \\ 0 \\ 0 \end{pmatrix}.
+	&\quad \kcurl{}\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} v_1 \\ 0 \\ 0 \end{pmatrix}.
 \end{align*}
 Writing these convergences in terms of integrals converging in $\reals$ we obtain\footnote{We actually obtain more information about the various components of $\phi^{(n)}$ and their limits, but we do not require this knowledge for the argument.} the following:
 \begin{align*}
@@ -287,14 +412,14 @@ So we define
 noting that, as in the scalar example (section \ref{sec:ScalarExample}), the prime notation here \textit{is only} notation and does not indicate that the function $u_3$ itself has any derivatives.
 However this notation provides the elegant looking form for the tangential $k$-curl;
 \begin{align*}
-	\curl{k}u &= \begin{pmatrix} u_3^{\prime} - iku_2 \\ 0 \\ 0 \end{pmatrix}.
+	\kcurl{\ddmes}u &= \begin{pmatrix} u_3^{\prime} - iku_2 \\ 0 \\ 0 \end{pmatrix}.
 \end{align*}
 
 \subsection{Reduction to Edge Equations}
 We now turn our attention back to consideration of \eqref{eq:CurlProblem} \tstk{fix this to match the equation that's introduced at the beginning of the section.} and seeking a method to determine the solution, either analytically or numerically.
-We seek solutions $\bracs{u,\curl{k}u}$ such that
+We seek solutions $\bracs{u,\kcurl{\ddmes}u}$ such that
 \begin{align*}
-	\integral{\ddom}{\bracs{\curl{k}u}\cdot\overline{\curl{k}\phi}}{\ddmes} &= \omega^2\integral{\ddom}{u\cdot\overline{\phi}}{\ddmes}, \quad \forall\phi .
+	\integral{\ddom}{\bracs{\kcurl{\ddmes}u}\cdot\overline{\curl{k}\phi}}{\ddmes} &= \omega^2\integral{\ddom}{u\cdot\overline{\phi}}{\ddmes}, \quad \forall\phi .
 \end{align*}
 By following the method used in the analysis of section \ref{sec:TangKCurl}, we can obtain the edge equation for when $\ddmes$ supports a single edge parallel to the $x_2$ axis;
 \begin{align} \label{eq:OneEdge-EdgeEqn}
@@ -304,7 +429,7 @@ where we now forgo the overhead tilde notation and simply associate the global f
 In the general case when $\ddmes$ supports a graph $\graph$, we adopt a similar line of argument to the scalar example in section \ref{sec:ScalarExample}.
 First we break down \eqref{eq:CurlProblem} according to the properties of the measure $\ddmes$;
 \begin{align*}
-	0 &= \sum_{I_{ij}\in E} \integral{I_{ij}}{\bracs{\curl{k}u}\cdot\overline{\curl{k}\phi}-\omega^2 u\cdot\overline{\phi}}{\lambda_{ij}}.
+	0 &= \sum_{I_{ij}\in E} \integral{I_{ij}}{\bracs{\kcurl{\ddmes}u}\cdot\overline{\curl{k}\phi}-\omega^2 u\cdot\overline{\phi}}{\lambda_{ij}}.
 \end{align*}
 Without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_2$-axis, else we perform a rotation in the integral term involving $I_{ij}$ to obtain a transformed edge with this property.
 Thus we can then employ \tstk{need multi-edge stuff!}
