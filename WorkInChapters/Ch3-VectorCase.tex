@@ -223,7 +223,7 @@ Suppose that $v\in\kcurlZero{\ddom}{\lambda_I}$ - then as usual we can find a se
 \begin{align*}
 	\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_I}^3} 0, &\quad \kcurl{y}\phi^{(n)} \lconv{\ltwo{\ddom}{\lambda_I}^3} v \toInfty{n}.
 \end{align*}
-Here we use the subscript $y$ to denote the co-ordinate system on which $\kcurl{}$ is taken with respect to.
+Here we use the subscript $y$ to denote the co-ordinate system on which $grad^{(k)}$ is taken with respect to.
 Define the matrix $\hat{R}$ by
 \begin{align*}
 	\hat{R} &= 
@@ -321,8 +321,39 @@ The reverse inclusion requires some further preliminary results before it can be
 	\begin{align*}
 		\integral{\ddom}{\abs{\psi^{(l)}}^2}{\ddmes} \leq \integral{\ddom}{\abs{\phi^{(l)}}^2}{\lambda_{ij}} \rightarrow0 \toInfty{l}.
 	\end{align*}
-	Additionally we have that
-	\got_to_here
+	Next we note that
+	\begin{align*}
+		\kcurl{}\bracs{\chi_{ij}^n\phi^{(l)}} &= \chi_{ij}^n\kcurl{}\phi^{(l)} + \bracs{\grad^{(0)}\chi_{ij}^n}\wedge\phi^{(l)},
+	\end{align*}
+	where $\grad^{(0)}=\bracs{\partial_1, \partial_2, 0}^\top$ acts as the ``$k=0$" gradient operator.
+	Then we can see that
+	\begin{align*}
+		\integral{\ddom}{\abs{\kcurl{\ddmes}\psi^{(l)} - g}^2}{\ddmes}
+		&= \integral{\ddom}{\abs{\kcurl{\ddmes}\bracs{\chi_{ij}^n\phi^{(l)}} - g}^2}{\lambda_{ij}} \\
+		&= \integral{\ddom}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} + \bracs{\grad^{(0)}\chi_{ij}^n}\wedge\phi^{(l)} - g}^2}{\lambda_{ij}} \\
+		&\leq 2\integral{\ddom}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} + 2\integral{\ddom}{\abs{\bracs{\grad^{(0)}\chi_{ij}^n}\wedge\phi^{(l)}}^2}{\lambda_{ij}} \\
+		&\leq 2\integral{\ddom}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} + 2\sup_{I_{ij}}\bracs{\grad^{(0)}\chi_{ij}^n}\underbrace{\integral{\ddom}{\abs{\phi^{(l)}}^2}{\lambda_{ij}}}_{\rightarrow0 \toInfty{l}} \\
+	\end{align*}
+	Hence we simply need to examine
+	\begin{align*}
+		\integral{\ddom}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}}
+		&= \underbrace{\integral{I_{ij}\setminus I_{ij}^n}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}}}_{g=0 \text{ on } I_{ij}\setminus I_{ij}^n} \\
+		&+ \underbrace{\integral{I_{ij}^n}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}}}_{\chi_{ij}^n=1 \text{ on } I_{ij}^n} \\
+		&= \underbrace{\integral{I_{ij}\setminus I_{ij}^n}{\abs{\chi_{ij}^n\kcurl{\ddmes}\phi^{(l)}}^2}{\lambda_{ij}}}_{\chi_{ij}^n\leq 1 \text{ on } I_{ij}\setminus I_{ij}^n} 
+		+ \integral{I_{ij}^n}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} \\
+		&\leq \underbrace{\integral{I_{ij}\setminus I_{ij}^n}{\abs{\kcurl{\ddmes}\phi^{(l)}}^2}{\lambda_{ij}}}_{g=0 \text{ on } I_{ij}\setminus I_{ij}^n} 
+		+ \integral{I_{ij}^n}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} \\
+		&= \integral{I_{ij}\setminus I_{ij}^n}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} 
+		+ \integral{I_{ij}^n}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} \\
+		&= \integral{I_{ij}}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}}
+		= \integral{\ddom}{\abs{\kcurl{\ddmes}\phi^{(l)} - g}^2}{\lambda_{ij}} \\
+		&\rightarrow0 \toInfty{l}.
+	\end{align*}
+	Thus we conclude that
+	\begin{align*}
+		\psi^{(l)} \lconv{\ltwo{\ddom}{\ddmes}^3} 0, &\quad \kcurl{\ddmes}\psi^{(l)} \lconv{\ltwo{\ddom}{\ddmes}^3} g,
+	\end{align*}
+	so $g\in\kcurlZero{\ddom}{\ddmes}$.
 \end{proof}
 
 We next recall the function $\eta$ defined in section \ref{sec:ScalarExample}; $\eta\in\smooth{\ddom}$ has the properties
@@ -337,12 +368,28 @@ Then for each $v_i\in V$ and $n\in\naturals$, we define
 \end{align*}
 which are clearly both smooth functions by composition.
 Recall lemma \ref{lem:etaConv} which proves convergence of $\eta_i^n$ to the constant function $1$ in $\ltwo{\ddom}{\ddmes}$.
-We are now ready to prove that $B\subset\kcurlZero{\ddom}{\ddmes}$.
+We are now ready to prove that $B\subset\kcurlZero{\ddom}{\ddmes}$, the proof of which is essentially identical to that of proposition \ref{prop:BIncGrad0}.
 \begin{prop} \label{prop:BInckCurl0}
-
+	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ g\vert_{I_{ij}}\cdot n_{ij} = 0 \ \forall I_{ij}\in E}$, we have that
+	\begin{align*}
+		B \subset \kcurlZero{\ddom}{\ddmes}.
+	\end{align*}
 \end{prop}
 \begin{proof}
-
+	Take $g\in B$, and define a family of functions $g_{n}$ by
+	\begin{align*}
+		g_{n}\bracs{x} &= \recip{2}\sum_{i\in V}\sum_{i\sim j}\eta_{i}^{n}\bracs{x}\eta_{j}^{n}\bracs{x}g\vert_{I_{ij}}\bracs{x}
+	\end{align*}
+	where the notation $i\sim j$ means that there is an edge $(i,j)\in E$, and the sum is taken over such edges.
+	Recall that $\graph$ was assumed finite, so there are no convergence issues with the double sum.
+	Then for each $i,j$ with $i\sim j$, the function $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}$ satisfies the hypothesis of \ref{lem:SegkCurlExtend}, so $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\in\kcurlZero{\ddom}{\ddmes}$.
+	Furthermore, as $\kcurlZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{3}$, $g_{n}\in\kcurlZero{\ddom}{\ddmes}$ too, for all $n$.
+	By closure of $\kcurlZero{\ddom}{\ddmes}$; $g_{n}$ converges in $\kcurlZero{\ddom}{\ddmes}$ provided it converges at all, so it remains to show that $g_{n}\lconv{\ltwo{\ddom}{\ddmes}^3} g \toInfty{n}$.
+	However with the result of \ref{lem:etaConv}, we have that $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\lconv{\ltwo{\ddom}{\ddmes}^3} g\vert_{I_{ij}}$ and hence
+	\begin{align*}
+		g_{n} \lconv{\ltwo{\ddom}{\ddmes}^3} &\recip{2}\sum_{i\in V}\sum_{j\sim i}g\vert_{I_{ij}} = g \toInfty{n},
+	\end{align*}
+	so $g\in\kcurlZero{\ddom}{\ddmes}$.
 \end{proof}
 
 \subsection{Tangential $k$-Curl} \label{sec:TangKCurl}
