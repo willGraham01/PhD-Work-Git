@@ -459,7 +459,7 @@ So we define
 noting that, as in the scalar example (section \ref{sec:ScalarExample}), the prime notation here \textit{is only} notation and does not indicate that the function $u_3$ itself has any derivatives.
 However this notation provides the elegant looking form for the tangential $k$-curl;
 \begin{align*}
-	\kcurl{\ddmes}u &= \begin{pmatrix} u_3^{\prime} - iku_2 \\ 0 \\ 0 \end{pmatrix}.
+	\kcurl{\ddmes}u &= \begin{pmatrix} u_3' - iku_2 \\ 0 \\ 0 \end{pmatrix}.
 \end{align*}
 
 \subsection{Reduction to Edge Equations}
@@ -470,36 +470,87 @@ We seek solutions $\bracs{u,\kcurl{\ddmes}u}$ such that
 \end{align*}
 By following the method used in the analysis of section \ref{sec:TangKCurl}, we can obtain the edge equation for when $\ddmes$ supports a single edge parallel to the $x_2$ axis;
 \begin{align} \label{eq:OneEdge-EdgeEqn}
-	\integral{I_2}{\bracs{u_3^{\prime}-iku_2}\bracs{\overline{\phi}_3^{\prime}+ik\overline{\phi}_2}}{t} &= \omega^2\integral{I_2}{u_1\overline{\phi} + u_2\overline{\phi}_2 + u_3\overline{\phi}_3}{t},
+	\integral{I_2}{\bracs{\widetilde{u}_3^{\prime}-ik\widetilde{u}_2}\bracs{\overline{\widetilde{\phi}}_3^{\prime}+ik\overline{\widetilde{\phi}}_2}}{t} &= \omega^2\integral{I_2}{\widetilde{u}_1\overline{\widetilde{\phi}} + \widetilde{u}_2\overline{\widetilde{\phi}}_2 + \widetilde{u}_3\overline{\widetilde{\phi}}_3}{t}.
 \end{align}
-where we now forgo the overhead tilde notation and simply associate the global function $u\in\ltwo{\ddom}{\ddmes}$ and the edge function $\widetilde{u}\in\ltwo{\sqbracs{0,\abs{I_2}}}{t}$.
 In the general case when $\ddmes$ supports a graph $\graph$, we adopt a similar line of argument to the scalar example in section \ref{sec:ScalarExample}.
 First we break down \eqref{eq:CurlProblem} according to the properties of the measure $\ddmes$;
 \begin{align*}
-	0 &= \sum_{I_{ij}\in E} \integral{I_{ij}}{\bracs{\kcurl{\ddmes}u}\cdot\overline{\curl{k}\phi}-\omega^2 u\cdot\overline{\phi}}{\lambda_{ij}}.
+	0 &= \sum_{I_{ij}\in E} \integral{I_{ij}}{\bracs{\kcurl{\ddmes}u}\cdot\overline{\kcurl{}\phi}-\omega^2 u\cdot\overline{\phi}}{\lambda_{ij}}.
 \end{align*}
-Without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_2$-axis, else we perform a rotation in the integral term involving $I_{ij}$ to obtain a transformed edge with this property.
-Thus we can then employ \tstk{need multi-edge stuff!}
+Without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_2$-axis, else we perform a rotation in the integral term involving $I_{ij}$ to obtain a transformed edge with this property, and we denote by $u_{ij}\in\ltwo{\ddom}{\lambda_{ij}}$ the function such that $u_{ij}=u$ on the (potentially rotated) edge $I_{ij}$.
+Again we think of $u_{ij}$ as the $ij$\textsuperscript{th}-part of $u$, or the part of $u$ down the edge $I_{ij}$.
+We reintroduce the maps $r_{ij}:\sqbracs{0,\abs{I_{ij}}}\rightarrow I_{ij}$ from section \ref{sec:ScalarReduceEdgeEqns} to aid in our analysis.
+Also note that (similar to the scalar-gradient case) we require the information about $\kcurlZero{\ddom}{\lambda_{ij}}$ to perform any of the rotations mentioned above, and retain equivalence of the resulting problem to the original.\newline
 
-%Insofar to this point we have been working with a problem posed in the weak sense, however if we assume that the solution $u$ that we seek is sufficiently differentiable then \eqref{eq:OneEdge-EdgeEqn} can be interpreted as a system of ODEs:
-%\begin{align} \label{eq:ODEsys-OneEdge}
-%	u_1 = 0, \quad
-%	ik\diff{u_3}{t} = \bracs{\omega^2-k^2}u_2, \quad
-%	ik\diff{u_2}{t} = \diffdiff{u_3}{t}, \quad
-%	t\in[0,\abs{I_2}].
-%\end{align}
-%We now look to extend our analysis to when the measure $\ddmes$ supports a graph $\graph\subset\ddom$, and derive the resulting edge-equation system. \tstk{do setup, extra notation, reduction to edge equations, IE analogue of gradient case!}
-%
-%\tstk{after having done the formal analysis, should end up with the following:}
-%\begin{subequations} \label{eq:ODEsys-Graph}
-%\begin{align}
-%	&\begin{cases}
-%		u_1^{(ij)} = 0, \\
-%		ik\diff{u_3^{(ij)}}{t} = \bracs{\omega^2-k^2}u_2^{(ij)}, \\
-%		ik\diff{u_2^{(ij)}}{t} = \diffdiff{u_3^{(ij)}}{t}, \\
-%	\end{cases}
-%	t\in[0,\abs{I_{ij}}], \ \forall I_{ij}\in E; \\
-%	&u \text{ is continuous at each } v_i\in V, \\
-%	&0 = \sum_{i\sim j}\bracs{ iku_2^{(ij)} - \diff{u_3^{(ij)}}{t} }\big\vert_{v_i} \quad \forall v_i\in V.
-%\end{align}
-%\end{subequations}
+As before (section \ref{sec:ScalarExample}), we begin by rewriting \eqref{eq:VectorExampleWeakForm} by appealing to the nature of $\ddmes$;
+\begin{align} \label{eq:VectorExampleSumOfInts}
+	0 &= \sum_{I_{ij}\in E}\integral{\ddom}{\bracs{\kcurl{\ddmes}u_{ij}}\cdot\overline{\bracs{\kcurl{}\phi}} - \omega^2 u_{ij}\cdot\overline{\phi}}{\lambda_{ij}}.
+\end{align}
+Then we focus our attention to each of the terms
+\begin{align*}
+	\integral{\ddom}{\bracs{\kcurl{\ddmes}u_{ij}}\cdot\overline{\bracs{\kcurl{}\phi}} - \omega^2 u_{ij}\cdot\overline{\phi}}{\lambda_{ij}}.
+\end{align*}
+We know that the solution to \eqref{eq:VectorExampleWeakForm} satisfies $\kcurl{\ddmes} u \perp \kcurlZero{\ddom}{\ddmes}$ and so $\kcurl{\ddmes} u_{ij} \perp \kcurlZero{\ddom}{\lambda_{ij}}$ by our analysis of $k$-curls of zero.
+In light of the analysis of section \ref{sec:TangKCurl} we conclude that
+\begin{align*}
+	\integral{\ddom}{\bracs{\kcurl{\ddmes}u_{ij}}\cdot\overline{\bracs{\kcurl{}\phi}} - \omega^2 u_{ij}\cdot\overline{\phi}}{\lambda_{ij}}
+	&= \int_0^{\abs{I_{ij}}} \bracs{\widetilde{u_{ij}^{(3)}}' - ik\widetilde{u_{ij}^{(2)}}}\overline{\bracs{\widetilde{\phi_3}' - ik\widetilde{\phi_2}}} \\
+	&\quad- \omega^2\widetilde{u_{ij}}\cdot\widetilde{\phi} \md t \\
+	&= \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(1)}}\widetilde{\phi_1} \md t \\
+	&+ \int_0^{\abs{I_{ij}}} \bracs{\omega^2\widetilde{u_{ij}^{(2)}} - ik\widetilde{u_{ij}^{(3)}}' - k^2\widetilde{u_{ij}^{(2)}}}\widetilde{\phi_2} \md t \\
+	&+ \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(3)}}\widetilde{\phi_3} + \bracs{ik\widetilde{u_{ij}^{(2)}} - \widetilde{u_{ij}^{(3)}}'}\widetilde{\phi_3}' \md t
+\end{align*}
+This is effectively a system of 3 equations in the components $\widetilde{u_{ij}^{(1)}},\widetilde{u_{ij}^{(2)}},\widetilde{u_{ij}^{(3)}}$ as equality holds for arbitrary (smooth) $\phi$.
+Note that the component $\widetilde{u_{ij}^{(1)}}$ is always equal to the zero function which is to be expected given the characterisation of $k$-curls of zero and that we have rotated $I_{ij}$ to be parallel to the $x_2$-axis.
+Of course, once we undo any rotations we have performed we will obtain a solution with non-zero first component.
+All this means that \eqref{VectorExampleWeakForm} is equivalent to solving the system
+\begin{subequations} \label{eq:VectorExampleWeakSystem-3Eqns}
+	\begin{align}
+		0 &= \sum_{I_{ij}\in E} \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(1)}}\widetilde{\phi_1} \md t \\
+		0 &= \sum_{I_{ij}\in E} \int_0^{\abs{I_{ij}}} \bracs{\omega^2\widetilde{u_{ij}^{(2)}} - ik\widetilde{u_{ij}^{(3)}}' - k^2\widetilde{u_{ij}^{(2)}}}\widetilde{\phi_2} \md t \\
+		0 &= \sum_{I_{ij}\in E} \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(3)}}\widetilde{\phi_3} + \bracs{ik\widetilde{u_{ij}^{(2)}} - \widetilde{u_{ij}^{(3)}}'}\widetilde{\phi_3}' \md t.
+	\end{align}
+\end{subequations}
+
+Whilst the forms above are useful for numerical approaches, under stronger regularity assumptions on $u$ we can obtain a system of classical ODEs which will admit analytic analysis.
+\tstk{check regularity that's needed. As $C^1$ for example means that we also need continuity of $\widetilde{u_{ij}^{(2)}}'$ at the vertices ON TOP OF the Kirchoff condition we get...}
+To this end we assume at least $C^1$ regularity of $u_{ij}^{(2)}$ and $C^2$ regularity of $u_{ij}^{(2)}$, then note that \eqref{eq:VectorExampleWeakSystem-3Eqns} must hold whenever $\supp\bracs{\phi}$ intersects (the interior of) precisely one edge $I_{ij}$.
+In this case the sum in \eqref{eq:VectorExampleWeakSystem-3Eqns} collapses and we can manipulate the equation involving $\widetilde{\phi_3}$ by integrating by parts;
+\begin{align*}
+	0 &= \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(3)}}\widetilde{\phi_3} + \bracs{ik\widetilde{u_{ij}^{(2)}} - \widetilde{u_{ij}^{(3)}}'}\widetilde{\phi_3}' \md t \\
+	&= \int_0^{\abs{I_{ij}}} \bracs{\omega^2\widetilde{u_{ij}^{(3)}} - ik\widetilde{u_{ij}^{(2)}}' + \widetilde{u_{ij}^{(3)}}''}\widetilde{\phi_3} \md t.
+\end{align*}
+Then as each component of $\widetilde{\phi}$ is smooth and arbitrary on $I_{ij}$, we conclude that the following equations hold on $I_{ij}$;
+\begin{align*}
+	0 &= \omega^2\widetilde{u_{ij}^{(1)}}\widetilde{\phi_1}, \quad \implies \widetilde{u_{ij}^{(1)}}=0, \\
+	ik\widetilde{u_{ij}^{(3)}}' &= \bracs{\omega^2-k^2}\widetilde{u_{ij}^{(2)}}, \\
+	ik\widetilde{u_{ij}^{(2)}}' &= \widetilde{u_{ij}^{(3)}}'' + \omega^2\widetilde{u_{ij}^{(3)}}.
+\end{align*}
+In particular $\widetilde{u_{ij}^{(2)}}$ and $\widetilde{u_{ij}^{(3)}}$ satisfy a system of coupled ODEs on $I_{ij}$.
+As the edge we elected to examine was arbitrary, we have a system of such ODEs on each of the edges of $\graph$.
+To obtain the boundary conditions for this system we consider the implications of $\supp\bracs{\phi}$ containing precisely one vertex $v_i\in V$.
+The regularity we have assumed for the components of $\widetilde{u}$ means that we must have continuity (matching) of $\widetilde{u_{ij}^{(2)}}$ and $\widetilde{u_{ij}^{(3)}}$ at each vertex $v_i$.
+This gives us two boundary conditions per vertex; to determine the remaining condition notice that
+\begin{align*}
+	\int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(3)}}\widetilde{\phi_3} + \bracs{ik\widetilde{u_{ij}^{(2)}} - \widetilde{u_{ij}^{(3)}}'}\widetilde{\phi_3}' \md t 
+	&= \int_0^{\abs{I_{ij}}} \bracs{\omega^2\widetilde{u_{ij}^{(3)}} - ik\widetilde{u_{ij}^{(2)}}'  + \widetilde{u_{ij}^{(3)}}''}\widetilde{\phi_3} \md t \\
+	&\quad + \widetilde{\phi_3}\vert_{v_i}\sqbracs{ik\widetilde{u_{ij}^{(2)}}-\widetilde{u_{ij}^{(3)}}'}\vert_{v_i} \\
+	&= \widetilde{\phi_3}\vert_{v_i}\sqbracs{ik\widetilde{u_{ij}^{(2)}}-\widetilde{u_{ij}^{(3)}}'}\vert_{v_i}.
+\end{align*}
+Hence
+\begin{align*}
+	0 &= \sum_{I_{ij}\in E} \int_0^{\abs{I_{ij}}} \omega^2\widetilde{u_{ij}^{(3)}}\widetilde{\phi_3} + \bracs{ik\widetilde{u_{ij}^{(2)}} - \widetilde{u_{ij}^{(3)}}'}\widetilde{\phi_3}' \md t, \\
+	\Rightarrow 0 &= \sum_{i\sim j} \widetilde{\phi_3}\vert_{v_i}\sqbracs{ik\widetilde{u_{ij}^{(2)}}-\widetilde{u_{ij}^{(3)}}'}\vert_{v_i}, \\
+	\Rightarrow 0 &= \sum_{i\sim j} \sqbracs{ik\widetilde{u_{ij}^{(2)}}-\widetilde{u_{ij}^{(3)}}'}\vert_{v_i}.
+\end{align*}
+This gives us a matching condition at each of the vertices of $\graph$; notice that unlike in the scalar-gradient example (section \ref{sec:ScalarExample}) we do not obtain a Kirchoff condition at the vertices.
+In summary, additional regularity of $u$ provides us with the following system of equations:
+\begin{subequations} \label{eq:VectorEdgeEquationsSystem}
+	\begin{align}
+		\widetilde{u_{ij}^{(1)}} &= 0, \\
+		ik\widetilde{u_{ij}^{(3)}}' &= \bracs{\omega^2-k^2}\widetilde{u_{ij}^{(2)}}, \\
+		ik\widetilde{u_{ij}^{(2)}}' &= \widetilde{u_{ij}^{(3)}}'' + \omega^2\widetilde{u_{ij}^{(3)}}, \\
+		\widetilde{u^{(2)}}, \widetilde{u^{(3)}} &\text{ are continuous at each vertex } v_i\in V, \\
+		0 &= \sum_{i\sim j} \sqbracs{ik\widetilde{u_{ij}^{(2)}}-\widetilde{u_{ij}^{(3)}}'}\vert_{v_i} \quad \forall v_i\in V.
+	\end{align}
+\end{subequations}
