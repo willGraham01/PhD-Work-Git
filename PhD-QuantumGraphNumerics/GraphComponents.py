@@ -414,7 +414,7 @@ def RealToComp(z):
 	return x
 
 #nonlinear inverse interation solver...
-def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True):
+def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True, talkToMe=False):
 	'''
 	Solve the nonlinear eigenvalue problem M(w,theta)v = 0 for an eigenpair (w,v) using the Nonlinear Inverse Iteration method (see Guttel & Tisseur, 2017).
 	INPUTS:
@@ -427,6 +427,7 @@ def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=10
 		maxItt 	: (optional) int, maximum number of iterations to perform. Default 100
 		tol 	: (optional) float, solution tolerance. Default 1.0e-8
 		conLog 	: (optional) bool, if True then a list storing the information after each iteration plus any errors or warnings will be returned. Default True.
+		talkToMe 	: (optional) bool, if True then the method will printout information about the converged solution at the end of the run. Default False
 	OUTPUTS:
 		wStar 	: eigenvalue that the solver converged to
 		vStar 	: eigenvector that the solver converged to
@@ -487,7 +488,8 @@ def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=10
 		warn('Solver reached iteration limit')
 		conIss.append('MaxItter')
 	else:
-		print('Solver stopped at iteration %d' % (currItt-1))
+		if talkToMe:
+			print('Solver stopped at iteration %d' % (currItt-1))
 		#shave off excess storage space to save some memory in this case
 		#remember slicing in python is a:b goes from index a through to b-1 inclusive!
 		wStore = wStore[0:currItt]
@@ -497,7 +499,8 @@ def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=10
 		warn('Solver did not find a solution to the required tolerance: needed %.2e but only reached %.5e' % (tol, errStore[-1]))
 		conIss.append('NoConv')
 	else:
-		print('Difference from zero in converged eigenpair: %.5e' % errStore[currItt-1])
+		if talkToMe:
+			print('Difference from zero in converged eigenpair: %.5e' % errStore[currItt-1])
 	if np.abs(norm(vStore[:,currItt-1])-1)>=tol:
 		warn('Eigenvector is approximately 0')
 		conIss.append('ZeroEVec')

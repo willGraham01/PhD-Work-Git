@@ -126,22 +126,59 @@ def TFR_CheckEval(w, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False
 		
 	return tf, issues
 
-def TFR_CheckEvec(v, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False):
+def TFR_AutoChecker(nTrials=100, displayResult=True):
 	'''
-	Checks whether the value that w converged to in the solver matches the analytic solution for the TFR problem.
+	Performs automated testing of the result of NLII in the case of the TFR problem. For each trial, random starting data and quasimomentum values are generated, and NLII is called to find a solution to the problem. We then validate the solution that is found using TFR_CheckEval.
 	INPUTS:
-		v 	: (n,) complex numpy array, eigenvector to test
-		theta 	: (optional) (2,) numpy array, value of the quasimomentum parameter. Default [0.,0.]
-		tol 	: (optional) tolerance for the checks, for best results set to the tolerance used in the solver. Default 1e-8
-		talkToMe 	: (optional) bool, if true then the test program will print messages to the console as each check is run. Default False
+		nTrials 	: (optional) int, nuumber of trials to perform in this run of testing. Defualt 100
+		displayResult 	: (optional) bool, whether to display the results of the testing to the console at the end of the run. Default True
 	OUTPUTS:
-		tf 	: bool, if true then the eigenvector v solves the TFR to the accuracy of tol
-		issues : list, contains all the flags that were raised when testing the eigenvalue
+		badList 	: list, each member of the list is itself a list of the initial data, theta values, and supposed NLII solution that did not pass validation
+		convList 	: list, each member logging a test case where the solver failed to converge correctly
+		goodList 	: list, each member having the same structure as above, but for solutions that passed validation
 	'''
-	tf = True #innocent until guilty
-	issues = []
+	#build TFR functions that we need
+	G = TestVars()[0]
+	M, Mprime = G.ConstructM(dervToo=True)
 	
-	return tf, issues
+	record = np.ones((nTrials,), dtype=bool) #pass/fail record
+	badList = [] #record of bad trials so that we can check what's happening
+	goodList = [] #record of all the trials that passed, in case we want them
+	convList = [] #record all the failed convergences
+	
+	#generate starting data and quasimomentum for the solver, for each trial
+	w0Samples = np.random.uniform(0, 2*np.pi, (nTrials,))
+	v0Samples = np.random.uniform(0, 1, (3,nTrials)) + 0.j #complex array for vector samples
+	thetaSamples = np.random.uniform(-np.pi, np.pi, (2,nTrials)) #quasimomentum samples
+	u = UnitVector(0) #vector u that has to be passed
+	
+	print('Beginning trials...')
+	for i in range(nTrials):
+		v0Samples[:,i] = v0Samples[:,i]/norm(v0Samples[:,i]) #normalise vector v0
+		
+		#perform NLII to find the solution to this problem
+		w, v, conIss = NLII(M, Mprime, v0Samples[:,i], u, w0=w0Samples[i], theta=thetaSamples[:,i], maxItt=1000)
+		
+		if len(conIss)<=3: #this is shorter or equal to the usual information dump that NLII provides
+			#there were no issues with the convergence in the numerical method, so we should have an eigenvalue
+			#now validate the solution with our analytic solution
+			tf, record = TFR_CheckEval(w, theta=thetaSamples[:,i], talkToMe=False)
+			if tf:
+				#if we passed, then we found a genuine solution to the problem... yay :)
+				goodList.append([w0Samples[i], v0Samples[:,i], thetaSamples[:,i], w, v])
+			else:
+				#this time the method failed for some reason... look into the problems and return the result of the check
+				badList.append([record, w0Samples[i], v0Samples[:,i], thetaSamples[:,i], w, v])
+				print('Trial', i, 'failed, record logs:', record)
+		else:
+			convList.append([conIss[0:-3], w0Samples[i], v0Samples[:,i], thetaSamples[:,i], w, v])
+	
+	if displayResult:
+		#show the result of the test with a print to the console
+		print('Performed %d trials' % (nTrials))
+		print('Passes: %d, Fails (convergence): %d, Fails (evaluation): %d' % (len(goodList),len(convList),len(badList)))
+	
+	return badList, convList, goodList
 
 def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True, theta2Present=False, wRange=np.asarray([-np.pi,np.pi]), thetaRange=np.asarray([-np.pi,np.pi]), tol=1e-8):
 	'''
