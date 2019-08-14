@@ -14,9 +14,11 @@ Presently we are still assuming we have -d^2/dx^2 on each vertex still (subject 
 from warnings import warn
 import numpy as np
 from numpy.linalg import norm
+from numpy import sin, tan
 import matplotlib.pyplot as plt
 import matplotlib.patches as pts #for arrows
 from matplotlib import rc #for text options in plots
+from scipy.optimize import fsolve #for nonlinear inverse iteration
 		
 class Graph:
 	'''
@@ -40,9 +42,9 @@ class Graph:
 		'''
 		Construction method for the Graph class. An instance of the Graph class will be created with its attributes generated to be consistent with the inputs.
 		INPUTS:
-			vPos 		: (2,n) numpy array, each column is an (x,y) vertex position 
-			adjMat 		: (nVert,nVert) numpy array, the "modified" adjacency matrix for the graph that also encodes directions - use the command GraphConstructorHelp() included in this module for more information.
-			theMat 	 	: (n,n,2) numpy array - optional. This matrix contains the quasimomentum coefficients on each edge. That is, theMat[j,k,:]*theta = theta[j,k]. By default these are set to 0 everywhere.
+			vPos 	: (2,n) numpy array, each column is an (x,y) vertex position 
+			adjMat 	: (nVert,nVert) numpy array, the "modified" adjacency matrix for the graph that also encodes directions - use the command GraphConstructorHelp() included in this module for more information.
+			theMat 	: (n,n,2) numpy array - optional. This matrix contains the quasimomentum coefficients on each edge. That is, theMat[j,k,:]*theta = theta[j,k]. By default these are set to 0 everywhere.
 		'''
 		
 		self.vPos = np.copy(vPos) #these are the vertex positions
@@ -118,13 +120,14 @@ class Graph:
 				rCon.append(i)
 		return lCon, rCon
 	
-	def ConstructM(self):
+	def ConstructM(self, dervToo=False):
 		'''
 		Constructs the Weyl-Titchmarsh M-function (matrix in this case) for the graph.
 		INPUTS:
-			
+			dervToo 	: (optional) bool, if true then we will also construct and return the function M'(w). Default False
 		OUTPUTS:
-			M 	: lambda function, M(w,theta) is the value of the M-matrix function at the value w and for the quasimomentum theta provided.
+			M 	: lambda function, M(w,theta) is the value of the M-matrix function at the value w and for the quasimomentum theta provided
+			Mprime 	: (optional) lambda function, Mprime(w,theta) is the value of the function M'(w, theta) - only returned if dervToo is True.
 		'''
 		#first, we need to come up with a plan for efficiently constructing this function
 		#see some paper... good luck trying to explain WTF is going on to your future self
@@ -215,7 +218,14 @@ class Graph:
 		
 		#having done this for loop, masterList is setup. It should now be a case of defining a function and returning it as a lambda function...
 		def EvalMatrix(w,theta=np.zeros((2), dtype=float)):
-			
+			'''
+			Evaluates the M-matrix at the value w, given the quasimomentum theta
+			INPUTS:
+				w 	: float, value of w to evaluate M-matrix at
+				theta 	: (optional) (2,) numpy array, value of the quasimomentum vector theta. Default [0,0]
+			OUTPUTS:
+				mat 	: M-matrix at (w,theta)
+			'''
 			mat = np.zeros((self.nVert,self.nVert), dtype=complex) #in general this matrix will be Hermitian
 			for j,k in nonZeroElements:
 				#fill in non-identically zero elements
@@ -232,6 +242,39 @@ class Graph:
 
 		#having created the lambda function, return it as the output
 		M = EvalMatrix
+		
+		if dervToo:
+			#if this value is true, we also want to construct the derivative M'(w, theta) wrt w. Thankfully, we have all the information we need from above, so this shouldn't be too hard...
+			def DervEvalMatrix(w,theta=np.zeros((2), dtype=float)):
+				'''
+				Evaluates the derivative (wrt w) of the M-matrix, given the quasimomentum theta
+				INPUTS:
+					w 	: float, value of w to evaluate M-matrix derivative at
+					theta 	: (optional) (2,) numpy array, value of the quasimomentum theta. Default [0,0]
+				OUTPUTS:
+					mat 	: derivative of M at (w,theta), M'(w,theta)
+				'''
+				mat = np.zeros((self.nVert,self.nVert), dtype=complex) #in general this matrix will be Hermitian
+				for j,k in nonZeroElements:
+					#fill in non-identically zero elements
+					if j==k:
+						#diagonal entry
+						# = -sum_{k~l} cot(w*l_kl) + w* sum_{k~l} l_kl cosec^2(w*l_kl)
+						mat[j,k] = -1.0 * np.sum( cot(w*masterList[k][k]) )
+						mat[j,k] += w * np.sum( masterList[k][k] * np.power(cosec(w*masterList[k][k]),2) )
+					else:
+						#off-diagonal entry
+						# = sum_{k~j, k left}e^{-i*theta_kj*l_kj}cosec(w*l_kj) + sum_{k~j, k right}e^{i*theta_kj*l_kj}cosec(w*l_kj)  - w*sum_{k~j, k left}e^{-i*theta_kj*l_kj}l_kj*cosec(w*l_kj)*cot(w*l_kj) - w*sum_{k~j, k right}e^{i*theta_kj*l_kj}l_kj*cosec(w*l_kj)*cot(w*l_kj)
+						mat[j,k] = np.sum( np.exp( -(1.j*theta[0])*masterList[j][k][0]*masterList[j][k][1] ) * np.exp( -(1.j*theta[1])*masterList[j][k][0]*masterList[j][k][2] ) * cosec(w*masterList[j][k][0]) ) #-ve  in exp for left
+						mat[j,k] += np.sum( np.exp( (1.j*theta[0])*masterList[j][k][3]*masterList[j][k][4] ) * np.exp( (1.j*theta[1])*masterList[j][k][3]*masterList[j][k][5] ) * cosec(w*masterList[j][k][3]) ) #+ve in exp for right
+						mat[j,k] -= w * np.sum( np.exp( -(1.j*theta[0])*masterList[j][k][0]*masterList[j][k][1] ) * np.exp( -(1.j*theta[1])*masterList[j][k][0]*masterList[j][k][2] ) * masterList[j][k][0] * cosec(w*masterList[j][k][0]) * cot(w*masterList[j][k][0]) )
+						mat[j,k] -= w * np.sum( np.exp( -(1.j*theta[0])*masterList[j][k][3]*masterList[j][k][4] ) * np.exp( -(1.j*theta[1])*masterList[j][k][3]*masterList[j][k][5] ) * masterList[j][k][3] * cosec(w*masterList[j][k][3]) * cot(w*masterList[j][k][3]) )
+				return mat				
+			
+			Mprime = DervEvalMatrix
+			return M, Mprime
+		
+		#if we get to here we never built Mprime, so just return M
 		return M
 	
 	def Draw(self, offSet=1, tex=True, show=False):
@@ -321,7 +364,7 @@ def cot(x):
 	OUPUTS:
 		cotx 	: numpy array, same shape as x with values cot(x) element wise
 	'''	
-	return	1/np.tan(x)#np.cos(x)/np.sin(x)
+	return	1/tan(x)#np.cos(x)/np.sin(x)
 
 def cosec(x):
 	'''
@@ -331,7 +374,142 @@ def cosec(x):
 	OUTPUTS:
 		cscx 	: numpy array, same shape as x with values cosec(x) element wise
 	'''
-	return 1/np.sin(x)
+	return 1/sin(x)
+
+##Solver Methods and associated subfunctions
+def CompToReal(x):
+	'''
+	Given a (n,) complex numpy array, return a (2n,) numpy array of floats containing the real and imaginary parts of the input complex vector.
+	INPUTS:
+		x 	: (n,) complex numpy array, array to be converted to (2n,) real array
+	OUTPUTS:
+		z 	: (2n,) numpy array, containing real and imaginary parts of the values in x, according to real(x[k]) = z[2k], imag(x[k]) = z[2k+1]
+	'''
+	
+	n = np.shape(x)[0]
+	z = np.zeros((2*n,), dtype=float)
+	for k in range(n):
+		z[2*k] = np.real(x[k])
+		z[2*k+1] = np.imag(x[k])
+	
+	return z
+
+def RealToComp(z):
+	'''
+	Given a (2n,) numpy array, return a (n,) complex numpy array of numbers whose real and imaginary parts correspond index-neighbour pairs of the input array.
+	INPUTS:
+		z 	: (2n,) numpy array, array to be converted to (n,) complex array
+	OUTPUTS:
+		x 	: (n,) complex numpy array, containing complex numbers formed from the entries of z, according to x[k] = z[2k]+i*z[2k+1]
+	'''
+
+	if np.shape(z)[0] % 2 !=0:
+		raise ValueError('Cannot convert array of non-even length (%.1f) to complex array' % np.shape(z)[0])
+	else:
+		n = int(np.shape(z)[0]/2) #safe to use int() after the previous check
+		x = np.zeros((n,), dtype=complex)
+		for k in range(n):
+			x[k] = z[2*k] + 1.j*z[2*k+1]
+
+	return x
+
+#nonlinear inverse interation solver...
+def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True):
+	'''
+	Solve the nonlinear eigenvalue problem M(w,theta)v = 0 for an eigenpair (w,v) using the Nonlinear Inverse Iteration method (see Guttel & Tisseur, 2017).
+	INPUTS:
+		M 	: lambda function, evaluates M(w,theta) at arguments (w,theta)
+		Mprime 	: lambda function, evaluates d/dw M(w,theta) at arguments (w,theta)
+		v0 	: (n,) numpy array, initial guess for the eigenvector
+		u 	: (n,) numpy array, the vector u is used to normalise the output eigenvector and can be used to avoid repeat convergence to the same eigenpair in the case of holomorphic M
+		w0 	: (optional) float, starting guess for the eigenvalue w. Default np.pi
+		theta 	: (optional) (2,) numpy array, the quasimomentum value for this solve. Default [0,0]
+		maxItt 	: (optional) int, maximum number of iterations to perform. Default 100
+		tol 	: (optional) float, solution tolerance. Default 1.0e-8
+		conLog 	: (optional) bool, if True then a list storing the information after each iteration plus any errors or warnings will be returned. Default True.
+	OUTPUTS:
+		wStar 	: eigenvalue that the solver converged to
+		vStar 	: eigenvector that the solver converged to
+		conIss 	: (optional) list that logs any issues with non-convergence, only returned if conLog is True
+	'''
+	#first, figure out what size vectors we are dealing with!
+	n = np.shape(u)[0]
+	
+	###GOT TO HERE - NEED TO MAKE THE SOLVING FUNCTION ENTIRELY REAL, SO TURN IT INTO A 2N VECTOR OF REAL VALUES, THEN CAST IT BACK AT THE END :l SEE https://stackoverflow.com/questions/21834459/finding-complex-roots-from-set-of-non-linear-equations-in-python OR SIMILAR
+	
+	#create lambda function that we will pass to fsolve in each loop of the iteration.
+	fsolveFn = lambda x,w,v: np.matmul(M(w,theta),x) - np.matmul(Mprime(w,theta),v)
+	#annoyingly, scipy cannot deal with complex valued equations, so we need a wrapper for this function which outputs real arrays. As such, the following function outputs a (2n,) vector of real values corresponding to the real and imaginary parts of the equation.
+	def fRealFn(z,w,v):
+		'''
+		z should be a (2n,) numpy array which we convert to a complex-valued (n,) array, pass into fsolveFn, then cast the result back to a (2n,) real valued array.
+		For internal use only, not to be seen externally.
+		'''
+
+		x = RealToComp(z) #cast back to complex
+		fComplexValue = fsolveFn(x,w,v) #evaluate
+		realOut = CompToReal(fComplexValue) #cast back to real array...
+		
+		return realOut
+	
+	#storage for iteration outputs
+	wStore = np.zeros((maxItt+1), dtype=complex); wStore[0] = w0
+	vStore = np.zeros((n,maxItt+1), dtype=complex); vStore[:,0] = v0	
+	errStore = np.zeros((maxItt+1), dtype=float); errStore[0] = tol + 1 #auto-fail to start 1st iteration!
+	#iteration counter
+	currItt = 1
+	
+	while currItt<=maxItt and errStore[currItt-1]>tol:
+		#whilst we have no exceeded the maximum number of iterations and the current tolerance in the solution is too high
+		
+		#solve M(w_k)x = M'(w_k)v_k for x; but we need to use z=real,imag (x) because SciPy
+		func = lambda z: fRealFn(z,wStore[currItt-1],vStore[:,currItt-1])
+		#for want of a better guess, use the current "eigenvector" as a guess of the solution...
+		z = fsolve(func, CompToReal(vStore[:,currItt-1]))
+		x = RealToComp(z) #cast back to complex array to save variables
+		
+		#set eigenvalue; w_{k+1} = w_k - u*v_k/u*x
+		wStore[currItt] = wStore[currItt-1] - np.vdot(u,vStore[:,currItt-1])/np.vdot(u,x)
+		
+		#normalise eigenvalue
+		vStore[:,currItt] = x/norm(x)
+		
+		#compute error, ||M(w_k+1)v_k+1||_2 should be small
+		errStore[currItt] = norm(np.matmul(M(wStore[currItt],theta),vStore[:,currItt]))
+		
+		#incriment counter
+		currItt += 1
+
+	#dump values for manual investigation
+	conIss = []
+	#warnings that we might encounter
+	if currItt>=maxItt:
+		warn('Solver reached iteration limit')
+		conIss.append('MaxItter')
+	else:
+		print('Solver stopped at iteration %d' % (currItt-1))
+		#shave off excess storage space to save some memory in this case
+		#remember slicing in python is a:b goes from index a through to b-1 inclusive!
+		wStore = wStore[0:currItt]
+		vStore = vStore[:,0:currItt]
+		errStore = errStore[0:currItt]
+	if errStore[currItt-1]>tol:
+		warn('Solver did not find a solution to the required tolerance: needed %.2e but only reached %.5e' % (tol, errStore[-1]))
+		conIss.append('NoConv')
+	else:
+		print('Difference from zero in converged eigenpair: %.5e' % errStore[currItt-1])
+	if np.abs(norm(vStore[:,currItt-1])-1)>=tol:
+		warn('Eigenvector is approximately 0')
+		conIss.append('ZeroEVec')
+	
+	if conLog:
+		#if we want the massive error log we need to return it here
+		conIss.append(wStore)
+		conIss.append(vStore)
+		conIss.append(errStore)
+		return wStore[currItt-1], vStore[:,currItt-1], conIss
+	#otherwise, we just return the "answer"
+	return wStore[currItt-1], vStore[:,currItt-1]
 
 #help (and reminder) as to how to use the Graph class that I have assembled. In particular, how to create instances of graphs using it and the correct formats for the inputs (hint: they're silly).
 def GraphConstructorHelp():
@@ -362,22 +540,28 @@ def GraphConstructorHelp():
 #functions for testing the construction of the M-matrix and the eigenvalues that it spits out
 def TestVars():
 	
-	vPos = np.asarray( [ [0.5, 1.0, 0.5], [1.0, 0.5, 0.5] ] )
-	adjMat = np.asarray( [ [0, 0, 1], [0, 0, 1], [1, 1, 0] ] )
-	
+	#Test variables for the TFR problem
+	posTFR = np.asarray( [ [0.5, 1.0, 0.5], [1.0, 0.5, 0.5] ] )
+	adjMatTFR = np.asarray( [ [0, 0, 1], [0, 0, 1], [1, 1, 0] ] )
 	#when building this, remember that python indexes from 0 not 1
-	theMat = np.zeros((3,3,2))
-	theMat[0,2,:] = np.asarray([0.0,1.0]) #v1 is vertically above v3... so theta_2 should be here
-	theMat[2,0,:] = np.asarray([0.0,1.0]) #symmetry
-	theMat[1,2,:] = np.asarray([1.0,0.0]) #v2 is right of v3
-	theMat[2,1,:] = np.asarray([1.0,0.0]) #symmetry
+	theMatTFR = np.zeros((3,3,2))
+	theMatTFR[0,2,:] = np.asarray([0.0,1.0]) #v1 is vertically above v3... so theta_2 should be here
+	theMatTFR[2,0,:] = np.asarray([0.0,1.0]) #symmetry
+	theMatTFR[1,2,:] = np.asarray([1.0,0.0]) #v2 is right of v3
+	theMatTFR[2,1,:] = np.asarray([1.0,0.0]) #symmetry
 		
-	G = Graph(vPos, adjMat, theMat) #graph with quasimomentum
-	G0 = Graph(vPos, adjMat) #graph without quasimomentum
-	M = G.ConstructM()
-	M0 = G0.ConstructM()
+	G_TFR = Graph(posTFR, adjMatTFR, theMatTFR)
+	M_TFR = G_TFR.ConstructM()
 	
-	return G, M, G0, M0, vPos, adjMat, theMat
+	#Test variables for the problem in the EKK paper
+#	posEKK = np.asarray( [ [], [] ] )
+#	adjMatEKK = np.asarray( [ [], [], [], [] ] )
+#	theMatEKK = np.zeros((4,4,2))
+#	#THEMAT STUFF HERE
+#	G_EKK = Graph(posEKK, adjMatEKK, theMatEKK)
+#	M_EKK = G_EKK.ConstructM()
+	
+	return G_TFR, M_TFR, posTFR, adjMatTFR#, G_EKK, M_EKK, posEKK, adjMatEKK
 
 def TFR_Exact(w, theta=np.zeros((2))):
 	#exact M-matrix for the TFR problem
@@ -397,16 +581,16 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	'''
 	Given two function handles, exact and computational, performs nSamples evaluations of both functions over prescribed intervals to determine if the computationally constructed solution and the exact form of the M-matrix agree.
 	INPUTS:
-		exact 			: lambda function, given (w,theta) produces the M-matrix from an analytic expression
+		exact 	: lambda function, given (w,theta) produces the M-matrix from an analytic expression
 		computational 	: lambda function, given (w,theta) produces the M-matrix from computational construction
-		nSamples 		: (optional) int, number of samples in each interval - total samples is nSamples^3
+		nSamples 	: (optional) int, number of samples in each interval - total samples is nSamples^3
 		theta1Present 	: (optional) bool, if true then we will sample theta1 values too - if false then we assume theta1=0. Default True
 		theta2Present 	: (optional) bool, if true then we will sample theta2 values too - if false then we assume theta2=0. Default False
-		wRange 			: (optional) (2,) numpy array, interval of w to test. Default [-pi, pi]
-		thetaRange 		: (optional) (2,) numpy array, interval of theta to test. Default [-pi,pi]
-		tol 			: (optional) float, tolerance of Frobenius norm to accecpt as numerical error
+		wRange 	: (optional) (2,) numpy array, interval of w to test. Default [-pi, pi]
+		thetaRange 	: (optional) (2,) numpy array, interval of theta to test. Default [-pi,pi]
+		tol 	: (optional) float, tolerance of Frobenius norm to accecpt as numerical error
 	OUTPUTS:
-		failList 		: list, each entry in the list is a further list of 2 members: the w and theta values of the failures for the exact solution to match the computational one
+		failList 	: list, each entry in the list is a further list of 2 members: the w and theta values of the failures for the exact solution to match the computational one
 	'''
 	#sampled calues of w
 	wVals = np.linspace(wRange[0],wRange[1],num=nSamples,endpoint=True)
@@ -482,4 +666,5 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	return failList
 
 #delete once complete, but for now just auto give me the test variables
-G, M, G0, M0, v, a, tm = TestVars()
+#G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()
+G_TFR, M_TFR, vTFR, aTFR = TestVars()
