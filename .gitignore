@@ -5,3 +5,4 @@
 *.gz
 *.toc
 *.pdf
+*/__pycache__
