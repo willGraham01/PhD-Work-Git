@@ -413,6 +413,20 @@ def RealToComp(z):
 
 	return x
 
+def UnitVector(i,n=3):
+	'''
+	Creates the cannonical (i+1)-th unit vector in R^n, albeit as an array of complex data types
+	INPUTS:
+		i 	: int, python index corresponding to the (i+1)th component of the unit vector t be set to 1 - all others are 0
+		n 	: (optional) int, size of the unit vector or dimension of R^n. Default 3
+	OUTPUTS:
+		e 	: i-th cannonical unit vector in R^n as an array of complex data types
+	'''
+	e = np.zeros((n,), dtype=complex)
+	e[i] = 1.+0.j
+	
+	return e
+
 #nonlinear inverse interation solver...
 def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True, talkToMe=False):
 	'''
@@ -513,6 +527,157 @@ def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=10
 		return wStore[currItt-1], vStore[:,currItt-1], conIss
 	#otherwise, we just return the "answer"
 	return wStore[currItt-1], vStore[:,currItt-1]
+
+#for one fixed value of the quasimomentum, find me some eigenvalues :)
+def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0, 2*np.pi])):
+	'''
+	At the fixed value of the quasimomentum, find eigenvalues of the graph problem defined by G by starting the NLII at nSamples of w0 and recording the unique values it converges to.
+	INPUTS:
+		G 	: Graph instance, defining the problem that we wish to solve. G.ConstructM() should be callable
+		nSamples 	: int, nunber of starting values w0 to begin the NLII at
+		theta 	: (optional) (2,) numpy array, value of the quasimomentum for this sweep. Default [0,0]
+		wRange 	: (optional) (2,) numpy array, the lower and upper bounds to sample w0 - these should be set to one period of the M matrix. Note that the returned eigenvalues can be outside this range. Default [0,2*np.pi]
+	OUTPUTS:
+		eVals 	: numpy array, unique eigenvalues that were found by the solver during this sweep
+		eVecs 	: list of numpy arrays, i-th member of the list is a numpy array whose columns are the eigenvectors corresponding to the eigenvalue eVals[i]
+	'''
+	#create w0 samples to sweep through
+	w0Samples = np.linspace(wRange[0], wRange[1], num=nSamples, endpoint=False)
+	#create lists to store eigenvalues and eigenvectors we find
+	eValList = []
+	eVecList = []
+	#create function handles for the M matrix and it's derivative
+	M, Mprime = G.ConstructM(dervToo=True)
+	#solver initial data
+	v0 = UnitVector(0,G.nVert)
+	u = UnitVector(0,G.nVert)
+	
+	#begin sweep
+	for i in range(nSamples):
+		wStar, vStar, conIss = NLII(M, Mprime, v0, u, w0=w0Samples[i], theta=theta, maxItt=1000)
+		#if conIss contains issues we don't trust the value put out, otherwise append it to the lists :)
+		if len(conIss)<=3:
+			#no extra issues were thrown with the convergence - record e'val and e'vector
+			eValList.append(wStar)
+			eVecList.append(vStar)
+		else:
+			#if there was an issue with convergence, we should silently do nothing...
+			pass
+	
+	#we should now have a list of candidate eigenvalues and eigenvectors. Now we need to remove dupicates.
+	eVals, uIDs = RemoveDuplicates(eValList)
+	#we now have the unique eigenvalues, but need to associate the eigenvectors too
+	vecArray = np.asarray(eVecList).T
+	eVecs = []
+	for i in range(np.max(uIDs)):
+		eVecs.append( vecArray[:,uIDs==(i+1)] )
+	
+	return eVals, eVecs
+
+#for finding the spectrum of a quantum graph problem by brute force - loop over a QM grid and a w grid...
+def FindSpectrum(G, qmSamples, wSamples, tRange=np.asarray([-np.pi, np.pi]), wRange=np.asarray([0, 2*np.pi]), vecsToo=False, qmSymmetry=False):
+	'''
+	Find the spectrum (and associated eigenvectors if we wish) of the quantum graph problem stored in G by meshing the quasimomentum range, and for each value finding the eigenvalues within a given range. The "whole" spectrum is then assembled from the union of the eigenvalues found for each QM value.
+	INPUTS:
+		G 	: Graph instance, defining the problem that we wish to solve. G.ConstructM() should be callable
+		qmSamples 	: int, number of samples for the quasimomentum to use
+		wSamples 	: int, number of starting values for the NLII solver, for each QM  value. Passed to SweepQM() function.
+		tRange 	: (optional) (2,) numpy array, range for the two quasimomentum coefficients. Default [-np.pi,np.pi]
+		wRange 	: (optional) (2,) numpy array, the lower and upper bounds to sample w0 - these should be set to one period of the M matrix. Returned eigenvalues will be in the range - those found outside this range will be discarded. Default [0,2*np.pi]
+		vecsToo 	: (optional) bool, if True then eigenvectors will be returned alongside the eigenvalues that were found. Default False
+		qmSymmetry 	: (optional) bool, if True then the problem we are solving is symmetric in the two quasimomentum parameters, so it is necessary to sweep through only one of them rather than both. Default False
+	OUTPUTS:
+		spectrum 	: complex numpy array, eigenvalues that were computed. Although we know that they should all be real as M is Hermitian, we need to return complex values for python not to complain too much.
+		vecList 	: (optional) list of numpy arrays, i-th member of the list is a numpy array whose columns are the eigenvectors corresponding to the eigenvalue spectrum[i]
+	'''
+	
+	qmSpace = np.linspace(tRange[0], tRange[1], num=qmSamples, endpoint=True)
+	spectrum = np.asarray([]) #initalise store for spectrum
+	if vecsToo:
+		vecList = [] #initialise list of eigenvectors
+	
+	#check for symmetry to try to avoid nested loops
+	if qmSymmetry:
+		for i in range(qmSamples):
+			#get eigenvalues for this value of the QM, leaving the second QM value as 0
+			qmEVals, qmEVecs = SweepQM(G, wSamples, theta=np.asarray([qmSpace[i],0.0]), wRange=wRange)
+			#deal with "out of range" eigenvalues
+			inRangeVals = (qmEVals < wRange[1]) & (qmEVals > wRange[0])
+			if vecsToo:
+				#filter the list for undesirable eigenvectors
+				filteredVecList = []
+				for i in range(np.shape(qmEVals)[0]):
+					if inRangeVals[i]:
+						#keep this set of eigenvectors
+						filteredVecList.append(qmEVecs[i])
+				vecList = vecList + qmEVecs #concatenating lists using + is fine...
+			#now filter undesirable eigenvalues
+			qmEVals = qmEVals[inRangeVals]
+			#append the data we found to our existing stores
+			spectrum = np.hstack( (spectrum, qmEVals) )				
+	else:
+		#we cannot assume QM symmetry. We are required to work with a nested loop
+		for i in range(qmSamples):
+			for j in range(qmSamples):
+				#QM = [qmSpace[i], qmSpace[j]], IE all possible pairs of values taken from qmSpace
+				#deal with "out of range" eigenvalues
+				inRangeVals = (qmEVals < wRange[1]) & (qmEVals > wRange[0])
+				if vecsToo:
+					#filter the list for undesirable eigenvectors
+					filteredVecList = []
+					for i in range(np.shape(qmEVals)[0]):
+						if inRangeVals[i]:
+							#keep this set of eigenvectors
+							filteredVecList.append(qmEVecs[i])
+					vecList = vecList + qmEVecs #concatenating lists using + is fine...
+				#now filter undesirable eigenvalues
+				qmEVals = qmEVals[inRangeVals]
+				#append the data we found to our existing stores
+				spectrum = np.hstack( (spectrum, qmEVals) )				
+	#once we are here, we should have assembled the complete spectrum to the accuracy of the discretisation of our QM domain.
+	if vecsToo:
+		return spectrum, vecList
+	
+	return spectrum
+
+#for removing duplicates where "duplicates" means "close enough together to probably be the same"
+def RemoveDuplicates(valIn, tol=1e-8):
+	'''
+	Remove duplicate entries from a given list or numpy array of complex values; classing duplicates to be be those values whose norm difference is less than a given tolerance.
+	INPUTS:
+		valIn 	: list or 1D numpy array, complex values to be sorted for duplicates
+		tol 	: (optional) float, tolerance within which values are classed as duplicates
+	OUTPUTS:
+		unique 	: complex numpy array, the unique values using the mean of all values determined to be "the same"
+		uIDs 	: int numpy array, if vals[i] is deemed a duplicate of vals[j], then uIDs[i]=uIDs[j], essentially returning the "groupings" of the original values.
+	'''
+	
+	vals = np.asarray(valIn) #in case the input is a list, this will allow us to do logic slicing with numpy arrays
+	nVals = np.shape(vals)[0]
+	uIDs = np.zeros((nVals,), dtype=int)
+	newID = 1
+	
+	for currInd in range(nVals):
+		#has this value already be assigned a group?
+		if uIDs[currInd]==0:
+			#this value does not have a group yet - give it one, then go through and find it's other members
+			uIDs[currInd] = newID
+			newID += 1 #update the group number that a new group would take
+			for checkInd in range(currInd+1, nVals):
+				#go along the array sorting values into this group
+				if uIDs[checkInd]==0 and norm(vals[currInd]-vals[checkInd])<tol:
+					#this value is also not in a group yet and is a "duplicate" of the ungrouped element we are considering - they belong in the same group
+					uIDs[checkInd] = uIDs[currInd]
+			#we have made a new group of values and found all it's members... good job.
+			currInd += 1
+
+	#now uIDs is a grouping of all the values that we needed, and max(uIDs) is the number of unique values that we found
+	unique = np.zeros((np.max(uIDs),), dtype=complex)
+	for i in range(np.max(uIDs)):
+		#average the values in group i and put them into the unique array
+		unique[i] = np.mean( vals[uIDs==(i+1)] )
+			
+	return unique, uIDs
 
 #help (and reminder) as to how to use the Graph class that I have assembled. In particular, how to create instances of graphs using it and the correct formats for the inputs (hint: they're silly).
 def GraphConstructorHelp():

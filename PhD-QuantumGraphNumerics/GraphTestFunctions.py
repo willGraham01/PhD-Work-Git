@@ -13,7 +13,8 @@ from numpy import sin, cos, tan, real, imag
 from warnings import warn
 from numpy.linalg import norm
 from GraphComponents import Graph #import the actual Graph class
-from GraphComponents import cot, cosec #star import is bad, but would work too if you don't mind the spyder warnings!
+from GraphComponents import SweepQM, RemoveDuplicates, FindSpectrum
+from GraphComponents import cot, cosec, UnitVector #star import is bad, but would work too if you don't mind the spyder warnings!
 from GraphComponents import NLII #non-linear inverse iteration solver
 
 def TestVars():
@@ -67,11 +68,12 @@ def TFR_Exact(w, theta=np.zeros((2))):
 	
 	return mat
 
-def TFR_CheckEval(w, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False):
+def TFR_CheckEval(w, v, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False):
 	'''
 	Checks whether the value that w converged to in the solver matches the analytic solution for the TFR problem.
 	INPUTS:
 		w 	: complex float, eigenvalue to test
+		v 	: complex (n,) numpy array, eigenvector that pairs with the eigenvalue in question
 		theta 	: (optional) (2,) numpy array, value of the quasimomentum parameter. Default [0.,0.]
 		tol 	: (optional) tolerance for the checks, for best results set to the tolerance used in the solver. Default 1e-8
 		talkToMe 	: (optional) bool, if true then the test program will print messages to the console as each check is run. Default False
@@ -81,6 +83,8 @@ def TFR_CheckEval(w, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False
 	'''
 	tf = True #assume innocent until proven guilty
 	issues = [] #log the issues that come up in a list
+	G = TestVars()[0]
+	M_TFR = G.ConstructM()
 	
 	if not np.abs(imag(w))<tol:
 		#bad start, the eigenvalue is not entirely real even by a computer's standards
@@ -88,8 +92,6 @@ def TFR_CheckEval(w, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False
 		issues.append('imagEval')
 		if talkToMe: 
 			warn('Eigenvalue has non-negligible imaginary part: %.5e' % imag(w))
-		#flag the issue in the return
-		tf = False
 	
 	#now the actual TFR check, we know that eigenvalues of the M-matrix fall precisely at those values for which
 	# cos(w) = cos((theta[0]+theta[1])/2)cos((theta[0]-theta[1])/2)
@@ -109,11 +111,15 @@ def TFR_CheckEval(w, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=False
 			issues.append('imagPartNeeded')
 			if talkToMe: 
 				warn('Eigenvalue does not solve TFR problem unless imaginary part is included')
+	elif norm(np.matmul(M_TFR(w,theta),v))<tol:
+		#so we still have an eigenvalue/vector pair - mst likely the eigenvalue is close to pi
+		issues.append('multipleOfPi')
+		if talkToMe:
+			print('Eigenvalue is close to an odd multiple of pi')
 	else:
 		#the eigenvalue doesn't solve the TFR problem to our desired accuracy if we include the imaginary part
 		if absRealDiff<tol:
 			#but we do solve the TFR problem if we ignore the imaginary part...
-			tf = True
 			issues.append('imagPartRemoved')
 			if talkToMe: 
 				warn('Eigenvalue only solves TFR problem if imaginary part removed')
@@ -162,7 +168,7 @@ def TFR_AutoChecker(nTrials=100, displayResult=True):
 		if len(conIss)<=3: #this is shorter or equal to the usual information dump that NLII provides
 			#there were no issues with the convergence in the numerical method, so we should have an eigenvalue
 			#now validate the solution with our analytic solution
-			tf, record = TFR_CheckEval(w, theta=thetaSamples[:,i], talkToMe=False)
+			tf, record = TFR_CheckEval(w, v, theta=thetaSamples[:,i], talkToMe=False)
 			if tf:
 				#if we passed, then we found a genuine solution to the problem... yay :)
 				goodList.append([w0Samples[i], v0Samples[:,i], thetaSamples[:,i], w, v])
@@ -267,20 +273,6 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	print('Returning list of failure cases')
 	
 	return failList
-
-def UnitVector(i,n=3):
-	'''
-	Creates the cannonical (i+1)-th unit vector in R^n, albeit as an array of complex data types
-	INPUTS:
-		i 	: int, python index corresponding to the (i+1)th component of the unit vector t be set to 1 - all others are 0
-		n 	: (optional) int, size of the unit vector or dimension of R^n. Default 3
-	OUTPUTS:
-		e 	: i-th cannonical unit vector in R^n as an array of complex data types
-	'''
-	e = np.zeros((n,), dtype=complex)
-	e[i] = 1.+0.j
-	
-	return e
 
 #delete once complete, but for now just auto give me the test variables
 #G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()
