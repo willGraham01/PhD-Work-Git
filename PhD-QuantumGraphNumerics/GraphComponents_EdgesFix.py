@@ -9,10 +9,9 @@ This file will serve to create the datastructures needed for the quantum graph n
 In particular, it will setup the vertex class and provide methods for assembling a graph consisting of vertices.
 
 Presently we are still assuming we have -d^2/dx^2 on each vertex still (subject to quasimomentum shifts, of course).
-
-19-08-2019: This file is now outdated as GraphComponents_EdgeFix addresses the issue of multiple edges in the same direction between vertices.
 """
 
+import csv #reading in .csv files
 from warnings import warn
 import numpy as np
 from numpy.linalg import norm
@@ -25,54 +24,138 @@ from scipy.optimize import fsolve #for nonlinear inverse iteration
 class Graph:
 	'''
 	An instance of the Graph class consists of the positions of the vertices in the graph, their connections to each other, and information on the lengths of edges between vertices and (if applicable) the value of the quasimomentum parameter along each edge.
+	For more information, one can see the function GraphConstructorHelp().
 	Attributes:
 		nVert 	: int, number of vertices in the graph
 		vPos 	: (2,n) numpy array, each column is the (x,y) position of one of the vertices in the graph. By default, vertices will have ID's from 0 to nVert-1.
 		adjMat 	: (nVert,nVert) numpy array, the "modified" adjacency matrix for the graph that also encodes directions
-		lenMat 	: (nVert,nVert) numpy array, stores the lengths of connected vertices to save recomputation
-		theMat 	: (nVert,nVert,2) numpy array, stores the coefficents of the two components of theta for each edge. That is, sum(theMat[j,k,:]*[theta1, theta2]) = theta_jk.
+		lenMat 	: dict of numpy arrays (x,), stores the lengths of connected vertices - lenMat[i,j] points to a numpy array of length x where x is the number of edges connecting i to j, each element of the array being the length of an edge
+		theMat 	: dict of numpy arrays (2,x), stores the coefficents of the two components of the quasimomentum theta for each edge. theMat[i,j] points to a numpy array of shape (2,x) where each column is a pair of coefficients for an edge, and x is the number of edges connecting i to j.
+		coupConsts 	: (nVert, nVert)-valued function of (w), evaluates the (diagonal) matrix of coupling constants at the given value of w.
 	Methods:
 	'''
-	#Default attribute values for a graph
+	#Default attribute values for a graph - although these should ALWAYS be overwritten in construction.
 	nVert = 1
-	vList = np.asarray([])
+	vPos = np.asarray([])
 	adjMat = np.zeros((nVert,nVert))
 	lenMat = np.zeros((nVert,nVert))
 	theMat = np.zeros((nVert,nVert,2))
+	coupConsts = np.zeros((nVert,nVert))
 	
-	def __init__(self, vPos, adjMat, theMat=np.zeros((1,1))):
+	def __init__(self, fileName):
 		'''
 		Construction method for the Graph class. An instance of the Graph class will be created with its attributes generated to be consistent with the inputs.
 		INPUTS:
-			vPos 	: (2,n) numpy array, each column is an (x,y) vertex position 
-			adjMat 	: (nVert,nVert) numpy array, the "modified" adjacency matrix for the graph that also encodes directions - use the command GraphConstructorHelp() included in this module for more information.
-			theMat 	: (n,n,2) numpy array - optional. This matrix contains the quasimomentum coefficients on each edge. That is, theMat[j,k,:]*theta = theta[j,k]. By default these are set to 0 everywhere.
+			fileName 	: file or path to file that contains the graph information as dictated by the documentation. Graph will be assembled from this file. See GraphConstructorHelp() for more information.
 		'''
+		#read the input file line-by-line
+		lines = []
+		with open(fileName, "r") as f:
+			reader = csv.reader(f, delimiter=",")
+			for line in reader:
+				lines.append(line)
+		#we have now read in the input .csv file
+		#the first element of lines is just ['Vertices','','','',''] so we can bypass this I guess. NOTE that everything is imported as a string, so need to convert the stored "numbers" to actual floats too!
+		linesInd = 1;	nLines = len(lines)
+		nVert = 0; 	vertEnd = False
+		xList = [];	yList = []
 		
-		self.vPos = np.copy(vPos) #these are the vertex positions
-		self.nVert = np.shape(vPos)[1] #vPos of shape (2,n) implies there are n vertices
-		self.adjMat = np.copy(adjMat) #modified adjacency matrix is given as input
-		self.lenMat = np.zeros_like(adjMat, dtype=float) #now create the matrix of lengths
+		#create lists of x and y o-ordinates, and thus the vPos variable
+		while (linesInd<nLines) and (not vertEnd):
+			#whilst we still haven't reached the end of the vertices segment of the file
+			if lines[linesInd][0]!="Edges":
+				#this line defines a new vertex
+				xList.append(float(lines[linesInd][1]))
+				yList.append(float(lines[linesInd][2]))
+				nVert += 1
+			else:
+				#this line signals the start of the edges segment, consolodate the information we have
+				vertEnd = True
+				self.vPos = np.asarray([xList, yList])
+				self.nVert = nVert
+			linesInd += 1
+		print('Found %d vertices in this graph file' % (self.nVert))
+		#we have now created all the vertices and their positions, now it's time to form adjMat, lenMat and theMat
 		
-		if np.sum(np.diag(adjMat))>0:
-			#diagonal entries are not zero - graph may have loops?
-			warn('adjMat has non-zero diagonal entries. Construction will continue assuming these are meant to be zero; and will be recorded as 0 in G.adjMat')
-			np.fill_diagonal(self.adjMat, 0)
-		if np.sum(theMat)==0:
-			#either no theMat provided, or there is no quasimomentum dependance. Either way, ensure that what we are storing is the correct size
-			self.theMat = np.zeros((self.nVert,self.nVert,2))
-		elif np.shape(theMat)!=(self.nVert,self.nVert,2):
-			#a custom theMat has been provided, but the shape is incorrect
-			raise ValueError('theMat has incorrect shape: expected (%d, %d, 2) but got ' % (self.nVert, self.nVert), np.shape(theMat))
+		#at this point, linesInd is at the first line which defines an edge
+		edgeStart = linesInd
+		edgeEnd = 0
+		stillEdges = True
+		while (linesInd<nLines) and stillEdges:
+			#quickly find the index of the line where edge definitions stop and coupling constants start
+			if lines[linesInd][0]=="Coupling":
+				#this is where edges end, save these
+				edgeEnd = np.copy(linesInd)
+				stillEdges = False
+			linesInd += 1
+		if stillEdges:
+			#got to end of file without Coupling keyword - set edgeEnd to end of file.
+			edgeEnd = nLines
+			print('No coupling constants provided in input')
+		#when we get to here, we know that edge definitions start on line edgeStart and end on line edgeEnd-1
+		#meanwhile, linesInd is the first line referring to coupling constants, or is after the end of the file.
+
+		#fill in edge information 
+		aMat = np.zeros((self.nVert, self.nVert), dtype=int)
+		for eInd in range(edgeStart, edgeEnd):
+			#for all the lines that define edges
+			vLeft = int(lines[eInd][0]); vRight = int(lines[eInd][1])
+			if vLeft!=vRight:
+				aMat[vLeft,vRight] += 1	
+			else:
+				#must have vRight==vLeft - give waring because loops :O
+				warn('Loop encoded at vertex %d but unsupported' % (vLeft))
+		#aMat is good to go as adjMat
+		self.adjMat = np.copy(aMat)
+		#lMat needs to have each [j][k] list converted to a numpy array of length aMat[j,k]
+		#theMat needs to be constructed as a list of lists, [j][k] being a (2,adjMat[j,k]) numpy array whose columns are the quasimomentum coefficients for each edge.
+		self.lenMat = dict()
+		self.theMat = dict()
+		for j in range(self.nVert):
+			for k in range(self.nVert):
+				if self.adjMat[j,k]!=0:
+					#if there is an edge here, then we need to do something
+					#initialise dictionaries
+					self.lenMat[j,k] = np.zeros((self.adjMat[j,k],), dtype=float)
+					self.theMat[j,k] = np.zeros((2, self.adjMat[j,k]), dtype=float)
+					#fill in dictionary information - this process has a more efficient method of execution but oh well for now
+					insertInd = 0
+					for eInd in range(edgeStart, edgeEnd):
+						vLeft = int(lines[eInd][0]); vRight = int(lines[eInd][1])
+						if (j==vLeft) and (k==vRight):
+							#this line has information on an edge joining these two vertices in the direction we expect
+							
+							if len(lines[eInd][2])==0:
+								#field left blank implies use Euclidean distance
+								self.lenMat[j,k][insertInd] = norm(self.vPos[:,j] - self.vPos[:,k])
+							else:
+								#take value given for this edge
+								self.lenMat[j,k][insertInd] = float(lines[eInd][2])
+							self.theMat[j,k][0,insertInd] = float(lines[eInd][3])
+							self.theMat[j,k][0,insertInd] = float(lines[eInd][4])
+							insertInd += 1
+
+		#if we have coupling constants, we should sort them out too!
+		if linesInd>=nLines:
+			#if we reached the end of the file in the previous step, there is no coupling constant information given. Return the constant (0) function
+			def CoupMatrix(w):
+				'''
+				This graph has no coupling constants, so the matrix of coupling constants is zero everywhere.
+				'''
+				return np.zeros((self.nVert, self.nVert), dtype=complex)
+			self.coupConsts = CoupMatrix
 		else:
-			#custom theMat provided of the correct shape. Assign
-			self.theMat = np.copy(theMat)
-		
-		for i in range(self.nVert):
-			 for j in range(i,self.nVert):
-				 #update the distance matrix. Note that the distances are symmetric.
-				 self.lenMat[i,j] = norm(vPos[:,i]-vPos[:,j])
-				 self.lenMat[j,i] = norm(vPos[:,i]-vPos[:,j])
+			#we didn't reach the end of the file - there are some coupling constants to append.
+			def CoupMatrix(w):
+				'''
+				Evaluates the (diagonal) matrix of coupling constants for this graph.
+				'''
+				matOut = np.zeros((self.nVert, self.nVert), dtype=complex)
+				for eInd in range(linesInd, nLines):
+					vID = int(lines[eInd][0])
+					matOut[vID,vID] = PolyEval(w, lines[eInd][1:])
+				return matOut
+			self.coupConsts = CoupMatrix
 
 		return #construction method ends here
 		
@@ -157,8 +240,15 @@ class Graph:
 					#get all of the connections that vertex k=j has
 					lCon, rCon = self.Connections(k)
 					#create a vector containing all the lengths, and save it to the list location
-					#distances are reflexive - so take the lengths from lenMat after combining the two connection lists
-					lens = self.lenMat[k,lCon+rCon]
+					lens = []
+					#append all edge lengths with v_k the left edge
+					for vID in lCon:
+						for i in range(np.shape(self.lenMat[k,vID])[0]):
+							lens.append(self.lenMat[k,vID][i])
+					#append all edge lengths with v_k the right edge
+					for vID in rCon:
+						for i in range(np.shape(self.lenMat[vID,k])[0]):
+							lens.append(self.lenMat[vID,k][i])
 					#now we just save lens to the relevant place in masterList
 					masterList[k][k] = np.copy(lens)
 					
@@ -177,37 +267,37 @@ class Graph:
 						#there is a connection here
 						if j<k:
 							#connection is in the upper triangle, so j is the left vertex and k is the right vertex
-							kRight.append(self.lenMat[j,k])
-							t1Right.append(self.theMat[j,k,0])
-							t2Right.append(self.theMat[j,k,1])
+							kRight = self.lenMat[j,k]
+							t1Right = self.theMat[j,k][0,:]
+							t2Right = self.theMat[j,k][1,:]
 							if self.adjMat[k,j]>0:
 								#there is also a reverse connection, so we need to append to the left lists too
-								kLeft.append(self.lenMat[k,j])
-								t1Left.append(self.theMat[k,j,0])
-								t2Left.append(self.theMat[k,j,1])
+								kLeft = self.lenMat[k,j]
+								t1Left = self.theMat[k,j][0,:]
+								t2Left = self.theMat[k,j][1,:]
 						else:
 							#connection is in the lower triangle, so j is the right vertex and k is the left vertex
-							kLeft.append(self.lenMat[j,k])
-							t1Left.append(self.theMat[j,k,0])
-							t2Left.append(self.theMat[j,k,1])
+							kLeft = self.lenMat[j,k]
+							t1Left = self.theMat[j,k][0,:]
+							t2Left = self.theMat[j,k][1,:]
 							if self.adjMat[k,j]>0:
 								#there is also a reverse connection, so we need to append to the right lists too
-								kRight.append(self.lenMat[k,j])
-								t1Right.append(self.theMat[k,j,0])
-								t2Right.append(self.theMat[k,j,1])
+								kRight = self.lenMat[k,j]
+								t1Right = self.theMat[k,j][0,:]
+								t2Right = self.theMat[k,j][1,:]
 					else: 
 						# self.adjMat[k,j]>0, but there is no reverse connection as it would have been caught in the previous case
 						if k<j:
 							#connection is in the upper triangle, so k is the left vertex and j is the right vertex
-							kLeft.append(self.lenMat[k,j])
-							t1Left.append(self.theMat[k,j,0])
-							t2Left.append(self.theMat[k,j,1])
+							kLeft = self.lenMat[k,j]
+							t1Left = self.theMat[k,j][0,:]
+							t2Left = self.theMat[k,j][1,:]
 						else:
 							#connection is in the lower triangle, so k is the right vertex and j is the left vertex
-							kRight.append(self.lenMat[k,j])
-							t1Right.append(self.theMat[k,j,0])
-							t2Right.append(self.theMat[k,j,1])
-					
+							kRight = self.lenMat[k,j]
+							t1Right = self.theMat[k,j][0,:]
+							t2Right = self.theMat[k,j][1,:]
+					#although any of these we have already assigned have the correct format, those that are not assigned need to be put through this, so it doesn't hurt to do it to all of them.
 					kLeft = np.asarray(kLeft)
 					kRight = np.asarray(kRight)
 					t1Left = np.asarray(t1Left)
@@ -216,7 +306,7 @@ class Graph:
 					t2Right = np.asarray(t2Right)
 					masterList[j][k] = [kLeft, t1Left, t2Left, kRight, t1Right, t2Right]
 					
-					#in the off-diagonal terms, masterList stores a further list of 6 entries; effectively in two groups. The first 3 are a list of the lengths of edges with vertex k on the left, followed by the QM parameters in for the first and second components in the next two. The final 3 are similar, but for edges with k on the right.
+					#in the off-diagonal terms, masterList stores a further list of 6 entries; effectively in two groups. The first 3 are numpy arrays of the lengths of edges with vertex k on the left, followed by the QM parameters in for the first and second components in the next two. The final 3 are similar, but for edges with k on the right.
 		
 		#having done this for loop, masterList is setup. It should now be a case of defining a function and returning it as a lambda function...
 		def EvalMatrix(w,theta=np.zeros((2), dtype=float)):
@@ -289,6 +379,8 @@ class Graph:
 		OUTPUTS:
 			fig 	: matplotlib figure, the assembled diagram of the graph.
 		'''
+		#FIX DUE TO NEW SETUP AND MULTI-EDGE POSSIBILITIES
+		
 		#setup axes
 		xMin = min(np.min(self.vPos[0,:]),0.0); xMax = max(np.max(self.vPos[0,:]),1.0)
 		yMin = min(np.min(self.vPos[1,:]),0.0); yMax = max(np.max(self.vPos[1,:]),1.0)
@@ -428,6 +520,22 @@ def UnitVector(i,n=3):
 	e[i] = 1.+0.j
 	
 	return e
+
+def PolyEval(x, cList):
+	'''
+	Given a value x and a list of coefficients, return the value of the polynomial expression cList[0]+x*cList[1]+x^2*cList[2]+...
+	INPUTS:
+		x 	: complex float, value to evaluate polynomial map at
+		cList 	: list (to be cast to floats), polynomial coefficients
+	OUTPUTS:
+		pVal 	: polynomial evaluation at x
+	'''
+	pVal = 0.
+	for i, coeff in enumerate(cList):
+		if len(coeff)>0:
+			pVal += float(coeff) * (x**i)
+	
+	return pVal
 
 #nonlinear inverse interation solver...
 def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True, talkToMe=False):
@@ -688,9 +796,39 @@ def GraphConstructorHelp():
 	Presently; the program cannot handle graphs with internal loops or curved edges, or graphs which contain vertices that have 3 or more edges between them. The program will interpret vertices with two edges connecting them as reflecting the (quasi-) periodic boundary conditions imposed on the graph system, and due to the restriction of straight edges will assume that both edges have the same length. If this is not the case in the desired system, consider adding a "dummy" vertex between to break up the longer of the two edges.
 	
 	To create an instane of the Graph class, one uses the command
-		G = Graph(vPos, adjMat)
-	providing the two arguments vPos and adjMat.
+		G = Graph(fileName)
+	providing the path to the file fileName.
 	
+	fileName expects a .csv file in the following format:
+		Vertices
+		vID, 	x, 		y,
+		vID2, 	x2, 	y2, 
+		...
+		Edges
+		leftID, 	rightID, 	length, 	theta1, 	theta2,
+		leftID2, 	rightID2, 	length2, 	theta1, 	theta2,
+		...
+		Coupling
+		vID, 	coupCoeffs ...
+		...
+	After the Vertices keyword, the ID numbers of each vertex should be given starting from 0 and in sequential order. Each line consists of:
+		vertex's ID (vID),
+		it's x-co-ordinate (x),
+		and y-co-ordinate (y)
+	This pattern continues line-by-line, each line introducing a new vertex, until the Edges keyword is reached.
+	After the Edges keyword, each line encodes an edge between vertices with the vertices with leftID and rightID according to:
+		the vertex at the left of the edge by ID (leftID),
+		the vertex at the right of the edge by ID (rightID),
+		the length of the connecting edge (length), [this field can be left blank, and the program will replace it with Euclidean distance]
+		the coefficient along the edge for the 1st quasimomentum parameter (theta1),
+		the coefficient along the edge for the 2nd quasimomentum parameter (theta2)
+	This pattern continues until the Coupling keyword is reached.
+	After the Coupling keyword, each line encodes the coupling constant at the given vertex ID, according to:
+		the vertex at which the coupling occurs (vID)
+		the form of the coupling constant at the vertex (coupCoeffs ...). Any number of coefficients can be provided and they form a coupling constant of the form c0 + c1*w + c2*w^2 + ... IE a polynomial coupling in powers of w. If a vertex does not have a coupling constant provided, it is assumed to be zero.
+
+	A graph is then created with the following attributes:
+		
 	vPos is a (2,n) shape numpy array; the columns of which should be the (x,y) positions of the vertices of the graph. The length (read: number of columns) of vPos will be interpretted as the number of vertices in the graph.
 	
 	adjMat is an (n,n) shape numpy array; being similar to the adjacency matrix for the graph that is to be constructed. However the direction of the edges of graph must also be encoded, along with how many edges we have connecting each pair of vertices. As such the matrix passed in adjMat must have the following structure:
@@ -699,8 +837,11 @@ def GraphConstructorHelp():
 		 - adjMat[i,j] for i>j (in the lower triangle of adjMat) should be either 0 or 1. A 1 represents that vertex i is connected to vertex j with vertex i the "right" endpoint of the edge and vertex j the "left". A 0 represents that there is no edge between i and j with this orientation.
 	 As such the matrix adjMat need not be symmetric, and in general will not be.
 	 
+	 lenMat is a dictionary whose keys are tuples (j,k). Only tuples (j,k) for which adjMat[j,k]!=0 are keys, as the others will not need to be accessed nor store anything. lenMat[j,k] is a numpy array whose shape is (adjMat[j,k],) - IE it stores as many lengths as there are edges between vertices j and k. These are stored in a manner consistent with theMat, and with the construction method for the M matrix.
 	 
-	 theMat is an (n,n,2) numpy array and is optional. If theMat is not provided or is provided an is identically zero, this corresponds to a problem without quasimomentum dependance (IE a non-periodic medium). Otherwise, each (j,k,:) position contains a 2-vector of the coefficients for the quasimomentum parameters. That is to say, if theta is the quasimomentum vector and theMat[j,k] = [t1,t2] then we are solving -(d/dx + i[t1,t2].*theMat[j,k])^2 u = w^2 u on the edge j,k.
+	 theMat is a dictionary whose keys are tuples (j,k). It functions like lenMat, but stores a (2, adjMat[j,k]) numpy array at each key - here the columns of this array correspond to sets of coefficients of the quasimomentum parameters, one set for each edge between the vertices.
+	 
+	 coupConsts is a function that returns the value of the (diagonal) matrix of coupling constants at a given value of w. It is constructed automatically along with the other variables that the Graph needs.
 	'''
 	help(GraphConstructorHelp) #laziness is a virtue...
 	

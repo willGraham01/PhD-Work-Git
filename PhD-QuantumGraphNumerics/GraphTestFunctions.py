@@ -12,9 +12,9 @@ import numpy as np
 from numpy import sin, cos, tan, real, imag
 from warnings import warn
 from numpy.linalg import norm
-from GraphComponents import Graph #import the actual Graph class
-from GraphComponents import SweepQM, RemoveDuplicates, FindSpectrum
-from GraphComponents import cot, cosec, UnitVector #star import is bad, but would work too if you don't mind the spyder warnings!
+from GraphComponents_EdgesFix import Graph #import the actual Graph class
+from GraphComponents_EdgesFix import SweepQM, RemoveDuplicates, FindSpectrum
+from GraphComponents_EdgesFix import cot, cosec, UnitVector #star import is bad, but would work too if you don't mind the spyder warnings!
 from GraphComponents import NLII #non-linear inverse iteration solver
 
 def TestVars():
@@ -23,28 +23,11 @@ def TestVars():
 	Currently creates variables for:
 		- TFR problem
 	'''
-	#Test variables for the TFR problem
-	posTFR = np.asarray( [ [0.5, 1.0, 0.5], [1.0, 0.5, 0.5] ] )
-	adjMatTFR = np.asarray( [ [0, 0, 1], [0, 0, 1], [1, 1, 0] ] )
-	#when building this, remember that python indexes from 0 not 1
-	theMatTFR = np.zeros((3,3,2))
-	theMatTFR[0,2,:] = np.asarray([0.0,1.0]) #v1 is vertically above v3... so theta_2 should be here
-	theMatTFR[2,0,:] = np.asarray([0.0,1.0]) #symmetry
-	theMatTFR[1,2,:] = np.asarray([1.0,0.0]) #v2 is right of v3
-	theMatTFR[2,1,:] = np.asarray([1.0,0.0]) #symmetry
-		
-	G_TFR = Graph(posTFR, adjMatTFR, theMatTFR)
-	M_TFR = G_TFR.ConstructM()
+	#filename for TFR variables
+	TFR_file = 'TFR_Vars.csv'
+	G_TFR = Graph(TFR_file)
 	
-	#Test variables for the problem in the EKK paper
-#	posEKK = np.asarray( [ [], [] ] )
-#	adjMatEKK = np.asarray( [ [], [], [], [] ] )
-#	theMatEKK = np.zeros((4,4,2))
-#	#THEMAT STUFF HERE
-#	G_EKK = Graph(posEKK, adjMatEKK, theMatEKK)
-#	M_EKK = G_EKK.ConstructM()
-	
-	return G_TFR, M_TFR, posTFR, adjMatTFR#, G_EKK, M_EKK, posEKK, adjMatEKK
+	return G_TFR
 
 ##TFR checking functions
 def TFR_Exact(w, theta=np.zeros((2))):
@@ -83,7 +66,7 @@ def TFR_CheckEval(w, v, theta=np.zeros((2,), dtype=float), tol=1e-8, talkToMe=Fa
 	'''
 	tf = True #assume innocent until proven guilty
 	issues = [] #log the issues that come up in a list
-	G = TestVars()[0]
+	G = TestVars()
 	M_TFR = G.ConstructM()
 	
 	if not np.abs(imag(w))<tol:
@@ -144,7 +127,7 @@ def TFR_AutoChecker(nTrials=100, displayResult=True):
 		goodList 	: list, each member having the same structure as above, but for solutions that passed validation
 	'''
 	#build TFR functions that we need
-	G = TestVars()[0]
+	G = TestVars()
 	M, Mprime = G.ConstructM(dervToo=True)
 	
 	record = np.ones((nTrials,), dtype=bool) #pass/fail record
@@ -276,8 +259,5 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 
 #delete once complete, but for now just auto give me the test variables
 #G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()
-G_TFR = TestVars()[0] #outputs are returned in a tuple, of which G_TFR is the first
+G_TFR = TestVars()
 M_TFR, Mprime_TFR = G_TFR.ConstructM(dervToo=True)
-u = UnitVector(0,3)
-v0 = UnitVector(0,3)
-theta = np.zeros((2,), dtype=float)
