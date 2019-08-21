@@ -8,6 +8,7 @@ Created on Wed Aug 14 10:24:00 2019
 This file contains test functions for the file GraphComponents.py and the methods it contains for solving for the sepctra of quantum graph problems. This is to split the two files apart so that we have one file that focuses on the actual functionality of the code, and another devoted solely to testing those functions.
 """
 
+import csv
 import numpy as np
 from numpy import sin, cos, tan, real, imag
 from warnings import warn
@@ -256,6 +257,164 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	print('Returning list of failure cases')
 	
 	return failList
+
+def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName='results', sym=True, nSamples=7, wRange=np.asarray([0,2*np.pi])):
+	'''
+	For the graph G, sweep through the QM values in tSpace and save the eigenvalues that are found to a csv file. Repeat for each value in tSpace, adding the e'vals for each value on a new line of the csv file. For use in creating an animation that displays the numerical results.
+	INPUTS:
+		G 	: Graph instance, problem to solve
+		TheoryEvals 	: function, taking inputs theta and wRange and returning the exact eigenvalues for the problem corresponding to G in the range wRange at the QM value in theta.
+		tSpace 	: (optional) (n,) numpy array, values of QM to sweep through. Default np.linspace(-pi,pi,num=250)
+		fName 	: (optional) str, file names for the outputs will have this string appended to them. Default 'results'
+		sym 	: (optional) bool, if True then we assume the QM is symmetric so we only do one loop over the QM, with theta2=0. Default True
+		nSamples 	: (optional) int, number of initial guesses to give the NLII solver. Default 7
+		wRange 	: (optional) (2,) numpy array, range to search for eigenvalues. Default [0,2pi]
+	OUTPUTS:
+		compValList 	: list of numpy arrays, each array is the set of eigenvalues found computationally for each theta value
+		exValList 	: list of numpy arrays, as above but the exact eigenvalues
+	'''
+	#find computational eigenvalues
+	fNameComputational = fName + 'Comp.csv'
+	compValList = []
+	theta = np.zeros((2,), dtype=float)
+	print('Finding computational eigenvalues')
+	for t1 in tSpace:
+		print('theta_1:',t1)
+		theta[0] = t1
+		if not sym:
+			for t2 in tSpace:
+				print('theta_2:',t2)
+				theta[1] = t2
+				eVals, _ = SweepQM(G, nSamples, theta, wRange)
+				#truncate so that only the "in-range" eigenvalues are found
+				inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
+				eVals = eVals[inRangeVals]
+				compValList.append(np.hstack((theta, eVals)))
+		else:
+			#symmetric case
+			#find eigenvalues
+			eVals, _ = SweepQM(G, nSamples, theta, wRange)
+			#truncate so that only the "in-range" eigenvalues are found
+			inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
+			eVals = eVals[inRangeVals]
+			compValList.append(np.hstack((theta, eVals)))
+	
+	fComp = open(fNameComputational,'a')	
+	##need to pad out the computational arrays with extra zeros or something?
+	for row in compValList:
+		np.savetxt(fComp, [row], delimiter=',')
+	fComp.close()
+	
+	#find theoretical eigenvalues
+	fNameExact = fName + 'Exact.csv'
+	exValList = []
+	theta = np.zeros((2,), dtype=float)
+	print('Finding exact eigenvalues')
+	for t1 in tSpace:
+		print('theta_1',t1)
+		theta[0] = t1
+		if not sym:
+			for t2 in tSpace:
+				print('theta_2',t2)
+				theta[1] = t2
+				eVals = TheoryEvals(theta, wRange)
+				exValList.append(np.hstack((theta, eVals)))
+		else:
+			#symmetric case
+			#find the theoretical eigenvalues in this case
+			eVals = TheoryEvals(theta, wRange)
+			exValList.append(np.hstack((theta, eVals)))
+
+
+	fExact = open(fNameExact,'a')
+	for row in exValList:
+		np.savetxt(fExact, [row], delimiter=',')
+	fExact.close()
+	
+	return compValList, exValList
+
+def TFR_ExactEvals(theta, wRange=np.asarray([0,2*np.pi])):
+	'''
+	For the TFR problem (without coupling constants) returns the exact eigenvalues corresponding to the QM being theta, in the range wRange.
+	INPUTS:
+		theta 	: (2,) numpy array, value of the QM
+		wRange 	: (optional) (2,) numpy array, range to return eigenvalues in. Default [0,2pi]
+	OUTPUTS:
+		eVals 	: numpy array, all eigenvalues in the range wRange
+	'''
+	valList = []
+	#eigenvalues solve cos(w) = cos((t1-t2)/2)cos((t1+t2)/2)
+	RHS = cos((theta[0]-theta[1])/2)*cos((theta[0]+theta[1])/2)
+	#obtain primary root in the range [0,pi]
+	primeVal = np.arccos(RHS)
+	#obtain secondary root in the range [pi,2pi]
+	secVal = 2*np.pi - primeVal
+	
+	#now we just need to find the repeated roots for the e'vals in the event that wRange is not [0,2pi]
+	if primeVal<=wRange[0]:
+		#primary root is too low for the range we are interested in
+		transPVal = primeVal
+		while transPVal<=wRange[0]:
+			#whilst we are lower than the lower limit of wRange
+			transPVal += 2*np.pi #add on periods to reach the lower limit
+		while transPVal<=wRange[1]:
+			#we are now above the lower limit. All the while we are below the upper limit, we are interested in this as a root
+			valList.append(transPVal)
+			transPVal += 2*np.pi
+	elif primeVal>=wRange[1]:
+		#we started above the upper bound
+		transPVal = primeVal
+		while transPVal>=wRange[1]:
+			transPVal -= 2*np.pi
+		while transPVal>=wRange[0]:
+			valList.append(transPVal)
+			transPVal -= 2*np.pi
+	else:
+		#we started off with wRange[0]<primeVal<wRange[1] - so we need to search both ways
+		transPVal = primeVal
+		#search "right"
+		while transPVal<=wRange[1]:
+			valList.append(transPVal)
+			transPVal += 2*np.pi
+		transPVal = primeVal - 2*np.pi
+		#"search left"
+		while transPVal>=wRange[0]:
+			valList.append(transPVal)
+			transPVal -= 2*np.pi
+	#now we do all that again, but for the secondary root!
+	if secVal<=wRange[0]:
+		#primary root is too low for the range we are interested in
+		transSVal = secVal
+		while transSVal<=wRange[0]:
+			#whilst we are lower than the lower limit of wRange
+			transSVal += 2*np.pi #add on periods to reach the lower limit
+		while transSVal<=wRange[1]:
+			#we are now above the lower limit. All the while we are below the upper limit, we are interested in this as a root
+			valList.append(transSVal)
+			transSVal += 2*np.pi
+	elif secVal>=wRange[1]:
+		#we started above the upper bound
+		transSVal = secVal
+		while transSVal>=wRange[1]:
+			transSVal -= 2*np.pi
+		while transSVal>=wRange[0]:
+			valList.append(transSVal)
+			transSVal -= 2*np.pi
+	else:
+		#we started off with wRange[0]<primeVal<wRange[1] - so we need to search both ways
+		transSVal = secVal
+		#search "right"
+		while transSVal<wRange[1]:
+			valList.append(transSVal)
+			transSVal += 2*np.pi
+		transSVal = secVal - 2*np.pi
+		#"search left"
+		while transSVal>wRange[0]:
+			valList.append(transSVal)
+			transSVal -= 2*np.pi
+	#form eigenvalues into numpy array
+	eVals = np.asarray(valList)
+	return eVals
 
 #delete once complete, but for now just auto give me the test variables
 #G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()

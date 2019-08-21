@@ -369,18 +369,17 @@ class Graph:
 		#if we get to here we never built Mprime, so just return M
 		return M
 	
-	def Draw(self, offSet=1, tex=True, show=False):
+	def Draw(self, offSet=1, tex=True, show=False, radFac=0.25):
 		'''
 		Draws the structure of the graph as a matplotlib figure.
 		INPUTS:
 			offSet 	: (optional) int, number to add to each of the vertex IDs for consistency between program and analytic problem. Default 1
 			tex 	: (optional) bool, if True then the diagram will be plotted using LaTeX rendering, otherwise use the matplotlib defaults. Default True
 			show 	: (optional) bool, if True then the diagram is displayed by the method before returning the outputs - use for suppression of plots in loops. Default False
+			radFac 	: (optional) float, determines the "curviness" of the arrows in the displayed diagram. Smaller values result in straighter arrows and are useful for complex or cluttered graphs. Default 0.25
 		OUTPUTS:
 			fig 	: matplotlib figure, the assembled diagram of the graph.
 		'''
-		#FIX DUE TO NEW SETUP AND MULTI-EDGE POSSIBILITIES
-		
 		#setup axes
 		xMin = min(np.min(self.vPos[0,:]),0.0); xMax = max(np.max(self.vPos[0,:]),1.0)
 		yMin = min(np.min(self.vPos[1,:]),0.0); yMax = max(np.max(self.vPos[1,:]),1.0)
@@ -417,31 +416,42 @@ class Graph:
 
 		#store all the edges (with directions) that we need to draw
 		arrowList = []
+		#for changing the arcs of the arrows when there are multiple connections
+		conStyle = "arc3,rad="
 		#now let's make a list of all the arrows we want to draw :)
 		for i in range(self.nVert):
 			vi = (self.vPos[0,i],self.vPos[1,i])
 			#save time looping by not revisiting vertices we've already drawn
 			for j in range(i+1,self.nVert):
 				vj = (self.vPos[0,j],self.vPos[1,j])
+				#note that j>=i+1 here so we can use that to determine which way the arrows should point
 				if self.adjMat[i,j]>0 and self.adjMat[j,i]>0:
-					#2-way connection, draw two arrows
-					arrow_ij = pts.FancyArrowPatch(vi, vj, connectionstyle="arc3,rad=0.5",**kw)
-					arrow_ji = pts.FancyArrowPatch(vj, vi, connectionstyle="arc3,rad=0.5",**kw)
-					arrowList.append(arrow_ij)
-					arrowList.append(arrow_ji)
+					#2-way connection, draw multiple arrows
+					for k in range(1,self.adjMat[i,j]+1):
+						#i<=j-1 so i<j and thus we are in the upper triangle. Hence vi is left and vj is right. Draw as many arrows as we need
+						kConStyle = conStyle + str(k*radFac)
+						arrow_ijk = pts.FancyArrowPatch(vi, vj, connectionstyle=kConStyle,**kw)
+						arrowList.append(arrow_ijk)
+					for k in range(1,self.adjMat[j,i]+1):
+						kConStyle = conStyle + str(k*radFac)
+						arrow_jik = pts.FancyArrowPatch(vj, vi, connectionstyle=kConStyle,**kw)
+						arrowList.append(arrow_jik)
 				elif self.adjMat[i,j]>0:
-					#only one connection. As j>=i+1, we are in the upper triangle so vi is left and vj is right. Make sure the arrow points this way, and it doesn't need to be curved
-					arrow_ij = pts.FancyArrowPatch(vi, vj, **kw)
-					arrowList.append(arrow_ij)
+					#only one direction. As j>=i+1, we are in the upper triangle so vi is left and vj is right. Make sure the arrow points this way, but they might still need to be curved
+					for k in range(self.adjMat[i,j]):
+						kConStyle = conStyle + str(k*radFac)
+						arrow_ijk = pts.FancyArrowPatch(vi, vj, connectionstyle=kConStyle,**kw)
+						arrowList.append(arrow_ijk)
 				elif self.adjMat[j,i]>0:
-					#only one direction. As j>i+1, we are in the lower triangle so vj is left and vi is right. Make sure the arrow points this way, and it doesn't need to be curved
-					arrow_ji = pts.FancyArrowPatch(vj, vi, **kw)
-					arrowList.append(arrow_ji)
+					#only one direction. As j>i+1, we are in the lower triangle so vj is left and vi is right. Make sure the arrow points this way, but they might still need to be curved
+					for k in range(self.adjMat[j,i]):
+						kConStyle = conStyle + str(k*radFac)
+						arrow_jik = pts.FancyArrowPatch(vj, vi, connectionstyle=kConStyle,**kw)
+						arrowList.append(arrow_jik)
 				#in the else case we simply do nothing!
 		#add the arrows to the plot
 		for arrow in arrowList:
 			ax.add_patch(arrow)
-
 		if show:
 			#show the resulting plot
 			fig.show()
