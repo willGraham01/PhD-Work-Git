@@ -125,14 +125,14 @@ class Graph:
 						if (j==vLeft) and (k==vRight):
 							#this line has information on an edge joining these two vertices in the direction we expect
 							
-							if len(lines[eInd][2])==0:
+							if float(lines[eInd][2])==0:
 								#field left blank implies use Euclidean distance
 								self.lenMat[j,k][insertInd] = norm(self.vPos[:,j] - self.vPos[:,k])
 							else:
 								#take value given for this edge
 								self.lenMat[j,k][insertInd] = float(lines[eInd][2])
 							self.theMat[j,k][0,insertInd] = float(lines[eInd][3])
-							self.theMat[j,k][0,insertInd] = float(lines[eInd][4])
+							self.theMat[j,k][1,insertInd] = float(lines[eInd][4])
 							insertInd += 1
 
 		#if we have coupling constants, we should sort them out too!
@@ -286,7 +286,7 @@ class Graph:
 								t1Right = self.theMat[k,j][0,:]
 								t2Right = self.theMat[k,j][1,:]
 					else: 
-						# self.adjMat[k,j]>0, but there is no reverse connection as it would have been caught in the previous case
+						# self.adjMat[k,j]>0 (as the previous sum is positive, but adjMat[j,k]=0 as entries are >=0), but there is no reverse connection as it would have been caught in the previous case
 						if k<j:
 							#connection is in the upper triangle, so k is the left vertex and j is the right vertex
 							kLeft = self.lenMat[k,j]
@@ -674,7 +674,7 @@ def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0
 	
 	#begin sweep
 	for i in range(nSamples):
-		wStar, vStar, conIss = NLII(M, Mprime, v0, u, w0=w0Samples[i], theta=theta, maxItt=1000)
+		wStar, vStar, conIss = NLII(M, Mprime, v0, u, w0=w0Samples[i], theta=theta, maxItt=200)
 		#if conIss contains issues we don't trust the value put out, otherwise append it to the lists :)
 		if len(conIss)<=3:
 			#no extra issues were thrown with the convergence - record e'val and e'vector

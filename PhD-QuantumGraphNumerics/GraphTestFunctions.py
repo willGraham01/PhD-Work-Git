@@ -13,10 +13,13 @@ import numpy as np
 from numpy import sin, cos, tan, real, imag
 from warnings import warn
 from numpy.linalg import norm
-from GraphComponents_EdgesFix import Graph #import the actual Graph class
-from GraphComponents_EdgesFix import SweepQM, RemoveDuplicates, FindSpectrum
-from GraphComponents_EdgesFix import cot, cosec, UnitVector #star import is bad, but would work too if you don't mind the spyder warnings!
-from GraphComponents import NLII #non-linear inverse iteration solver
+from GraphComponents_Master import Graph #import the actual Graph class
+from GraphComponents_Master import SweepQM, RemoveDuplicates, FindSpectrum
+from GraphComponents_Master import cot, cosec, UnitVector #star import is bad, but would work too if you don't mind the spyder warnings!
+from GraphComponents_Master import NLII #non-linear inverse iteration solver
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
 def TestVars():
 	'''
@@ -258,7 +261,7 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	
 	return failList
 
-def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName='results', sym=True, nSamples=7, wRange=np.asarray([0,2*np.pi])):
+def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName='results', sym=False, nSamples=7, wRange=np.asarray([0,2*np.pi])):
 	'''
 	For the graph G, sweep through the QM values in tSpace and save the eigenvalues that are found to a csv file. Repeat for each value in tSpace, adding the e'vals for each value on a new line of the csv file. For use in creating an animation that displays the numerical results.
 	INPUTS:
@@ -266,7 +269,7 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 		TheoryEvals 	: function, taking inputs theta and wRange and returning the exact eigenvalues for the problem corresponding to G in the range wRange at the QM value in theta.
 		tSpace 	: (optional) (n,) numpy array, values of QM to sweep through. Default np.linspace(-pi,pi,num=250)
 		fName 	: (optional) str, file names for the outputs will have this string appended to them. Default 'results'
-		sym 	: (optional) bool, if True then we assume the QM is symmetric so we only do one loop over the QM, with theta2=0. Default True
+		sym 	: (optional) bool, if True then we assume the QM is symmetric so we only do one loop over the QM, with theta2=0. Default False
 		nSamples 	: (optional) int, number of initial guesses to give the NLII solver. Default 7
 		wRange 	: (optional) (2,) numpy array, range to search for eigenvalues. Default [0,2pi]
 	OUTPUTS:
@@ -275,7 +278,8 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 	'''
 	#find computational eigenvalues
 	fNameComputational = fName + 'Comp.csv'
-	compValList = []
+	#compValList = []
+	fComp = open(fNameComputational,'a')	
 	theta = np.zeros((2,), dtype=float)
 	print('Finding computational eigenvalues')
 	for t1 in tSpace:
@@ -283,13 +287,13 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 		theta[0] = t1
 		if not sym:
 			for t2 in tSpace:
-				print('theta_2:',t2)
 				theta[1] = t2
 				eVals, _ = SweepQM(G, nSamples, theta, wRange)
 				#truncate so that only the "in-range" eigenvalues are found
 				inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
 				eVals = eVals[inRangeVals]
-				compValList.append(np.hstack((theta, eVals)))
+				#compValList.append(np.hstack((theta, eVals)))
+				np.savetxt(fComp, [np.hstack((theta, eVals))], delimiter=',')
 		else:
 			#symmetric case
 			#find eigenvalues
@@ -297,17 +301,18 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 			#truncate so that only the "in-range" eigenvalues are found
 			inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
 			eVals = eVals[inRangeVals]
-			compValList.append(np.hstack((theta, eVals)))
+			#compValList.append(np.hstack((theta, eVals)))
+			np.savetxt(fComp, [np.hstack((theta, eVals))], delimiter=',')
 	
-	fComp = open(fNameComputational,'a')	
 	##need to pad out the computational arrays with extra zeros or something?
-	for row in compValList:
-		np.savetxt(fComp, [row], delimiter=',')
+#	for row in compValList:
+#		np.savetxt(fComp, [row], delimiter=',')
 	fComp.close()
 	
 	#find theoretical eigenvalues
 	fNameExact = fName + 'Exact.csv'
-	exValList = []
+	#exValList = []
+	fExact = open(fNameExact,'a')
 	theta = np.zeros((2,), dtype=float)
 	print('Finding exact eigenvalues')
 	for t1 in tSpace:
@@ -315,23 +320,21 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 		theta[0] = t1
 		if not sym:
 			for t2 in tSpace:
-				print('theta_2',t2)
 				theta[1] = t2
 				eVals = TheoryEvals(theta, wRange)
-				exValList.append(np.hstack((theta, eVals)))
+				#exValList.append(np.hstack((theta, eVals)))
+				np.savetxt(fExact, [np.hstack((theta, eVals))], delimiter=',')
 		else:
 			#symmetric case
 			#find the theoretical eigenvalues in this case
 			eVals = TheoryEvals(theta, wRange)
-			exValList.append(np.hstack((theta, eVals)))
-
-
-	fExact = open(fNameExact,'a')
-	for row in exValList:
-		np.savetxt(fExact, [row], delimiter=',')
+			#exValList.append(np.hstack((theta, eVals)))
+			np.savetxt(fExact, [np.hstack((theta, eVals))], delimiter=',')
+#	for row in exValList:
+#		np.savetxt(fExact, [row], delimiter=',')
 	fExact.close()
 	
-	return compValList, exValList
+	return fNameComputational, fNameExact#compValList, exValList
 
 def TFR_ExactEvals(theta, wRange=np.asarray([0,2*np.pi])):
 	'''
@@ -415,6 +418,75 @@ def TFR_ExactEvals(theta, wRange=np.asarray([0,2*np.pi])):
 	#form eigenvalues into numpy array
 	eVals = np.asarray(valList)
 	return eVals
+
+def ResultsToPlot(fName):
+	'''
+	Inpterpret the results file given and produce the dispersion plot(s) for this data
+	INPUTS:
+		fName 	: string, file name and path of the .csv file holding the data
+	'''
+	#read input file line-by-line
+	lines = []
+	with open(fName, "r") as f:
+		reader = csv.reader(f, delimiter=",")
+		for line in reader:
+			lines.append(line)
+	for i in range(0,len(lines)):
+		#first remove any whitespace and brackets in the strings that might have occured when they saved
+		for j in range(len(lines[i])):
+			lines[i][j] = lines[i][j].replace("(","")
+			lines[i][j] = lines[i][j].replace(")","")
+			lines[i][j] = lines[i][j].replace(" ","")
+			lines[i][j] = complex(lines[i][j])
+	#reconstruct tSpace variable, and determine how many values have been found per QM value
+	tSpace = []
+	lineLen = len(lines[0])
+	tSpace.append(np.real(lines[0][0]))
+	for i in range(1,len(lines)):
+		#remember that we cycle through theta_2 then move on in theta_1 so we only want the unique theta_1 values!
+		if lines[i-1][0]!=lines[i][0]:
+			tSpace.append(np.real(lines[i][0]))
+		if len(lines[i])>lineLen:
+			lineLen = len(lines[i])
+	tSpace = np.asarray(tSpace)
+	#reconstruct the matrix of values. This is a tSpace*tSpace*maxLen array, the 3rd dimension corresponds to the branch number that we are examining
+	tLen = len(tSpace)
+	maxEvalsOnLine = lineLen-2
+	eValData = np.zeros((tLen,tLen,maxEvalsOnLine), dtype=complex)
+	for i in range(tLen):
+		for j in range(tLen):
+			for k in range(2,len(lines[i*tLen + j])):
+				eValData[i,j,k-2] = lines[i*tLen + j][k]
+	#this will give us a matrix of the values that we found, but there is still the issue of mismatching lengths and hence branches being "interwined"
+	
+	fig = plt.figure()
+	ax = fig.gca(projection='3d')
+	tSpaceX, tSpaceY = np.meshgrid(tSpace, tSpace)
+	# Plot the surface.
+	surf = ax.plot_surface(tSpaceX, tSpaceY, np.real(eValData[:,:,0]), cmap=cm.coolwarm,linewidth=0, antialiased=False)
+	# Customize the z axis.
+	ax.set_zlim(np.min(eValData[:,:,0]), np.max(eValData[:,:,0]))
+	ax.set_zlabel('$\omega$')
+	ax.set_xlabel('$\theta_1$')
+	ax.set_ylabel('$\theta_2$')
+	# Add a color bar which maps values to colors.
+	fig.colorbar(surf, shrink=0.5, aspect=5)
+	plt.show()
+
+	return eValData, tSpace
+
+def QuickFig(tSpace):
+	
+	tX, tY = np.meshgrid(tSpace, tSpace)
+	Z = 2*(np.cos(tX/2)**2)/3 + 1*(np.cos(tY/2)**2)/3
+	Z = 2*np.arccos(np.sqrt(Z))
+	fig = plt.figure()
+	ax = fig.gca(projection='3d')
+	surf = ax.plot_surface(tX, tY, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
+	fig.colorbar(surf, shrink=0.5, aspect=5)
+	plt.show()
+	
+	return Z
 
 #delete once complete, but for now just auto give me the test variables
 #G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()
