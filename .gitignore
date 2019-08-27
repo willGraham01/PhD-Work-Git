@@ -4,6 +4,10 @@
 *.blg
 *.gz
 *.toc
+*.ods
+*.nav
+*.out
+*.snm
 *.pdf
 */__pycache__
-*.ods
+/PhD-QuantumGraphNumerics/*Results*.csv

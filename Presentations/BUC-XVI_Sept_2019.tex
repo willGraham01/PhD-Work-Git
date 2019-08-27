@@ -174,43 +174,177 @@
 	Computers can solve the latter!
 \end{frame}
 
-%Theory 3: Variational formulation
+%Theory 3: Motivate the variational formulation
 \begin{frame}
 	\frametitle{Fibres to Quantum Graphs}
 	
 	\only<1->{
-		\textbf{Key question:} How can we turn a wave-propagation problem for a 3D-photonic fibre into an (essentially 1D) QG problem?
+		\textbf{Key question:} How can we turn a wave-propagation problem for a 3D (singular) photonic fibre into an (essentially 1D) QG problem?
 	}
 	
 	\only<1->{
 		\begin{block}{Our domain}
 			\only<1>{
 				3D space with directions $\bracs{x_1,x_2,x_3}$:
-				\begin{itemize}
-					\item $\bracs{x_1,x_2}$-plane: periodic cross section
-					\item Let $\ddom\subset\reals^2$ be the unit cell of the cross section
-					\item $x_3$-axis is fibre axis: translation invariance in this direction
-				\end{itemize}
-			diagram placeholder
-			%TSTK diagram, only <1>
-			}
-			\only<2->{
-				\textbf{Our domain is a union of planes, in 3D space!} \newline
-				How \textit{can} we understand differential equations like
-				\begin{align*}
-					-\grad^2 u = \omega^2 u,
-				\end{align*}
-				or ``boundary data" on the planes
-				\begin{align*}
-					\dfrac{\partial u}{\partial n} = 0?
-				\end{align*}
+				\begin{figure}
+					\centering
+					\includegraphics[scale=0.75]{Diagrams/Diagram_Domain3DOutline.pdf}
+					~
+					\includegraphics[scale=0.55]{Diagrams/Diagram_Domain3DPeriodCell.pdf}
+				\end{figure}
+				}
+				\only<2->{
+					\textbf{Our domain is a union of planes, in 3D space!} \newline
+					How \textit{can} we understand differential equations like
+					\begin{align*}
+						-\grad^2 u = \omega^2 u,
+					\end{align*}
+					or ``boundary data" on the planes
+					\begin{align*}
+						\dfrac{\partial u}{\partial n} = 0?
+					\end{align*}
 			}
 		\end{block}
 	}
 	
 	\only<2->{
-		\textbf{Idea:} Use a variational formulation
+		\textbf{Ideas:} 
+		\begin{itemize}
+			\item Translation invariance $\rightarrow$ use Fourier transform
+			\item Use a variational formulation
+		\end{itemize}
 	}
+\end{frame}
+
+%Theory 4: Setup for variational formulation
+\begin{frame}
+	\frametitle{A variational formulation}
+	
+	Fourier transform reduces 3D problem on planes to a 2D problem on segments. \newline
+	$\rightarrow$ Consider a 2D construction for now.
+	
+	\begin{block}{Singular Structure as a Graph}
+		\only<1>{
+			$\ddom\subset\reals^2$ bounded. \newline
+			Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$:
+			\begin{itemize}
+				\item Each $v_j\in V$ is associated to a point $v_j\in\ddom$
+				\item Each $I_{jk}\in E$ is associated to the segment $\sqbracs{v_j,v_k}$
+			\end{itemize}
+		}
+		\only<2>{
+			Let $\lambda_{jk}$ be the 2D singular (Borel) measure that supports 1D Lebesgue measure on $I_{jk}$:
+			\begin{align*}
+				\lambda_{jk}\bracs{B} = \lambda_1\bracs{I_{jk}\cap B}, \quad B\in \mathcal{B}_{\ddom}
+			\end{align*}
+		}
+		\only<2-3>{
+			Let $\ddmes$ be the 2D singular (Borel) measure that supports 1D Lebesgue measure on $\graph$:
+			\begin{align*}
+				\ddmes\bracs{B} &= \sum_{I_{jk}\in E}\lambda_{jk}\bracs{B}, \quad B\in \mathcal{B}_{\ddom}
+			\end{align*}
+		Note: Edge-wise characterisation, like in QG. \newline
+		}
+	\end{block}
+	
+	\textbf{Plan:} Do ``calculus" with respect to $\ddmes$? 
+
+\end{frame}
+
+%Theory 5: mu-Sob spaces and gradients of 0
+\begin{frame}
+	\frametitle{$\gradSob{\ddom}{\mu}$}
+	
+	\only<1-2>{
+		\begin{block}{Constructing ``Sobolev spaces"}
+			Let $W$ be the closure of $	\clbracs{\bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{\ddom}}$ in $\ltwo{\ddom}{\ddmes}$. \newline
+			Then define
+			\begin{align*}
+				\gradSob{\ddom}{\mu} = \clbracs{u \ \vert \ \bracs{u,z}\in W}.
+			\end{align*}
+			We \textit{want to} denote the component $z$ in $\bracs{u,z}\in W$ by $\grad_{\ddmes}u$, but...
+		\end{block}
+	}
+	
+	\only<2>{
+		If $\bracs{u,z_1},\bracs{0,z_2}\in W$ then $\bracs{u,z_1+z_2}\in W$ too! \newline
+		$\rightarrow$ $\grad_{\ddmes}u$ is not unique! \newline
+		
+		We must study the set of ``gradients of zero", $\gradZero{\ddom}{\ddmes}$.
+	}
+\end{frame}
+
+%Theory 6: gradients of zero
+\begin{frame}
+	\frametitle{$\gradZero{\ddom}{\ddmes}$}
+	
+	The best we can do is decompose gradients of functions in $\gradSob{\ddom}{\ddmes}$:
+	\begin{block}{Tangential Gradient}
+		\begin{itemize}
+			\item Every $u\in\gradSob{\ddom}{\ddmes}$ has a unique $\grad_{\ddmes}u\in\ltwo{\ddom}{\ddmes}^2$ such that $\grad_{\ddmes}u \perp \gradZero{\ddom}{\ddmes}$.
+			\item Every $\bracs{u,z}\in W$ can be represented as $\bracs{u,\grad_{\ddmes}u + \widetilde{z}}\in W$ for $\widetilde{z}\in\gradZero{\ddom}{\ddmes}$.	
+		\end{itemize}
+		$\grad_{\ddmes}u$ is the tangential gradient of $u$.
+	\end{block}	
+	
+	\only<2>{
+		Where did this come from?
+		\begin{itemize}
+			\item $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^2$
+			\item For $\bracs{u,z}\in W$, the problem $z+c\perp\gradZero{\ddom}{\ddmes}$ has a unique solution for $c\in\gradZero{\ddom}{\ddmes}$
+			\item Then $\grad_{\ddmes}u$ must coincide with this $z+c$, for the solution $c$.
+		\end{itemize}
+	}
+\end{frame}
+
+%Theory 7: some variational equations
+\begin{frame}
+	\frametitle{A variational formulation}
+	
+	\only<1>{
+		We interpret problems like
+		\begin{align*}
+			-\grad_{\ddmes}^2 u &= f
+		\end{align*}
+		in the variational sense:
+		\begin{align*}
+			\integral{\ddom}{\grad_{\ddmes}u \cdot \grad\phi}{\ddmes} &= \integral{\ddom}{f\phi}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
+		\end{align*}
+		\begin{itemize}
+			\item Solution is a \textit{pair} $\bracs{u,\grad_{\ddmes}u}$, $u\in\gradSob{\ddom}{\ddmes}$.
+			\item $\grad_{\ddmes}u$ can be shown to be \textit{the} aforementioned tangential gradient.
+		\end{itemize}
+	}
+	
+	\only<2>{
+		What about eigenvalue problems
+		\begin{align*}
+			-\grad_{\ddmes}^2 u &= \omega^2 u?
+		\end{align*}
+		Similar interpretation:
+		\begin{align*}
+			\integral{\ddom}{\grad_{\ddmes}u \cdot \grad\phi}{\ddmes} &= \omega^2\integral{\ddom}{u\phi}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
+		\end{align*}
+		\begin{itemize}
+			\item $\ddom$ bounded - point spectrum
+			\item Can interpret in an operator setting on $\gradSob{\ddom}{\ddmes}$.
+		\end{itemize}
+	}
+	
+	\only<1-2>{
+		\begin{block}{To solve a problem...}
+			\begin{itemize}
+				\item Characterise $\gradZero{\ddom}{\ddmes}$
+				\item Employ edge-wise structure of $\ddmes$ to get a problem on $\graph$
+				\item Study the resulting QG problem!
+			\end{itemize}
+		\end{block}
+	}
+\end{frame}
+
+%Example: scalar-case wave equation
+\begin{frame}
+	\frametitle{An example:}
 \end{frame}
 
 \end{document}
