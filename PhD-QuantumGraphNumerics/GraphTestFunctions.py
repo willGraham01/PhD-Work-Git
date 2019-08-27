@@ -19,7 +19,7 @@ from GraphComponents_Master import cot, cosec, UnitVector #star import is bad, b
 from GraphComponents_Master import NLII #non-linear inverse iteration solver
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from matplotlib import cm
+from matplotlib import cm, rc
 
 def TestVars():
 	'''
@@ -261,7 +261,7 @@ def CompareConstructions(exact, computational, nSamples=1000, theta1Present=True
 	
 	return failList
 
-def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName='results', sym=False, nSamples=7, wRange=np.asarray([0,2*np.pi])):
+def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName='results', sym=False, nSamples=7, wRange=np.asarray([0,2*np.pi]), maxItt=250, tol=1e-8):
 	'''
 	For the graph G, sweep through the QM values in tSpace and save the eigenvalues that are found to a csv file. Repeat for each value in tSpace, adding the e'vals for each value on a new line of the csv file. For use in creating an animation that displays the numerical results.
 	INPUTS:
@@ -272,6 +272,8 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 		sym 	: (optional) bool, if True then we assume the QM is symmetric so we only do one loop over the QM, with theta2=0. Default False
 		nSamples 	: (optional) int, number of initial guesses to give the NLII solver. Default 7
 		wRange 	: (optional) (2,) numpy array, range to search for eigenvalues. Default [0,2pi]
+		maxItt 	: (optional) int, max number of iterations of the NLII method to perform. Default 250.
+		tol 	: (optional) float, solution tolerance of the NLII method. Default 1e-8.
 	OUTPUTS:
 		compValList 	: list of numpy arrays, each array is the set of eigenvalues found computationally for each theta value
 		exValList 	: list of numpy arrays, as above but the exact eigenvalues
@@ -288,20 +290,22 @@ def ExtractToCSV(G, TheoryEvals, tSpace=np.linspace(-np.pi,np.pi,num=250), fName
 		if not sym:
 			for t2 in tSpace:
 				theta[1] = t2
-				eVals, _ = SweepQM(G, nSamples, theta, wRange)
+				eVals, _ = SweepQM(G, nSamples, theta, wRange, maxItt=maxItt, tol=tol)
 				#truncate so that only the "in-range" eigenvalues are found
 				inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
 				eVals = eVals[inRangeVals]
-				#compValList.append(np.hstack((theta, eVals)))
+				#sort e'vals into numerical order here to avoid branch-crossing... Sort by real part in ascending order
+				eVals = eVals[np.argsort(np.real(eVals))]
 				np.savetxt(fComp, [np.hstack((theta, eVals))], delimiter=',')
 		else:
 			#symmetric case
 			#find eigenvalues
-			eVals, _ = SweepQM(G, nSamples, theta, wRange)
+			eVals, _ = SweepQM(G, nSamples, theta, wRange, maxItt=maxItt, tol=tol)
 			#truncate so that only the "in-range" eigenvalues are found
 			inRangeVals = (eVals < wRange[1]) & (eVals > wRange[0])
 			eVals = eVals[inRangeVals]
-			#compValList.append(np.hstack((theta, eVals)))
+			#sort e'vals into numerical order here to avoid branch-crossing...Sort by real part in ascending order
+			eVals = eVals[np.argsort(np.real(eVals))]
 			np.savetxt(fComp, [np.hstack((theta, eVals))], delimiter=',')
 	
 	##need to pad out the computational arrays with extra zeros or something?
@@ -419,11 +423,18 @@ def TFR_ExactEvals(theta, wRange=np.asarray([0,2*np.pi])):
 	eVals = np.asarray(valList)
 	return eVals
 
-def ResultsToPlot(fName):
+def ResultsToPlot(fName, normalise=False, normFactor=np.pi):
 	'''
 	Inpterpret the results file given and produce the dispersion plot(s) for this data
 	INPUTS:
 		fName 	: string, file name and path of the .csv file holding the data
+		normalise 	: (optional) bool, if true then axis values and surface values will be normalised by the factor provided in normFactor. Default False
+		normFactor 	: (optional) float, normalisation constant if applicable. Default np.pi
+	OUTPUTS:
+		fig 	: matplotlib.pyplot figure handle for the surface plot
+		eValData 	: (n,n,mult) complex numpy array, storing the eigenvalues corresponding to the values in tSpace. eValData[i,j,:] is all the eigenvalues at theta[0]=tSpace[i], theta[1]=tSpace[j].
+		tSpace 	: (n,) numpy array, the recovered theta values in each direction.
+		<NOTE: Outputs are normalised if input argument normalise is set to true>.
 	'''
 	#read input file line-by-line
 	lines = []
@@ -434,17 +445,28 @@ def ResultsToPlot(fName):
 	for i in range(0,len(lines)):
 		#first remove any whitespace and brackets in the strings that might have occured when they saved
 		for j in range(len(lines[i])):
-			lines[i][j] = lines[i][j].replace("(","")
-			lines[i][j] = lines[i][j].replace(")","")
-			lines[i][j] = lines[i][j].replace(" ","")
-			lines[i][j] = complex(lines[i][j])
+			if len(lines[i][j])>0:
+				#actual number is stored
+				lines[i][j] = lines[i][j].replace("(","")
+				lines[i][j] = lines[i][j].replace(")","")
+				lines[i][j] = lines[i][j].replace(" ","")
+				lines[i][j] = lines[i][j].replace("\n","")
+				lines[i][j] = complex(lines[i][j])
+				if normalise:
+					#normalise values
+					lines[i][j] /= normFactor 
+			else:
+				#nothing is here, so I guess placeholder 0
+				lines[i][j] = 0. +0.j
 	#reconstruct tSpace variable, and determine how many values have been found per QM value
 	tSpace = []
 	lineLen = len(lines[0])
 	tSpace.append(np.real(lines[0][0]))
 	for i in range(1,len(lines)):
 		#remember that we cycle through theta_2 then move on in theta_1 so we only want the unique theta_1 values!
-		if lines[i-1][0]!=lines[i][0]:
+		if (lines[i-1][0]!=lines[i][0]) and normalise:
+			tSpace.append(np.real(lines[i][0])/normFactor)
+		elif (lines[i-1][0]!=lines[i][0]) and (not normalise):
 			tSpace.append(np.real(lines[i][0]))
 		if len(lines[i])>lineLen:
 			lineLen = len(lines[i])
@@ -460,20 +482,29 @@ def ResultsToPlot(fName):
 	#this will give us a matrix of the values that we found, but there is still the issue of mismatching lengths and hence branches being "interwined"
 	
 	fig = plt.figure()
+	rc('text', usetex=True)
+	rc('font', family='serif')
 	ax = fig.gca(projection='3d')
 	tSpaceX, tSpaceY = np.meshgrid(tSpace, tSpace)
 	# Plot the surface.
 	surf = ax.plot_surface(tSpaceX, tSpaceY, np.real(eValData[:,:,0]), cmap=cm.coolwarm,linewidth=0, antialiased=False)
 	# Customize the z axis.
 	ax.set_zlim(np.min(eValData[:,:,0]), np.max(eValData[:,:,0]))
-	ax.set_zlabel('$\omega$')
-	ax.set_xlabel('$\theta_1$')
-	ax.set_ylabel('$\theta_2$')
+	ax.set_zlabel(r'$\omega$')
+	ax.set_xlabel(r'$\theta_1$')
+	ax.set_ylabel(r'$\theta_2$')
+	if normalise:
+		titStr = r'Eigenvalues, $\omega\left(\theta_1,\theta_2 \right)$. Axes normalised'
+	else:
+		titStr = r'Eigenvalues, $\omega\left(\theta_1,\theta_2 \right)$.'
+	ax.set_title(titStr)
+	ax.view_init(elev=90, azim=0)
 	# Add a color bar which maps values to colors.
 	fig.colorbar(surf, shrink=0.5, aspect=5)
+	plt.savefig('SavedFigure.pdf')
 	plt.show()
 
-	return eValData, tSpace
+	return fig, eValData, tSpace
 
 def QuickFig(tSpace):
 	

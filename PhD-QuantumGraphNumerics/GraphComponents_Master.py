@@ -649,7 +649,7 @@ def NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=10
 	return wStore[currItt-1], vStore[:,currItt-1]
 
 #for one fixed value of the quasimomentum, find me some eigenvalues :)
-def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0, 2*np.pi])):
+def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0, 2*np.pi]), maxItt=300, tol=1e-8):
 	'''
 	At the fixed value of the quasimomentum, find eigenvalues of the graph problem defined by G by starting the NLII at nSamples of w0 and recording the unique values it converges to.
 	INPUTS:
@@ -657,6 +657,8 @@ def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0
 		nSamples 	: int, nunber of starting values w0 to begin the NLII at
 		theta 	: (optional) (2,) numpy array, value of the quasimomentum for this sweep. Default [0,0]
 		wRange 	: (optional) (2,) numpy array, the lower and upper bounds to sample w0 - these should be set to one period of the M matrix. Note that the returned eigenvalues can be outside this range. Default [0,2*np.pi]
+		maxItt 	: (optional) int, max number of iterations of the NLII method to perform. Default 300.
+		tol 	: (optional) float, solution tolerance of the NLII method. Default 1e-8.
 	OUTPUTS:
 		eVals 	: numpy array, unique eigenvalues that were found by the solver during this sweep
 		eVecs 	: list of numpy arrays, i-th member of the list is a numpy array whose columns are the eigenvectors corresponding to the eigenvalue eVals[i]
@@ -674,7 +676,7 @@ def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0
 	
 	#begin sweep
 	for i in range(nSamples):
-		wStar, vStar, conIss = NLII(M, Mprime, v0, u, w0=w0Samples[i], theta=theta, maxItt=200)
+		wStar, vStar, conIss = NLII(M, Mprime, v0, u, w0=w0Samples[i], theta=theta, maxItt=maxItt, tol=tol)
 		#if conIss contains issues we don't trust the value put out, otherwise append it to the lists :)
 		if len(conIss)<=3:
 			#no extra issues were thrown with the convergence - record e'val and e'vector
@@ -685,12 +687,18 @@ def SweepQM(G, nSamples, theta=np.zeros((2,), dtype=float), wRange=np.asarray([0
 			pass
 	
 	#we should now have a list of candidate eigenvalues and eigenvectors. Now we need to remove dupicates.
-	eVals, uIDs = RemoveDuplicates(eValList)
-	#we now have the unique eigenvalues, but need to associate the eigenvectors too
-	vecArray = np.asarray(eVecList).T
-	eVecs = []
-	for i in range(np.max(uIDs)):
-		eVecs.append( vecArray[:,uIDs==(i+1)] )
+	if len(eValList)!=0:
+		eVals, uIDs = RemoveDuplicates(eValList)
+		#we now have the unique eigenvalues, but need to associate the eigenvectors too
+		vecArray = np.asarray(eVecList).T
+		eVecs = []
+		for i in range(np.max(uIDs)):
+			eVecs.append( vecArray[:,uIDs==(i+1)] )
+	else:
+		#no eigenvalues found in this search range, return array and vector of zeros
+		warn('No eigenvalues found for QM [%.8f, %.8f]' % (theta[0], theta[1]))
+		eVals = np.asarray([0])
+		eVecs = u;	eVecs[0] = 0; #zero vector for eigenvector
 	
 	return eVals, eVecs
 
