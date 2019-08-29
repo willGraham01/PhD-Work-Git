@@ -32,29 +32,25 @@
 \begin{frame}
 	\frametitle{Optical- vs Photonic Fibres}
 	
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.45\textwidth]{Diagrams/Diagram_OpticalFibre.pdf}
+		~
+		\includegraphics[width=0.45\textwidth]{Diagrams/Diagram_PhotonicFibre.pdf}
+	\end{figure}
 	\begin{columns}
-		\begin{column}{0.475\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[scale=0.65]{./Diagrams/Diagram_OpticalFibre.pdf}
-			\end{figure}
+		\begin{column}{0.45\textwidth}
 			\begin{block}{Optical Fibres}
 				\begin{itemize}
-					\item Developed $\approx 1960$
+					\item Developed $\approx 1970$
 					\item Light guidance by TIR
 				\end{itemize}
 			\end{block}
 		\end{column}
-		
-		\begin{column}{0.475\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[scale=0.75]{./Diagrams/Diagram_PhotonicFibre.pdf}
-			\end{figure}
+		\begin{column}{0.45\textwidth}
 			\begin{block}{Photonic Fibres}
 				\begin{itemize}
-					\item Developed $\approx 1975$??? CHECK!!
-					\item Hollow fibre cores
+					\item Developed $\approx 1980$
 					\item Photonic crystal geometry induces "frequency gaps"
 				\end{itemize}
 			\end{block}
@@ -125,7 +121,7 @@
 	\end{figure}
 	}
 	
-	\only<2-3>{
+	\only<2>{
 	Define 
 	\begin{align*}
 		L^2\bracs{\graph} &:= \bigoplus_{v_j,v_k\in V} L^2\bracs{I_{jk}}, \quad
@@ -135,17 +131,21 @@
 	Characterise functions by their edge-wise forms, $u_{jk} := u\vert_{jk}$.
 	}
 	
-	\only<3>{
-	Define differential operators by edge-wise action plus ``boundary conditions" at the vertices:
+	\only<3-4>{
+	Define differential operators by their ``edge-wise action plus ``boundary conditions" at the vertices:
 	\begin{align*}
 		\mathcal{A} &= \ddiff{}{t} \text{``edgewise"}, \\
 		\mathrm{dom}\mathcal{A} &= \clbracs{u\in\mathcal{D}\bracs{\graph} \ \vert \ \text{matching conditions on } u}
 	\end{align*}
-	Typical matching conditions are typically Kirchoff-like:
+	We will be interested in Kirchoff-like matching conditions:
 	\begin{align*}
 		\quad \sum_{j\sim k}u_{jk}'\bracs{v_{k}} = 0
 	\end{align*}
-	}	
+	}
+	
+	\only<4>{
+		\textbf{Note:} Quantum Graphs framework is much more general than this!
+	}
 \end{frame}
 %when talking about this slide on the day, you should mention that this is a SUBSET of what you can actually do with quantum graphs!
 
@@ -163,11 +163,11 @@
 	
 	\begin{block}{	(Weyl-Titchmarsh) M-matrix}
 		\begin{align*}
-			M\bracs{\omega} :\complex^{\abs{V}} \rightarrow\complex^{\abs{V}}, \text{ such that }
-			M\bracs{\omega} \Gamma_0 u = \Gamma_1 u \\
-			\text{whenever } u\in\mathrm{ker}\bracs{\mathcal{A}-\omega^2}, \lambda\in\complex
+			M\bracs{\omega} &:\complex^{\abs{V}} \rightarrow\complex^{\abs{V}}, \text{ such that } \\
+			M\bracs{\omega} &\Gamma_0 u = \Gamma_1 u \quad
+			\text{whenever } u\in\mathrm{ker}\bracs{\mathcal{A}-\omega^2}, \ \omega^2\in\complex
 		\end{align*}
-		Eigenvalues of $\mathcal{A}$ occur precisely when $\mathrm{det}\bracs{M\bracs{\omega}}=0$
+		Eigenvalues of $\mathcal{A}$ occur at $\omega^2$ such that $\mathrm{det}\bracs{M\bracs{\omega}}=0$
 	\end{block}
 
 	\textbf{Key point}: QG eigenvalue problem $\rightarrow$ matrix eigenvalue problem.
@@ -195,11 +195,11 @@
 				}
 				\only<2->{
 					\textbf{Our domain is a union of planes, in 3D space!} \newline
-					How \textit{can} we understand differential equations like
+					How \textit{can} we understand 3D-differential equations like
 					\begin{align*}
-						-\grad^2 u = \omega^2 u,
+						-\grad^2 u = c^2 \dfrac{\partial^2 u}{\partial t^2}
 					\end{align*}
-					or ``boundary data" on the planes
+					with ``boundary data" involving normal derivatives
 					\begin{align*}
 						\dfrac{\partial u}{\partial n} = 0?
 					\end{align*}
@@ -386,7 +386,7 @@
 		\end{itemize}	
 	}
 	
-	\only<3-4>{
+	\only<3>{
 		This implies
 		\begin{align*}
 			\gradZero{\ddom}{\lambda_{jk}} = \clbracs{\bracs{0,f_2}^{\top} \ \vert \ f_2\in\ltwo{\ddom}{\lambda_{jk}}}
@@ -559,12 +559,12 @@
 	\only<2>{
 		We construct the M-matrix for each problem by considering
 		\begin{align*}
-			M\bracs{\omega,\theta}\Gamma_0 u = \Gamma_1 u
+			M\bracs{\omega,\theta}\Gamma_0 \widetilde{u} = \Gamma_1 \widetilde{u}
 		\end{align*}
-		when $\Gamma_0 u$ is set to the $k^{\mathrm{th}}$ canonical unit vector, $\Gamma_1 u$ is the $k^{\mathrm{th}}$ column of $M\bracs{\omega, \theta}$.
+		when $\Gamma_0 \widetilde{u}$ is set to the $k^{\mathrm{th}}$ canonical unit vector, $\Gamma_1 \widetilde{u}$ is the $k^{\mathrm{th}}$ column of $M\bracs{\omega, \theta}$.
 	}
 	\only<3>{
-		We numerically solve the QG problem for the Dirichlet data $\Gamma_0 u = e_{k}$, and read off the Neumann data $\Gamma_1 u$ as the column of $M$. \newline
+		We numerically solve the QG problem for the Dirichlet data $\Gamma_0 \widetilde{u} = e_{k}$, and read off the Neumann data $\Gamma_1 \widetilde{u}$ as the column of $M$. \newline
 		Then we numerically solve the eigenvalue problem
 		\begin{align*}
 			\mathrm{det} M\bracs{\omega,\theta} = 0
@@ -582,25 +582,40 @@
 	
 	The presented work serves as our motivation and guide for more descriptive models:
 	\begin{itemize}
-		\only<1-3>{
-			\item Develop a method to handle vector-valued functions (Maxwell systems in particular)
+		\item Develop a method to handle vector-valued functions (Maxwell systems in particular)
+		\only<2>{
+			\begin{columns}
+				\begin{column}{0.35\textwidth}
+					\begin{itemize}
+						\item Definition and analysis of $\curlSob{\ddom}{\ddmes}$
+						\item Tangential curls, and ``curls of zero"
+						\item Variational formulation and the corresponding reduction to QG
+						\item Time-dependence
+					\end{itemize}				
+				\end{column}
+				\begin{column}{0.55\textwidth}
+					\begin{figure}
+					\includegraphics[scale=0.45]{Diagrams/Diagram_CurlZeroPlane.pdf}
+					\end{figure}
+				\end{column}
+			\end{columns}
+		}
+		\only<3->{
+			\item Further development of the numerical scheme
+		}
+		\only<4>{
 			\begin{itemize}
-				\item Definition and analysis of $\curlSob{\ddom}{\ddmes}$
-				\item Tangential curls, and ``curls of zero"
-				\item Variational formulation and the corresponding reduction to QG
+				\item Analysis of solver methods
+				\item Handling of the ``Fourier variable"
+				\item Speed and efficiency
 			\end{itemize}
 		}
-		\only<2-3>{
-			\item Enhancements to the numerical scheme and stability
-			\begin{itemize}
-				\item Alternative solver methods for eigenvalue problems
-				\item Handling of the ``Fourier variable", which was omitted in the example
-			\end{itemize}
-		}
-		\only<3>{
+		\only<5->{
 			\item Analysis: singular-structures as an asymptotic limit of thin-structures
+		}
+		\only<6>{
 			\begin{itemize}
-				\item Strengthen the link between the two formulations
+				\item Strengthen the link between the two problems
 				\item Reduce complex PDE problems to (relatively) simpler ODE problems
 				\item Applications in design of fibres and other waveguides
 			\end{itemize}
@@ -609,19 +624,22 @@
 \end{frame}
 
 %thanks for listening slide, questions ETC
-\begin{frame}
-	\frametitle{Thank you for your attention}
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
 	
-	Are there any questions?
+	Thank you for your attention.
 	
-	\begin{block}{References}
+	\begin{block}{Reference grouping}
 		\begin{itemize}
-			\item physics papers for fibre stuff
-			\item Zhikov papers,
-			\item EKK, Kirill graphs, etc!
-			%need to go back through an insert the refs in the slide text
+			\item Photonic Fibres: Knight \cite{knight2003photonic}
+			\item Quantum Graphs: Ershova, Karpenko, Kiselev \cite{ershova2014isospectrality}, Cherednichenko, Ershova, Kiselev \cite{cherednichenko2019time}
+			\item Variational Formulation: Zhikov \cite{zhikov2000extension}, Exner, Post \cite{exner2005convergence}
+			\item NLEVP Methods: Guttel, Tisseur \cite{guttel2017nonlinear}
 		\end{itemize}
 	\end{block}
+	
+	\bibliographystyle{unsrt}
+	\bibliography{../master_bib.bib}
 \end{frame}
 
 \end{document}
