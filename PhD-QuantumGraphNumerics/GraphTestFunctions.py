@@ -423,13 +423,14 @@ def TFR_ExactEvals(theta, wRange=np.asarray([0,2*np.pi])):
 	eVals = np.asarray(valList)
 	return eVals
 
-def ResultsToPlot(fName, normalise=False, normFactor=np.pi):
+def ResultsToPlot(fName, normalise=False, normFactor=np.pi, plotInd=0):
 	'''
 	Inpterpret the results file given and produce the dispersion plot(s) for this data
 	INPUTS:
 		fName 	: string, file name and path of the .csv file holding the data
 		normalise 	: (optional) bool, if true then axis values and surface values will be normalised by the factor provided in normFactor. Default False
 		normFactor 	: (optional) float, normalisation constant if applicable. Default np.pi
+		plotInd 	: (optional) int, index of eigenvalue matrix to slice through when creating the plot
 	OUTPUTS:
 		fig 	: matplotlib.pyplot figure handle for the surface plot
 		eValData 	: (n,n,mult) complex numpy array, storing the eigenvalues corresponding to the values in tSpace. eValData[i,j,:] is all the eigenvalues at theta[0]=tSpace[i], theta[1]=tSpace[j].
@@ -487,9 +488,9 @@ def ResultsToPlot(fName, normalise=False, normFactor=np.pi):
 	ax = fig.gca(projection='3d')
 	tSpaceX, tSpaceY = np.meshgrid(tSpace, tSpace)
 	# Plot the surface.
-	surf = ax.plot_surface(tSpaceX, tSpaceY, np.real(eValData[:,:,0]), cmap=cm.coolwarm,linewidth=0, antialiased=False)
+	surf = ax.plot_surface(tSpaceX, tSpaceY, np.real(eValData[:,:,plotInd]), cmap=cm.coolwarm,linewidth=0, antialiased=False)
 	# Customize the z axis.
-	ax.set_zlim(np.min(eValData[:,:,0]), np.max(eValData[:,:,0]))
+	ax.set_zlim(np.min(eValData[:,:,plotInd]), np.max(eValData[:,:,plotInd]))
 	ax.set_zlabel(r'$\omega$')
 	ax.set_xlabel(r'$\theta_1$')
 	ax.set_ylabel(r'$\theta_2$')
@@ -506,18 +507,23 @@ def ResultsToPlot(fName, normalise=False, normFactor=np.pi):
 
 	return fig, eValData, tSpace
 
-def QuickFig(tSpace):
+def QuickFig(tSpace, Z):
 	
 	tX, tY = np.meshgrid(tSpace, tSpace)
-	Z = 2*(np.cos(tX/2)**2)/3 + 1*(np.cos(tY/2)**2)/3
-	Z = 2*np.arccos(np.sqrt(Z))
 	fig = plt.figure()
 	ax = fig.gca(projection='3d')
-	surf = ax.plot_surface(tX, tY, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
+	surf = ax.plot_surface(tX, tY, np.real(Z), cmap=cm.coolwarm,linewidth=0, antialiased=False)
+	ax.set_zlim(np.min(np.real(Z)), np.max(np.real(Z)))
+	ax.set_zlabel(r'$\omega$')
+	ax.set_xlabel(r'$\theta_1$')
+	ax.set_ylabel(r'$\theta_2$')
+	titStr = r'Eigenvalues, $\omega\left(\theta_1,\theta_2 \right)$.'
+	ax.set_title(titStr)
+	ax.view_init(elev=90, azim=0)
 	fig.colorbar(surf, shrink=0.5, aspect=5)
 	plt.show()
 	
-	return Z
+	return fig
 
 #delete once complete, but for now just auto give me the test variables
 #G_TFR, M_TFR, vTFR, aTFR, G_EKK, M_EKK, vEKK, aEKK = TestVars()
