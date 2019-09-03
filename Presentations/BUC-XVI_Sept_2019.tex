@@ -19,7 +19,7 @@
 %Information to be included in the title page
 \title{Photonic Fibres from Thin Structures}
 \author{William Graham*, Kirill Cherednichenko}
-\institute{University of Bath}
+\institute{BUC-XVI, UNAM}
 \date{\today}
  
 \begin{document}
@@ -62,11 +62,10 @@
 \begin{frame}
 	\frametitle{Project Motivation}
 		
-	
 	\begin{block}{Objectives}
-	Given a photonic fibre design, determine the frequencies it confines to the hollow cores.
+	Given a photonic fibre design, create a model that approximates the frequencies of light it confines to the hollow cores.
 		\begin{enumerate}
-			\item Decide on modelling assumptions
+			\item Tweaking the physical setup
 			\only<1>{
 			\item Determine a suitable mathematical formulation of the problem
 			\item Develop a numerical scheme for applications
@@ -76,14 +75,14 @@
 	
 	\only<2-3>{
 	\begin{block}{Cross section is an infinite periodic sheet}
-		\textbf{Justify:} Pattern periodicity $<<$ fibre-cross section width. \newline
-		\textbf{Reason:} Gelfand transform - study to family of problems on the unit cell
+		\textbf{Reason:} Use transforms to study a family of problems on the unit cell.  \newline
+		\textbf{Justify:} Pattern periodicity $<<$ fibre-cross section width.
 	\end{block}
 	}
 	\only<3>{
 	\begin{block}{Photonic crystal is infinitely thin}
-		\textbf{Justify:} Crystal structure $<$ pattern periodicity. \newline
-		\textbf{Reason:} ``Quantum graphs" framework
+		\textbf{Reason:} ``Quantum graphs" framework.  \newline
+		\textbf{Justify:} Crystal structure $<$ pattern periodicity.
 	\end{block}
 	}
 
@@ -126,25 +125,20 @@
 	\begin{align*}
 		L^2\bracs{\graph} &:= \bigoplus_{j\sim k} L^2\bracs{I_{jk}}, \quad
 		H^2\bracs{\graph} := \bigoplus_{j\sim k} H^2\bracs{I_{jk}} \\
-		\mathcal{D}\bracs{\graph} &:= \clbracs{u \in H^2\bracs{\graph} \ \vert \ u \text{ is continuous at every } v_j\in V}
 	\end{align*}
 	Characterise functions by their edge-wise forms, $u_{jk} := u\vert_{jk}$.
 	}
 	
-	\only<3-4>{
-	Define differential operators by their ``edge-wise action plus ``boundary conditions" at the vertices:
+	\only<3>{
+	Define differential operators on $\graph$ by their ``edge-wise action" plus boundary conditions at the vertices; for example
 	\begin{align*}
 		\mathcal{A} &= \ddiff{}{x} \quad\text{``edgewise"}, \\
-		\mathrm{dom}\mathcal{A} &= \clbracs{u\in\mathcal{D}\bracs{\graph} \ \vert \ \text{matching conditions on } u}
+		\mathrm{dom}\mathcal{A} &= \{u\in H^2\bracs{I_{jk}} \ \vert \ u \text{ is continuous at every } v_j\in V, \\ & \text{+ derivative matching conditions on } u\}
 	\end{align*}
 	We will be interested in Kirchoff-like matching conditions:
 	\begin{align*}
 		\quad \sum_{j\sim k}u_{jk}'\bracs{v_{k}} = 0
 	\end{align*}
-	}
-	
-	\only<4>{
-		\textbf{Note:} Quantum Graphs framework is much more general than this!
 	}
 \end{frame}
 %when talking about this slide on the day, you should mention that this is a SUBSET of what you can actually do with quantum graphs!
@@ -161,13 +155,13 @@
 		\end{itemize}
 	\end{block}
 	
-	\begin{block}{	(Weyl-Titchmarsh) M-matrix}
+	\begin{block}{(Weyl-Titchmarsh) M-matrix}
 		\begin{align*}
 			M\bracs{\omega} &:\complex^{\abs{V}} \rightarrow\complex^{\abs{V}}, \text{ such that } \\
 			M\bracs{\omega} &\Gamma_0 u = \Gamma_1 u \quad
-			\text{whenever } u\in\mathrm{ker}\bracs{\mathcal{A}-\omega^2}, \ \omega^2\in\complex
+			\text{whenever } u\in\mathrm{ker}\bracs{\mathcal{A}-\omega}, \ \omega\in\complex
 		\end{align*}
-		Eigenvalues of $\mathcal{A}$ occur at $\omega^2$ such that $\mathrm{det}\bracs{M\bracs{\omega}}=0$
+		Eigenvalues of $\mathcal{A}$ occur at $\omega$ such that $\mathrm{det}\bracs{M\bracs{\omega}}=0$.
 	\end{block}
 
 	\textbf{Key point}: QG eigenvalue problem $\rightarrow$ matrix eigenvalue problem.
@@ -195,24 +189,18 @@
 				}
 				\only<2->{
 					\textbf{Our domain is a union of planes, in 3D space!} \newline
-					How \textit{can} we understand 3D-differential equations like
+					How \textit{can} we understand 3D-differential equations with boundary data involving normal derivatives
 					\begin{align*}
-						-\grad^2 u = c^2 \dfrac{\partial^2 u}{\partial t^2}
+						\grad\wedge \bracs{\grad\wedge u} &= \omega^2 u \\
+						\dfrac{\partial u}{\partial n} &= 0
 					\end{align*}
-					with ``boundary data" involving normal derivatives
-					\begin{align*}
-						\dfrac{\partial u}{\partial n} = 0?
-					\end{align*}
+					in this singular-structure setting?
 			}
 		\end{block}
 	}
 	
 	\only<2->{
-		\textbf{Ideas:} 
-		\begin{itemize}
-			\item Translation invariance $\rightarrow$ use Fourier transform
-			\item Use a variational formulation
-		\end{itemize}
+		\textbf{Solution:} Use a variational formulation
 	}
 \end{frame}
 
@@ -265,12 +253,9 @@
 	
 	\only<1-2>{
 		\begin{block}{Constructing ``Sobolev spaces"}
-			Let $W$ be the closure of $	\clbracs{\bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{\ddom}}$ in $\ltwo{\ddom}{\ddmes}$. \newline
-			Then define
-			\begin{align*}
-				\gradSob{\ddom}{\mu} = \clbracs{u \ \vert \ \bracs{u,z}\in W}.
-			\end{align*}
-			We \textit{want to} denote the component $z$ in $\bracs{u,z}\in W$ by $\grad_{\ddmes}u$, but...
+			Let $W$ be the closure of $	\clbracs{\bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{\ddom}}$ in $\ltwo{\ddom}{\ddmes}\oplus\ltwo{\ddom}{\ddmes}^2$. \newline
+			So $W$ is a set of pairs $\bracs{u,z}$ - $z$ should ``look like" a gradient. \newline
+			We \textit{want to} denote $z$ by $\grad_{\ddmes}u$, but...
 		\end{block}
 	}
 	
@@ -286,21 +271,24 @@
 \begin{frame}
 	\frametitle{$\gradZero{\ddom}{\ddmes}$}
 	
-	The best we can do is decompose gradients of functions in $\gradSob{\ddom}{\ddmes}$:
+	The best we can do is a kind of decomposition:
 	\begin{block}{Tangential Gradient}
 		\begin{itemize}
-			\item Every $u\in\gradSob{\ddom}{\ddmes}$ has a unique $\grad_{\ddmes}u\in\ltwo{\ddom}{\ddmes}^2$ such that $\grad_{\ddmes}u \perp \gradZero{\ddom}{\ddmes}$.
+			\item Every $u\in\ltwo{\ddom}{\ddmes}$ has a unique $\grad_{\ddmes}u\in\ltwo{\ddom}{\ddmes}^2$ such that $\grad_{\ddmes}u \perp \gradZero{\ddom}{\ddmes}$.
 			\item Every $\bracs{u,z}\in W$ can be represented as $\bracs{u,\grad_{\ddmes}u + \widetilde{z}}\in W$ for $\widetilde{z}\in\gradZero{\ddom}{\ddmes}$.	
 		\end{itemize}
 		$\grad_{\ddmes}u$ is the tangential gradient of $u$.
-	\end{block}	
+	\end{block}
+	Then
+	\begin{align*}
+		\gradSob{\ddom}{\ddmes} &= \clbracs{\bracs{u,\grad_{\ddmes}u}\in W}.
+	\end{align*}
 	
 	\only<2>{
 		Where did this come from?
 		\begin{itemize}
 			\item $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^2$
-			\item For $\bracs{u,z}\in W$, the problem $z+c\perp\gradZero{\ddom}{\ddmes}$ has a unique solution for $c\in\gradZero{\ddom}{\ddmes}$
-			\item Then $\grad_{\ddmes}u$ must coincide with this $z+c$, for the solution $c$.
+			\item Decompose $\ltwo{\ddom}{\ddmes}^2 = \gradZero{\ddom}{\ddmes} \oplus \gradZero{\ddom}{\ddmes}^{\perp}$
 		\end{itemize}
 	}
 \end{frame}
@@ -316,26 +304,24 @@
 		\end{align*}
 		in the variational sense:
 		\begin{align*}
-			\integral{\ddom}{\grad_{\ddmes}u \cdot \grad\phi}{\ddmes} &= \integral{\ddom}{f\phi}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
+			\integral{\ddom}{\grad_{\ddmes}u \cdot \overline{\grad\phi}}{\ddmes} &= \integral{\ddom}{f\overline{\phi}}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
 		\end{align*}
 		\begin{itemize}
 			\item Solution is a \textit{pair} $\bracs{u,\grad_{\ddmes}u}$, $u\in\gradSob{\ddom}{\ddmes}$.
-			\item $\grad_{\ddmes}u$ can be shown to be \textit{the} aforementioned tangential gradient.
 		\end{itemize}
 	}
 	
 	\only<2>{
-		What about eigenvalue problems
+		Eigenvalue problems
 		\begin{align*}
-			-\grad_{\ddmes}^2 u &= \omega^2 u?
+			-\grad_{\ddmes}^2 u &= \omega^2 u
 		\end{align*}
-		Similar interpretation:
+		are interpreted similarly:
 		\begin{align*}
-			\integral{\ddom}{\grad_{\ddmes}u \cdot \grad\phi}{\ddmes} &= \omega^2\integral{\ddom}{u\phi}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
+			\integral{\ddom}{\grad_{\ddmes}u \cdot \overline{\grad\phi}}{\ddmes} &= \omega^2\integral{\ddom}{u\overline{\phi}}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
 		\end{align*}
 		\begin{itemize}
-			\item $\ddom$ bounded - point spectrum
-			\item Can interpret in an operator setting on $\gradSob{\ddom}{\ddmes}$.
+			\item Solution is a triplet $\bracs{\omega^2, u, \grad_{\ddmes}u}$.
 		\end{itemize}
 	}
 	
@@ -372,7 +358,7 @@
 		\end{block}
 	}
 	
-	\only<2-3>{
+	\only<2-4>{
 		\begin{figure}
 			\caption{Illustration of $\gradZero{\ddom}{\lambda_{jk}}$:}
 			\centering
@@ -380,7 +366,7 @@
 		\end{figure}
 	}
 	
-	\only<2>{
+	\only<3>{
 		Formally:
 		\begin{align*}
 			f\in\gradZero{\ddom}{\lambda_{jk}} \Leftrightarrow \exists \phi_n\in\smooth{\ddom} \text{ s.t. } \phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}0, \grad\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2}f
@@ -393,7 +379,7 @@
 		\end{itemize}	
 	}
 	
-	\only<3>{
+	\only<4>{
 		This implies
 		\begin{align*}
 			\gradZero{\ddom}{\lambda_{jk}} = \clbracs{\bracs{0,f_2}^{\top} \ \vert \ f_2\in\ltwo{\ddom}{\lambda_{jk}}}
@@ -416,14 +402,14 @@
 		\end{align*}
 		interpreted as
 		\begin{align*}
-			\integral{\ddom}{\grad_{\lambda_{jk}}u\cdot\grad\phi - \omega^2 u\phi}{\lambda_{jk}} &= 0, \quad \forall\phi\in\smooth{\ddom}
+			\integral{\ddom}{\grad_{\lambda_{jk}}u\cdot\overline{\grad\phi} - \omega^2 u\overline{\phi}}{\lambda_{jk}} &= 0, \quad \forall\phi\in\smooth{\ddom}
 		\end{align*}
 	}
 	
 	\only<1-2>{	
 		Perform some manipulations:
 		\begin{align*}
-			0 &= \integral{\ddom}{v_1 \partial_1\phi - \omega^2 u\phi}{\lambda_{jk}} &\quad \text{by the form for } \grad_{\lambda_{jk}}u \\
+			0 &= \integral{\ddom}{v_1 \partial_1\overline{\phi} - \omega^2 u\overline{\phi}}{\lambda_{jk}} &\quad \text{by the form for } \grad_{\lambda_{jk}}u \\
 			&= \int_0^{\abs{I_{jk}}}\widetilde{v_1}\partial_t\widetilde{\phi} - \omega^2\widetilde{u}\widetilde{\phi} \ \md t &\quad \text{change variables, along the edge } I_{jk}
 		\end{align*}
 	}
@@ -432,11 +418,12 @@
 	$\widetilde{v_1}$ looks like a ``derivative" - this can be formalised. \newline
 	If $\widetilde{v_1} \approx \partial_t\widetilde{u}$ then we have
 	\begin{align*}
-		0 &= \int_0^{\abs{I_{jk}}}\widetilde{v_1}\partial_t\widetilde{\phi} - \omega^2\widetilde{u}\widetilde{\phi} \ \md t,
+		0 &= \int_0^{\abs{I_{jk}}}\partial_t\widetilde{u}\partial_t\widetilde{\phi} - \omega^2\widetilde{u}\widetilde{\phi} \ \md t,
 	\end{align*}
 	the weak form of
 	\begin{align*}
-		-\ddiff{u}{t} = \omega^2 u, \quad t\in\sqbracs{0, \abs{I_{jk}}}.
+		-\ddiff{\widetilde{u}}{t} &= \omega^2 \widetilde{u}, \quad t\in\sqbracs{0, \abs{I_{jk}}}, \\
+		\widetilde{u}'(0) &= 0 = \widetilde{u}'(\abs{I_{jk}})
 	\end{align*}
 	}
 	
@@ -469,14 +456,14 @@
 		\end{align*}
 		we end up with
 		\begin{align*}
-			0 &= \sum_{I_{jk}\in E}\int_0^{\abs{I_{jk}}}\widetilde{v_{jk}^{(1)}}\partial_t\widetilde{\phi} - \omega^2\widetilde{u_{jk}}\widetilde{\phi} \ \md t
+			0 &= \sum_{I_{jk}\in E}\int_0^{\abs{I_{jk}}}\partial_t\widetilde{u_{jk}}\partial_t\widetilde{\phi} - \omega^2\widetilde{u_{jk}}\widetilde{\phi} \ \md t
 		\end{align*}
 	}
 	
 	\only<3>{
 		That is,
 		\begin{align*}
-			-\ddiff{}{x} &\quad \text{ ``edge-wise"}, \\
+			-\ddiff{}{t} &\quad \text{ ``edge-wise"}, \\
 			\widetilde{u} &\text{ is continuous at each } v_j\in V, \\
 			0 &= \sum_{j\sim k}\widetilde{u_{jk}}'\bracs{v_j} \ \forall v_j\in V
 		\end{align*}
@@ -532,24 +519,33 @@
 	
 	\begin{columns}
 		\begin{column}{0.40\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[scale=0.45]{Diagrams/Diagram_TFRGraph.pdf}
-				\caption{Photonic fibre period cell}
-			\end{figure}
-			\only<4>{
+			\only<1>{
+				\begin{figure}
+					\centering
+					\includegraphics[scale=0.45]{Diagrams/Diagram_TFRGraph.pdf}
+					\caption{Photonic fibre period cell}
+				\end{figure}
+			}
+			\only<2-5>{
+				\begin{figure}
+					\centering
+					\includegraphics[scale=0.45]{Diagrams/Diagram_TFRQuantumGraph.pdf}
+					\caption{Equivalent QG}
+				\end{figure}				
+			}
+			\only<5>{
 				We can view the spectrum by creating plots, and export the values to data-files.
 			}
 		\end{column}
 		\begin{column}{0.6\textwidth}
-			\only<1-3>{
+			\only<1-4>{
 				On which we have the problem
 				\begin{align*}
 					-\grad_{\ddmes}^2 u &= \omega^2 u
 				\end{align*}		
 				(effectively the Fourier variable down the fibre is set to $0$)
 			}
-			\only<4>{
+			\only<5>{
 				\begin{figure}
 					\centering
 					\includegraphics[scale=0.5]{Images/TFR_Numerical_1stBranch.pdf}
@@ -559,21 +555,27 @@
 		\end{column}
 	\end{columns}
 	\only<1>{
-		We obtain
+		Apply Gelfand transform:
+			\begin{align*}
+				-\bracs{\grad_{\ddmes} - i\theta}^2 u &= \omega^2 u \quad\text{on the period cell}
+			\end{align*}
+	}
+	\only<2>{
+		Reduce to quantum graph problem, account for periodicity:
 		\begin{align*}
-			-\bracs{\diff{}{t}-i\theta}^2 &= \omega^2 u, \quad \text{edge-wise}, \\
+			-\bracs{\diff{}{t}-i\theta_{jk}}^2 &= \omega^2 \widetilde{u}_{jk}, \quad \text{on each} I_{jk}, \\
 			\widetilde{u} &\text{ is continuous at each } v_j\in V, \\
 			0 &= \sum_{j\sim k}\widetilde{u_{jk}}'\bracs{v_j} \ \forall v_j\in V
 		\end{align*}	
 	}
-	\only<2>{
+	\only<3>{
 		We construct the M-matrix for each problem by considering
 		\begin{align*}
 			M\bracs{\omega,\theta}\Gamma_0 \widetilde{u} = \Gamma_1 \widetilde{u}
 		\end{align*}
 		when $\Gamma_0 \widetilde{u}$ is set to the $k^{\mathrm{th}}$ canonical unit vector, $\Gamma_1 \widetilde{u}$ is the $k^{\mathrm{th}}$ column of $M\bracs{\omega, \theta}$.
 	}
-	\only<3>{
+	\only<4>{
 		We numerically solve the QG problem for the Dirichlet data $\Gamma_0 \widetilde{u} = e_{k}$, and read off the Neumann data $\Gamma_1 \widetilde{u}$ as the column of $M$. \newline
 		Then we numerically solve the eigenvalue problem
 		\begin{align*}
@@ -619,7 +621,7 @@
 			\end{itemize}
 		}
 		\only<5->{
-			\item Analysis: singular-structures as an asymptotic limit of thin-structures
+			\item Analysis: singular-structures as some limit of thin-structures
 		}
 		\only<6>{
 			\begin{itemize}
