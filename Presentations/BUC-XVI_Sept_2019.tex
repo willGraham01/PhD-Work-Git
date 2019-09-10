@@ -27,6 +27,17 @@
 \frame{\titlepage}
  
 %insert a contents or overview slide at the end
+\begin{frame}
+	\frametitle{Talk overview}
+	
+	\begin{enumerate}
+		\item Physical background and motivation
+		\item Theory from Quantum Graphs
+		\item Variational formulation
+		\item Example
+		\item Looking forward
+	\end{enumerate}
+\end{frame}
 
 %Background 1: Optical Fibres
 \begin{frame}
@@ -80,9 +91,9 @@
 	\end{block}
 	}
 	\only<3>{
-	\begin{block}{Photonic crystal is infinitely thin}
+	\begin{block}{Photonic crystal is singular (``infinitely" thin)}
 		\textbf{Reason:} ``Quantum graphs" framework.  \newline
-		\textbf{Justify:} Crystal structure $<$ pattern periodicity.
+		\textbf{Justify:} Crystal structure $<<$ pattern periodicity.
 	\end{block}
 	}
 
@@ -98,7 +109,6 @@
 			\begin{itemize}
 				\item Each $I_{jk}\in E$ is associated with an interval $\subset\reals$, which we also call $I_{jk}$.
 			\end{itemize}
-	For $I_{jk}\in E$, we call $v_j$ the ``left vertex" of $I_{jk}$ and $v_k$ the ``right vertex".
 		\end{block}
 	}
 	
@@ -133,19 +143,20 @@
 	Define differential operators on $\graph$ by their ``edge-wise action" plus boundary conditions at the vertices; for example
 	\begin{align*}
 		\mathcal{A} &= \ddiff{}{x} \quad\text{``edgewise"}, \\
-		\mathrm{dom}\mathcal{A} &= \{u\in H^2\bracs{I_{jk}} \ \vert \ u \text{ is continuous at every } v_j\in V, \\ & \text{+ derivative matching conditions on } u\}
+		\mathrm{dom}\mathcal{A} &= \{u\in H^2\bracs{\graph} \ \vert \ u \text{ is continuous at every } v_j\in V, \\ & \text{+ derivative matching conditions on } u\}
 	\end{align*}
 	We will be interested in Kirchoff-like matching conditions:
 	\begin{align*}
-		\quad \sum_{j\sim k}u_{jk}'\bracs{v_{k}} = 0
+		\quad \sum_{j\sim k}u_{jk}'\bracs{v_{k}} = \alpha_k u\bracs{v_k} 
 	\end{align*}
+	for coupling constants $\alpha\in\reals$
 	}
 \end{frame}
 %when talking about this slide on the day, you should mention that this is a SUBSET of what you can actually do with quantum graphs!
 
 %Theory 2: Quantum Graphs + M-matrix
 \begin{frame}
-	\frametitle{Help from Boundary Triples}
+	\frametitle{Theory from Boundary Triples}
 
 	\begin{block}{Dirichlet and Neumann maps}
 		$\Gamma_0, \Gamma_1 : \mathrm{dom}\mathcal{A} \rightarrow \complex^{\abs{V}}$,
@@ -215,8 +226,8 @@
 	
 	\begin{block}{Singular Structure as a Graph}
 		\only<1>{
-			$\ddom\subset\reals^2$ bounded. \newline
-			Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$:
+			$\ddom\subset\reals^2$ bounded. 
+			Let $\graph=\bracs{V,E}$ be a directed graph embedded into $\ddom$:
 			\begin{itemize}
 				\item Each $v_j\in V$ is associated to a point $v_j\in\ddom$
 				\item Each $I_{jk}\in E$ is associated to the segment $\sqbracs{v_j,v_k}$
@@ -249,21 +260,25 @@
 
 %Theory 5: mu-Sob spaces and gradients of 0
 \begin{frame}
-	\frametitle{$\gradSob{\ddom}{\mu}$}
+	\frametitle{Constructing Sobolev spaces}
 	
 	\only<1-2>{
 		\begin{block}{Constructing ``Sobolev spaces"}
 			Let $W$ be the closure of $	\clbracs{\bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{\ddom}}$ in $\ltwo{\ddom}{\ddmes}\oplus\ltwo{\ddom}{\ddmes}^2$. \newline
+			
 			So $W$ is a set of pairs $\bracs{u,z}$ - $z$ should ``look like" a gradient. \newline
 			We \textit{want to} denote $z$ by $\grad_{\ddmes}u$, but...
 		\end{block}
 	}
 	
 	\only<2>{
-		If $\bracs{u,z_1},\bracs{0,z_2}\in W$ then $\bracs{u,z_1+z_2}\in W$ too! \newline
-		$\rightarrow$ $\grad_{\ddmes}u$ is not unique! \newline
+		If $\bracs{u,z_1},\bracs{0,z_2}\in W$ then $\bracs{u,z_1+z_2}\in W$ too. \newline
+		$\rightarrow$ our ``gradients" are not unique! \newline
 		
-		We must study the set of ``gradients of zero", $\gradZero{\ddom}{\ddmes}$.
+		We must study the set of ``gradients of zero", 
+		\begin{align*}
+			\gradZero{\ddom}{\ddmes} := \clbracs{f\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ \bracs{0,f}\in W}
+		\end{align*}
 	}
 \end{frame}
 
@@ -272,6 +287,11 @@
 	\frametitle{$\gradZero{\ddom}{\ddmes}$}
 	
 	The best we can do is a kind of decomposition:
+	\begin{itemize}
+		\item $\gradZero{\ddom}{\ddmes}$ is a closed linear subspace of $\ltwo{\ddom}{\ddmes}^2$
+		\item Decompose $\ltwo{\ddom}{\ddmes}^2 = \gradZero{\ddom}{\ddmes} \oplus \gradZero{\ddom}{\ddmes}^{\perp}$
+	\end{itemize}
+	
 	\begin{block}{Tangential Gradient}
 		\begin{itemize}
 			\item Every $u\in\ltwo{\ddom}{\ddmes}$ has a unique $\grad_{\ddmes}u\in\ltwo{\ddom}{\ddmes}^2$ such that $\grad_{\ddmes}u \perp \gradZero{\ddom}{\ddmes}$.
@@ -283,14 +303,7 @@
 	\begin{align*}
 		\gradSob{\ddom}{\ddmes} &= \clbracs{\bracs{u,\grad_{\ddmes}u}\in W}.
 	\end{align*}
-	
-	\only<2>{
-		Where did this come from?
-		\begin{itemize}
-			\item $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^2$
-			\item Decompose $\ltwo{\ddom}{\ddmes}^2 = \gradZero{\ddom}{\ddmes} \oplus \gradZero{\ddom}{\ddmes}^{\perp}$
-		\end{itemize}
-	}
+
 \end{frame}
 
 %Theory 7: some variational equations
@@ -307,7 +320,7 @@
 			\integral{\ddom}{\grad_{\ddmes}u \cdot \overline{\grad\phi}}{\ddmes} &= \integral{\ddom}{f\overline{\phi}}{\ddmes}, \quad \forall\phi\in\smooth{\ddom}
 		\end{align*}
 		\begin{itemize}
-			\item Solution is a \textit{pair} $\bracs{u,\grad_{\ddmes}u}$, $u\in\gradSob{\ddom}{\ddmes}$.
+			\item Solution is a \textit{pair} $\bracs{u,\grad_{\ddmes}u}\in\gradSob{\ddom}{\ddmes}$.
 		\end{itemize}
 	}
 	
@@ -338,13 +351,13 @@
 
 %Example 1: scalar-case wave equation
 \begin{frame}
-	\frametitle{Working everything through:}
+	\frametitle{An example:}
 	
 	\only<1>{
 		\begin{block}{Recall}
 			\begin{itemize}
 				\item $\ddom\subset\reals^2$ bounded
-				\item $\graph=\bracs{V,E}$ a graph embedded into $\ddom$
+				\item $\graph=\bracs{V,E}$ a directed graph embedded into $\ddom$
 				\item $\ddmes$ supports 1D Lebesgue measure on $\graph$
 			\end{itemize}
 		\end{block}
@@ -415,8 +428,9 @@
 	}
 	
 	\only<2-3>{
-	$\widetilde{v_1}$ looks like a ``derivative" - this can be formalised. \newline
-	If $\widetilde{v_1} \approx \partial_t\widetilde{u}$ then we have
+	$\widetilde{v_1}$ should look like a ``derivative". \newline
+	Indeed, $\widetilde{v_1} = \partial_t\widetilde{u}$ in the sense that $\widetilde{u}\in\gradSob{\sqbracs{0,\abs{I_{jk}}}}{t}$. \newline
+	So...
 	\begin{align*}
 		0 &= \int_0^{\abs{I_{jk}}}\partial_t\widetilde{u}\partial_t\widetilde{\phi} - \omega^2\widetilde{u}\widetilde{\phi} \ \md t,
 	\end{align*}
@@ -442,7 +456,7 @@
 		\begin{align*}
 			\gradZero{\ddom}{\lambda_{jk}} = \clbracs{f\in\ltwo{\ddom}{\lambda_{jk}}^2 \ \vert \ f\bracs{x}\cdot e_{jk} = 0 \ \forall x\in I_{jk}}
 		\end{align*}
-		where $e_{jk}$ is the unit vector parallel to $I_{jk}$. \newline
+		where $e_{jk}\in\reals^2$ is the unit vector parallel to $I_{jk}$. \newline
 		And the whole of $\graph$?
 		\begin{align*}
 			\gradZero{\ddom}{\ddmes} = \clbracs{f\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ \forall I_{jk}\in E, f\bracs{x}\cdot e_{jk}=0 \ \forall x\in I_{jk}}
@@ -455,6 +469,8 @@
 			-\grad_{\ddmes}u = \omega^2 u, \quad u\in\gradSob{\ddom}{\ddmes}
 		\end{align*}
 		we end up with
+	}
+	\only<2-3>{
 		\begin{align*}
 			0 &= \sum_{I_{jk}\in E}\int_0^{\abs{I_{jk}}}\partial_t\widetilde{u_{jk}}\partial_t\widetilde{\phi} - \omega^2\widetilde{u_{jk}}\widetilde{\phi} \ \md t
 		\end{align*}
@@ -621,12 +637,12 @@
 			\end{itemize}
 		}
 		\only<5->{
-			\item Analysis: singular-structures as some limit of thin-structures
+			\item Analysis: singular-structures as a limit of thin-structures
 		}
 		\only<6>{
 			\begin{itemize}
-				\item Strengthen the link between the two problems
-				\item Reduce complex PDE problems to (relatively) simpler ODE problems
+				\item Reduce complex PDE problems to simpler ODE problems
+				\item Convergence estimates to justify numerical results
 				\item Applications in design of fibres and other waveguides
 			\end{itemize}
 		}
