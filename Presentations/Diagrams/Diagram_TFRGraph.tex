@@ -1,0 +1,30 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{arrows} 
+
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',auto,node distance=3cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+	%periodic boundary, unit cell boundary
+	\draw[dashed, red] (-3cm,-3cm) rectangle (3cm,3cm);
+	\node[anchor=north west, align=center, red] at (-3cm,3cm) {Period cell \\ boundary};
+	
+	%nodes and edges
+	\node[main node] (3) {$v_{3}$};
+	\node[main node] (4) [right of=3] {$v_4$};
+	\node[main node] (5) [above of=3] {$v_5$};
+	\node[main node] (1) [below of=3] {$v_1$};
+	\node[main node] (2) [left of=3] {$v_2$};
+	
+	\path[every node/.style={font=\sffamily\small}]
+		(1) edge (3)
+		(2) edge (3)
+		(3) edge (4)
+		(3) edge (5);
+\end{tikzpicture}
+
+\end{document}

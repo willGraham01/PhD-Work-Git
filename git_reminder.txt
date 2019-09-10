@@ -27,9 +27,10 @@ results/
 "
 This file (without the quote marks) would tell git to ignore any file with the .dat extension, and anything in the results/ subdirectory.
 
+git rm --cached foo.txt : Git will stop tracking the file foo.txt
 
---- Configuring on GitHub ---
-git remote add origin "link" : connects the local repository to the online one via the link. Can also use SSH but requires additional options (but provides more security).
+git remote add <name> "link" : connects the local repository to the online one via the link, calling this link <name>. Can also use SSH but requires additional options (but provides more security).
+
 git remote -v : displays links to/from this repository.
 
 git push origin master : pushes changes from the local repository to the origin repository (and to master branch).
