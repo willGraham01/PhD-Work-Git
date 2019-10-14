@@ -7,6 +7,20 @@
 
 %begin the macros via newcommand. Try to group them up reasonably!
 
+%notation and variable use throughout the file
+\renewcommand{\vec}[1]{\mathbf{#1}}				%vectors are bold, not overline arrow
+\newcommand{\recip}[1]{\frac{1}{#1}}			%fast reciprocal as a fraction
+\newcommand{\interval}[1]{\sqbracs{0,\abs{#1}}}	%creates the closed interval from 0 to the length of the input #1, denoted by absolute value
+
+\newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
+\newcommand{\ddom}{\Omega}						%2D domain notation
+\newcommand{\dddmes}{\widetilde{\mu}}			%3D measure
+\newcommand{\ddmes}{\mu}						%2D measure
+
+\newcommand{\graph}{\mathbb{G}}					%graph variable
+\newcommand{\wavenumber}{\kappa}				%fourier variable or wavenumber, not to confuse with jk subscripts!
+\newcommand{\qm}{\theta}						%quasi-momentum parameter
+
 %standard sets
 \newcommand{\naturals}{\mathbb{N}}			%natural numbers
 \newcommand{\integers}{\mathbb{Z}}			%integers
@@ -18,7 +32,7 @@
 \newcommand{\bracs}[1]{\left( #1 \right)}				%encloses input in brackets
 \newcommand{\sqbracs}[1]{\left[ #1 \right]}				%encloses input in square brackets
 \newcommand{\clbracs}[1]{\left\{ #1 \right\}}			%encloses input in curly bracers
-\newcommand{\abs}[1]{\lvert #1 \rvert}					%absolute value
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}					%absolute value
 \newcommand{\norm}[1]{\lvert\lvert #1 \rvert\rvert}		%norm 
 
 %function sets
@@ -26,7 +40,7 @@
 \newcommand{\ltwo}[2]{L^{2}\bracs{#1,\mathrm{d}#2}}						%general L^2 space
 \newcommand{\gradSob}[2]{H^1_\mathrm{grad}\bracs{#1, \mathrm{d}#2}}		%gradient Sobolev space
 \newcommand{\curlSob}[2]{H^1_\mathrm{curl}\bracs{#1, \mathrm{d}#2}}		%curl Sobolev space
-\newcommand{\kSob}[2]{H^1_{k,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
+\newcommand{\kSob}[2]{H^1_{\wavenumber,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
 \newcommand{\supp}{\mathrm{supp}}										%support of a function
 
 %grad and curl sets
@@ -40,7 +54,7 @@
 \newcommand{\ddiff}[2]{\dfrac{\mathrm{d}^2 #1}{\mathrm{d}^2 #2}}	%2nd deriv
 \newcommand{\grad}{\nabla}											%grad operator
 \newcommand{\curl}[1]{\grad^{(#1)}\wedge}							%curl with superscript #1
-\newcommand{\kcurl}[1]{\grad_{#1}^{(k)}\wedge}						%k-curl with measure subscript #1
+\newcommand{\kcurl}[1]{\grad_{#1}^{(\wavenumber)}\wedge}			%k-curl with measure subscript #1
 
 %displaying integrals
 \newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3
@@ -50,14 +64,3 @@
 %\newcommand{\lconv}[1]{\xrightarrow{#1}}							%convergence with #1 above the rightarrow - requires mathtools
 \newcommand{\lconv}[1]{\overset{#1}{\longrightarrow}}				%convergence with #1 above the rightarrow
 \newcommand{\toInfty}[1]{ \ \text{as} \ #1 \rightarrow\infty}		%writes out "as #1 tends to infty"
-
-%notation and variable use throughout the file
-\renewcommand{\vec}[1]{\mathbf{#1}}				%vectors are bold, not overline arrow
-\newcommand{\recip}[1]{\frac{1}{#1}}			%fast reciprocal as a fraction
-
-\newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
-\newcommand{\ddom}{\Omega}						%2D domain notation
-\newcommand{\dddmes}{\widetilde{\mu}}			%3D measure
-\newcommand{\ddmes}{\mu}						%2D measure
-
-\newcommand{\graph}{\mathbb{G}}					%graph variable

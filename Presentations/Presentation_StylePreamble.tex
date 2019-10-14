@@ -1,0 +1,17 @@
+%Preamble file for all presentation styles but not including maths formatting!
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+ 
+%removes figure prefix from captions
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+%sets the directory for image files - note: this assumes the file structure as of 14-10-2019
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Images/}}
