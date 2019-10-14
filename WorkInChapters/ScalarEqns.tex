@@ -458,7 +458,7 @@ Embed a periodic graph into the $\bracs{x_1,x_2}$-plane, with period cell $\ddom
 Let $\ddmes$ be the singular measure that supports the edges of $\graph$. \tstk{possible worth defining a `scenario G" or something to save writing out all the notational stuff for a graph each time!}
 Consider the problem
 \begin{align} \label{eq:WholeSpaceScalarProblem}
-	\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u,
+	-\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u,
 \end{align}
 posed in $\reals^2$. \tstk{either refer back to, or discuss here, the spectral problem and why we need the Gelfand transform to make sense of what is going on. Also it may be useful to talk about why we care so much about the spectral, rather than the resolvant, problem.}
 
@@ -513,7 +513,7 @@ It should be noted that we do not have invariance of these Sobolev spaces with r
 \begin{lemma}[Tangential $\qm$-Gradient on a Segment Parallel to the $x_1$-axis] \label{lem:TangentialQMGradientSegmentParallel}
 	Let $I$ be a segment in the $\bracs{x_1,x_2}$-plane parallel to the $x_1$ axis, and $\lambda_I$ the singular measure supported on $I$.
 	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space on the interval $\interval{I}$ with respect to the Lebesgue measure; and let $r:\interval{I}\rightarrow I$ be the change of variables map $r(t) = v_I + te_I$, for either endpoint $v_I$ of $I$ and unit vector $e_I$ along $I$ directed away from $v_I$.
-	Suppose $u\in\gradSobQM{\ddom}{\lambda_I}$, and let $\widetilde{u} = u\circ r\in\gradSob{\interval}{t}$.
+	Suppose $u\in\gradSobQM{\ddom}{\lambda_I}$, and let $\widetilde{u} = u\circ r\in\gradSob{\interval{I}}{t}$.
 	Then
 	\begin{align*}
 		\grad_{\lambda_I}^\qm u &= \begin{pmatrix} u' + i\qm_1 u \\ 0	\end{pmatrix}
@@ -559,13 +559,13 @@ Note that $u'$ itself is simply a convenient notation for the function that unde
 What is clear from this result at least is that whilst the set of gradients of zero is invariant under $\qm$, the tangential gradient is not - and this manifests itself in the family of problems that we now look to solve.
 That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMGradientSegmentParallel}, proposition \ref{prop:GradZeroInvarientUnderQM} and corollary \ref{cory:CharacterisationGradientsZero} the following result which provides us the form for the tangential $\qm$-gradient.
 
-\begin{cory}[Tangential $\qm$-Gradient on Graphs]
+\begin{cory}[Tangential $\qm$-Gradient on Graphs] \label{cory:TangentialQMGradientGraphs}
 	Let $\graph=(V,E)$ be a graph embedded into $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$, and let $x=\bracs{x_1,x_2}$ be the axes co-ordinate system.
 	For each $I_{jk}\in E$, denote the restriction of $u$ to $I_{jk}$ by $u_{jk} = u\vert_{I_{jk}}$.
 	Also equip each $I_{jk}$ with a local orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ parallel to $I_{jk}$, such that $x = R_{jk}y$ for some $R_{jk}\in\mathrm{SO}(2)$.
 	If $u\in\gradSobQM{\ddom}{\ddmes}$, then
 	\begin{align*}
-		\grad_\ddmes^\qm u \big\vert_{I_{jk}} &= R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u \\ 0 \end{pmatrix}
+		\grad_\ddmes^\qm u \big\vert_{I_{jk}} &= R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix}
 	\end{align*}
 	for every $I_{jk}\in E$.
 \end{cory}
@@ -574,16 +574,76 @@ That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMG
 	Taking a segment $I_{jk}$ in the plane at an arbitrary angle to the $x_1$ axis, one first applies the rotation $R_{jk}$ to bring the problem into the axes co-ordinate frame, then applying the argument in the proof of lemma \ref{lem:TangentialQMGradientSegmentParallel} provides the result.
 \end{proof}
 
-%\section{Chapter Summary}
-%The work in this section largely builds off that of \tstk{references!!}, before pursuing an example that will be relevant in the later sections.
-%We have introduced the theory behind the kinds of mathematical problems and their associated spaces.
-%One constructs the Sobolev spaces $\gradSob{D}{\nu}$ using closure of the set of $\smooth{D}$ functions and their gradients, the cost of which is uniqueness of the $\nu$-gradients, $\grad_\nu$.
-%However one can characterise all the gradients of a given function $u\in\gradSob{D}{\nu}$ by finding the unique $\grad_\nu u$ which is perpendicular to the set of $\nu$-gradients of 0, $\gradZero{D}{\nu}$.
-%As such understanding the structure of $\gradZero{D}{\nu}$ is central to finding solutions to problems posed in $\gradSob{D}{\nu}$. \newline
-%
-%The example provided in section \ref{sec:ScalarExample} demonstrates how this theory can be employed to reduce an abstract problem involving $\nu$-gradients to an equivalent problem which involves more familiar (or ``classical") objects.
-%Starting from the problem \eqref{eq:ScalarExampleStrongForm}, one can obtain the system \eqref{eq:ScalarExampleLebesgueIntegrals} which can be approached numerically via schemes like finite elements, and the solution to the original problem can be recovered.
-%Under further regularly assumptions, one can even obtain systems of ODEs which may prove admissible to an analytic approach and even yield exact solutions. \newline
-%
-%We will be looking to extend the concepts introduced here when we move towards considering systems of vector-valued functions, which are widely used in the description of physical systems.
-%Many of the argumentative techniques that we have employed in this section will provide inspiration for the arguments we employ in chapter \ref{ch:3VectorEqns}.
+This analysis allows us to reduce the problem
+\begin{align} \label{eq:ScalarPeriodCellSystem}
+	- \grad_\ddmes^\qm \cdot \grad_\ddmes^\qm u &= \omega^2 u, \quad u\in\gradSobQM{\ddom}{\ddmes}
+\end{align}
+to a system of ODEs on the edges of a graph, that is a Quantum Graph problem (see chapter \ref{ch:QuantumGraphs}).
+This procedure is rather straightforward having deduced the form of the tangential $\qm$-gradient; one simply writes \eqref{eq:ScalarPeriodCellSystem} in it's interpreted (integral) form, substitutes for the form of the tangential $\qm$-gradient, and then performs a substitution along each edge $I_{jk}$.
+For illustrative purposes, and for comparison with the more complex vector-valued equations we will consider in chapter \ref{ch:VectorEqns}, we now demonstrate this process for the example above.
+Maintaining the notation as set out in corollary \ref{cory:TangentialQMGradientGraphs}, we begin from \eqref{eq:ScalarPeriodCellSystem} and perform some manipulations;
+\begin{align*}
+	\omega^2 \integral{\ddom}{u\overline{\phi}}{\ddmes} 
+	&= \integral{\ddom}{\grad_\ddmes^\qm u \cdot \overline{\grad^\qm \phi}}{\ddmes} \quad \forall \phi\in\smooth{\ddom}, \text{ implying that} \\
+	\omega^2 \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{u_{jk}\overline{\phi}}{\ddmes} 
+	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot \overline{\grad^\qm \phi}}{\lambda_{jk}} \\
+	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{\begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot R_{jk}\overline{\grad^\qm \phi}}{\lambda_{jk}} \\
+	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}}}{\lambda_{jk}}. \labelthis\label{eq:EquationReductionSumExpression}
+\end{align*}
+At this point we note that this expression holds for all $\phi\in\smooth{\ddom}$, so in particular must hold when the support of $\phi$ intersects the (interior of the) edge $I_{jk}$ only, and so we have equality of matching terms in both sums.
+That is
+\begin{align*}
+	0 &= \integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}}{\lambda_{jk}}.
+\end{align*}
+Next we perform a substitution via the map $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ via $r(t) = v_{j}+t e_{jk}$.
+Although we are composing the functions in the integrand with $r_{jk}$, we do not make this explicit in the following equations.
+However we do note that $\diff{}{t}\phi\bracs{r_{jk}(t)} = \bracs{R_{jk}\grad\phi\bracs{r_{jk}(t)}}_1$, and set $\qm_{jk} := \bracs{R_{jk}\qm}_1$ thus when we change variables we obtain
+\begin{align} \label{eq:EdgeEquationWeakForm}
+	0 &= \int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \md t,
+\end{align}
+for every edge $I_{jk}\in E$. 
+If we now make the assumption that $u'_{jk}$ has enough regularity to be differentiated again, we can see that \eqref{eq:EdgeEquationWeakForm} is actually the weak form of
+\begin{align} \label{eq:EdgeEquationStrongForm}
+	-\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk}, \quad t\in\interval{I_{jk}}.
+\end{align}
+This means that under suitable regularity conditions we obtain a differential equation for $u_{jk}$ on each of the segments (or the interval that corresponds to them) $I_{jk}$.
+Of course, \eqref{eq:EdgeEquationStrongForm} does not provide a solution on it's own, as boundary conditions are required to close the system and remove any multiplicative constants that might arise.
+However in this case it turns out we can find these boundary (or rather, ``vertex") conditions too; clearly we must impose the condition of continuity of $u$ at the vertices to have differentiability on $\graph$, so we obtain the matching conditions
+\begin{align} \label{eq:EdgeEquationsMatchingConditons}
+	u_{jk}\bracs{v_j} &= u_{jl}\bracs{v_j} \quad \forall v_j\in V, \text{ whenever } j\sim k \text{ and } j\sim l.
+\end{align}
+This still does not provide enough matching conditions for the whole system - to find the remaining conditions we return to \eqref{eq:EquationReductionSumExpression} and note that this equation also holds when the test functions $\phi$ have a support that contains $v_j$ in it's interior, for each $v_j\in V$.
+Hence we observe that
+\begin{align*}
+	0 &= \sum_{j\sim k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}_{jk}}{\lambda_{jk}} \\
+	&= \sum_{j\sim k}\int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \md t
+\end{align*}
+holds for all $v_j\in V$.
+But under the regularity assumptions on $u_{jk}$, we can integrate this expression by parts, and we obtain
+\begin{align*}
+	0 &= \sum_{j\sim k} -\int_0^{\abs{I_{jk}}} \bracs{\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{jk} + \omega^2 u_{jk}}\overline{\phi} \md t 
+	+ \sum_{j\sim k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} \\
+	&= \sum_{j\sim k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j},
+\end{align*}
+as we know that the integrand is identically zero by \eqref{eq:EdgeEquationStrongForm}, and the support of $\phi$ contains the vertex $v_j$ and no other vertices of $\graph$.
+Hence the value of $\overline{\phi}\bracs{v_j}$ cancels in the above expression, and we obtain the Kirchoff condition at each vertex $v_j\in V$:
+\begin{align} \label{eq:EdgeEquationsKirchoffCondition}
+	\sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} &= 0 \quad \forall v_j\in V.
+\end{align}
+So the problem \eqref{eq:ScalarPeriodCellSystem} is equivalent to solving the Quantum Graph problem defined by \eqref{eq:EdgeEquationStrongForm}, \eqref{eq:EdgeEquationsMatchingConditons}, and \eqref{eq:EdgeEquationsKirchoffCondition} under suitable regularity assumptions on the solution $u$.
+This alternative problem can be approached using the methods detailed in chapter \ref{ch:QuantumGraphs}, which offer much more in the way of obtaining a solution and computing the eigenvalues $\omega^2$ for a general graph $\graph$.
+Also note how the geometric information about the embedded graph $\graph$ appears in the resulting Quantum Graph system - the quasi-momentum is rotated (as $\qm_{jk} = \bracs{R_{jk}\qm}_1$), the lengths of the edges contribute to the domain of the Quantum Graph problem, and the gradients that appear are all directed along the edges $I_{jk}$.
+
+\section{Chapter Summary}
+The content of this chapter demonstrates how we can construct Sobolev spaces with respect to arbitrary (Borel) measures $\nu$; provide a coherent notion of a gradient, and pose variational problems on such spaces.
+This is done by following the work in \cite{zhikov2000extension}, one constructs the Sobolev spaces $\gradSobQM{D}{\nu}$ using closure of the set of $\smooth{D}$ functions and their ($\qm$-)gradients.
+The tangential gradient fulfils the role that the classical gradient would otherwise, and is found characterising the set of gradients of zero, $\gradZero{D}{\nu}$ and then considering the elements orthogonal to this set. \newline
+
+The example provided in section \ref{sec:ScalarExample} concerns one setup which we are interested in for our applications in wave-guidance and photonic fibres, and derives some useful results about $\gradZero{\ddom}{\ddmes}$ that provide us with an intuitive understanding of the objects we are dealing with.
+We see that gradients of zero are those that point outwards from segments of the underlying graph $\graph$, and that this edge-wise characterisation of gradients of zero can be extended to the entirety of $\graph$.
+In turn this leads us to the conclusion of section \ref{sec:ScalarSystem} where we consider the family of problems that arises after taking the Gelfand transform of a problem in a periodic full-space. 
+We see that we can write tangential gradients edge-wise, including terms that arise through the introduction of the quasi-momentum $\qm$.
+This allows us, under certain regularity assumptions, to arrive at an equivalent Quantum Graphs formulation for our original problem, which can be approached in the manner detailed in chapter \ref{ch:QuantumGraphs}, and in general is more admissible to numerical and analytical solution than our original problem. \newline
+
+We will be looking to extend the concepts introduced here when we move towards considering systems of vector-valued functions in chapter \ref{ch:VectorEqns}, which are widely used in the description of physical systems.
+Our argumentative techniques employed here will also serve as the inspiration for many of the arguments we employ in that chapter too.
