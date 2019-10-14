@@ -55,8 +55,11 @@
 \newcommand{\smooth}[1]{C^{\infty}\bracs{#1}}							%smooth functions
 \newcommand{\ltwo}[2]{L^{2}\bracs{#1,\mathrm{d}#2}}						%general L^2 space
 \newcommand{\gradSob}[2]{H^1_\mathrm{grad}\bracs{#1, \mathrm{d}#2}}		%gradient Sobolev space
+\newcommand{\gradSobQM}[2]{H^1_{\qm, \mathrm{grad}}\bracs{#1, \mathrm{d}#2}} %gradient + i\qm Sobolev space
 \newcommand{\curlSob}[2]{H^1_\mathrm{curl}\bracs{#1, \mathrm{d}#2}}		%curl Sobolev space
+\newcommand{\curlSobQM}[2]{H^1_{\qm, \mathrm{curl}}\bracs{#1, \mathrm{d}#2}}		%curl + i\qm Sobolev space
 \newcommand{\kSob}[2]{H^1_{\wavenumber,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
+\newcommand{\kSobQM}[2]{H^1_{\wavenumber,\qm,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k,\qm-curl Sobolev space
 \newcommand{\supp}{\mathrm{supp}}										%support of a function
 
 %grad and curl sets
@@ -71,6 +74,7 @@
 \newcommand{\grad}{\nabla}											%grad operator
 \newcommand{\curl}[1]{\grad^{(#1)}\wedge}							%curl with superscript #1
 \newcommand{\kcurl}[1]{\grad_{#1}^{(\wavenumber)}\wedge}			%k-curl with measure subscript #1
+\newcommand{\ktcurl}[1]{\grad_{#1}^{(\wavenumber, \qm)}\wedge}		%k,theta-curl with measure subscript #1
 
 %displaying integrals
 \newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3

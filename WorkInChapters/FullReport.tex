@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Images/}}
+
 %\input imports all commands from the target files
 \input{PreambleMaths.tex} %maths commands, variables, and other packages
 \input{PreambleTikz.tex} %tikz things, including importing tikz itself
