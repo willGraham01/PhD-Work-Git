@@ -3,7 +3,7 @@ In this chapter we look at scalar wave equations in our waveguide-like geometry,
 We base our approach largely off the work of Zhikov \cite{zhikov2000extension}, in that we consider what can be colloquially described as ``differential equations with respect to a measure $\ddmes$".
 We will give a rigorous definition of the kinds of problems and spaces that this colloquialism covers in the following sections, and will demonstrate how this framework allows us to obtain a quantum graph problem from our variational formulation.
 This will allow us to make use of the theory which was highlighted in \ref{ch:QuantumGraphs}, and additionally will make our variational problems open to numerical solution.
-At the conclusion of this chapter we will have highlighted the techniques that are available to us, and how we shall adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:3VectorEqns}.
+At the conclusion of this chapter we will have highlighted the techniques that are available to us, and how we shall adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:VectorEqns}.
 
 \section{The Scalar Sobolev Spaces} \label{sec:ScalarSobSpaces}
 In this section we look to construct the function spaces that we shall be working with throughout the chapter, as well as discussing some of the consequences of this construction.
@@ -86,10 +86,10 @@ In which case solutions (if they exist) are triplets $\bracs{\lambda, u, \grad_\
 \section{An Example System} \label{sec:ScalarExample}
 To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example and some analysis of it.
 Let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$. \tstk{may not need this clarification once the quantum graphs chapter is written up}
-By this we associate each vertex $v_i\in V$ with a point $\vec{v}_i\in\reals^2$, and each edge $\bracs{v_i,v_j}\in E$ to the segment $I_{ij}=\sqbracs{\vec{v}_i,\vec{v}_j}$.
-In a slight abuse of notation we drop the distinction between the vertices $v_i$ of $\graph$ and their associated points $\vec{v}_i\in\ddom$, and simply use the notation $v_i$ for both objects.
-Similarly we adopt the notation $I_{ij}$ for both the edges of $\graph$ and their associated segments in $\ddom$.
-Because of the embedding we can also consider $\graph$ as a subset of $\ddom$ itself, and so can make sense of expressions like $\graph\cap[0,1]^2$ by interpreting $\graph$ as the intersection of its segments $I_{ij}$. 
+By this we associate each vertex $v_j\in V$ with a point $\vec{v}_j\in\reals^2$, and each edge $\bracs{v_j,v_k}\in E$ to the segment $I_{jk}=\sqbracs{\vec{v}_j,\vec{v}_k}$.
+In a slight abuse of notation we drop the distinction between the vertices $v_j$ of $\graph$ and their associated points $\vec{v}_j\in\ddom$, and simply use the notation $v_j$ for both objects.
+Similarly we adopt the notation $I_{jk}$ for both the edges of $\graph$ and their associated segments in $\ddom$.
+Because of the embedding we can also consider $\graph$ as a subset of $\ddom$ itself, and so can make sense of expressions like $\graph\cap[0,1]^2$ by interpreting $\graph$ as the intersection of its segments $I_{jk}$. 
 On $\ddom$ we define the measure $\ddmes$ as the measure which supports 1D Lebesgue measure on the edges of $\graph$, so for some $B\subset\ddom$ we have that 
 \begin{align*}
 	\ddmes\bracs{B} = \sum_{I_{ij}\in E}\lambda_{ij}\bracs{B \cap I_{ij}}
@@ -100,80 +100,97 @@ We are interested in the (spectral) problem
 	-\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u
 \end{align}
 for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues ($\omega^2$).
-\tstk{the provisos about considering the spectral problem, and the things we will have to consider in the vector case. This should include how we have already taken the Fourier transform of the 3D problem, and the Gelfand transform, and how this is the $k=0,\theta=0$ case - $\theta$ the quasi-momentum.}
 
-To see how the setup just detailed relates to the wave propagation problems that we wish to consider in future, see figure \ref{fig:ScalarStrucDiagram}.
+Before we begin our analysis we highlight how the setup just detailed relates to the wave propagation problems that we wish to consider in future, see figure \ref{fig:ScalarStrucDiagram}.
 We interpret $\ddom$ as being the period cell of the cross-section of some waveguide that extends into 3D, whose waveguide axis is parallel to the $x_3$-axis.
-The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only\footnote{Later we will look to relate singular structure problems such as this to thin-structure problems, where the cross section has a graph-like structure but with edges of non-zero ``thickness".}.
+The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only.
+In section \ref{sec:ScalarSystem} we will consider a similar system to this but with the addition a quasi-momentum parameter $\qm$ which reflects the fact that to obtain a problem on the period cell of the cross section ($\ddom$), we are required to apply a Gelfand problem to the full-space problem.
+We will elaborate further on this in the relevant section.
 \begin{figure}[h!]
 	\centering
-	\begin{tikzpicture}
-		%actual waveguide
-		\begin{scope}[shift={(5,-2)}]
-			\draw (0,0) rectangle (2,2);
-			\node[anchor=south] at (1,1) {$\ddom\subset\reals^2$};
-			%waveguide axis
-			\draw[red] (2,0) -- (2+3.5/2,1);
-			\draw[dashed, red] (0,0) -- (3.5/2,1);
-			\draw[red] (0,2) -- (3.5/2,3);
-			\draw[red] (2,2) -- (2+3.5/2,3);
-		\end{scope}		
-		
-		%axes labels
-		\begin{scope}[shift={(5,2)}, scale=0.75]
-			\draw[->] (0,1) -- (2,1) node[anchor=west] {$x_1$};
-			\draw[->] (0,1) -- (0,3) node[anchor=south] {$x_2$};
-			\draw[->] (0,1) -- (2,1+8/7) node[anchor=south west] {$x_3$};
-		\end{scope}
-		
-		%graph stucture
-		\begin{scope}[shift={(-3,-1.25)}]
-			\draw (0,0) rectangle (5,5);
-			%graph edges
-			\draw (2.5,2.5) -- (4,3) -- (4.5,4);
-			\draw (2.5,2.5) -- (0.5,4.5);
-			\draw (2.5,2.5) -- (1,1) -- (3.5,1) -- (4,2) -- cycle;
-			%nodes
-			\filldraw (2.5,2.5) circle (1pt) node[anchor=south] {$v_i$};	
-			\filldraw (4,3) circle (1pt);	\filldraw (4.5,4) circle (1pt);
-			\filldraw (0.5,4.5) circle (1pt) node[anchor=north east] {$v_j$};
-			\filldraw (1,1) circle (1pt);	\filldraw (3.5,1) circle (1pt);	\filldraw (4,2) circle (1pt);
-			\node[anchor=south] at (2.5,5) {$\graph\subset\ddom$};
-			%labelling for I_ij
-			\node[anchor=north east] at (1.5,3.5) {$I_{ij}$};
-			\draw[->] (2,3.2) -- (1.5,3.7) node[anchor=west] {$e_{ij}$};
-		\end{scope}
-		
-		%lines between waveguide pic and graph illustration
-		\draw[dashed, blue] (5,-2) -- (-3,-1.25);
-		\draw[dashed, blue] (7,-2) -- (2,-1.25);
-		\draw[dashed, blue] (7,0) -- (2,3.75);
-		\draw[dashed, blue] (5,0) -- (-3,3.75);
-	\end{tikzpicture}
-	\caption{\label{fig:ScalarStrucDiagram} An illustration of the wider setting for $\ddom$ with singular structure. The 2D problem will arise from considering a structure that is periodic in the $\bracs{x_1,x_2}$-plane and translation invariant in the $x_3$ direction; and taking the (Fourier and) Gelfand transforms to arrive at a family of problems posed on the 2D-period (cross-section) period cell. \tstk{move tikz code into separate file so that diagram can be reused!}}
+	\includegraphics[scale=1.0]{../Diagrams/Diagram_GraphInCrossSection.pdf}
+	\caption{\label{fig:ScalarStrucDiagram} An illustration of the wider setting for $\ddom$ with singular structure. The 2D problem will arise from considering a structure that is periodic in the $\bracs{x_1,x_2}$-plane and translation invariant in the $x_3$ direction; and taking the (Fourier and) Gelfand transforms to arrive at a family of problems posed on the 2D-period (cross-section) period cell.}
 \end{figure}
 
 \subsection{Analysis of $\gradZero{\ddom}{\ddmes}$}
 We first pursue an understanding of $\gradZero{\ddom}{\ddmes}$, as this will be crucial for helping us reduce the problem \eqref{eq:ScalarExampleStrongForm} to something more manageable.
+Most of the arguments presented here are presented (albeit in a much more brief format) in \cite{zhikov2000extension}, however we aim to give a fuller explanation as we will later be using these arguments to motivate our work in chapter \ref{ch:VectorEqns}.
 We begin by first considering what $\gradZero{\ddom}{\ddmes}$ looks like when $\graph$ consists of only a single edge $I$ parallel to the $x_1$-axis.
-In this case $\ddmes = \lambda_I$ (Lebesgue measure down $I$) and it can be deduced that 
-\begin{align*}
-	\gradZero{\ddom}{\lambda_I} &= 
-	\clbracs{
-		\begin{pmatrix} 0 \\ f	\end{pmatrix}
-		\ \vert \ f\in\ltwo{\ddom}{\ddmes}
-	},
-\end{align*}
-see for example \cite{zhikov2000extension}.
-Intuitively we can think of this result as follows \tstk{use the tikzpicture you created for this!}: the smooth gradient $\grad$ (from which $\grad_\ddmes$ is constructed) details the rate of change of the function it is applied to.
+
+\begin{prop}[Gradients of Zero on a Segment Parallel to the $x_1$-axis] \label{prop:GradZeroParallelZhikov}
+	Let $I$ be a segment in the $\bracs{x_1,x_2}$-plane parallel to the $x_1$-axis, and let $\lambda_I$ be the singular measure supported on $I$.
+	Then 
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} &= 
+		\clbracs{
+			\begin{pmatrix} 0 \\ f	\end{pmatrix}
+			\ \vert \ f\in\ltwo{\ddom}{\lambda_I}
+		}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	This result is quoted and illustrated in \cite{zhikov2000extension}.
+	However as we will be wanting to utilise the ideas in this proof in our later work, w provide a fuller argument here. \newline
+
+	Without loss of generality we assume $x_2=0$ on $I$, otherwise we apply a translation to the argument that follows.
+	Additionally it suffices to show that the set on the right hand side includes all functions of the specified form when $f$ is smooth, as we can then apply a density argument to deduce the result for all $f\in\ltwo{\ddom}{\lambda_I}$. \newline
+	
+	So take some $f\in\smooth{\ddom}$, then the ``constant sequence" $\phi_n = \phi = x_2 f$ is such that
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi}^2}{\lambda_I} &= \integral{I}{x_2^2\abs{f}^2}{\lambda_I} \\
+		&= 0 \text{ as } x_2=0 \text{ on } I.
+	\end{align*}
+	Furthermore
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi - \bracs{0, f}^\top }^2}{\lambda_I}
+		&= \integral{I}{\abs{ x_2\grad f + \bracs{0, f}^\top - \bracs{0,f}^\top }^2}{\lambda_I} \\
+		&= \integral{I}{\abs{ x_2\grad f }^2}{\lambda_I} \\
+		&= 0.
+	\end{align*}
+	Thus we have that $\phi_n\rightarrow0$ and $\grad\phi_n\rightarrow\bracs{0,f}^\top \toInfty{n}$, and so $\bracs{0,f}^\top\in\gradZero{\ddom}{\lambda_I}$. \newline
+	
+	We now prove that if $\bracs{f,0}^\top\in\gradZero{\ddom}{\lambda_I}$ then $f=0$.
+	So suppose $\bracs{f,0}\in\gradZero{\ddom}{\lambda_I}$ and take an approximating sequence $\phi_n$ as in \eqref{eq:GradZeroSequenceDefinition}.
+	Then as $\grad\phi_n\rightarrow\bracs{f,0}^\top$ in $\ltwo{\ddom}{\lambda_I}^2$ and
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi_n - \bracs{f,0}^\top}^2}{\lambda_I}
+		&= \integral{I}{\abs{\partial_1\phi_n - f}^2}{\lambda_I} + \integral{I}{\abs{\partial_2\phi_n}^2}{\lambda_I},
+	\end{align*}
+	we have in particular that
+	\begin{align*}
+		\integral{I}{\abs{\partial_1\phi_n - f}^2}{\lambda_I} \rightarrow 0.
+	\end{align*}
+	We now perform a change of variables via the map $r:\interval{I}\rightarrow I$, via $r(t) = v_I + te_I$; where $v_I$ is one of the endpoints of $I$ and $e_I$ is the unit vector pointing away from this endpoint along the segment $I$.
+	In particular we note that as $I$ is parallel to the $x_1$-axis that $e_I=e_1$, the canonical unit vector in the $x_1$-direction.
+	Setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have by the chain rule $\diff{\tilde{\phi}_n}{t} = \partial_1\phi_n\bracs{r(t)}$, and so
+	\begin{align*}
+		0 &\leftarrow \integral{I}{\abs{\partial_1\phi_n - f}^2}{\lambda_I} 
+		= \int_0^{\abs{I}}\abs{\diff{\tilde{\phi}_n}{t} - \tilde{f}}^2 \md t.
+	\end{align*}
+	Here we have set $\tilde{f} = f \circ r$.
+	We can also see that
+	\begin{align*}
+		0 &\leftarrow \integral{I}{\abs{\phi_n}^2}{\lambda_I} 
+		= \int_0^{\abs{I}} \abs{\tilde{\phi}^2} \md t.
+	\end{align*}
+	Thus $\tilde{\phi}_n\rightarrow 0$ and $\diff{\tilde{\phi}_n}{t}\rightarrow \tilde{f}$ in $\ltwo{\interval{I}}{t}$, hence $\tilde{f}$ is the distributional derivative (in the $\gradSob{\interval{I}}{t}$ sense) of the zero function.
+	But in this classical Sobolev space we can conclude that $\tilde{f} = 0$, and thus $f = 0$, as we sought.
+\end{proof}
+
+We can interpret this result as follows, and have provided an illustration in figure \ref{fig:GradZeroEdge}.
+The smooth gradient $\grad$ (from which $\grad_\ddmes$ is constructed) details the rate of change of the function it is applied to.
+\begin{figure}[b]
+	\centering
+	\includegraphics[scale=1.0]{../Diagrams/Diagram_GradZeroEdge.pdf}
+	\caption{\label{fig:GradZeroEdge} Illustration of how to interpret a ``gradient of zero" on an edge $I_{jk}$. As the singular measure $\lambda_{jk}$ only sees the component of the (smooth) gradient parallel to $I_{jk}$, anything perpendicular has no contribution.}
+\end{figure}
 The measure $\ddmes$ however can only ``see" along (or alternatively ``only cares about") what's going on along the segment $I$, as this is it's entire support.
 As such $\ddmes$ can only see the change along the segment $I$, and hence we find that $\gradZero{\ddom}{\ddmes}$ consists of all the gradients that are directed perpendicular to $I$.
 Furthermore any gradient orthogonal to $\gradZero{\ddom}{\ddmes}$ is directed parallel to $I$, so $\grad_\ddmes$ can only ``see" rates of change parallel to the segment $I$.
 This interpretation is further reinforced by the following analysis, which characterises $\gradZero{\ddom}{\ddmes}$ when the segment $I$ is not (necessarily) parallel to the $x_1$-axis. \newline
 
-Consider the case when $\graph$ consists of a single segment $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
-Let $R$ be the orthogonal change of co-ordinates $x=Ry$ with $x=\bracs{x_1,x_2}$ the orthogonal co-ordinate system along the axes. \tstk{result on rotating gradients is kind of awkwardly placed, make it fit in better.}
-\begin{lemma}[Gradients under Rotation]
+\tstk{result on rotating gradients is kind of awkwardly placed, make it fit in better.}
+\begin{lemma}[Gradients under Rotation] \label{lem:SmoothGradientsUnderRotation}
 	Let $D\subset\reals^n$, $\phi\in C^1\bracs{D}$, and let $x=\bracs{x_j}$, $y=\bracs{y_j}$ be two co-ordinate systems for $D$, related by $x=Ry$ for a rotation $R\in\mathrm{SO}\bracs{n}$.
 	Let $\grad_x$ and $\grad_y$ denote the gradient operator in the $x$ and $y$ co-ordinate systems accordingly.
 	Then
@@ -189,307 +206,253 @@ Let $R$ be the orthogonal change of co-ordinates $x=Ry$ with $x=\bracs{x_1,x_2}$
 		&= R_{jk}\pdiff{u}{y_k} = \bracs{\grad_y u}_j.
 	\end{align*}
 \end{proof}
-\tstk{check notation, and cross-reference with note-book - it's not all copy and paste from before!}
-If $v\in\gradZero{\ddom}{\lambda_I}$ then there exists a sequence of functions $\phi_k\in\smooth{\ddom}$ such that $\phi_k\lconv{\ltwo{\ddom}{\lambda_I}}0$ and $\grad_y\phi_k\lconv{\ltwo{\ddom}{\lambda_I}^2} v \toInfty{k}$.
-Define $\psi_k = \phi_k\bracs{R^{\top}x}$, and let $\lambda_{R^{\top}I}$ denote the measure obtained from the composition $\lambda_I\circ R^{\top}$ (note that this is just the measure that supports 1D Lebesgue measure down the rotated segment).
-Then using the change of variables $x=Ry$, $\psi_k\lconv{\ltwo{\ddom}{\lambda_{R^{\top}I}}}0$, and
-\begin{align*}
-	\grad_x\psi_k &= \grad_x\phi_k\bracs{R^{\top}x} = R^{\top}\grad_y\phi_k\bracs{y}\big\vert_{y=R^{\top}x} \\
-	&\lconv{\ltwo{\ddom}{\lambda_{R^{\top}I}}} R^{\top}v\bracs{R^{\top}x} =: w\bracs{x}.
-\end{align*}
-Now $w$ is a gradient of zero for a segment parallel to the $x_1$ axis, and hence has the form
-\begin{align*}
-	w &= \begin{pmatrix} 0 \\ f \end{pmatrix}, &\quad f\in\ltwo{\ddom}{\lambda_{R^{\top}I}} \\
-	\Leftrightarrow v\bracs{R^{\top}x} &= R\begin{pmatrix} 0 \\ f \end{pmatrix} &\\
-	\Leftrightarrow v\bracs{y} &= R\begin{pmatrix} 0 \\ \widetilde{f} \end{pmatrix}, &\quad \widetilde{f}\in\ltwo{\ddom}{\lambda_I}.
-\end{align*}
-This confirms that 
-\begin{align*}
-	\gradZero{\ddom}{\lambda_I} &= \clbracs{R\begin{pmatrix} 0 \\ \widetilde{f} \end{pmatrix} \ \vert \ \widetilde{f}\in\ltwo{\ddom}{\lambda_I}} \\
-	&= \clbracs{g\in\ltwo{\ddom}{\lambda_I}^2 \ \vert \ g\cdot e_{I} = 0}
-\end{align*}
-where $e_I$ is the unit vector directed along the segment $I$.
 
-%\subsubsection{Graphs with Multiple Edges}
-%Of course the results so far only describe the set of gradients of zero for graphs with single edges, however we can use this understanding of single edges to build up an understanding of what happens to gradients of zero when we have a more interesting graph.
-%In particular, we want to show that for a (multiple-edge) graph $\graph$ and $\ddmes$ supporting it's edges, we have that
-%\begin{align*}
-%	\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{ij}}\cdot e_{ij}=0 \ \forall I_{ij}\in E}.
-%\end{align*}
-%This provides an edge-wise characterisation of the set of gradients of zero; any gradient of zero for the whole graph has (upon restriction) the same form as a gradient of zero along each edge of the graph.
-%Here $g\vert_{I_{ij}}$ denotes the restriction of the function $g$ to the edge $I_{ij}$, and $e_{ij}$ denotes the unit vector (directed $v_i$ to $v_j$) along $I_{ij}$.
-%For convenience, we denote the set on the right hand side of the equality by $B$.
-%The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
-%\begin{prop} \label{prop:Grad0IncB}
-%	For $B=\clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{ij}}\cdot e_{ij}=0 \ \forall I_{ij}\in E}$, we have
-%	\begin{align*}
-%		\gradZero{\ddom}{\ddmes}\subset B
-%	\end{align*}
-%\end{prop}
-%\begin{proof}
-%	If $g\in\gradZero{\ddom}{\ddmes}$ then there exists a sequence of smooth functions $\phi_k$ such that $\phi_k\lconv{\ltwo{\ddom}{\ddmes}}0, \grad\phi_k\lconv{\ltwo{\ddom}{\ddmes}^2}g$.
-%	Thus, due to the structure of $\ddmes$
-%	\begin{align*}
-%		\sum_{I_{ij}}\integral{I_{ij}}{\abs{\phi_k}^2}{\lambda_{I_{ij}}} &= \integral{\ddom}{\abs{\phi_k}^2}{\ddmes} \\
-%		&\rightarrow 0 \toInfty{k}
-%	\end{align*}
-%	and as every term in the sum is non-negative, each term must also be tending to 0.
-%	Thus 
-%	\begin{align*}
-%		\phi_k\lconv{\ltwo{\ddom}{\lambda_{I_{ij}}}}0 \ \forall I_{ij}\in E.
-%	\end{align*}
-%	Similarly
-%	\begin{align*}
-%		\sum_{I_{ij}}\integral{I_{ij}}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} &= \integral{\ddom}{\abs{\grad\phi_k - g}^2}{\ddmes} \\
-%		&\rightarrow 0 \toInfty{k}
-%	\end{align*}	
-%	and hence 
-%	\begin{align*}
-%		\grad\phi_k\lconv{\ltwo{\ddom}{\lambda_{I_{ij}}}^2} g\vert_{I_{ij}} \ \forall I_{ij}\in E.
-%	\end{align*}
-%	Hence $g\in B$.
-%\end{proof}
-%
-%The reverse inclusion requires some further preliminary results before it can be proven.
-%\begin{lemma}[Extension of Gradients on Segments to Whole Graph] \label{lem:SegGradExtend}
-%	Let $I_{ij}^{n} = \clbracs{x\in I_{ij} \ \vert \ \mathrm{dist}\bracs{x, \partial I_{ij}}\geq\recip{n}}$.
-%	Suppose further that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{ij}^{n}$ and $g\cdot e_{ij}=0$ on $I_{ij}^{n}$.
-%	Then $g\in\gradZero{\ddom}{\ddmes}$.
-%\end{lemma}
-%\begin{proof}
-%	As $g\cdot e_{ij}=0$ on $I_{ij}^{n}$ and $g=0$ on $I_{ij}\setminus I_{ij}^{n}$, we have that $g\cdot e_{ij}=0$ on $I_{ij}$ and hence $g\in\gradZero{\ddom}{\lambda_{I_{ij}}}$.
-%	So we can find a sequence of smooth functions $\phi_k$ with the properties $\phi_k\lconv{\ltwo{\ddom}{\lambda_{I_{ij}}}}0$, $\grad\phi_k\lconv{\ltwo{\ddom}{\lambda_{I_{ij}}}^2}g\vert_{I_{ij}}$.
-%	Now let $\chi_{ij}^{n}\in\smooth{\ddom}$ be the function such that
-%	\begin{align*}
-%		\chi_{ij}^{n}\bracs{x} &\in [0,1], \\
-%		\chi_{ij}^{n} = 1 &\text{ whenever } \mathrm{dist}\bracs{x, I_{ij}^n}\leq \recip{3n} \\
-%		\chi_{ij}^{n} = 0 &\text{ whenever } \mathrm{dist}\bracs{x, I_{ij}^n}\geq \frac{2}{3n}
-%	\end{align*}
-%	\begin{figure}
-%		\centering
-%		\begin{tikzpicture}
-%			\begin{scope}[scale=2, rotate=-26.565]
-%				\draw (0,0) -- (6,3);
-%				\filldraw (0,0) circle (1pt) node[anchor=north] {$v_i$};
-%				\filldraw (6,3) circle (1pt) node[anchor=south] {$v_j$};
-%				\draw[red, line width=2pt] (1,0.5) -- (5,2.5);
-%				\draw[dashed] (1-1/5,0.5+2/5) -- (5-1/5,2.5+2/5) to[out=26.565, in=26.565] (5+1/5,2.5-2/5) -- (1+1/5,0.5-2/5) to[out=180+26.565, in=180+26.565] cycle;
-%				\draw[dashed] (1-2/5,0.5+4/5) -- (5-2/5,2.5+4/5) to[out=26.565, in=26.565] (5+2/5,2.5-4/5) -- (1+2/5,0.5-4/5) to[out=180+26.565, in=180+26.565] cycle;
-%			\end{scope}
-%			\node at (6,0.25) {$\chi_{ij}^{n}=1$};
-%			\node at (6,1.25) {$0\leq\chi_{ij}^{n}\leq1$};
-%			\node at (6,2.25) {$\chi_{ij}^{n}=0$};
-%			\draw[->] (3,0) -- (3,-4/5);
-%			\draw[->] (3,-4/5) -- (3,0);
-%			\node[anchor=west] at (3,-2/5) {$\recip{3n}$};
-%			\node[anchor=west] at (10,-6/5) {$\frac{2}{3n}$};
-%			\draw[->] (10,0) -- (10,-9/5);
-%			\draw[->] (10,-9/5) -- (10,0);
-%			\draw[->] (13.416,-0.5) -- (11.18,-0.5);
-%			\draw[->] (11.18,-0.5) -- (13.416,-0.5);
-%			\node[anchor=north] at (12.5,-0.5) {$\recip{n}$};
-%		\end{tikzpicture}
-%		\caption{\label{fig:chiDiagram} The function $\chi_{ij}^n$ on the region surrounding the segment $I_{ij}^n$. Should another edge of $\graph$ lie in the region $\clbracs{x \ \vert \ \mathrm{dist}\bracs{x,I_{ij}^{n}}\leq\frac{2}{3n}}$, we can simply apply a rescaling to the argument of $\chi_{ij}^n$ to avoid this issue.}
-%	\end{figure}
-%	Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_{ij}^n$ is $I_{ij}$, otherwise we apply a scaling to the argument of $\chi_{ij}^n$ to avoid this issue.
-%	Furthermore, $\abs{\grad\chi_{ij}^{n}}$ is bounded by a constant that depends on $n$ only.
-%	Now consider the sequence $\psi_k = \chi_{ij}^{n}\phi_k$.
-%	We have that
-%	\begin{align*}
-%		\integral{\ddom}{\abs{\psi_k}^2}{\ddmes} = \integral{I_{ij}}{\abs{\chi_{ij}^{n}\phi_k}^2}{\lambda_{I_{ij}}}
-%		\leq \integral{I_{ij}}{\abs{\phi_k}^2}{\lambda_{I_{ij}}} \rightarrow0 \toInfty{k},
-%	\end{align*}
-%	which is one of the desired convergence results for $\psi_k$.
-%	For the other convergence result we need, observe that
-%	\begin{align*}
-%		\integral{\ddom}{\abs{\phi_k\grad\chi_{ij}^{n}}^2}{\ddmes} &= \integral{I_{ij}}{\abs{\phi_k\grad\chi_{ij}^{n}}^2}{\lambda_{I_{ij}}} \\
-%		&\leq \sup_{I_{ij}}\bracs{\abs{\grad\chi_{ij}^{n}}^{2}}\integral{I_{ij}}{\abs{\phi_{k}}^{2}}{\ddmes} \\
-%		&\rightarrow 0 \toInfty{k}
-%	\end{align*}
-%	because $\abs{\grad\chi_{ij}^{n}}$ depends on $n$ only.
-%	Additionally
-%	\begin{align*}
-%		\integral{\ddom}{\abs{\chi_{ij}^n\grad\phi_k - g\vert_{I_{ij}}}^2}{\ddmes} &= \integral{I_{ij}}{\abs{\chi_{ij}^n\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \\
-%		&= \integral{I_{ij}\setminus I_{ij}^n}{\abs{\chi_{ij}^n\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} + \integral{I_{ij}^n}{\abs{\chi_{ij}^n\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \\
-%		&= \integral{I_{ij}\setminus I_{ij}^n}{\abs{\chi_{ij}^n\grad\phi_k}^2}{\lambda_{I_{ij}}} +  \integral{I_{ij}^n}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \\
-%		&\leq \integral{I_{ij}\setminus I_{ij}^n}{\abs{\grad\phi_k}^2}{\lambda_{I_{ij}}} +  \integral{I_{ij}^n}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \\
-%		&= \integral{I_{ij}\setminus I_{ij}^n}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} +  \integral{I_{ij}^n}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \\
-%		&= \integral{I_{ij}}{\abs{\grad\phi_k - g\vert_{I_{ij}}}^2}{\lambda_{I_{ij}}} \rightarrow0 \toInfty{k},
-%	\end{align*}
-%	where we have made use of the fact that $g\vert_{I_{ij}}=0$ on $I_{ij}\setminus I_{ij}^n$ and the various properties of $\chi_{ij}^n$.
-%	Armed with these inequalities, we have that
-%	\begin{align*}
-%		\integral{\ddom}{\abs{\grad\psi_k - g\vert_{I_{ij}}}^2}{\ddmes} &= \integral{\ddom}{\abs{\chi_{ij}^n\grad\phi_k + \phi_k\grad\chi_{ij}^n - g\vert_{I_{ij}}}^2}{\ddmes} \\
-%		&\leq 2\integral{\ddom}{\abs{\phi_k\grad\chi_{ij}^n}^2}{\ddmes} + 2\integral{\ddom}{\abs{\chi_{ij}^n\grad\phi_k - g\vert_{I_{ij}}}^2}{\ddmes} \\
-%		&\rightarrow0 \toInfty{k}.
-%	\end{align*}
-%	Thus, $\psi_k$ is a sequence of smooth functions such that
-%	\begin{align*}
-%		\psi_k \lconv{\ltwo{\ddom}{\ddmes}} 0, &\quad
-%		\grad\psi_k \lconv{\ltwo{\ddom}{\ddmes}^2} g
-%	\end{align*}
-%	and hence, $g\in\gradZero{\ddom}{\ddmes}$.
-%\end{proof}
-%
-%The other result we need is a convergence result for a particular form of function we will utilise in the proof.
-%Let the function $\eta\in\smooth{\ddom}$ with the properties
-%\begin{align*}
-%	\eta\bracs{x} &\in [0,1], \\
-%	\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
-%	\eta = 1 &\text{ whenever } \abs{x}\geq 2.
-%\end{align*}
-%Then for each $v_i\in V$ and $n\in\naturals$, we define
-%\begin{align*}
-%	\eta_i\bracs{x} = \eta\bracs{x-v_i}, &\quad \eta_i^n\bracs{x} = \eta_i\bracs{nx}
-%\end{align*}
-%which are clearly both smooth functions by composition.
-%\begin{lemma}[Convergence of $\eta_i^n$ in $\ltwo{\ddom}{\ddmes}$] \label{lem:etaConv}
-%	For any $v_i\in V$, $\eta_i^n \rightarrow 1$ in $\ltwo{\ddom}{\ddmes} \toInfty{n}$.
-%\end{lemma}
-%\begin{proof}
-%	We can directly prove this convergence by estimating the integral from above:
-%	\begin{align*}
-%		\begin{split}
-%			\integral{\ddom}{\abs{\eta_i^n-1}^2}{\ddmes} &= \integral{\graph\setminus B_{2/n}\bracs{v_{i}}}{\abs{\eta_{i}^{n}-1}^{2}}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_{i}} \setminus B_{1/n}\bracs{v_{i}}}}{\abs{\eta_{i}^{n}-1}^{2}}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_{i}}}{\abs{\eta_{i}^{n}-1}^{2}}{\ddmes} \\
-%			&= \integral{\graph\setminus B_{2/n}\bracs{v_{i}}}{0}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_{i}} \setminus B_{1/n}\bracs{v_{i}}}}{\abs{\eta_{i}^{n}-1}^{2}}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_{i}}}{}{\ddmes} \\
-%			&\leq \integral{\graph \cap \bracs{B_{2/n}\bracs{v_{i}} \setminus B_{1/n}\bracs{v_{i}}}}{}{\ddmes} + \integral{\graph\cap B_{1/n}\bracs{v_{i}}}{}{\ddmes} \\
-%			&=\integral{\graph\cap B_{2/n}\bracs{v_{i}}}{}{\ddmes} = \ddmes\bracs{\graph\cap B_{2/n}\bracs{v_{i}}} \\
-%			&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
-%		\end{split}
-%	\end{align*}
-%	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_i}$ on a segment of length $\leq\frac{4}{n}$.
-%\end{proof}
-%
-%We are now ready to prove that $B\subset\gradZero{\ddom}{\ddmes}$.
-%\begin{prop} \label{prop:BIncGrad0}
-%	For $B=\clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{ij}}\cdot e_{ij}=0 \ \forall I_{ij}\in E}$, we have
-%	\begin{align*}
-%		B \subset \gradZero{\ddom}{\ddmes}
-%	\end{align*}
-%\end{prop}
-%\begin{proof}
-%	Take $g\in B$, and define a family of functions $g_{n}$ by
-%	\begin{align*}
-%		g_{n}\bracs{x} &= \recip{2}\sum_{i\in V}\sum_{i\sim j}\eta_{i}^{n}\bracs{x}\eta_{j}^{n}\bracs{x}g\vert_{I_{ij}}\bracs{x}
-%	\end{align*}
-%	where the notation $i\sim j$ means that there is an edge $(i,j)\in E$, and the sum is taken over such edges.
-%	Recall that $\graph$ was assumed finite, so there are no convergence issues with the double sum.
-%	Then for each $i,j$ with $i\sim j$, the function $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}$ satisfies the hypothesis of \ref{lem:SegGradExtend}, so $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\in\gradZero{\ddom}{\ddmes}$.
-%	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_{n}\in\gradZero{\ddom}{\ddmes}$ too, for all $n$.
-%	By closure of $\gradZero{\ddom}{\ddmes}$; $g_{n}$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, so it remains to show that $g_{n}\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
-%	However with the result of \ref{lem:etaConv}, we have that $\eta_{i}^{n}\eta_{j}^{n}g\vert_{I_{ij}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{ij}}$ and hence
-%	\begin{align*}
-%		g_{n} \lconv{\ltwo{\ddom}{\ddmes}^2} &\recip{2}\sum_{i\in V}\sum_{j\sim i}g\vert_{I_{ij}} = g \toInfty{n},
-%	\end{align*}
-%	so $g\in\gradZero{\ddom}{\ddmes}$.
-%\end{proof}
-%
-%\subsection{Reduction to a system of scalar equations} \label{sec:ScalarReduceEdgeEqns}
-%We now turn our attention back to \eqref{eq:ScalarExampleStrongForm}.
-%Recall that we interpret this in the weak sense, namely a pair $\bracs{u,\grad_\ddmes u}$ solves \eqref{eq:ScalarExampleStrongForm} if and only if
-%\begin{align} \label{eq:ScalarExampleWeakForm}
-%	\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi}{\ddmes} &= \omega^2\integral{\ddom}{u\phi}{\ddmes} \quad \forall\phi\in\smooth{\ddom}.
-%\end{align}
-%\tstk{again reiterate Gelfand/Fourier and the case we are considering. Also how can we guarantee solutions to this system?}
-%We want to find an alternative but equivalent system to \eqref{eq:ScalarExampleWeakForm} that we can use in numerical schemes (as the measure $\ddmes$ prevents implementations via finite elements, for example) or is more tractable to an analytic approach.
-%To this end we look to work from \eqref{eq:ScalarExampleWeakForm} and employ our previous analysis to find an alternative problem. \newline
-%
-%We begin by re-writing \eqref{eq:ScalarExampleWeakForm} by appealing to the nature of $\ddmes$;
-%\begin{align} \label{eq:ScalarExampleSumOfInts}
-%	0 &= \recip{2}\sum_{I_{ij}\in E}\integral{\ddom}{\grad_\ddmes u \cdot \grad\phi - \omega^2 u\phi}{\lambda_{ij}}.
-%\end{align}
-%Note that $I_{ij},I_{ji}\in E$ are the same edge of the graph $\graph$, which is what gives us the factor of a half.
-%Of course we may simply drop this factor of a half, and understand the sum as being over unique edges, which we henceforth do.
-%Next recall the notation introduced for the edge $I_{ij}$; we denote by $e_{ij}$ the unit vector along $I_{ij}$ pointing from $v_i$ to $v_j$,
-%\begin{align*}
-%	e_{ij} = \frac{v_j-v_i}{\norm{v_j-v_i}_2}.
-%\end{align*}
-%We define the map 
-%\begin{align*}
-%	r_{ij}:\sqbracs{0,\abs{I_{ij}}} &\rightarrow I_{ij}, \\
-%	r_{ij}\bracs{t} &= v_i + te_{ij}
-%\end{align*}
-%so $r'\bracs{t}=e_{ij}$.
-%Note that $r$ is therefore an admissible change of variables from $\sqbracs{0,\abs{I_{ij}}}$ to $I_{ij}$.
-%To prevent cluttered notation, we use an overhead tilde to denote composition with $r_{ij}$, so for example $\tilde{\phi}=\phi\circ r_{ij}$.
-%We next look at how to deal with each integral term.
-%Without loss of generality we can assume that each $I_{ij}$ is parallel to the $x_1$-axis by performing a rotation, and we denote by $u_{ij}\in\ltwo{\ddom}{\lambda_{ij}}$ the function such that $u_{ij}=u$ on the (potentially rotated) edge $I_{ij}$.
-%$u_{ij}$ can be thought of as the $ij$\textsuperscript{th}-part of $u$, or the part of $u$ down the edge $I_{ij}$ - this separation of $u$ onto separate functions on the edges of $\graph$ will prove useful in what follows.
-%Although we do not need to make this simplification since we have information about $\gradZero{\ddom}{\lambda_{ij}}$, it is helpful to do so in the following analysis.
-%In fact the information about $\gradZero{\ddom}{\lambda_{ij}}$ is necessary to perform the rotation we would use, and retain equivalence of the resulting problem to the original. \newline
-%
-%With this simplification, we examine the term
-%\begin{align*}
-%	\integral{\ddom}{\grad_\ddmes u_{ij}\cdot\grad\phi}{\lambda_{ij}}.
-%\end{align*}
-%We know that the solution to \eqref{eq:ScalarExampleWeakForm} satisfies $\grad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$ and so $\grad_\ddmes u_{ij} \perp \gradZero{\ddom}{\lambda_{ij}}$ by our analysis of gradients of zero.
-%Thus let us suppose that $\grad_\ddmes u_{ij} = \bracs{\alpha, \beta}^{\top}$.
-%Recalling the characterisation of $\gradZero{\ddom}{\lambda_{ij}}$ when $I_{ij}$ is parallel to the $x_1$-axis, we require that
-%\begin{align*}
-%	0 &= \integral{\ddom}{\grad_\ddmes u_{ij} \cdot \begin{pmatrix} 0 \\ f \end{pmatrix}}{\lambda_{ij}} \quad \forall f\in\ltwo{\ddom}{\lambda_{ij}}, \\
-%	\Rightarrow 0 &= \integral{I_{ij}}{\beta f}{\lambda_{ij}}
-%	= \int_{0}^{\abs{I_{ij}}}\widetilde{\beta}\widetilde{f}\md t.
-%\end{align*}
-%As $\widetilde{f}$ is arbitrary, we conclude that $\widetilde{\beta}=0$ and hence $\beta=0$.
-%Thus $\grad_\ddmes u_{ij} = \bracs{\alpha, 0}^{\top}$; we now show that $\alpha$ is related to the distributional derivative of the function $\widetilde{u}_{ij}$.
-%Notice that for any smooth function $\phi$ we have that
-%\begin{align*} \labelthis\label{eq:PartialToTDiff}
-%	\partial_t\widetilde{\phi}(t) &= \grad\phi\bracs{r_{ij}(t)}\cdot r'_{ij}(t) = \partial_1\phi\bracs{r_{ij}(t)} \\
-%	&= \widetilde{\partial_1\phi}(t),
-%\end{align*}
-%as $r'_{ij}=e_{ij}=\bracs{1,0}^{\top}$.
-%Now as $u_{ij}\in\ltwo{\ddom}{\lambda_{ij}}$ we can find smooth functions $\alpha_n$ such that
-%\begin{align*}
-%	\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}}u_{ij}, \quad \grad\alpha_n\lconv{\ltwo{\ddom}{\lambda_{ij}}^2}\begin{pmatrix} \alpha \\ 0	\end{pmatrix}.
-%\end{align*}
-%Exploiting the change of variables $r_{ij}$ and writing these statements using integrals converging in $\reals$ implies
-%\begin{align*}
-%	\int_0^{\abs{I_{ij}}}\abs{\widetilde{\alpha}-\widetilde{u}_{ij}}^2 \md t &\rightarrow 0, \\
-%	\int_0^{\abs{I_{ij}}}\abs{\partial_t\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t = \int_0^{\abs{I_{ij}}}\abs{\partial_1\widetilde{\alpha}_n - \widetilde{\alpha}}^2 \md t &\rightarrow 0, \\
-%	\int_0^{\abs{I_{ij}}}\abs{\partial_2\widetilde{\alpha}_n}^2 \md t &\rightarrow 0, \toInfty{n}.
-%\end{align*}
-%In particular the first two convergences imply that $\widetilde{\alpha}=\widetilde{u}'_{ij}$; that is that $\widetilde{\alpha}$ is the distributional derivative of $\widetilde{u}_{ij}\in\gradSob{\sqbracs{0,\abs{I_{ij}}}}{t}$.
-%Using the notation $u'_{ij}$ for the $\ltwo{\ddom}{\lambda_{ij}}$ function such that $u'_{ij} = \widetilde{u}'_{ij}\circ r_{ij}^{-1}$, we can write $\grad_\ddmes u_{ij} = \bracs{u'_{ij}, 0}^{\top}$.
-%In light of this we see that
-%\begin{align*}
-%	\integral{\ddom}{\grad_\ddmes u_{ij} \cdot \grad\phi - \omega^2 u_{ij}\phi}{\lambda_{ij}}
-%	&= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t.
-%\end{align*}
-%
-%Equipped with this knowledge, we are able to transform \eqref{eq:ScalarExampleSumOfInts} into
-%\begin{align} \label{eq:ScalarExampleLebesgueIntegrals}
-%	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t.
-%\end{align}
-%The choice of $\phi$ was arbitrary so in particular \eqref{eq:ScalarExampleLebesgueIntegrals} must hold when $\mathrm{supp}\bracs{\phi}$ contains precisely one edge $I_{ij}$, meaning that we have
-%\begin{align*}
-%	0 &= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t, \quad \forall I_{ij}\in E, \ \forall \phi\in\smooth{\ddom}.
-%\end{align*}
-%That is to say, we have arrived at a system of differential equations (``edge equations") for $\widetilde{u}_{ij}$ (the ``edge solutions").
-%This weak formulation admits numerical solution by (for example) finite elements, providing us with a method to recover the original function $u$.
-%If we assume more regularly of $u$, for example assume that $u\in C^2\bracs{\ddom}$ so the second derivative of $u$ exists in the strong sense we can obtain a system of ODEs in the edge solutions $\widetilde{u}_{ij}$, complete with boundary conditions.
-%We obtain one (second-order) differential equation for each edge $I_{ij}$ by integrating each edge equation by parts;
-%\begin{align*}
-%	0 &= \int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t, \quad \forall\phi\in\smooth{\ddom} \\
-%	&= \int_0^{\abs{I_{ij}}} \bracs{\widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}}\widetilde{\phi} \md t. \\
-%	\Rightarrow 0 &= \widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}.
-%\end{align*}
-%As we have assumed at least $C^2$ regularity of $u$ we require that $u$ be continuous at the vertices $v_i$ and so we must have that
-%\begin{align*}
-%	\widetilde{u}_{ij}\vert_{v_i} &= \widetilde{u}_{ik}\vert_{v_i} \quad \text{whenever } i\sim j \text{ and } i\sim k,
-%\end{align*}
-%which is simply a matching condition of the solution at the vertices.
-%The vertical bar notation is used to denote evaluation, so $\widetilde{u}_{ij}\vert_{v_i}$ denotes evaluation of $\widetilde{u}_{ij}\bracs{t}$ at whichever $t$ such that $r_{ij}\bracs{t} = v_i$. 
-%The other boundary conditions can be found by considering $\phi$ such that $\mathrm{supp}\bracs{\phi}$ contains precisely one of the vertices $v_k$, and then integrating \eqref{eq:ScalarExampleLebesgueIntegrals} by parts and considering the boundary term:
-%\begin{align*}
-%	0 &= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}}\widetilde{u}'_{ij}\widetilde{\phi}' - \omega^2\widetilde{u}_{ij}\widetilde{\phi} \md t \\
-%	&= \sum_{I_{ij}\in E}\int_0^{\abs{I_{ij}}} \bracs{\widetilde{u}''_{ij} + \omega^2\widetilde{u}_{ij}}\widetilde{\phi} \md t + \sum_{I_{ij}\in E}\sum_{i\sim j}\sqbracs{\widetilde{u}'_{ij}\widetilde{\phi}}\big\vert_{v_i} \\
-%	&= \sum_{I_{ij}\in E}\sum_{i\sim j}\sqbracs{\widetilde{u}'_{ij}\widetilde{\phi}}\big\vert_{v_i} \\
-%	&= \sum_{k\sim j}\widetilde{u}'_{kj}\vert_{v_k}\widetilde{\phi}\vert_{v_k}, \\
-%	\Rightarrow 0 &= \sum_{k\sim j}\widetilde{u}'_{kj}\vert_{v_k}.
-%\end{align*}
-%That is we obtain a Kirchoff condition on the derivatives of the edge solutions at each of the vertices.
-%These conditions provide us with a complete system of differential equations and boundary conditions; observe that for each edge equation we can select one of it's vertices and associate one matching condition and one Kirchoff condition at that vertex.
-%
+\begin{prop}[Rotation of Edge Gradients] \label{prop:RotationOfEdgeGradients}
+	Consider the case when $\graph$ consists of a single segment $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
+	Let $R$ be the orthogonal change of co-ordinates $x=Ry$ with $x=\bracs{x_1,x_2}$ the orthogonal co-ordinate system along the axes.
+	Then
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} 
+		&= \clbracs{ R^{\top} \begin{pmatrix} 0 \\ f_2 \end{pmatrix} \ \vert \ f_2\in\ltwo{\ddom}{\lambda_I} }.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	The proof centres around a the change of variables $x=Ry$, and each of the set inclusions that need to be shown adhere to the same style of argument - almost identical in fact save for the direction of the argument.
+	As such, we only show one of the inclusions, as the argument for the other is so similar. \newline
+	
+	Set $\tilde{I} := RI$, and $\lambda_{\tilde{I}}\bracs{B} := \lambda_{I}\bracs{R^{\top}B}$; and we also adopt a subscript on the gradient operator to denote the co-ordinate system we are working in, see the notation in lemma \ref{lem:SmoothGradientsUnderRotation}.
+	It is also clear that the rotated segment $\tilde{I}$ is parallel to the $x_1$-axis, so we know the form of $\gradZero{\ddom}{\lambda_{\tilde{I}}}$ by proposition \ref{prop:GradZeroParallelZhikov}. \newline
+	
+	Take any $z\in\gradZero{\ddom}{\lambda_I}$.
+	Then we can find an approximating sequence $\phi_n\in\smooth{\ddom}$ as in \eqref{eq:GradZeroSequenceDefinition}, so we have that (as $n\rightarrow\infty$)
+	\begin{align*}
+		\integral{I}{\abs{\phi_n}^2}{\lambda_I} \rightarrow 0,
+		&\quad \integral{I}{\abs{\grad_y\phi_n - z}^2}{\lambda_I} \rightarrow 0
+	\end{align*}
+	Performing the change of variables $x=Ry$ in the integrals implies
+	\begin{align*}
+		\integral{\tilde{I}}{\abs{\tilde{\phi}_n}^2}{\lambda_{\tilde{I}}} \rightarrow 0,
+		&\quad \integral{\tilde{I}}{\abs{R^{\top}\grad_x\tilde{\phi}_n - \tilde{z}}^2}{\lambda_{\tilde{I}}} \rightarrow 0,
+	\end{align*}
+	where $\tilde{\phi}_n\bracs{x} = \phi_n{R^{\top}x}$ and $\tilde{z}\bracs{x} = z\bracs{R^{\top}x}$.
+	The first convergence implies that $\tilde{\phi}_n\rightarrow 0$ in $\ltwo{\ddom}{\lambda_{\tilde{I}}}$.
+	As for the second, some manipulations in the integral show us that
+	\begin{align*}
+		\integral{\tilde{I}}{\abs{\grad_x\tilde{\phi}_n - R\tilde{z}}^2}{\lambda_{\tilde{I}}} \rightarrow 0,
+	\end{align*}
+	so $\grad_x\tilde{\phi}_n\rightarrow\tilde{z}$ in $\ltwo{\ddom}{\lambda_{\tilde{I}}}^2$.
+	Thus we conclude that $R\tilde{z}\in\gradZero{\ddom}{\lambda_{\tilde{I}}}$, so by proposition \ref{prop:GradZeroParallelZhikov}
+	\begin{align*}
+		R\tilde{z} &= \begin{pmatrix} 0 \\ \tilde{f}_2 \end{pmatrix}
+	\end{align*}
+	for some $\tilde{f}_2\in\ltwo{\ddom}{\lambda_{\tilde{I}}}$.
+	Thus
+	\begin{align*}
+		z &= R^\top \begin{pmatrix} 0 \\ f_2 \end{pmatrix}
+	\end{align*}
+	for $f_2\in\ltwo{\ddom}{\lambda_I}$ (where $f_2\bracs{y} = \tilde{f}_2\bracs{Ry}$), and hence
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} 
+		&\subset \clbracs{ R^{\top} \begin{pmatrix} 0 \\ f_2 \end{pmatrix} \ \vert \ f_2\in\ltwo{\ddom}{\lambda_I} }.
+	\end{align*}
+	As mentioned earlier, the reverse inclusion is similar.
+\end{proof}
+We can colloquially write this result as
+\begin{align*}
+	\gradZero{\ddom}{\lambda_I} &= R^\top\gradZero{\ddom}{\lambda_{\tilde{I}}},
+\end{align*}
+or more formally as in the following corollary.
+\begin{cory} \label{cory:Grad0SingleEdge}
+	Assume the hypothesis of proposition \ref{prop:RotationOfEdgeGradients}, and denote by $e_I$ the unit vector parallel to the segment $I$.
+	Then
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} &= \clbracs{z\in\ltwo{\ddom}{\lambda_I} \ \vert \ z\vert_{I}\cdot e_I = 0}.
+	\end{align*}
+\end{cory}
+
+\subsubsection{Graphs with Multiple Edges}
+So far we have only described gradients of zero on single segments, that is when we have a one-edge graph embedded in the $\bracs{x_1,x_2}$-plane.
+However we can build up an understanding of gradients of zero on more complex (finite) graphs using these results.
+As such in this section we work with an embedded graph $\graph = \bracs{V,E}$ with supporting singular measure $\ddmes$; and we look to show that gradients of zero on the whole graph admit an edge-wise form that coincides with proposition \ref{prop:RotationOfEdgeGradients}.
+Namely we wish to prove that
+\begin{align*}
+	\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
+	&= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\in\ltwo{\ddom}{\lambda_{jk}}^2 \ \forall I_{jk}\in E}.
+\end{align*}
+Here $e_{jk}$ denotes the unit vector (directed $v_j$ to $v_k$) along $I_{jk}$; and for convenience we denote the set on the right hand side of the equality by $B$.
+The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
+
+\begin{prop} \label{prop:Grad0IncB}
+	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E}$, we have
+	\begin{align*}
+		\gradZero{\ddom}{\ddmes} \subset B
+	\end{align*}
+\end{prop}
+\begin{proof}
+	If $g\in\gradZero{\ddom}{\ddmes}$ then there exists a sequence of smooth functions $\phi_n$ such that $\phi_n\lconv{\ltwo{\ddom}{\ddmes}}0, \grad\phi_n\lconv{\ltwo{\ddom}{\ddmes}^2}g$.
+	Thus due to the structure of $\ddmes$
+	\begin{align*}
+		\sum_{I_{jk}}\integral{I_{jk}}{\abs{\phi_n}^2}{\lambda_{jk}} &= \integral{\ddom}{\abs{\phi_n}^2}{\ddmes} \\
+		&\rightarrow 0 \toInfty{n}.
+	\end{align*}
+	As every term in the sum is non-negative, each term must also be tending to 0.
+	Thus 
+	\begin{align*}
+		\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}0 \ \forall I_{jk}\in E.
+	\end{align*}
+	Similarly
+	\begin{align*}
+		\sum_{I_{jk}}\integral{I_{jk}}{\abs{\grad\phi_n - g}^2}{\lambda_{jk}} &= \integral{\ddom}{\abs{\grad\phi_n - g}^2}{\ddmes} \\
+		&\rightarrow 0 \toInfty{n},
+	\end{align*}	
+	and hence 
+	\begin{align*}
+		\grad\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2} g \ \forall I_{jk}\in E.
+	\end{align*}
+	Hence $g\in B$.
+\end{proof}
+
+The reverse inclusion requires some preliminary results before it can be proven.
+The first result sees us demonstrate that a gradient of zero on a (slightly shortened) edge of a graph is also a gradient of zero on the whole graph, if we extend it by zeros outside the original edge.
+
+\begin{lemma}[Extension Lemma for Gradients] \label{lem:SegGradExtend}
+	Let $I_{jk}^{n} = \clbracs{x\in I_{jk} \ \vert \ \mathrm{dist}\bracs{x, \partial I_{jk}}\geq\recip{n}}$.
+	Suppose further that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{jk}^{n}$ and $g\cdot e_{jk}=0$ on $I_{jk}^{n}$.
+	Then 
+	\begin{align*}
+		g\in\gradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	As $g\cdot e_{jk}=0$ on $I_{jk}^{n}$ and $g=0$ on $I_{jk}\setminus I_{jk}^{n}$, we have that $g\cdot e_{jk}=0$ on $I_{jk}$ and hence $g\in\gradZero{\ddom}{\lambda_{jk}}$.
+	So we can find a sequence of smooth functions $\phi_l$ as in \eqref{eq:GradZeroSequenceDefinition}.
+	Now let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function such that
+	\begin{align*}
+		\chi_{jk}^{n}\bracs{x} &\in [0,1], \\
+		\chi_{jk}^{n} = 1 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^n}\leq \recip{3n} \\
+		\chi_{jk}^{n} = 0 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^n}\geq \frac{2}{3n}
+	\end{align*}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=1.0]{../Diagrams/Diagram_ChiFunction.pdf}
+		\caption{\label{fig:chiDiagram} The function $\chi_{jk}^n$ on the region surrounding the segment $I_{jk}^n$. Should another edge of $\graph$ lie in the region $\clbracs{x \ \vert \ \mathrm{dist}\bracs{x,I_{jk}^{n}}\leq\frac{2}{3n}}$, we can simply apply a rescaling to the argument of $\chi_{jk}^n$ to avoid this issue.}
+	\end{figure}
+	Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_{jk}^n$ is $I_{jk}$, otherwise we apply a scaling to the argument of $\chi_{jk}^n$ to avoid this issue.
+	Furthermore, $\abs{\grad\chi_{jk}^{n}}$ is bounded by a constant that depends on $n$ only.
+	Now consider the sequence $\psi_l = \chi_{jk}^{n}\phi_l$.
+	We have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\psi_l}^2}{\ddmes} = \integral{I_{jk}}{\abs{\chi_{jk}^{n}\phi_l}^2}{\lambda_{jk}}
+		\leq \integral{I_{jk}}{\abs{\phi_l}^2}{\lambda_{jk}} \rightarrow0 \toInfty{l},
+	\end{align*}
+	which is one of the desired convergence results for $\psi_l$.
+	For the other convergence result we need, observe that
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_l\grad\chi_{jk}^{n}}^2}{\ddmes} &= \integral{I_{jk}}{\abs{\phi_l\grad\chi_{jk}^{n}}^2}{\lambda_{jk}} \\
+		&\leq \sup_{I_{jk}}\bracs{\abs{\grad\chi_{jk}^{n}}^{2}}\integral{I_{jk}}{\abs{\phi_l}^2}{\ddmes} \\
+		&\rightarrow 0 \toInfty{l}
+	\end{align*}
+	because $\abs{\grad\chi_{jk}^{n}}$ depends on $n$ only.
+	Additionally
+	\begin{align*}
+		\integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\ddmes} &= \integral{I_{jk}}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^n}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\lambda_{jk}} + \integral{I_{jk}^n}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^n}{\abs{\chi_{jk}^n\grad\phi_l}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&\leq \integral{I_{jk}\setminus I_{jk}^n}{\abs{\grad\phi_l}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \rightarrow0 \toInfty{l},
+	\end{align*}
+	where we have made use of the fact that $g=0$ on $\graph\setminus I_{jk}^n$ and the various properties of $\chi_{jk}^n$.
+	Armed with these inequalities, we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\psi_l - g}^2}{\ddmes} 
+		&= \integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l + \phi_l\grad\chi_{jk}^n - g}^2}{\ddmes} \\
+		&\leq 2\integral{\ddom}{\abs{\phi_l\grad\chi_{jk}^n}^2}{\ddmes} + 2\integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\ddmes} \\
+		&\rightarrow0 \toInfty{l}.
+	\end{align*}
+	Thus, $\psi_l$ is a sequence of smooth functions such that
+	\begin{align*}
+		\psi_l \lconv{\ltwo{\ddom}{\ddmes}} 0, &\quad
+		\grad\psi_l \lconv{\ltwo{\ddom}{\ddmes}^2} g
+	\end{align*}
+	and hence, $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
+
+The other result we need is a convergence result for a particular form of function we will utilise later.
+Let $\eta\in\smooth{\ddom}$ be the function with the properties
+\begin{align*}
+	\eta\bracs{x} &\in [0,1], \\
+	\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
+	\eta = 1 &\text{ whenever } \abs{x}\geq 2.
+\end{align*}
+Then for each $v_j\in V$ and $n\in\naturals$, we define
+\begin{align*}
+	\eta_j\bracs{x} = \eta\bracs{x-v_j}, &\quad \eta_j^n\bracs{x} = \eta_j\bracs{nx}
+\end{align*}
+which are clearly both smooth functions by composition.
+
+\begin{lemma}[Convergence of $\eta_j^n$ in $\ltwo{\ddom}{\ddmes}$] \label{lem:etaConv}
+	For any $v_j\in V$, 
+	\begin{align*}
+		\eta_j^n \rightarrow 1 \text{ in } \ltwo{\ddom}{\ddmes} \toInfty{n}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We can directly prove this convergence by estimating the integral from above:
+	\begin{align*}
+		\begin{split}
+			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} &= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
+			&= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&\leq \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{}{\ddmes} + \integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&=\integral{\graph\cap B_{2/n}\bracs{v_j}}{}{\ddmes} = \ddmes\bracs{\graph\cap B_{2/n}\bracs{v_j}} \\
+			&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
+		\end{split}
+	\end{align*}
+	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_j}$ on a segment of length at most $\frac{4}{n}$.
+\end{proof}
+
+We are now ready to prove that $B\subset\gradZero{\ddom}{\ddmes}$.
+The idea for the proof is to use the fact that we can extend a gradient of zero on each edge by zero to obtain a gradient of zero on the whole graph; and then consider the sum of such functions in $\gradZero{\ddom}{\ddmes}$ to obtain the result we need.
+
+\begin{prop} \label{prop:BIncGrad0}
+	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E}$, we have
+	\begin{align*}
+		B \subset \gradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Take $g\in B$, and define a family of functions $g_n$ by
+	\begin{align*}
+		g_n\bracs{x} &= \recip{2}\sum_{j\in V}\sum_{j\sim k}\eta_j^n\bracs{x}\eta_k^n\bracs{x}g\vert_{I_{jk}}\bracs{x}
+	\end{align*}
+	where the notation $j\sim k$ means that there is an edge $(j,k)\in E$, and the sum is taken over such edges. \tstk{may not be needed if explained in QG chapter.}
+	Recall that $\graph$ is assumed finite so there are no convergence issues with the double sum.
+	Then for each $j,k$ with $j\sim k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
+	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_n\in\gradZero{\ddom}{\ddmes}$ too, $\forall n\in\naturals$.
+	By closure of $\gradZero{\ddom}{\ddmes}$ in $\ltwo{\ddom}{\ddmes}^2$; $g_n$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, and so it remains to show that $g_n\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
+	However with the result of lemma \ref{lem:etaConv}, we have that $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ and hence
+	\begin{align*}
+		g_n \lconv{\ltwo{\ddom}{\ddmes}^2} &\recip{2}\sum_{j\in V}\sum_{j\sim k}g\vert_{I_{jk}} = g \toInfty{n},
+	\end{align*}
+	so $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
+
+This concludes our analysis of $\gradZero{\ddom}{\ddmes}$, as we now have an edge-wise characterisation for the functions in this set, as well as a form for the functions on each edge.
+In the next section we consider the family of problems that arise from considering the operator that defines \eqref{eq:ScalarExampleStrongForm} in the infinite, periodic $\bracs{x_1,x_2}$-plane.
+
+\section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
+In this section we will analyse a problem posed in an infinite plane with a finite period cell.
+Physically this will represent our photonic fibre's cross sectional structure \tstk{earlier section discussion?}, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform.
+This will require us to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}, as the Gelfand transform will break the problem in the infinite plane into a family of problems on the period cell, parametrised by 2 quasi-momenta.
+We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a Quantum Graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
+
+Embed a periodic graph into the $\bracs{x_1,x_2}$-plane, with period cell $\ddom = \sqbracs{0,1}^2$ and ``period graph" $\graph=(V,E)$.
+Let \tstk{got to here!!!!!!!}
+Consider the problem
+\begin{align} \label{eq:WholeSpaceScalarProblem}
+	\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u	
+\end{align}
+
 %\section{Chapter Summary}
 %The work in this section largely builds off that of \tstk{references!!}, before pursuing an example that will be relevant in the later sections.
 %We have introduced the theory behind the kinds of mathematical problems and their associated spaces.

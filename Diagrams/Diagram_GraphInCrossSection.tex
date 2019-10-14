@@ -1,0 +1,55 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+
+\input{../WorkInChapters/PreambleMaths.tex}
+	
+\begin{document}
+
+\begin{tikzpicture}
+		%actual waveguide
+		\begin{scope}[shift={(5,-2)}]
+			\draw (0,0) rectangle (2,2);
+			\node[anchor=south] at (1,1) {$\ddom\subset\reals^2$};
+			%waveguide axis
+			\draw[red] (2,0) -- (2+3.5/2,1);
+			\draw[dashed, red] (0,0) -- (3.5/2,1);
+			\draw[red] (0,2) -- (3.5/2,3);
+			\draw[red] (2,2) -- (2+3.5/2,3);
+		\end{scope}		
+		
+		%axes labels
+		\begin{scope}[shift={(5,2)}, scale=0.75]
+			\draw[->] (0,1) -- (2,1) node[anchor=west] {$x_1$};
+			\draw[->] (0,1) -- (0,3) node[anchor=south] {$x_2$};
+			\draw[->] (0,1) -- (2,1+8/7) node[anchor=south west] {$x_3$};
+		\end{scope}
+		
+		%graph stucture
+		\begin{scope}[shift={(-3,-1.25)}]
+			\draw (0,0) rectangle (5,5);
+			%graph edges
+			\draw (2.5,2.5) -- (4,3) -- (4.5,4);
+			\draw (2.5,2.5) -- (0.5,4.5);
+			\draw (2.5,2.5) -- (1,1) -- (3.5,1) -- (4,2) -- cycle;
+			%nodes
+			\filldraw (2.5,2.5) circle (1pt) node[anchor=south] {$v_i$};	
+			\filldraw (4,3) circle (1pt);	\filldraw (4.5,4) circle (1pt);
+			\filldraw (0.5,4.5) circle (1pt) node[anchor=north east] {$v_j$};
+			\filldraw (1,1) circle (1pt);	\filldraw (3.5,1) circle (1pt);	\filldraw (4,2) circle (1pt);
+			\node[anchor=south] at (2.5,5) {$\graph\subset\ddom$};
+			%labelling for I_ij
+			\node[anchor=north east] at (1.5,3.5) {$I_{ij}$};
+			\draw[->] (2,3.2) -- (1.5,3.7) node[anchor=west] {$e_{ij}$};
+		\end{scope}
+		
+		%lines between waveguide pic and graph illustration
+		\draw[dashed, blue] (5,-2) -- (-3,-1.25);
+		\draw[dashed, blue] (7,-2) -- (2,-1.25);
+		\draw[dashed, blue] (7,0) -- (2,3.75);
+		\draw[dashed, blue] (5,0) -- (-3,3.75);
+\end{tikzpicture}
+
+\end{document}

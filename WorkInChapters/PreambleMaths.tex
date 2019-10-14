@@ -16,6 +16,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{plain}
 \newtheorem{prop}[theorem]{Proposition}
+\theoremstyle{plain}
+\newtheorem{cory}[theorem]{Corollary}
 
 \allowdisplaybreaks %allows equations in the same align environment to split over multiple pages.
 
@@ -24,6 +26,7 @@
 %notation and variable use throughout the file
 \renewcommand{\vec}[1]{\mathbf{#1}}				%vectors are bold, not overline arrow
 \newcommand{\recip}[1]{\frac{1}{#1}}			%fast reciprocal as a fraction
+\newcommand{\interval}[1]{\sqbracs{0,\abs{#1}}}	%creates the closed interval from 0 to the length of the input #1, denoted by absolute value
 
 \newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
 \newcommand{\ddom}{\Omega}						%2D domain notation
@@ -32,6 +35,7 @@
 
 \newcommand{\graph}{\mathbb{G}}					%graph variable
 \newcommand{\wavenumber}{\kappa}				%fourier variable or wavenumber, not to confuse with jk subscripts!
+\newcommand{\qm}{\theta}						%quasi-momentum parameter
 
 %standard sets
 \newcommand{\naturals}{\mathbb{N}}			%natural numbers
@@ -44,7 +48,7 @@
 \newcommand{\bracs}[1]{\left( #1 \right)}				%encloses input in brackets
 \newcommand{\sqbracs}[1]{\left[ #1 \right]}				%encloses input in square brackets
 \newcommand{\clbracs}[1]{\left\{ #1 \right\}}			%encloses input in curly bracers
-\newcommand{\abs}[1]{\lvert #1 \rvert}					%absolute value
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}					%absolute value
 \newcommand{\norm}[1]{\lvert\lvert #1 \rvert\rvert}		%norm 
 
 %function sets
