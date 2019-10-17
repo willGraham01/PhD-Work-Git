@@ -114,7 +114,40 @@ But then applying density arguments for $\smooth{\reals^3}$ in $\ltwo{\reals^3}{
 	&= \ltwo{\reals^3}{\nu}.
 \end{align*}
 
+\tstk{what about plane-measure case? Can't get that to work still - can in-plane directions are arbitrary l2 functions, but can't prove that orthogonal part to plane is zero.}
+
 \section{$\wavenumber$-curls and Quasi-Momentum} \label{sec:kCurlsAndQM}
+As discussed in chapter \ref{ch:Intro}, the physical systems of interest to us are those involving wave-guidance .
+In particular we will typically be seeking solutions in the form of a travelling wave down the axis of the wave-guide, and solving for the transverse components of the wave in the cross-section of the guide.
+In such problems it is standard practice to take a Fourier transform in the direction along the wave-guide axis; in our case this coincides with the $x_3$ co-ordinate direction.
+As such we introduce the Fourier variable $\wavenumber$ and accordingly adjust the $\grad$ operator to account for this transform, denoting by $\kgrad$ the operator
+\begin{align*}
+	\kgrad\phi := \begin{pmatrix} \partial_1\phi \\ \partial_2\phi \\ i\wavenumber\phi\end{pmatrix}
+\end{align*}
+for all smooth functions $\phi$ of the cross-section variables $x_1,x_2$ which map into $\complex^3$.
+Furthermore; under the assumptions laid out in section \ref{sec:PhysicalSystem} \tstk{this needs to exist at some point!} we will also be taking a Gelfand transform in our periodic, yet infinite, cross-section plane to obtain a family of problems on the period cell $\ddom$ parametrised by the quasi-momentum $\qm$.
+Thus in the systems that we are considering it will be necessary for us to consider the operator $\ktgrad$ which element-wise is defined as
+\begin{align*}
+	\ktgrad := \kgrad + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}.
+\end{align*}
+Since these operators are nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}, the theory is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
+Also note that the operator $\ktgrad$ replaces the operator $\grad$, and so we are in effect seeking the $\bracs{\wavenumber,\qm}$-tangential curl, gradient, and divergence-free conditions. \newline
+
+Throughout this section we assume our usual set-up; we have some period cell $\ddom$ in which is an embedded graph $\graph=\bracs{V,E}$, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
+
+\subsection{$\bracs{\wavenumber,\qm}$-gradients} \label{sec:ktGradients}
+In this subsection we will work towards characterising $\bracs{\wavenumber,\qm}$-tangential gradients.
+This will first involve us characterising the set of gradients of zero, $\kgradZero{\ddom}{\ddmes}$, however there will be several parallels with the methods and results of section \ref{sec:ScalarExample}.
+
+\subsection{The Divergence-Free Condition} \label{sec:ktDivFree}
+Having established characterisations for both $\kgradZero{\ddom}{\ddmes}$ and the tangential gradients, we can now examine what it means for a function $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence free.
+As usual, it is sufficient for us to consider a single edge $I$ which we take to be parallel to the $x_2$-axis and then make use of rotations and the edge-wise natural of $\ddmes$ to extend the results to the whole of $\graph$. \newline
+
+\subsection{$\bracs{\wavenumber,\qm}$-curls} \label{sec:ktCurls}
+Our primary focus here is to characterise tangential curls; and our analysis follows in much of the same vein as in section \ref{sec:ScalarExample}.
+First we seek an edge-wise understanding for $\bracs{\wavenumber,\qm}$-curls of zero and tangential curls, then we derive an extension result (c.f. \tstk{extension lemma result here}) for curls so that our edge-wise characterisation also provides us with a graph-wide form for the curl.
+We will need the following result on rotations during this section:
+\tstk{rotating curls goes here}
 
 \section{Reduction to Quantum Graphs} \label{sec:CurlReductionToQG}
 

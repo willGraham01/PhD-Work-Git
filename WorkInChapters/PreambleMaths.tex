@@ -57,21 +57,24 @@
 \newcommand{\gradSob}[2]{H^1_\mathrm{grad}\bracs{#1, \mathrm{d}#2}}		%gradient Sobolev space
 \newcommand{\gradSobQM}[2]{H^1_{\qm, \mathrm{grad}}\bracs{#1, \mathrm{d}#2}} %gradient + i\qm Sobolev space
 \newcommand{\curlSob}[2]{H^1_\mathrm{curl}\bracs{#1, \mathrm{d}#2}}		%curl Sobolev space
-\newcommand{\curlSobQM}[2]{H^1_{\qm, \mathrm{curl}}\bracs{#1, \mathrm{d}#2}}		%curl + i\qm Sobolev space
-\newcommand{\kSob}[2]{H^1_{\wavenumber,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
-\newcommand{\kSobQM}[2]{H^1_{\wavenumber,\qm,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k,\qm-curl Sobolev space
+\newcommand{\tcurlSob}[2]{H^1_{\qm, \mathrm{curl}}\bracs{#1, \mathrm{d}#2}}		%curl + i\qm Sobolev space
+\newcommand{\kcurlSob}[2]{H^1_{\wavenumber,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
+\newcommand{\ktcurlSob}[2]{H^1_{\wavenumber,\qm,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k,\qm-curl Sobolev space
 \newcommand{\supp}{\mathrm{supp}}										%support of a function
 
 %grad and curl sets
 \newcommand{\gradZero}[2]{\mathcal{G}_{ #1, \mathrm{d}#2}\bracs{0}}		%gradients of zero for domain #1 with measure #2
+\newcommand{\kgradZero}[2]{\mathcal{G}_{ #1, \mathrm{d}#2}^{(\wavenumber)}\bracs{0}}	%k-gradients of zero for domain #1 with measure #2
 \newcommand{\curlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}\bracs{0}}	%curls of zero for domain #1 with measure #2
-\newcommand{\kcurlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}^{(k)}\bracs{0}}	%k-curls of zero for domain #1 with measure #2
+\newcommand{\kcurlZero}[2]{\mathcal{C}_{ #1, \mathrm{d}#2}^{(\wavenumber)}\bracs{0}}	%k-curls of zero for domain #1 with measure #2
 
 %derivatives and grad-like symbols
 \newcommand{\diff}[2]{\dfrac{\mathrm{d}#1}{\mathrm{d}#2}}			%complete derivative d#1/d#2
 \newcommand{\pdiff}[2]{\dfrac{\partial #1}{\partial #2}}			%partial derivative p#1/p#2
 \newcommand{\ddiff}[2]{\dfrac{\mathrm{d}^2 #1}{\mathrm{d} {#2}^2}}	%2nd deriv
 \newcommand{\grad}{\nabla}											%grad operator
+\newcommand{\kgrad}{\grad^{(\wavenumber)}}							%grad with wavenumber superscript
+\newcommand{\ktgrad}{\grad^{(\wavenumber, \qm)}}				%grad with wavenumber, qm superscript
 \newcommand{\curl}[1]{\grad_{#1}\wedge}							%curl with subscript #1
 \newcommand{\kcurl}[1]{\grad_{#1}^{(\wavenumber)}\wedge}			%k-curl with measure subscript #1
 \newcommand{\ktcurl}[1]{\grad_{#1}^{(\wavenumber, \qm)}\wedge}		%k,theta-curl with measure subscript #1
