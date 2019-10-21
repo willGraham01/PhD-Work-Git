@@ -130,18 +130,162 @@ Thus in the systems that we are considering it will be necessary for us to consi
 \begin{align*}
 	\ktgrad := \kgrad + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}.
 \end{align*}
-Since these operators are nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}, the theory is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
-Also note that the operator $\ktgrad$ replaces the operator $\grad$, and so we are in effect seeking the $\bracs{\wavenumber,\qm}$-tangential curl, gradient, and divergence-free conditions. \newline
-
-Throughout this section we assume our usual set-up; we have some period cell $\ddom$ in which is an embedded graph $\graph=\bracs{V,E}$, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
+One can then construct the sets
+\begin{align*}
+	W^{\wavenumber, \qm}_{\mathrm{curl}} := \overline{ \clbracs{ \bracs{\phi, \ktcurl{}\phi} \ \vert \ \phi\in\bracs{\smooth{\ddom}}^3 } },
+	W^{\wavenumber, \qm}_{\mathrm{grad}} := \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \ \vert \ \phi\in\smooth{\ddom} } },
+\end{align*}
+and then follow the construction method to obtain the spaces $\ktcurlSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\ddmes}$.
+Since $\ktgrad$ is nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}, the theory is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
+Also note that the operator $\ktgrad$ replaces the operator $\grad$, and so we are in effect seeking the $\bracs{\wavenumber,\qm}$-tangential curl, gradient, and divergence-free conditions. 
+We will adopt the notation $\kcurlZero{\ddom}{\ddmes}$ for the set of ``$\wavenumber$-curls of zero and $\kgradZero{\ddom}{\ddmes}$ for the set of $\wavenumber$-gradients of zero;
+\begin{align*}
+	\kcurlZero{\ddom}{\ddmes} &= \clbracs{ c \ \vert \ \bracs{0,z,c}\in W^{\wavenumber}_{\mathrm{curl}}}, \\
+	\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z,c}\in W^{\wavenumber}_{\mathrm{grad}}}.
+\end{align*}
+It will be shown in the relevant sections that these sets are invariant under changes to $\qm$ hence we only write $W^{\wavenumber} = W^{\wavenumber, 0}$.
+Throughout this section we will also assume our usual set-up; we have some period cell $\ddom$ in which is an embedded graph $\graph=\bracs{V,E}$, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
 
 \subsection{$\bracs{\wavenumber,\qm}$-gradients} \label{sec:ktGradients}
 In this subsection we will work towards characterising $\bracs{\wavenumber,\qm}$-tangential gradients.
-This will first involve us characterising the set of gradients of zero, $\kgradZero{\ddom}{\ddmes}$, however there will be several parallels with the methods and results of section \ref{sec:ScalarExample}.
+This will first involve us characterising the set of gradients of zero, $\kgradZero{\ddom}{\ddmes}$, however there will be several parallels with the methods and results of section \ref{sec:ScalarExample}. 
+We begin by showing that the gradients of zero that we shall be dealing with are invariant under changes in $\qm$ (just like in the scalar case) and so throughout the notation $\kgradZero{\ddom}{\ddmes}$ will be sufficient, and we can always consider the $\qm=0$ case in our working.
+\begin{prop}[$\wavenumber$-Gradients of Zero are Invariant Under Quasi-Momentum] \label{prop:kGradZeroInvarientUnderQM}
+	Let $\qm\in[-\pi,\pi)^2$ and set 
+	\begin{align*}
+		\mathcal{G}^{\kt}_{\ddom, \mathrm{d}\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z,c}\in W^{\wavenumber, \qm}_{\mathrm{grad}}}, \\
+		\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z,c}\in W^{\wavenumber, 0}_{\mathrm{grad}}}.
+	\end{align*}
+	Then
+	\begin{align*}
+		\mathcal{G}^{\kt}_{\ddom, \mathrm{d}\ddmes} &= \kgradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	This proof is essentially identical to proposition \ref{prop:GradZeroInvarientUnderQM}; note that the third component of $\ktgrad\phi$ doesn't depend on $\qm$, and then apply the argument of that proposition to the first and second components to obtain the result.
+\end{proof}
+
+Next we move onto characterising $\kgradZero{\ddom}{\ddmes}$, electing to use the same procedure as in section \ref{sec:ScalarExample} and find an edge-wise characterisation, then combine the results to provide a characterisation across a general graph.
+To this end we note that the arguments in section \ref{sec:ScalarExample} all apply to the first and second components of $\ktgrad\phi$ (they are in fact identical); this includes the results regarding orientation-preserving orthogonal rotations in the $\bracs{x_1,x_2}$-plane.
+As such it will be sufficient for us to determine any changes that are introduced by the presence of the third component of $\ktgrad\phi$.
+We begin by assuming that our underlying graph $\graph$ consists of a single edge parallel to the $x_2$-axis.
+\begin{prop}[$\wavenumber$-Gradients of Zero on a Segment Parallel to the $x_2$-axis] \label{prop:kGradZeroParallel}
+	Let $I$ be a segment in $\ddom$ parallel to the $x_2$-axis and $\lambda_I$ the singular measure supported on $I$.
+	Then
+	\begin{align*}
+		\kgradZero{\ddom}{\lambda_I} = \clbracs{ 
+		\begin{pmatrix} f \\ 0 \\ 0	\end{pmatrix} \ \vert \ f\in\ltwo{\ddom}{\lambda_I}
+		}
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Corollary \ref{cory:CharacterisationGradientsZero} deals with the first two components, so it remains for us to examine the third component.
+	Suppose that $f\in\ltwo{\ddom}{\lambda_I}$ and that $\bracs{0,0,f}^\top\in\kgradZero{\ddom}{\lambda_I}$, then there exists a sequence of smooth functions $\phi_n\in\smooth{\ddom}$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} 0, &\quad \begin{pmatrix} \partial_1\phi_n \\ \partial_2\phi_n \\ i\wavenumber\phi_n \end{pmatrix} = \ktgrad\phi_n \lconv{\ltwo{\ddom}{\lambda_I}^3} \begin{pmatrix} 0 \\ 0 \\ f	\end{pmatrix}.
+	\end{align*}
+	Thus $\phi_n\rightarrow0$ but $i\wavenumber\phi_n\rightarrow f$, hence we must conclude that $f=0$.
+\end{proof}
+
+We expect this result as it means that after taking the Fourier transform, our formulation still accounts for (or ``can see") the direction of wave propagation.
+Additionally, as the third component of $\ktgrad\phi$ is unaffected by rotations in the $\bracs{x_1,x_2}$-plane, we can utilise proposition \ref{prop:kGradZeroParallel} to state the following result.
+\begin{cory}[Characterisation of $\kgradZero{\ddom}{\ddmes}$] \label{cory:CharacterisationkGradientsZero}
+	Let $\graph=\bracs{V,E}$ be a finite graph in $\ddom$ and $\ddmes$ the singular measure supported on the edges of $graph$.
+	For each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supported on $I_{jk}$, and $e_{jk}$ be the unit vector along $I_{jk}$.
+	Then
+	\begin{align*}
+		\kgradZero{\ddom}{\ddmes} &= \clbracs{ 
+		\begin{pmatrix} g_1 \\ g_2 \\ 0 \end{pmatrix}		
+		\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ \left.
+		\begin{pmatrix} g_1 \\ g_2 \end{pmatrix}
+		\right\rvert_{I_{jk}}\cdot e_{jk} = 0 \ \forall I_{jk}\in E } \\
+		&= \clbracs{ g\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ g\in\kgradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E }
+	\end{align*}
+\end{cory}
+\begin{proof}
+	Proposition \ref{prop:kGradZeroParallel} provides us with the form for $\kgradZero{\ddom}{\lambda_I}$ when $I$ is parallel to the $x_2$-axis.
+	By following the argument of section \ref{sec:ScalarExample}, we can obtain a characterisation for the case when the segment $I$ is orientated at an arbitrary angle to the $x_2$-axis; noting that in each case the third component of an element $g\in\kgradZero{\ddom}{\lambda_I}$ remains identically zero.
+	As such we can deduce results analogous to those in section \ref{sec:ScalarExample}; specifically \ref{lem:SmoothGradientsUnderRotation}, \ref{prop:RotationOfEdgeGradients}, \ref{cory:Grad0SingleEdge}, \ref{prop:Grad0IncB}, \ref{lem:SegGradExtend}, and \ref{prop:BIncGrad0}, from which this result follows.
+\end{proof}
+
+Establishing this characterisation now allows us to determine the form for tangential $\kt$-gradients; note here that it is now necessary for us to consider an arbitrary $\qm\in[-\pi,\pi)^2$ as the tangential gradient will depend on the quasi-momentum.
+Of course it is sufficient for us to determine a edge-wise form for the tangential gradient, and the arguments and results of section \ref{sec:ScalarSystem} apply to provide us with the forms for the first and second component of the tangential $\kt$-gradient.
+As such all that remains for us is to explore the third component of the tangential gradient on an edge, and then extend the aforementioned arguments.
+As such we now provide some of the details for characterising the tangential $\kt$-gradient on a segment parallel to the $x_2$-axis, then simply state it's general form, referring the reader back to the arguments of section \ref{sec:ScalarSystem} which are easily adapted.
+\begin{prop}[Tangential $\kt$-Gradient on a Segment Parallel to the $x_2$-axis] \label{prop:ktTangentialGradientSegment}
+	Let $I$ be a segment in $\ddom$ parallel to the $x_2$-axis, and $\lambda_I$ the singular measure supported on $I$.
+	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space on the interval $\interval{I}$ with respect to the Lebesgue measure; and let $r:\interval{I}\rightarrow I$ be the change of variables map $r(t) = v_I + te_I$, for either endpoint $v_I$ of $I$ and unit vector $e_I$ along $I$ directed away from $v_I$.
+	Suppose $u\in\ktgradSob{\ddom}{\lambda_I}$ and let $\widetilde{u} = u\circ r\in\gradSob{\interval{I}}{t}$.
+	Then
+	\begin{align*}
+		\ktgrad_{\lambda_I}u &= \begin{pmatrix} 0 \\ u' + i\qm_2 u \\ i\wavenumber u\end{pmatrix}
+	\end{align*}
+	where $u' = \widetilde{u}'\circ r^{-1}$.
+\end{prop}
+\begin{proof}
+	Setting $\ktgrad_{\lambda_I}u = \bracs{v_1,v_2,v_3}^{\top}$, the condition of orthogonality to $\kgradZero{\ddom}{\lambda_I}$ requires that
+	\begin{align*}
+		0 &= \integral{\ddom}{\ktgrad_{\lambda_I}u \cdot \overline{g}}{\lambda_I} \quad \forall g\in\kgradZero{\ddom}{\lambda_I} \\
+		&= \integral{I}{v_1 \overline{g}_1}{\lambda_{I}} \quad \forall g_1\in\ltwo{\ddom}{\lambda_I},
+	\end{align*}
+	so $v_1=0$.
+	Turning our attention to the other components, take any sequence $\phi_n\in\smooth{\ddom}$ such that $\phi_n\rightarrow u, \ktgrad\phi_n\rightarrow \bracs{0,v_2,v_3}^\top$.
+	These convergences imply that
+	\begin{align*}
+		\phi_n &\lconv{\ltwo{\ddom}{\lambda_I}} u, \\
+		\partial_1\phi_n + i\qm_1 \phi_n \lconv{\ltwo{\ddom}{\lambda_I}} 0, \\
+		\partial_2\phi_n + i\qm_2 \phi_n \lconv{\ltwo{\ddom}{\lambda_I}} v_2, \\
+		i\wavenumber\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} v_3.
+	\end{align*}
+	But $\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} u$ implies that $v_3 = i\wavenumber u$.
+	This leaves us determining the form for $v_2$, where we direct the reader to the process detailed in lemma \ref{lem:TangentialQMGradientSegmentParallel} which demonstrates how to show that $v_2 = u' + i\qm_2 u$, which completes the proof.
+\end{proof}
+
+The form for the tangential $\kt$-gradient when the segment $I$ is at an arbitrary angle in the $\bracs{x_1,x_2}$-plane follows by applying a rotation to the previous result; and this in turn gives us an analogue of corollary \ref{cory:TangentialQMGradientGraphs}.
+\begin{cory}[$\kt$-Tangential Gradient on Graphs] \label{cory:ktTangentialGradientForm}
+	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$.
+	Denote by $x=\bracs{x_1,x_2}$ the axes co-ordinate system.
+	For each $I_{jk}\in E$, denote the restriction of $u$ to $I_{jk}$ by $u_{jk} = u\vert_{I_{jk}}$.
+	Also equip each $I_{jk}$ with a local orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ (note this is not $y_2$) parallel to $I_{jk}$, such that $x=R_{jk}y$ for some $R_{jk}\in\mathrm{SO}(2)$.
+	If $u\in\ktgradSob{\ddom}{\ddmes}$ then
+	\begin{align*}
+		\left.\ktgrad_{\ddmes}u\right\vert_{I_{jk}} = \begin{pmatrix} R_{jk}^\top & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} u' + i\bracs{R_{jk}\qm}_1 u \\ 0 \\ iku \end{pmatrix},
+	\end{align*}
+	for every $I_{jk}\in E$.
+\end{cory}
+\begin{proof}
+	It is sufficient to find an edge-wise characterisation for the tangential $\kt$-gradient, and we can apply a rotation to the result of proposition \ref{prop:ktTangentialGradientSegment} to obtain the form for the tangential $\kt$-gradient on any segment in $\ddom$.
+\end{proof}
 
 \subsection{The Divergence-Free Condition} \label{sec:ktDivFree}
-Having established characterisations for both $\kgradZero{\ddom}{\ddmes}$ and the tangential gradients, we can now examine what it means for a function $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence free.
-As usual, it is sufficient for us to consider a single edge $I$ which we take to be parallel to the $x_2$-axis and then make use of rotations and the edge-wise natural of $\ddmes$ to extend the results to the whole of $\graph$. \newline
+Having established characterisations for both $\kgradZero{\ddom}{\ddmes}$ (corollary \ref{cory:CharacterisationkGradientsZero} and the tangential gradients (corollary \ref{cory:ktTangentialGradientForm}, we can now examine what it means for a function $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence-free.
+As usual it is sufficient for us to consider a single edge $I$ and the edge-wise nature of $\ddmes$ to extend the results to the whole of $\graph$.
+\begin{prop}[Divergence-Free Functions on a Segment]
+	Let $I$ be a segment in $\ddom$ with local co-ordinate system $y=\bracs{y_1,y_2}$ with $y_2$ parallel to $I$, and $\lambda_I$ the singular measure supported on $I$.
+	Let $x=\bracs{x_1,x_2}$ be the axes co-ordinate system and $R\in\mathrm{SO}(2)$ such that $x=Ry$.
+	Furthermore denote by $\gradSob{\interval{I}}{\lambda_I}$ the ``classical" Sobolev space on $\interval{I}$ with respect to the Lebesgue measure; and let $r:\interval{I}\rightarrow I$ be the change of variables $r(t)= v_I + t e_I$, for some endpoint $v_I$ of $I$ and unit vector $e_I$ parallel to $I$ and directed away from $v_I$.
+	Suppose $u=\bracs{u_1, u_2, u_3}^\top\in\curlSob{\ddom}{\lambda_I}$ is divergence-free.
+	Then $\widetilde{u}_2 = u \circ r$ and $\widetilde{u}_3 = u_3 \circ r$ satisfy
+	\begin{align*}
+		-\bracs{\diff{}{t} + i\bracs{R\qm}_1}\widetilde{u}_2 &= i\wavenumber\widetilde{u}_3,
+	\end{align*}
+	where $\diff{\widetilde{u}_2}{t} = \widetilde{u}'_2$ is understood in the $\gradSob{\interval{I}}{t}$ sense.
+\end{prop}
+\begin{proof}
+	We simply check the requirement that $u$ be orthogonal to all gradients, first against gradients of zero and then against tangential $kt$-gradients.
+	We know that $g\in\kgradZero{\ddom}{\lambda_I}$ is such that $g=\bracs{g_1,0,0}^\top$ by proposition \ref{prop:kGradZeroParallel}, so
+	\begin{align*}
+		0 &= \integral{\ddom}{ u\cdot\overline{g} }{\lambda_I} \quad\forall g\in\kgradZero{\ddom}{\lambda_I}, \\
+		\implies 0 &= \integral{I}{ u_1 \overline{g_1} }{\lambda_I} \quad \forall g_1\in\ltwo{\ddom}{\lambda_I}.
+	\end{align*}
+	Thus $u_1 = 0$.
+	Now suppose that $\ktgrad_{\lambda_I} v$ is a tangential $\kt$-gradient of $v\in\ktgradSob{\ddom}{\lambda_I}$.
+	Then
+	\begin{align*}
+		0 &= 
+	\end{align*}
+	\tstk{got to ehre, do more works now}
+\end{proof}
 
 \subsection{$\bracs{\wavenumber,\qm}$-curls} \label{sec:ktCurls}
 Our primary focus here is to characterise tangential curls; and our analysis follows in much of the same vein as in section \ref{sec:ScalarExample}.

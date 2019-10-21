@@ -276,8 +276,8 @@ However we can build up an understanding of gradients of zero on more complex (f
 As such in this section we work with an embedded graph $\graph = \bracs{V,E}$ with supporting singular measure $\ddmes$; and we look to show that gradients of zero on the whole graph admit an edge-wise form that coincides with proposition \ref{prop:RotationOfEdgeGradients}.
 Namely we wish to prove that
 \begin{align*}
-	\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
-	&= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\in\ltwo{\ddom}{\lambda_{jk}}^2 \ \forall I_{jk}\in E}.
+	\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
+	&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E}.
 \end{align*}
 Here $e_{jk}$ denotes the unit vector (directed $v_j$ to $v_k$) along $I_{jk}$; and for convenience we denote the set on the right hand side of the equality by $B$.
 The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
@@ -440,8 +440,8 @@ The idea for the proof is to use the fact that we can extend a gradient of zero 
 For ease of reference later, we now state the result we sought from the beginning of this section as a corollary.
 \begin{cory}[Characterisation of Gradients of Zero] \label{cory:CharacterisationGradientsZero}
 	\begin{align*}
-		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
-		&= \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\in\ltwo{\ddom}{\lambda_{jk}}^2 \ \forall I_{jk}\in E}.
+		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
+		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E}.
 	\end{align*}
 \end{cory}
 

@@ -36,6 +36,7 @@
 \newcommand{\graph}{\mathbb{G}}					%graph variable
 \newcommand{\wavenumber}{\kappa}				%fourier variable or wavenumber, not to confuse with jk subscripts!
 \newcommand{\qm}{\theta}						%quasi-momentum parameter
+\newcommand{\kt}{\bracs{\wavenumber, \qm}}		%(k, theta) pair
 
 %standard sets
 \newcommand{\naturals}{\mathbb{N}}			%natural numbers
@@ -56,6 +57,7 @@
 \newcommand{\ltwo}[2]{L^{2}\bracs{#1,\mathrm{d}#2}}						%general L^2 space
 \newcommand{\gradSob}[2]{H^1_\mathrm{grad}\bracs{#1, \mathrm{d}#2}}		%gradient Sobolev space
 \newcommand{\gradSobQM}[2]{H^1_{\qm, \mathrm{grad}}\bracs{#1, \mathrm{d}#2}} %gradient + i\qm Sobolev space
+\newcommand{\ktgradSob}[2]{H^1_{\wavenumber,\qm,\mathrm{grad}}\bracs{#1, \mathrm{d}#2}}	%k,\qm-gradient Sobolev space
 \newcommand{\curlSob}[2]{H^1_\mathrm{curl}\bracs{#1, \mathrm{d}#2}}		%curl Sobolev space
 \newcommand{\tcurlSob}[2]{H^1_{\qm, \mathrm{curl}}\bracs{#1, \mathrm{d}#2}}		%curl + i\qm Sobolev space
 \newcommand{\kcurlSob}[2]{H^1_{\wavenumber,\mathrm{curl}}\bracs{#1, \mathrm{d}#2}}	%k-curl Sobolev space
@@ -74,10 +76,10 @@
 \newcommand{\ddiff}[2]{\dfrac{\mathrm{d}^2 #1}{\mathrm{d} {#2}^2}}	%2nd deriv
 \newcommand{\grad}{\nabla}											%grad operator
 \newcommand{\kgrad}{\grad^{(\wavenumber)}}							%grad with wavenumber superscript
-\newcommand{\ktgrad}{\grad^{(\wavenumber, \qm)}}				%grad with wavenumber, qm superscript
+\newcommand{\ktgrad}{\grad^{\kt}}				%grad with wavenumber, qm superscript
 \newcommand{\curl}[1]{\grad_{#1}\wedge}							%curl with subscript #1
 \newcommand{\kcurl}[1]{\grad_{#1}^{(\wavenumber)}\wedge}			%k-curl with measure subscript #1
-\newcommand{\ktcurl}[1]{\grad_{#1}^{(\wavenumber, \qm)}\wedge}		%k,theta-curl with measure subscript #1
+\newcommand{\ktcurl}[1]{\grad_{#1}^{\kt}\wedge}		%k,theta-curl with measure subscript #1
 
 %displaying integrals
 \newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3
