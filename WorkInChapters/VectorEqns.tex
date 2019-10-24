@@ -61,11 +61,12 @@ This gives rise to the notion of $\nu$-divergence free functions, which we defin
 		\integral{D}{ u\cdot\overline{\grad_{\nu}f} }{\nu} &= 0, \quad \forall f\in\gradSob{D}{\nu}.
 	\end{align*}	 
 \end{definition}
-Of course due to the density of $\smooth{D}$ in $\ltwo{D}{\nu}$ and the construction of $\gradSob{D}{\nu}$, it is sufficient to test the condition
+Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ and it's orthogonal compliment; plus the density of $\smooth{D}$ in $\gradZero{D}{\nu}^{\perp}$, it is sufficient to test the conditions
 \begin{align*}
-	\integral{D}{ u\cdot\overline{\grad\psi} }{\nu} &= 0, \quad \forall \psi\in\smooth{D}
+	\integral{D}{ u\cdot\overline{\grad\psi} }{\nu} &= 0, \quad \forall \psi\in\smooth{D}, \\
+	\integral{D}{ u\cdot\overline{z} }{\nu} &= 0, \quad \forall g\in\gradZero{D}{\nu},
 \end{align*}
-to show that $u$ is $\nu$-divergence free (due to the applicability of the aforementioned limiting and density arguments).
+to show that $u$ is $\nu$-divergence free.
 
 \tstk{on the divergence-free condition and why we need it !!!}
 
@@ -131,17 +132,19 @@ Thus in the systems that we are considering it will be necessary for us to consi
 	\ktgrad := \kgrad + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}.
 \end{align*}
 One can then construct the sets
-\begin{align*}
-	W^{\wavenumber, \qm}_{\mathrm{curl}} &:= \overline{ \clbracs{ \bracs{\phi, \ktcurl{}\phi} \ \vert \ \phi\in\bracs{\smooth{\ddom}}^3 } }, \\
-	W^{\wavenumber, \qm}_{\mathrm{grad}} &:= \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \ \vert \ \phi\in\smooth{\ddom} } },
-\end{align*}
+\begin{subequations} \label{eq:WktDefinitions}
+	\begin{align}
+		W^{\wavenumber, \qm}_{\mathrm{curl}} &:= \overline{ \clbracs{ \bracs{\phi, \ktcurl{}\phi} \ \vert \ \phi\in\bracs{\smooth{\ddom}}^3 } }, \\
+		W^{\wavenumber, \qm}_{\mathrm{grad}} &:= \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \ \vert \ \phi\in\smooth{\ddom} } },
+	\end{align}
+\end{subequations}
 and then follow the construction method to obtain the spaces $\ktcurlSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\ddmes}$.
 Since $\ktgrad$ is nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}, the theory is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
 Also note that the operator $\ktgrad$ replaces the operator $\grad$, and so we are in effect seeking the $\bracs{\wavenumber,\qm}$-tangential curl, gradient, and divergence-free conditions. 
 We will adopt the notation $\kcurlZero{\ddom}{\ddmes}$ for the set of ``$\wavenumber$-curls of zero and $\kgradZero{\ddom}{\ddmes}$ for the set of $\wavenumber$-gradients of zero;
 \begin{align*}
-	\kcurlZero{\ddom}{\ddmes} &= \clbracs{ c \ \vert \ \bracs{0,z,c}\in W^{\wavenumber}_{\mathrm{curl}}}, \\
-	\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z,c}\in W^{\wavenumber}_{\mathrm{grad}}}.
+	\kcurlZero{\ddom}{\ddmes} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber}_{\mathrm{curl}}}, \\
+	\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z}\in W^{\wavenumber}_{\mathrm{grad}}}.
 \end{align*}
 It will be shown in the relevant sections that these sets are invariant under changes to $\qm$ hence we only write $W^{\wavenumber} = W^{\wavenumber, 0}$.
 Throughout this section we will also assume our usual set-up; we have some period cell $\ddom$ in which is an embedded graph $\graph=\bracs{V,E}$, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
@@ -279,14 +282,15 @@ As usual it is sufficient for us to consider a single edge $I$ and the edge-wise
 		\implies 0 &= \integral{I}{ u_1 \overline{g_1} }{\lambda_I} \quad \forall g_1\in\ltwo{\ddom}{\lambda_I}.
 	\end{align*}
 	Thus $u_1 = 0$.
-	Now suppose that $\ktgrad_{\lambda_I} v$ is a tangential $\kt$-gradient of $v\in\ktgradSob{\ddom}{\lambda_I}$.
-	Then
+	We now check orthogonality of $u$ against smooth $\kt$-gradients by letting $\phi\in\smooth{D}$, and considering the requirement that
 	\begin{align*}
-		0 &= \integral{\ddom}{u_2\overline{\bracs{v'+i\qm_2 v}} - i\wavenumber u_3\overline{v}}{\lambda_I} \\
-		&= \int_0^{\abs{I}} \widetilde{u}_2\overline{\bracs{\widetilde{v}' + i\qm_2 \widetilde{v}}} - i\wavenumber\widetilde{u}_3\overline{\widetilde{v}} \ \md t \\
-		&= \int_0^{\abs{I}} \overline{\widetilde{v}}\bracs{-\widetilde{u}'_2 - i\qm_2 \widetilde{u}_2 - i\wavenumber\widetilde{u}_3} \ \md t.
+		0 &= \integral{\ddom}{ u\cdot\overline{\ktgrad\psi} }{\lambda_I}
+		&= \integral{\ddom}{u_2\bracs{\partial_2\overline{\psi} + i\qm_2\overline{\psi}} - i\wavenumber u_3\overline{\psi}}{\lambda_I} \\
+		&= \int_0^{\abs{I}} \widetilde{u}_2\overline{\bracs{\widetilde{\psi}' + i\qm_2 \widetilde{\psi}}} - i\wavenumber\widetilde{u}_3\overline{\widetilde{\psi}} \ \md t \\
+		&= \int_0^{\abs{I}} \overline{\widetilde{\psi}}\bracs{-\widetilde{u}'_2 - i\qm_2 \widetilde{u}_2 - i\wavenumber\widetilde{u}_3} \ \md t.
 	\end{align*}
-	This holds for each $v\in\ltwo{\ddom}{\lambda_I}$ and hence for each $\widetilde{v}\in\ltwo{\interval{I}}{t}$, and so we conclude that
+	Where we have used an overhead tilde to denote composition with the change of variables map $r$.
+	This holds for each $\psi\in\smooth{\ddom}$ and hence for each $\widetilde{\psi}\in\smooth{\interval{I}}$, and so we conclude that
 	\begin{align*}
 		-\bracs{\diff{}{t} + i\qm_2}\widetilde{u}_2 &= i\wavenumber\widetilde{u}_3,
 	\end{align*}
@@ -326,14 +330,83 @@ Thus we arrive at the following classification for divergence-free functions on 
 	where the derivative is understood in the $\gradSob{\interval{I_{jk}}}{t}$ sense.
 \end{cory}
 \begin{proof}
-	\tstk{this could well be more complicated than this!!!}
+	\tstk{need to think about this proof!}
+	Given the edge-wise form for $\kgradZero{\ddom}{\ddmes}$ by corollary \ref{cory:ktTangentialGradientForm}, we can repeat the argument of 
 \end{proof}
 
 \subsection{$\bracs{\wavenumber,\qm}$-curls} \label{sec:ktCurls}
 Our primary focus here is to characterise tangential curls; and our analysis follows in much of the same vein as in section \ref{sec:ScalarExample}.
-First we seek an edge-wise understanding for $\bracs{\wavenumber,\qm}$-curls of zero and tangential curls, then we derive an extension result (c.f. \tstk{extension lemma result here}) for curls so that our edge-wise characterisation also provides us with a graph-wide form for the curl.
+First we seek an edge-wise understanding for $\kt$-curls of zero and tangential curls, then we derive an extension result (c.f. \tstk{extension lemma result here}) for curls so that our edge-wise characterisation also provides us with a graph-wide form for the $\kt$-curl.
 We will need the following result on rotations during this section:
-\tstk{rotating curls goes here}
+\begin{lemma}[Curl under rotation] \label{lem:CurlUnderRotation}
+	Let $x=\bracs{x_1,x_2,x_3}^\top, y=\bracs{y_1,y_2,y_3}^\top$ be right-handed orthonormal co-ordinate systems and suppose $R\in\mathrm{SO}(3)$ is such that $x=Ry$.
+	Let $u$ be a vector field, and denote by $u_x =\bracs{u_{x,1},u_{x,2},u_{x,3}}^\top$ it's representation in the $x$ co-ordinate system, and $u_y =\bracs{u_{y,1},u_{y,2},u_{y,3}}^\top$ it's representation in the $y$ co-ordinate system.
+	Denote by $\grad_x$ and $\grad_y$ the $\grad$ operator in the two co-ordinate systems, respectively.
+	Then
+	\begin{align*}
+		\grad_y\wedge u_y\bracs{R^\top x} &= R \grad_x u_x\bracs{R^\top x}, \\
+		\grad_x\wedge u_x\bracs{R^\top x} &= R\top\grad_y u_y\bracs{R\top x}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We use index notation and Einstein summation conventions throughout this proof.
+	We also use $\epsilon_{jkm}$ to represent the Levi-Civita symbol for permutations of three elements, and $\delta_{jk}$ for the Kronecker delta.
+	As $R\in\mathrm{SO}(3)$, $R^\top=R^{-1}$ and $\det R = 1$.
+	Thus $R$ is the adjugate matrix of it's own transpose, that is $R = \mathrm{Adj}\bracs{R^\top}$ so we have that
+	\begin{align*}
+		R_{jk} &= \recip{2}\epsilon_{mnj}\epsilon_{pqk}R^\top_{mp}R^\top_{nq} \\
+		\implies 2R_{jk}\epsilon_{kvw} &= \epsilon_{kvw}\epsilon_{mnj}\epsilon_{pqk}R^\top_{mp}R^\top_{nq} \\
+		&= \epsilon_{mnj}R^\top_{mp}R^\top_{nq}\bracs{\delta_{pv}\delta_{qw} - \delta_{pw}\delta_{qv}} \\
+		&= \epsilon_{mnj}\bracs{R^\top_{mv}R^\top_{nw} - R^\top_{nv}R^\top_{mw}}
+		= 2\epsilon_{mnj}R^\top_{mv}R^\top_{nw} \\
+		\implies R_{jk}\epsilon_{kml} &= \epsilon_{jkn}R_{mk}R_{ln}.
+	\end{align*}
+	We now use this identity to prove the result of the lemma;
+	\begin{align*}
+		\bracs{\grad_y\wedge u_y\bracs{R^\top x}}_j &= \epsilon_{jkl}\pdiff{u_{y,l}}{y_k}
+		= \epsilon_{jkl}\pdiff{}{y_k}\bracs{R_{ml}u_{x,m}} \\
+		&= \epsilon_{jkl}R_{ml}\pdiff{x_n}{y_k}\pdiff{u_{x,m}}{x_n} \\
+		&= \epsilon_{jkl}R_{ml}R_{nk}\pdiff{u_{x,m}}{x_n} \\
+		&= R_{jk}\epsilon_{jnm}\pdiff{u_{x,m}}{x_n} \\
+		&= \bracs{ R\grad_x\wedge u_x\bracs{R^\top x} }_j.
+	\end{align*}
+	From which left-multiplication by $R^\top$ gives the other desired equality.
+\end{proof}
+
+\tstk{there's an error in here somewhere!}
+Now we seek to characterise the $\kcurlZero{\ddom}{\ddmes}$; as before we first demonstrate that this set is invariant under changes in $\qm$.
+The analogue of this result in the gradient case is \tstk{reference!}
+\begin{prop}[Invariance of $\kcurlZero{\ddom}{\nu}$ under $\qm$]
+	Let $\nu$ be a Borel measure on $\ddom$ and $\qm\in[-\pi,\pi)^2$.
+	Set
+	\begin{align*}
+		\kcurlZero{\ddom}{\nu} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber, 0}}, \\
+		\mathcal{C}_{\ddom, \md\nu}^{\kt} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber, \qm} },
+	\end{align*}
+	for $W$ as defined in \eqref{eq:WktDefinitions}.
+	Then
+	\begin{align*}
+		\kcurlZero{\ddom}{\nu} &= \mathcal{C}_{\ddom, \md\nu}^{\kt}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	The argument is essentially identical in both directions, so without loss of generality we only show one of the two required set inclusions.
+	Let us take some $\qm\in[-\pi,\pi)^2$ and $c\in\kcurlZero{\ddom}{\nu}$.
+	Then we can find an approximating sequence $\phi^{(n)}\in\bracs{\smooth{\ddom}}^3$ such that
+	\begin{align*}
+		\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} 0, &\quad \kcurl\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} c.
+	\end{align*}
+	The convergence $\phi^(n)\rightarrow0$ implies that 
+	\begin{align*}
+		i \begin{pmatrix} \qm_1, \qm_2, 0\end{pmatrix}\wedge\phi^{(n)}\lconv{\ltwo{\ddom}{\nu}^3} 0
+	\end{align*}
+	too, and thus
+	\begin{align*}
+		\ktcurl\phi^{(n)} &= \kcurl\phi^{(n)} + i\begin{pmatrix} \qm_1, \qm_2, 0\end{pmatrix}\wedge\phi^{(n)} \\
+		&\lconv{\ltwo{\ddom}{\nu}^3} c + 0 = c.
+	\end{align*}
+	Hence, $c\in \mathcal{C}_{\ddom, \md\nu}^{\kt}$.
+\end{proof}
 
 \section{Reduction to Quantum Graphs} \label{sec:CurlReductionToQG}
 
