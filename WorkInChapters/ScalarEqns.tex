@@ -283,6 +283,7 @@ When we want to emphasise that the edge $I=I_{jk}$ for some $v_j, v_k\in V$, we 
 \end{proof}
 
 Furthermore, we will need to know that $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
+\tstk{this needs proving, because it is central to the proof of the IFF statement in the main theorem about continuity at the vertices.}
 \begin{lemma}[Bound on $\abs{\grad\chi_I^\eps}$] \label{lem:BoundChiGradient}
 	think the bound is $c\times n$ for some $c\in\reals$.
 \end{lemma}
@@ -475,7 +476,7 @@ The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
 The reverse inclusion requires some preliminary results before it can be proven.
 The first result sees us demonstrate that a gradient of zero on a (slightly shortened) edge of a graph is also a gradient of zero on the whole graph, if we extend it by zeros outside the original edge.
 
-\begin{lemma}[Extension Lemma for Gradients] \label{lem:SegGradExtend}
+\begin{lemma}[Extension Lemma for Gradients of Zero] \label{lem:SegGradExtend}
 	For $n\in\naturals$, let $I_{jk}^n$ be as in \eqref{eq:ShortenedIntervalDef}.
 	Suppose that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{jk}^{n}$ and $g\cdot e_{jk}=0$ on $I_{jk}^{n}$.
 	Then 
@@ -561,9 +562,8 @@ For ease of reference later, we now state the result we sought from the beginnin
 \end{cory}
 
 This concludes our analysis of $\gradZero{\ddom}{\ddmes}$, as we now have an edge-wise characterisation for the functions in this set, as well as a form for the functions on each edge.
-In the next section we consider the family of problems that arise from considering the operator that defines \eqref{eq:ScalarExampleStrongForm} in the infinite, periodic $\bracs{x_1,x_2}$-plane.
-
-\tstk{now the stuff about the inherent structure of the Sobolev space, probably going to need it's own subsection!}
+In section \ref{sec:ScalarSystem} we consider the family of problems that arise from considering the operator that defines \eqref{eq:ScalarExampleStrongForm} in the infinite, periodic $\bracs{x_1,x_2}$-plane.
+Following that, there is some focus on the inherent properties of the space $\gradSob{\ddom}{\ddmes}$, as well as further develop this edge-wise characterisation that we have discovered thus far.
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed in an infinite plane with a finite period cell.
@@ -691,7 +691,273 @@ That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMG
 	Taking a segment $I_{jk}$ in the plane at an arbitrary angle to the $x_1$ axis, one first applies the rotation $R_{jk}$ to bring the problem into the axes co-ordinate frame, then applying the argument in the proof of lemma \ref{lem:TangentialQMGradientSegmentParallel} provides the result.
 \end{proof}
 
-This analysis allows us to reduce the problem
+\section{More Properties of $\gradSobQM{\ddom}{\ddmes}$} \label{sec:VertexContinuity}
+Whilst the characterisation of $\gradZero{\ddom}{\ddmes}$ induces the expected edge-wise structure of tangential gradients, the Sobolev space $\gradSob{\ddom}{\ddmes}$ has some additional structure that is not obvious from the previous study.
+Of particular note is the behaviour of functions $u\in\gradSobQM{\ddom}{\ddmes}$ near the vertices $v_j\in V$, something that is not necessary to be considered when dealing with gradients of zero.
+It would not be unreasonable to think that something should be happening at the vertices of $\graph$ in order to tie the edge-wise functions together, and justification of this belief is the objective for this section.
+Throughout this section we work in the case when $\qm = 0$, but the arguments and results that follow hold when $\qm\neq0$, under suitable adjustment to account for the trailing $i\qm$ terms that are introduced.
+We aim to prove the following result, motivated by the work in \cite{zhikov2002homogenization}.
+\begin{theorem}[Characterisation of $\gradSob{\ddom}{\ddmes}$] \label{thm:CharGradSob}
+	We have that
+	\begin{align*}
+		u\in\gradSob{\ddom}{\ddmes} \quad \Leftrightarrow 
+		&\quad\text{(i)} \ u\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \text{ and}\\
+		&\quad\text{(ii)} \ u \text{ is continuous at each } v_j\in V.
+	\end{align*}
+\end{theorem}
+
+Alas, once again a short proof of this result eludes us and we require some preliminary results first.
+We do find that there is a relatively short argument to the ``right-directed" implication though.
+\begin{prop} \label{prop:CharGradSobRightImplies}
+	We have that
+	\begin{align*}
+		u\in\gradSob{\ddom}{\ddmes} \quad \Rightarrow 
+		&\quad\text{(i)} \ u\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \text{ and}\\
+		&\quad\text{(ii)} \ u \text{ is continuous at each } v_j\in V.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Suppose $u\in\gradSob{\ddom}{\ddmes}$, then we can find a sequence of smooth functions $\phi_l$ such that
+	\begin{align*}
+		\phi_l \lconv{\ltwo{\ddom}{\ddmes}} u, 
+		&\quad \grad\phi_l \lconv{\ltwo{\ddom}{\ddmes}^2} \grad_\ddmes u.
+	\end{align*}
+	But for each $I_{jk}\in E$,
+	\begin{align*}
+		\integral{\ddom}{\abs{ \phi_l - u }^2}{\lambda_{jk}}
+		&\leq \integral{\ddom}{\abs{ \phi_l - u }^2}{\ddmes} \rightarrow 0, \\
+		\integral{\ddom}{\abs{ \grad\phi_l - \grad_\ddmes u }^2}{\lambda_{jk}}
+		&\leq \integral{\ddom}{\abs{ \grad\phi_l - \grad_\ddmes u }^2}{\ddmes} \rightarrow 0 \toInfty{l}.
+	\end{align*}
+	Thus $u\in\gradSob{\ddom}{\lambda_{jk}}$ (with $\grad_{\lambda_{jk}}u = \grad_\ddmes u$).
+	We now retain this sequence $\phi_l$, and consider one $v_j\in V$ and it's connecting edges $I_{jk}$ where $j\sim k$.
+	For each such $k$ define a change of variables $r_{jk}(t) = v_{j} + t e_{jk}$; and to reduce the notational load denote composition with $r_{jk}$ by an overhead tilde.
+	Then because we have (i) we conclude that 
+	\begin{align*}
+		\widetilde{\phi}_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}, 
+		&\quad \widetilde{\phi}'_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}',
+	\end{align*}
+	and hence $u\in\gradSob{\interval{I_{jk}}}{t}$.
+	As the embedding 
+	\begin{align*}
+		W^{1,2}\bracs{\interval{I_{jk}}, \md t} = \gradSob{\interval{I_{jk}}}{t} \ &\hookrightarrow \ C^{0,\recip{2}}\interval{I_{jk}}
+	\end{align*}
+	is compact; we can conclude that $\phi_l$ is a Cauchy sequence in the $C^{0,\recip{2}}$-norm, and hence is also Cauchy in the uniform norm,
+	\begin{align*}
+		\norm{\widetilde{\phi}_l}_{\mathrm{sup}_{jk}} := \sup_{\interval{I_{jk}}}\abs{\phi_l}.
+	\end{align*}
+	As the space of continuous functions is complete with respect to this norm we can conclude that $\widetilde{\phi}_l$ converges (uniformly) on this interval; and this limit must be $\widetilde{u}$, which is itself continuous on $\interval{I_{jk}}$ as it is the uniform limit of continuous functions.
+	By ``undoing" the change of variables under $r_{jk}$, we can also conclude that
+	\begin{align*}
+		\sup_{I_{jk}}\abs{\phi_l - u}\rightarrow0 \toInfty{l},
+	\end{align*}
+	that is $\phi_l$ converges uniformly to $u$ on $I_{jk}$.
+	We now claim that $\phi_l$ converges uniformly to $u$ on
+	\begin{align*}
+		J\bracs{v_j} &:= \bigcup_{j\sim k}I_{jk}
+	\end{align*}
+	too; which is easily seen because
+	\begin{align*}
+		\sup_{J\bracs{v_j}}\abs{\phi_l - u} &= sup_{j\sim k}\sup_{I_{jk}}\abs{\phi_l - u} \\
+		&\rightarrow0 \toInfty{l},
+	\end{align*}
+	due to the uniform convergence on each edge.
+	Thus $u$ is also the uniform limit of continuous functions on $J\bracs{v_j}$, and so it continuous here, which in particular includes the vertex $v_j$ itself.
+	Hence we have (ii), and are done.
+\end{proof}
+
+Showing the reverse implication unsurprisingly follows a similar method to that employed when attempting to prove proposition \ref{prop:BIncGrad0}.
+Throughout these results, we will assume that
+\begin{align*}
+		&\text{(i)} \ u\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \text{ and}\\
+		&\text{(ii)} \ u \text{ is continuous at each } v_j\in V,
+\end{align*}
+hold, and we will be making use of the functions defined in \eqref{eq:ChiDef}.
+Our first result centres on being able to take an approximating sequence of functions whose support does not overlap with the entirety of one edge.
+\begin{lemma}[Selective Approximating Sequences] \label{lem:SelectiveApproximatingSequences}
+	Let $\eps>0$ and fix some $I=I_{jk}\in E$.
+	Let $I^\eps$ be as in \eqref{eq:ShortenedIntervalDef}, and define
+	\begin{align*}
+		\mathbb{I}^{2\eps} &:= \clbracs{x\in\ddom \ \vert \ \mathrm{dist}\bracs{x, I^\eps}\leq\recip{2\eps}}.
+	\end{align*}
+	Note that $\mathbb{I}^{2\eps}$ contains points in $\ddom$ outside the edge $I$, whilst $I^\eps$ does not.
+	Suppose $u\in\gradSob{\ddom}{\lambda_I}$ and is such that $\supp\bracs{u}, \supp\bracs{ \grad_{\lambda_I} u }\subset I^\eps$.
+	Then there exists a sequence of smooth functions $\psi_l$ such that
+	\begin{align*}
+		\psi_l \lconv{\ltwo{\ddom}{\lambda_I}} u, 
+		&\quad \grad\psi_l \lconv{\ltwo{\ddom}{\lambda_I}^2} \grad_{\lambda_I} u, \\
+		\text{and } &\supp\bracs{\psi_l} = \mathbb{I}^{2\eps}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $\varphi\in\smooth{\ddom}$ be the function such that
+	\begin{align*}
+		\varphi(x)\in\sqbracs{0,1} &\quad \forall x\in\ddom, \\
+		\varphi(x) = 1 &\quad x\in I^\eps, \\
+		\varphi(x) = 0 &\quad x\in \ddom\setminus\mathbb{I}^{2\eps}.
+	\end{align*}
+	Note that we can always find such a function by slightly ``thickening" $I^\eps$ and using a partition of unity.
+	Define $\psi_l := \varphi\phi_l$.
+	Then
+	\begin{align*}
+		\integral{\ddom}{\abs{ \psi_l - u }^2}{\lambda_I}
+		&= \integral{I}{\abs{ \varphi\phi_l - u }^2}{\lambda_I} \\
+		&= \integral{I\setminus I^\eps}{\abs{ \varphi\phi_l }^2}{\lambda_I}
+		+ \integral{I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&\leq \integral{I\setminus I^\eps}{\abs{ \phi_l }^2}{\lambda_I}
+		+ \integral{I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&= \integral{I\setminus I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I}
+		+ \integral{I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&= \integral{I}{\abs{ \phi_l - u }^2}{\lambda_I} \rightarrow 0 \toInfty{l},	
+	\end{align*}
+	and also
+	\begin{align*}
+		\integral{\ddom}{\abs{ \grad\psi_l - \grad_{\lambda_I}u }^2}{\lambda_I}
+		&= \integral{I\setminus I^\eps}{\varphi\grad\phi_l +  \phi_l\grad\varphi}{\lambda_I}
+		+ \integral{I^\eps}{\abs{\grad\phi_l - \grad_{\lambda_I}u}^2}{\lambda_I} \\
+		&= \integral{I\setminus I^\eps}{\abs{\varphi\grad\phi_l +  \phi_l\grad\varphi - u\grad\varphi}^2}{\lambda_I}
+		+ \integral{I}{\abs{\grad\phi_l - \grad_{\lambda_I}u}^2}{\lambda_I}.
+	\end{align*}
+	Now we know the second term in the final line converges to $0\toInfty{l}$, so we now focus on the other term.
+	Indeed, here we see that
+	\begin{align*}
+		\integral{I\setminus I^\eps}{\abs{\varphi\grad\phi_l +  \phi_l\grad\varphi - u\grad\varphi}^2}{\lambda_I}
+		&\leq 2\integral{I\setminus I^\eps}{\abs{\varphi\grad\phi_l}^2}{\lambda_I} \\
+		& \ + 2\integral{I\setminus I^\eps}{\abs{\phi_l\grad\varphi - u\grad\varphi}^2}{\lambda_I} \\
+		&\leq 2\integral{I\setminus I^\eps}{\abs{\grad\phi_l}^2}{\lambda_I} \\
+		&\ + 2\sup_I\abs{\grad\varphi}^2\integral{I\setminus I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&= 2\integral{I\setminus I^\eps}{\abs{\grad\phi_l - \grad_{\lambda_I}u}^2}{\lambda_I} \\
+		&\ + 2\sup_I\abs{\grad\varphi}^2\integral{I\setminus I^\eps}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&\leq 2\integral{I}{\abs{\grad\phi_l - \grad_{\lambda_I}u}^2}{\lambda_I} \\
+		&\ + 2\sup_I\abs{\grad\varphi}^2\integral{I}{\abs{ \phi_l - u }^2}{\lambda_I} \\
+		&\rightarrow 0 \toInfty{l}.
+	\end{align*}
+	Hence 
+	\begin{align*}
+		\psi_l \lconv{\ltwo{\ddom}{\lambda_I}} u, &\quad \grad\psi_l \lconv{\ltwo{\ddom}{\lambda_I}^2} \grad_{\lambda_I} u,
+	\end{align*}
+	and by construction $\supp\bracs{\psi_l} = \mathbb{I}^{2\eps}$, and we are done.
+\end{proof}
+
+\begin{lemma}[Extension Lemma for Gradients] \label{lem:ExtensionLemmaAllGradients}
+	Take $\eps>0$, fix $I=I_{jk}\in E$ and let $I^\eps, I^{2\eps}$ be as in \eqref{eq:ShortenedIntervalDef}.
+	Suppose $u\in\gradSob{\ddom}{\lambda_I}$ with $\supp\bracs{u},\supp\bracs{\grad_{\lambda_I}u} \subset I^\eps$.
+	Then
+	\begin{align*}
+		\bracs{u, \grad_{\lambda_I}u}\in\gradSob{\ddom}{\ddmes}
+	\end{align*}
+	too.
+\end{lemma}
+\begin{proof}
+	Define 
+	\begin{align*}
+		\mathbb{I}^{2\eps} &:= \clbracs{x\in\ddom \ \vert \ \mathrm{dist}\bracs{x,I^\eps}\leq \recip{2\eps}}, \\
+		\mathbb{I}^{4\eps} &:= \clbracs{x\in\ddom \ \vert \ \mathrm{dist}\bracs{x,I^\eps}\leq \frac{3}{4\eps}},
+	\end{align*}
+	and take $\varphi\in\smooth{\ddom}$ to be the function such that
+	\begin{align*}
+		\varphi(x)\in\sqbracs{0,1} &\quad \forall x\in\ddom, \\
+		\varphi(x) = 1 &\quad x\in \mathbb{I}^{2\eps}, \\
+		\varphi(x) = 0 &\quad x\in \ddom\setminus\mathbb{I}^{4\eps}.
+	\end{align*}
+	By lemma \ref{lem:SelectiveApproximatingSequences}, there exists a sequence $\phi_l\in\smooth{\ddom}$ such that
+	\begin{align*}
+		\phi_l \lconv{\ltwo{\ddom}{\lambda_I}} u, 
+		&\quad \grad\phi_l \lconv{\ltwo{\ddom}{\lambda_I}^2} \grad_{\lambda_I} u,
+	\end{align*}
+	and such that $\supp\bracs{\phi_l} = \mathbb{I}^{2\eps}$.
+	Define $\psi_l := \varphi\phi_l$.
+	Then due to the construction of the smooth functions we are using,
+	\begin{align*}
+		\integral{\ddom}{\abs{ \psi_l - u }^2}{\ddmes}
+		&= \integral{I}{\abs{ \varphi\phi_l - u }^2}{\lambda_I} \\
+		&\leq \integral{I}{\abs{ \phi_l - u }^2}{\lambda_I} \rightarrow0 \toInfty{l}, \\
+		\integral{\ddom}{\abs{ \grad\psi_l - \grad_{\lambda_I}u }^2}{\ddmes}
+		&= \integral{I}{\abs{ \varphi\grad\phi_l + \phi_l\grad\varphi - \grad_{\lambda_I}u }^2}{\lambda_I} \\
+		&= \integral{I^{2\eps}}{\abs{ \varphi\grad\phi_l + \phi_l\grad\varphi - \grad_{\lambda_I}u }^2}{\lambda_I} \\
+		&= \integral{I^{2\eps}}{\abs{ \grad\phi_l + 0 - \grad_{\lambda_I}u }^2}{\lambda_I} \\
+		&= \integral{I}{\abs{ \grad\phi_l - \grad_{\lambda_I}u }^2}{\lambda_I} \rightarrow0 \toInfty{l}.
+	\end{align*}
+	Thus
+	\begin{align*}
+		\psi_l \lconv{\ltwo{\ddom}{\ddmes}} u, 
+		&\quad \grad\psi_l \lconv{\ltwo{\ddom}{\lambda_I}^2} \grad_{\ddmes} u,
+	\end{align*}
+	and $\grad_{\ddmes}u = \grad_{\lambda_I}u$ by the results of sections \ref{sec:ScalarExample}, \ref{sec:ScalarSystem}.
+\end{proof}
+
+We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSob}.
+\begin{prop} \label{prop:CharGradSobLeftImplies}
+	We have that
+	\begin{align*}
+		u\in\gradSob{\ddom}{\ddmes} \quad \Leftarrow 
+		&\quad\text{(i)} \ u\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \text{ and}\\
+		&\quad\text{(ii)} \ u \text{ is continuous at each } v_j\in V.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	For each $n\in\naturals, I_{jk}\in E$ let $\chi_{jk}^n$ be as in \eqref{eq:ChiDef} and define $u_n^{(jk)} := \chi_{jk}^n u$.
+	By the product rule (proposition \ref{prop:ProductRuleGradients}) we have that $u_n^{(jk)}\in\gradSob{\ddom}{\lambda_{jk}}$, and so by the extension lemma (lemma \ref{lem:ExtensionLemmaAllGradients}) $u_n^{(jk)}\in\gradSob{\ddom}{\ddmes}$ too.
+	Now for each $n\in\naturals$ set
+	\begin{align*}
+		u_n := &\sum_{j\sim k}u_n^{(jk)}, \text{ so that } \\
+		\grad_\ddmes u_n = &\sum_{j\sim k} \grad_{\ddmes}u_n^{(jk)} \\
+		= &\sum_{j\sim k} u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u
+	\end{align*}
+	and each pair $\bracs{u_n, \grad_\ddmes u_n}\in\gradSob{\ddom}{\ddmes}$ by linearity.
+	Then we can show that
+	\begin{align*}
+		\integral{\ddom}{\abs{ u_n - u }^2}{\ddmes}
+		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{ \sum_{l\sim m}\chi_{lm}^n u - u }^2}{\lambda_{jk}} \\
+		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{u}^2\abs{ \chi_{jk}^n - 1 }^2}{\lambda_{jk}} \\
+		&\rightarrow 0 \toInfty{n}
+	\end{align*}
+	by lemma \ref{lem:ChiConv}.
+	This gives us that $u_n\rightarrow u$ in $\ltwo{\ddom}{\ddmes}$, and we now want to show that $\grad_{\ddmes}u_n$ is a bounded sequence.
+	To this end we can make some progress estimating the $\ltwo{\ddom}{\ddmes}^2$-norm of these gradients,
+	\begin{align*}
+		\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2
+		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{ u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u }^2}{\lambda_{jk}} \\
+		&\leq 2\sum_{j\sim k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2
+		+ 2\sum_{j\sim k}\integral{I_{jk}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}} \\
+		&= 2\sum_{j\sim k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2
+		+ 2\sum_{j\sim k}\integral{\clbracs{0\leq\chi_{jk}^n\leq 1}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}}.
+	\end{align*}
+	The norms in the first sum existing because of the assumption (i), and the domain being smaller in the second integral because 
+	\begin{align*}
+		\clbracs{0\leq\chi_{jk}^n\leq 1} = \supp\bracs{\grad_{\lambda_{jk}}\chi_{jk}^n}.
+	\end{align*}
+	It remains to show that the second term is bounded independently of $n$, to show that $\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2$ is bounded. 
+	Without loss of generality, we can take the common value of $u$ at each vertex $v_j\in V$ to be zero\footnote{If this is not the case, for each $n\in\naturals$ and for every vertex with a non-zero common value we include an additional term in $u_n$ which is just the non-zero constant value $-u\bracs{v_j}$ multiplied by a smooth function parametrised by $n$. This smooth function should take the value 1 at the vertex, decay to 0 away from the vertex, and the sequence of smooth functions should converge to 0 in $\ltwo{\ddom}{\ddmes}$ as $n\rightarrow\infty$.}, and so there exists some constant $c>0$ such that
+	\begin{align*}
+		\abs{ u(x) } \leq \frac{c}{\sqrt{n}}, &\quad\text{whenever } \abs{x-v_j}\leq\recip{n}, \ \forall v_j\in V.
+	\end{align*}
+	Also note the result of lemma \ref{lem:BoundChiGradient}, so we have that there is some further constant (which we still call $c$) independent of $n$ such that
+	\begin{align*}
+		\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2 \leq cn.
+	\end{align*}
+	Therefore,
+	\begin{align*}
+		\integral{I_{jk}}{\abs{ u\grad_{\lambda_{jk}}\chi_{jk}^n }^2}{\lambda_{jk}}
+		&\leq cn\integral{I_{jk}}{}{\lambda_{jk}} \\
+		&= cn\times\frac{1}{3n} = \frac{c}{3} .
+	\end{align*}
+	Thus
+	\begin{align*}
+		\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2
+		&\leq 2\sum_{j\sim k}\bracs{ \norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 + \frac{c}{3}},
+	\end{align*}
+	so $\grad_{\ddmes}u_n$ is a bounded sequence in $\ltwo{\ddom}{\ddmes}^2$.
+	By proposition \ref{prop:Lemma5-5}, we have that $\grad_\ddmes u$ exists and that
+	$u\in\gradSob{\ddom}{\ddmes}$, and the proof is complete.
+\end{proof}
+
+Propositions \ref{prop:CharGradSobRightImplies} and \ref{prop:CharGradSobLeftImplies}  conclude the proof of theorem \ref{thm:CharGradSob}.
+This solidifies our ability to break down a problem phrased with respect to $\ddmes$ into sets of smaller problems on\footnote{Formally, with respect to the measures supporting} the edges of $\graph$.
+Furthermore the condition (ii) is important because it ensures that we have enough boundary data when we transition from our problem with respect to measures to a quantum graph problem, which is the focus of the next section.
+
+\section{Reduction to a Quantum Graph Problem} \label{sec:ReduceToQMProblem}
+The analysis in sections \ref{sec:ScalarExample}, \ref{sec:ScalarSystem}, and \ref{sec:VertexContinuity} allows us to reduce the problem
 \begin{align} \label{eq:ScalarPeriodCellSystem}
 	- \grad_\ddmes^\qm \cdot \grad_\ddmes^\qm u &= \omega^2 u, \quad u\in\gradSobQM{\ddom}{\ddmes}
 \end{align}
@@ -725,7 +991,7 @@ If we now make the assumption that $u'_{jk}$ has enough regularity to be differe
 \end{align}
 This means that under suitable regularity conditions we obtain a differential equation for $u_{jk}$ on each of the segments (or the interval that corresponds to them) $I_{jk}$.
 Of course, \eqref{eq:EdgeEquationStrongForm} does not provide a solution on it's own, as boundary conditions are required to close the system and remove any multiplicative constants that might arise.
-However in this case it turns out we can find these boundary (or rather, ``vertex") conditions too; clearly we must impose the condition of continuity of $u$ at the vertices to have differentiability on $\graph$, so we obtain the matching conditions
+We have already found some of these boundary (or rather, ``vertex") conditions in section \ref{sec:VertexContinuity}, clearly we must impose the condition of continuity of $u$ at the vertices so we obtain the matching conditions
 \begin{align} \label{eq:EdgeEquationsMatchingConditons}
 	u_{jk}\bracs{v_j} &= u_{jl}\bracs{v_j} \quad \forall v_j\in V, \text{ whenever } j\sim k \text{ and } j\sim l.
 \end{align}
