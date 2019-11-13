@@ -373,7 +373,6 @@ We will need the following result on rotations during this section:
 	From which left-multiplication by $R^\top$ gives the other desired equality.
 \end{proof}
 
-\tstk{there's an error in here somewhere!}
 Now we seek to characterise the $\kcurlZero{\ddom}{\ddmes}$; as before we first demonstrate that this set is invariant under changes in $\qm$.
 The analogue of this result in the gradient case is \tstk{reference!}
 \begin{prop}[Invariance of $\kcurlZero{\ddom}{\nu}$ under $\qm$]
@@ -381,12 +380,12 @@ The analogue of this result in the gradient case is \tstk{reference!}
 	Set
 	\begin{align*}
 		\kcurlZero{\ddom}{\nu} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber, 0}}, \\
-		\mathcal{C}_{\ddom, \md\nu}^{\kt} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber, \qm} },
+		\mathcal{C}_{\ddom, \md\nu}^{\kt}(0) &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber, \qm} },
 	\end{align*}
 	for $W$ as defined in \eqref{eq:WktDefinitions}.
 	Then
 	\begin{align*}
-		\kcurlZero{\ddom}{\nu} &= \mathcal{C}_{\ddom, \md\nu}^{\kt}.
+		\kcurlZero{\ddom}{\nu} &= \mathcal{C}_{\ddom, \md\nu}^{\kt}(0).
 	\end{align*}
 \end{prop}
 \begin{proof}
@@ -394,18 +393,18 @@ The analogue of this result in the gradient case is \tstk{reference!}
 	Let us take some $\qm\in[-\pi,\pi)^2$ and $c\in\kcurlZero{\ddom}{\nu}$.
 	Then we can find an approximating sequence $\phi^{(n)}\in\bracs{\smooth{\ddom}}^3$ such that
 	\begin{align*}
-		\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} 0, &\quad \kcurl\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} c.
+		\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} 0, &\quad \kcurl{}\phi^{(n)} \lconv{\ltwo{\ddom}{\nu}^3} c.
 	\end{align*}
-	The convergence $\phi^(n)\rightarrow0$ implies that 
+	The convergence $\phi^{(n)}\rightarrow0$ implies that 
 	\begin{align*}
-		i \begin{pmatrix} \qm_1, \qm_2, 0\end{pmatrix}\wedge\phi^{(n)}\lconv{\ltwo{\ddom}{\nu}^3} 0
+		i \begin{pmatrix} \qm_1 \\ \qm_2 \\ 0\end{pmatrix}\wedge\phi^{(n)}\lconv{\ltwo{\ddom}{\nu}^3} 0
 	\end{align*}
 	too, and thus
 	\begin{align*}
-		\ktcurl\phi^{(n)} &= \kcurl\phi^{(n)} + i\begin{pmatrix} \qm_1, \qm_2, 0\end{pmatrix}\wedge\phi^{(n)} \\
+		\ktcurl{}\phi^{(n)} &= \kcurl{}\phi^{(n)} + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0\end{pmatrix}\wedge\phi^{(n)} \\
 		&\lconv{\ltwo{\ddom}{\nu}^3} c + 0 = c.
 	\end{align*}
-	Hence, $c\in \mathcal{C}_{\ddom, \md\nu}^{\kt}$.
+	Hence, $c\in \mathcal{C}_{\ddom, \md\nu}^{\kt}(0)$.
 \end{proof}
 
 \section{Reduction to Quantum Graphs} \label{sec:CurlReductionToQG}

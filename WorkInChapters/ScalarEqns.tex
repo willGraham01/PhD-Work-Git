@@ -9,13 +9,13 @@ At the conclusion of this chapter we will have highlighted the techniques that a
 In this section we look to construct the function spaces that we shall be working with throughout the chapter, as well as discussing some of the consequences of this construction.
 What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with an adapted notation which will suit our needs when we later make a link to Quantum Graph problems. \newline
 
-Let $n\in\naturals$, $D\subset\reals^n$ and $\nu$ be a (Borel) measure on $D$.
-Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\nu}$ be the closure of the set of pairs $\bracs{\phi,\grad\phi}$ in $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^n$, where $\phi\in\smooth{D}$.
+Let $N\in\naturals$, $D\subset\reals^N$ and $\nu$ be a (Borel) measure on $D$.
+Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\nu}$ be the closure of the set of pairs $\bracs{\phi,\grad\phi}$ in $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^N$, where $\phi\in\smooth{D}$.
 That is
 \begin{align*}
-	W = W\bracs{D,\nu} &= \overline{\clbracs{\bracs{\phi,\grad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\nu}\times\ltwo{D}{\nu}^n.
+	W = W\bracs{D,\nu} &= \overline{\clbracs{\bracs{\phi,\grad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\nu}\times\ltwo{D}{\nu}^N.
 \end{align*}
-The notation above is chosen to provide similarities to the $W$-style construction of classical Sobolev spaces (in which integration is performed with respect to the $n$-dimensional Lebesgue measure).
+The notation above is chosen to provide similarities to the $W$-style construction of classical Sobolev spaces (in which integration is performed with respect to the $N$-dimensional Lebesgue measure).
 An element of $W$ is a pair $\bracs{u,z}$; and as the above construction suggests we would like to associate the function $z$ with a distributional derivative of sorts, however there is a problem with making this association.
 Suppose that $\bracs{u,z}\in W$ and $\bracs{0,y}\in W$, then we also have $\bracs{u,z+y}\in W$ too by taking an approximating sequence for each pair and forming another sequence by point-wise addition of terms.
 As a result each $u\in\ltwo{D}{\nu}$ has multiple (distinct) functions $z\in\ltwo{D}{\nu}^n$ such that $\bracs{u,z}\in W$; and so as it stands it does not make sense to associate ``\textit{a} gradient" to $u$, because $u$ has multiple candidates for this role.
@@ -23,11 +23,11 @@ In what follows we will look into this quirk, and deduce that we can make sense 
 
 Let use denote the set of ``gradients of zero" by $\gradZero{D}{\nu}$, that is
 \begin{align*}
-	\gradZero{D}{\nu} &= \clbracs{z\in\ltwo{D}{\nu}^n \ \vert \ \bracs{0,z}\in W}, \\
-		&= \clbracs{z\in\ltwo{D}{\nu}^n \ \vert \ \exists\phi_n\in\smooth{D} \text{ such that } \phi_n\lconv{\ltwo{D}{\nu}}0, \grad\phi_n\lconv{\ltwo{D}{\nu}^n}z}, \labelthis\label{eq:GradZeroSequenceDefinition}
+	\gradZero{D}{\nu} &= \clbracs{z\in\ltwo{D}{\nu}^N \ \vert \ \bracs{0,z}\in W}, \\
+	&= \clbracs{z\in\ltwo{D}{\nu}^N \ \vert \ \exists\phi_n\in\smooth{D} \text{ such that } \phi_n\lconv{\ltwo{D}{\nu}}0, \grad\phi_n\lconv{\ltwo{D}{\nu}^N}z}, \labelthis\label{eq:GradZeroSequenceDefinition}
 \end{align*}
 the construction of $W$ ensuring the two sets coincide.
-A fact that follows immediately from this definition and will be used later is that $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^n$.
+A fact that follows immediately from this definition and will be used later is that $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^N$.
 The illustration of the non-uniqueness of gradients earlier employed the fact that we can always add an element of $\gradZero{D}{\nu}$ to the second member of a pair $\bracs{u,z}\in W$ and produce another element of $W$.
 Colloquially this can be expressed by the following statement; we can always ``add a gradient of zero" to an existing ``gradient", which will produce another ``gradient".
 This hints at the possibility that whilst we any $u$ may not have a unique gradient, it might at least have only one relevant gradient in the context of a mathematical problem.
@@ -41,9 +41,9 @@ Substituting $\phi_n$ into \eqref{eq:TangentialGradientVariationalMotivation} an
 	\integral{D}{z \cdot g}{\nu} &= 0 \quad \forall g\in\gradZero{D}{\nu}.
 \end{align*}
 Namely that the member $z$ of the solution pair is orthogonal (in the $\ltwo{D}{\nu}$-norm) to $\gradZero{D}{\nu}$.
-Stepping back for a moment, as $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^n$ we can decompose $\ltwo{D}{\nu}^n$ as
+Stepping back for a moment, as $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^N$ we can decompose $\ltwo{D}{\nu}^N$ as
 \begin{align*}
-	\ltwo{D}{\nu}^n &= \gradZero{D}{\nu}^{\perp} \oplus \gradZero{D}{\nu}.
+	\ltwo{D}{\nu}^N &= \gradZero{D}{\nu}^{\perp} \oplus \gradZero{D}{\nu}.
 \end{align*}
 But we have just seen that the member of the solution pair $z\in\gradZero{D}{\nu}^{\perp}$, hence $z$ is the \textit{unique} element of $\gradZero{D}{\nu}^{\perp}$ such that every pair $\bracs{u,\tilde{z}}\in W$ can be written as $\bracs{u,z+g}\in W$ for some $g\in\gradZero{D}{\nu}$.
 Thus whilst the concept of a unique gradient does not make sense in this setting, once we consider variational problems we can obtain the concept of the \textit{tangential} gradient $z$, which is unique.
@@ -81,7 +81,78 @@ to mean
 \begin{align*}
 	\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \lambda\integral{D}{u\overline{\phi}}{\nu} \quad \forall \phi\in\smooth{D}.
 \end{align*}
-In which case solutions (if they exist) are triplets $\bracs{\lambda, u, \grad_\nu u}$, although it suffices to specify $\bracs{\lambda, u}$ only.
+In which case solutions (if they exist) are triplets $\bracs{\lambda, u, \grad_\nu u}$, although it suffices to specify $\bracs{\lambda, u}$ only. \newline
+
+To conclude this section we present some general results that we will need later in our analysis.
+The first is a simple result which makes proving membership of $\gradSob{D}{\nu}$ easier, and is presented in \cite{zhikov2002homogenization} as lemma 5.5.
+\begin{prop}[Sufficient Condition for Membership of $\gradSob{D}{\nu}$] \label{prop:Lemma5-5}
+	Suppose we have a sequence $u_n\in\gradSob{D}{\nu}$ such that $u_n\rightarrow u$ in $\ltwo{D}{\nu}$ for some $u\in\ltwo{D}{\nu}$, and that the sequence of tangential gradients $\grad_\nu u_n$ is bounded in $\ltwo{D}{\nu}^N$.
+	Then 
+	\begin{align*}
+		u\in\gradSob{D}{\nu};
+	\end{align*}
+	that is, $\grad_\nu u$ exists and the pair $\bracs{u,\grad_nu u}\in\gradSob{D}{\nu}$).
+\end{prop}
+\begin{proof}
+	As $\grad_\nu u_n$ is bounded in $\ltwo{D}{\nu}^N$ it has a convergent subsequence that we denote by $\grad_\nu u_{n_k}$, and this sequence has some limit $v\in\ltwo{D}{\nu}^N$.
+	Note that since $\grad_\nu u_{n_k}\in\gradZero{D}{\nu}^\perp$ for all $k\in\naturals$, the limit $v\in\gradZero{D}{\nu}^\perp$ too.
+	Furthermore the corresponding subsequence $u_{n_k}$ of $u_n$ still converges in $\ltwo{D}{\nu}$ to $u$, being a subsequence of a convergent sequence.
+	Now for each $k\in\naturals$ there exists an sequence of smooth functions $\phi_{k,l}$ such that
+	\begin{align*}
+		\phi_{k,l}\lconv{\ltwo{D}{\nu}} u_{n_k}, &\quad \grad\phi_{k,l}\lconv{\ltwo{D}{\nu}^n}\grad u_{n_k}, \toInfty{l}.
+	\end{align*}
+	We can therefore apply a diagonal argument to find a sequence of smooth functions $\phi_{k, l_k}$ such that
+	\begin{align*}
+		\phi_{k,l_k}\lconv{\ltwo{D}{\nu}} u, &\quad \grad\phi_{k,l_k}\lconv{\ltwo{D}{\nu}^N}v, \toInfty{k}.
+	\end{align*}
+	Since $v\in\gradZero{D}{\nu}^\perp$, we conclude that $v = \grad_\nu u$ and thus
+	\begin{align*}
+		\bracs{u, \grad_\nu u}\in \gradSob{D}{\nu}.
+	\end{align*}
+\end{proof}
+
+The second result that we present is essentially the equivalent of the product rule for tangential gradients.
+\begin{prop}[Product Rule for Tangential Gradients] \label{prop:ProductRuleGradients}
+	Suppose $u,v\in\gradSob{D}{\nu}$.
+	Then we also have that
+	\begin{align*}
+		\bracs{uv, u\grad_\nu v + v\grad_\nu u}\in\gradSob{D}{\nu}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Take smooth sequences $\phi_l, \psi_l$ such that
+	\begin{align*}
+		\phi_l \lconv{\ltwo{D}{\nu}} u, &\quad \grad\phi_l \lconv{\ltwo{D}{\nu}^N} \grad_\nu u, \\
+		\psi_l \lconv{\ltwo{D}{\nu}} v, &\quad \grad\psi_l \lconv{\ltwo{D}{\nu}^N} \grad_\nu v.
+	\end{align*}
+	Note that because of these convergences, the sequences 
+	\begin{align*}
+		\norm{\phi_l}_{\ltwo{D}{\nu}}, \norm{\psi_l}_{\ltwo{D}{\nu}}, \norm{\grad\phi_l}_{\ltwo{D}{\nu}^N}, \norm{\grad\psi_l}_{\ltwo{D}{\nu}^N}.
+	\end{align*}
+	are all bounded in $\reals$.
+	We now examine the sequence formed from term-wise products, $\phi_l\psi_l$.
+	Note that this remains a sequence of smooth functions, and we have that $\phi_l\psi_l \rightarrow uv \toInfty{l}$ by the Algebra of Limits in $\ltwo{D}{\nu}$.
+	Furthermore,
+	\begin{align*}
+		\recip{4}\integral{D}{\abs{ \grad\bracs{\phi_l\psi_l} - u\grad_\nu v - v\grad_\nu u }^2}{\nu}
+		&\leq \recip{2}\integral{D}{\abs{ \phi_l\grad\psi_l - u\grad_\nu v }^2}{\nu} \\
+		& \ + \recip{2}\integral{D}{\abs{ \psi_l\grad\phi_l - v\grad_\nu u }^2}{\nu} \\
+		&\leq \norm{\phi_l - u}_{\ltwo{D}{\nu}}^2\norm{\grad\psi_l}_{\ltwo{D}{\nu}^N}^2 \\
+		& \ + \norm{u}_{\ltwo{D}{\nu}}^2\norm{\grad\psi_l - \grad_\nu v}_{\ltwo{D}{\nu}^N}^2 \\
+		& \ + \norm{\psi_l - v}_{\ltwo{D}{\nu}}^2\norm{\grad\phi_l}_{\ltwo{D}{\nu}^N}^2 \\
+		& \ + \norm{v}_{\ltwo{D}{\nu}}^2\norm{\grad\phi_l - \grad_\nu u}_{\ltwo{D}{\nu}^N}^2 \\
+		&\rightarrow 0 \toInfty{l}.
+	\end{align*}
+	Finally we note that as $\grad_\nu u, \grad_\nu v \in\gradZero{D}{\nu}^\perp$, the function $u\grad_\nu v + v\grad_\nu u\in\gradZero{D}{\nu}^\perp$ too.
+	Since
+	\begin{align*}
+		\phi_l\psi_l \lconv{\ltwo{D}{\nu}} uv, &\quad \grad\bracs{\phi_l\psi_l} \lconv{\ltwo{D}{\nu}^N} u\grad_\nu v + v\grad_\nu u,
+	\end{align*}
+	we conclude that $\grad_\nu\bracs{uv} = u\grad_\nu v + v\grad_\nu u$ and
+	\begin{align*}
+		\bracs{uv, u\grad_\nu v + v\grad_\nu u}\in\gradSob{D}{\nu}.
+	\end{align*}
+\end{proof}
 
 \section{An Example System} \label{sec:ScalarExample}
 To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example and some analysis of it.
@@ -99,18 +170,125 @@ We are interested in the (spectral) problem
 \begin{align} \label{eq:ScalarExampleStrongForm}
 	-\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u
 \end{align}
-for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues ($\omega^2$).
+for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues ($\omega^2$). \newline
 
-Before we begin our analysis we highlight how the setup just detailed relates to the wave propagation problems that we wish to consider in future, see figure \ref{fig:ScalarStrucDiagram}.
-We interpret $\ddom$ as being the period cell of the cross-section of some waveguide that extends into 3D, whose waveguide axis is parallel to the $x_3$-axis.
-The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only.
-In section \ref{sec:ScalarSystem} we will consider a similar system to this but with the addition a quasi-momentum parameter $\qm$ which reflects the fact that to obtain a problem on the period cell of the cross section ($\ddom$), we are required to apply a Gelfand problem to the full-space problem.
-We will elaborate further on this in the relevant section.
-\begin{figure}[h!]
+It is worthwhile highlighting how the setup just detailed relates to the wave propagation problems that we wish to consider in future, which is illustrated in figure \ref{fig:ScalarStrucDiagram}.
+\begin{figure}[b!]
 	\centering
 	\includegraphics[scale=1.0]{Diagram_GraphInCrossSection.pdf}
 	\caption{\label{fig:ScalarStrucDiagram} An illustration of the wider setting for $\ddom$ with singular structure. The 2D problem will arise from considering a structure that is periodic in the $\bracs{x_1,x_2}$-plane and translation invariant in the $x_3$ direction; and taking the (Fourier and) Gelfand transforms to arrive at a family of problems posed on the 2D-period (cross-section) period cell.}
 \end{figure}
+We interpret $\ddom$ as being the period cell of the cross-section of some waveguide that extends into 3D, whose waveguide axis is parallel to the $x_3$-axis.
+The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only.
+In section \ref{sec:ScalarSystem} we will consider a similar system to this but with the addition a quasi-momentum parameter $\qm$ which reflects the fact that to obtain a problem on the period cell of the cross section ($\ddom$), we are required to apply a Gelfand problem to the full-space problem.
+We will elaborate further on this in the relevant section. \newline
+
+Before beginning our analysis, we first introduce some specific functions and useful results that we shall make use of throughout.
+The first result being a reminder of how gradients of smooth functions transform under rotations.
+\begin{lemma}[Gradients under Rotation] \label{lem:SmoothGradientsUnderRotation}
+	Let $D\subset\reals^n$, $\phi\in C^1\bracs{D}$, and let $x=\bracs{x_j}$, $y=\bracs{y_j}$ be two co-ordinate systems for $D$, related by $x=Ry$ for a rotation $R\in\mathrm{SO}\bracs{n}$.
+	Let $\grad_x$ and $\grad_y$ denote the gradient operator in the $x$ and $y$ co-ordinate systems accordingly.
+	Then
+	\begin{align*}
+		\grad_x u &= R \grad_y u, \\
+		\grad_y u &= R^{\top} \grad_x u.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We use index notation to save explicitly writing summation symbols;
+	\begin{align*}
+		\bracs{\grad_x u}_j &= \pdiff{u}{x_j} = \pdiff{u}{y_k}\pdiff{y_k}{x_j} \\
+		&= R_{jk}\pdiff{u}{y_k} = \bracs{\grad_y u}_j.
+	\end{align*}
+\end{proof}
+
+We now introduce two families of smooth functions that we shall make repeated use of, and examine some limits involving them.
+Let $\eta\in\smooth{\ddom}$ be the function with the properties
+\begin{align*}
+	\eta\bracs{x} &\in [0,1], \\
+	\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
+	\eta = 1 &\text{ whenever } \abs{x}\geq 2.
+\end{align*}
+Then for each $v_j\in V$ and $n\in\naturals$, we define
+\begin{align} \label{eq:etaDef}
+	\eta_j\bracs{x} = \eta\bracs{x-v_j}, &\quad \eta_j^n\bracs{x} = \eta_j\bracs{nx}
+\end{align}
+which are clearly both smooth functions by composition.
+
+\begin{lemma}[Convergence of $\eta_j^n$ in $\ltwo{\ddom}{\ddmes}$] \label{lem:etaConv}
+	For any $v_j\in V$, 
+	\begin{align*}
+		\eta_j^n \rightarrow 1 \text{ in } \ltwo{\ddom}{\ddmes} \toInfty{n}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We can directly prove this convergence by estimating the integral from above:
+	\begin{align*}
+		\begin{split}
+			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} &= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
+			&= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&\leq \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{}{\ddmes} + \integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&=\integral{\graph\cap B_{2/n}\bracs{v_j}}{}{\ddmes} = \ddmes\bracs{\graph\cap B_{2/n}\bracs{v_j}} \\
+			&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
+		\end{split}
+	\end{align*}
+	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_j}$ on a segment of length at most $\frac{4}{n}$.
+\end{proof}
+
+Next fix an edge $I$ in the graph $\graph$, and let $0<\eps$.
+Define the set 
+\begin{align} \label{eq:ShortenedIntervalDef}
+	I^{\eps} := \clbracs{ x\in I \ \vert \ \mathrm{dist}\bracs{x, \partial I}\leq \recip{\eps}},
+\end{align}
+and then let $\chi_{I}^\eps\in\smooth{\ddom}$ be the function such that 
+\begin{align*}
+	\chi_I^\eps\bracs{x} &\in [0,1], \\
+	\chi_I^\eps = 1 &\text{ whenever } \mathrm{dist}\bracs{x, I^\eps}\leq \recip{3\eps} \\
+	\chi_I^\eps = 0 &\text{ whenever } \mathrm{dist}\bracs{x, I^\eps}\geq \frac{2}{3\eps} \labelthis\label{eq:ChiDef}
+\end{align*}
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=1.0]{Diagram_ChiFunction.pdf}
+	\caption{\label{fig:chiDiagram} The function $\chi_I^\eps$ on the region surrounding the segment $I^\eps$. Should another edge of $\graph$ lie in the region $\clbracs{x \ \vert \ \mathrm{dist}\bracs{x,I^\eps}\leq\frac{2}{3\eps}}$, we can simply apply a rescaling to the argument of $\chi_I^\eps$ to avoid this issue.}
+\end{figure}
+Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_I^\eps$ is $I$, otherwise we apply a scaling to the argument of $\chi_I^\eps$ to avoid this issue.
+When we want to emphasise that the edge $I=I_{jk}$ for some $v_j, v_k\in V$, we will write the function as $\chi_{jk}^\eps$.
+
+\tstk{fix characteristic function to be a bold 1, but packages are needed and texmaker doesn't seem to like them.}
+\begin{lemma}[Convergence of $\chi_I^\eps$] \label{lem:ChiConv}
+	Let $\charFunc{I}$ denote the characteristic function of the interval $I$ (that is $\charFunc{I}=1$ on $I$ and zero elsewhere).
+	Then we have that 
+	\begin{align*}
+		\chi_I^\eps \rightarrow \charFunc{I} \toInfty{\eps}
+	\end{align*}
+	in $\ltwo{\ddom}{\ddmes}$, and in $\ltwo{\ddom}{\lambda_I}$.
+\end{lemma}
+\begin{proof}
+	First note that due to the supports of $\chi_I^\eps$ and $\charFunc{I}$;
+	\begin{align*}
+		\integral{\ddom}{\abs{ \chi_I^\eps - \charFunc{I} }^2}{\ddmes}
+		&= \integral{\ddom}{\abs{ \chi_I^\eps - \charFunc{I} }^2}{\lambda_I},
+	\end{align*}
+	so convergence in $\ltwo{\ddom}{\ddmes}$ is equivalent to convergence in $\ltwo{\ddom}{\lambda_I}$.
+	Hence we now consider
+	\begin{align*}
+		\integral{\ddom}{\abs{ \chi_I^\eps - \charFunc{I} }^2}{\ddmes}
+		&= \integral{I}{\abs{ \chi_I^\eps - 1 }^2}{\lambda_I} \\
+		&= \integral{I\setminus I^\eps}{\abs{ \chi_I^\eps - 1 }^2}{\lambda_I} \\
+		&= \integral{I\cap\clbracs{\chi_I^\eps = 0}}{}{\lambda_I}
+		+ \integral{I\cap\clbracs{0\leq\chi_I^\eps \leq 1}}{\abs{ \chi_I^\eps - 1 }^2}{\lambda_I} \\
+		&\leq \recip{3\eps} + \recip{3\eps} = \frac{2}{3\eps} \rightarrow 0 \toInfty{\eps}.
+	\end{align*}
+	Thus we have the convergences we sought.
+\end{proof}
+
+Furthermore, we will need to know that $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
+\begin{lemma}[Bound on $\abs{\grad\chi_I^\eps}$] \label{lem:BoundChiGradient}
+	think the bound is $c\times n$ for some $c\in\reals$.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
 
 \subsection{Analysis of $\gradZero{\ddom}{\ddmes}$}
 We first pursue an understanding of $\gradZero{\ddom}{\ddmes}$, as this will be crucial for helping us reduce the problem \eqref{eq:ScalarExampleStrongForm} to something more manageable.
@@ -188,24 +366,6 @@ The measure $\ddmes$ however can only ``see" along (or alternatively ``only care
 As such $\ddmes$ can only see the change along the segment $I$, and hence we find that $\gradZero{\ddom}{\ddmes}$ consists of all the gradients that are directed perpendicular to $I$.
 Furthermore any gradient orthogonal to $\gradZero{\ddom}{\ddmes}$ is directed parallel to $I$, so $\grad_\ddmes$ can only ``see" rates of change parallel to the segment $I$.
 This interpretation is further reinforced by the following analysis, which characterises $\gradZero{\ddom}{\ddmes}$ when the segment $I$ is not (necessarily) parallel to the $x_1$-axis. \newline
-
-\tstk{result on rotating gradients is kind of awkwardly placed, make it fit in better.}
-\begin{lemma}[Gradients under Rotation] \label{lem:SmoothGradientsUnderRotation}
-	Let $D\subset\reals^n$, $\phi\in C^1\bracs{D}$, and let $x=\bracs{x_j}$, $y=\bracs{y_j}$ be two co-ordinate systems for $D$, related by $x=Ry$ for a rotation $R\in\mathrm{SO}\bracs{n}$.
-	Let $\grad_x$ and $\grad_y$ denote the gradient operator in the $x$ and $y$ co-ordinate systems accordingly.
-	Then
-	\begin{align*}
-		\grad_x u &= R \grad_y u, \\
-		\grad_y u &= R^{\top} \grad_x u.
-	\end{align*}
-\end{lemma}
-\begin{proof}
-	We use index notation to save explicitly writing summation symbols;
-	\begin{align*}
-		\bracs{\grad_x u}_j &= \pdiff{u}{x_j} = \pdiff{u}{y_k}\pdiff{y_k}{x_j} \\
-		&= R_{jk}\pdiff{u}{y_k} = \bracs{\grad_y u}_j.
-	\end{align*}
-\end{proof}
 
 \begin{prop}[Rotation of Edge Gradients] \label{prop:RotationOfEdgeGradients}
 	Consider the case when $\graph$ consists of a single segment $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
@@ -316,8 +476,8 @@ The reverse inclusion requires some preliminary results before it can be proven.
 The first result sees us demonstrate that a gradient of zero on a (slightly shortened) edge of a graph is also a gradient of zero on the whole graph, if we extend it by zeros outside the original edge.
 
 \begin{lemma}[Extension Lemma for Gradients] \label{lem:SegGradExtend}
-	Let $I_{jk}^{n} = \clbracs{x\in I_{jk} \ \vert \ \mathrm{dist}\bracs{x, \partial I_{jk}}\geq\recip{n}}$.
-	Suppose further that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{jk}^{n}$ and $g\cdot e_{jk}=0$ on $I_{jk}^{n}$.
+	For $n\in\naturals$, let $I_{jk}^n$ be as in \eqref{eq:ShortenedIntervalDef}.
+	Suppose that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{jk}^{n}$ and $g\cdot e_{jk}=0$ on $I_{jk}^{n}$.
 	Then 
 	\begin{align*}
 		g\in\gradZero{\ddom}{\ddmes}.
@@ -326,19 +486,7 @@ The first result sees us demonstrate that a gradient of zero on a (slightly shor
 \begin{proof}
 	As $g\cdot e_{jk}=0$ on $I_{jk}^{n}$ and $g=0$ on $I_{jk}\setminus I_{jk}^{n}$, we have that $g\cdot e_{jk}=0$ on $I_{jk}$ and hence $g\in\gradZero{\ddom}{\lambda_{jk}}$.
 	So we can find a sequence of smooth functions $\phi_l$ as in \eqref{eq:GradZeroSequenceDefinition}.
-	Now let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function such that
-	\begin{align*}
-		\chi_{jk}^{n}\bracs{x} &\in [0,1], \\
-		\chi_{jk}^{n} = 1 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^n}\leq \recip{3n} \\
-		\chi_{jk}^{n} = 0 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^n}\geq \frac{2}{3n}
-	\end{align*}
-	\begin{figure}
-		\centering
-		\includegraphics[scale=1.0]{Diagram_ChiFunction.pdf}
-		\caption{\label{fig:chiDiagram} The function $\chi_{jk}^n$ on the region surrounding the segment $I_{jk}^n$. Should another edge of $\graph$ lie in the region $\clbracs{x \ \vert \ \mathrm{dist}\bracs{x,I_{jk}^{n}}\leq\frac{2}{3n}}$, we can simply apply a rescaling to the argument of $\chi_{jk}^n$ to avoid this issue.}
-	\end{figure}
-	Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_{jk}^n$ is $I_{jk}$, otherwise we apply a scaling to the argument of $\chi_{jk}^n$ to avoid this issue.
-	Furthermore, $\abs{\grad\chi_{jk}^{n}}$ is bounded by a constant that depends on $n$ only.
+	Now let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function as defined in \eqref{eq:ChiDef}; and we reiterate that we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_{jk}^n$ is $I_{jk}$, and $\abs{\grad\chi_{jk}^{n}}$ is bounded by a constant that depends on $n$ only.
 	Now consider the sequence $\psi_l = \chi_{jk}^{n}\phi_l$.
 	We have that
 	\begin{align*}
@@ -378,39 +526,6 @@ The first result sees us demonstrate that a gradient of zero on a (slightly shor
 	and hence, $g\in\gradZero{\ddom}{\ddmes}$.
 \end{proof}
 
-The other result we need is a convergence result for a particular form of function we will utilise later.
-Let $\eta\in\smooth{\ddom}$ be the function with the properties
-\begin{align*}
-	\eta\bracs{x} &\in [0,1], \\
-	\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
-	\eta = 1 &\text{ whenever } \abs{x}\geq 2.
-\end{align*}
-Then for each $v_j\in V$ and $n\in\naturals$, we define
-\begin{align*}
-	\eta_j\bracs{x} = \eta\bracs{x-v_j}, &\quad \eta_j^n\bracs{x} = \eta_j\bracs{nx}
-\end{align*}
-which are clearly both smooth functions by composition.
-
-\begin{lemma}[Convergence of $\eta_j^n$ in $\ltwo{\ddom}{\ddmes}$] \label{lem:etaConv}
-	For any $v_j\in V$, 
-	\begin{align*}
-		\eta_j^n \rightarrow 1 \text{ in } \ltwo{\ddom}{\ddmes} \toInfty{n}.
-	\end{align*}
-\end{lemma}
-\begin{proof}
-	We can directly prove this convergence by estimating the integral from above:
-	\begin{align*}
-		\begin{split}
-			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} &= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
-			&= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
-			&\leq \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{}{\ddmes} + \integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
-			&=\integral{\graph\cap B_{2/n}\bracs{v_j}}{}{\ddmes} = \ddmes\bracs{\graph\cap B_{2/n}\bracs{v_j}} \\
-			&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
-		\end{split}
-	\end{align*}
-	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_j}$ on a segment of length at most $\frac{4}{n}$.
-\end{proof}
-
 We are now ready to prove that $B\subset\gradZero{\ddom}{\ddmes}$.
 The idea for the proof is to use the fact that we can extend a gradient of zero on each edge by zero to obtain a gradient of zero on the whole graph; and then consider the sum of such functions in $\gradZero{\ddom}{\ddmes}$ to obtain the result we need.
 
@@ -447,6 +562,8 @@ For ease of reference later, we now state the result we sought from the beginnin
 
 This concludes our analysis of $\gradZero{\ddom}{\ddmes}$, as we now have an edge-wise characterisation for the functions in this set, as well as a form for the functions on each edge.
 In the next section we consider the family of problems that arise from considering the operator that defines \eqref{eq:ScalarExampleStrongForm} in the infinite, periodic $\bracs{x_1,x_2}$-plane.
+
+\tstk{now the stuff about the inherent structure of the Sobolev space, probably going to need it's own subsection!}
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed in an infinite plane with a finite period cell.
