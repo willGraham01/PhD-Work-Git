@@ -282,14 +282,14 @@ When we want to emphasise that the edge $I=I_{jk}$ for some $v_j, v_k\in V$, we 
 	Thus we have the convergences we sought.
 \end{proof}
 
-Furthermore, we will need to know that $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
-\tstk{this needs proving, because it is central to the proof of the IFF statement in the main theorem about continuity at the vertices.}
+Furthermore $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
+This is simply a consequence of the construction of $\chi_I^\eps$; we can view it as a transformation of a smooth function that increases from 0 to 1 over the unit interval, and that has a bounded gradient, to obtain this result.
 \begin{lemma}[Bound on $\abs{\grad\chi_I^\eps}$] \label{lem:BoundChiGradient}
-	think the bound is $c\times n$ for some $c\in\reals$.
+	There exists a constant $c>0$ independent of $\eps$ such that
+	\begin{align*}
+		\abs{\grad\chi_I^\eps} \leq c\eps.
+	\end{align*}
 \end{lemma}
-\begin{proof}
-
-\end{proof}
 
 \subsection{Analysis of $\gradZero{\ddom}{\ddmes}$}
 We first pursue an understanding of $\gradZero{\ddom}{\ddmes}$, as this will be crucial for helping us reduce the problem \eqref{eq:ScalarExampleStrongForm} to something more manageable.
@@ -928,7 +928,22 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 		\clbracs{0\leq\chi_{jk}^n\leq 1} = \supp\bracs{\grad_{\lambda_{jk}}\chi_{jk}^n}.
 	\end{align*}
 	It remains to show that the second term is bounded independently of $n$, to show that $\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2$ is bounded. 
-	Without loss of generality, we can take the common value of $u$ at each vertex $v_j\in V$ to be zero\footnote{If this is not the case, for each $n\in\naturals$ and for every vertex with a non-zero common value we include an additional term in $u_n$ which is just the non-zero constant value $-u\bracs{v_j}$ multiplied by a smooth function parametrised by $n$. This smooth function should take the value 1 at the vertex, decay to 0 away from the vertex, and the sequence of smooth functions should converge to 0 in $\ltwo{\ddom}{\ddmes}$ as $n\rightarrow\infty$.}, and so there exists some constant $c>0$ such that
+	We first exploit the fact that on each edge $I_{jk}$ we can use the change of variables $r_{jk}\bracs{t} = v_j + t e_{jk}$ to obtain
+	\begin{align*}
+		\widetilde{u}\bracs{t} &= \widetilde{u}\bracs{v_j} + \int_0^t \abs{\diff{\tilde{u}^{(jk)}}{t}} \md t.
+	\end{align*}
+	Where an overhead tilde denotes composition with $r_{jk}$ and $\widetilde{u}$ is an element of $\gradSob{\interval{I_{jk}}}{t}$.	
+	Without loss of generality we can take the value of $u$ at each vertex $v_j\in V$ to be zero, and thus
+	\begin{align*}
+		\widetilde{u}\bracs{t} &= \int_0^t \abs{\diff{\tilde{u}}{t}} \md t \\
+		&\leq \bracs{ \int_0^t \md t }^{\frac{1}{2}} \bracs{ \int_0^t \abs{\diff{\tilde{u}}{t}}^2 \md t }^{\frac{1}{2}} \\
+		&\leq t\times \norm{\widetilde{u}'}_{\ltwo{\ddom}{\lambda_{jk}}^2}.
+	\end{align*}
+	Hence whenever we take $\abs{x-v_j}\leq\recip{n}$, 
+	\begin{align*}
+		\widetilde{u}\bracs{t} &\leq \recip{\sqrt{n}}\norm{\widetilde{u}'}_{\ltwo{\ddom}{\lambda_{jk}}^2}.
+	\end{align*}		
+	As this holds for each edge $k$ connected to vertex $v_j$, we can use the above to deduce that there exists a constant $c>0$ independent of $n$ such that
 	\begin{align*}
 		\abs{ u(x) } \leq \frac{c}{\sqrt{n}}, &\quad\text{whenever } \abs{x-v_j}\leq\recip{n}, \ \forall v_j\in V.
 	\end{align*}
