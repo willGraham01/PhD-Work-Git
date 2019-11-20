@@ -42,33 +42,32 @@ and interpret this as the variational problem of finding $u\in\curlSob{D}{\nu}$ 
 Such problems actually serve as the motivation for the notion of the tangential curl that is provided in the same way as tangential gradients were motivated.
 The elliptic matrix $A$ simply requires us to write $A\curl{\nu}u$ for the element in $\curlZero{D}{\nu}^\perp$, the details being analogous to those in section \ref{sec:ScalarSobSpaces} for gradients. \newline
 
-We also interpret spectral problems in the variational setting, so 
-\begin{align*}
-	\curl{\nu}\bracs{\curl{\nu}u} &= \lambda u, \quad u\in\curlSob{D}{\nu},
-\end{align*}
-is interpreted as the problem of finding $\lambda\in\complex, u\in\curlSob{D}{\nu}$ such that
-\begin{align*}
-	\integral{D}{ \bracs{\curl{\nu}u}\cdot\overline{\bracs{\curl{}\phi}} }{\nu} &= \lambda \integral{D}{ u\overline{\phi} }{\nu}, \quad \forall\phi\in\bracs{\smooth{D}}^3.
-\end{align*}
-Taking $\phi = \grad\psi$ for some $\psi\in\smooth{D}$, then we have that
-\begin{align*}
-	0 &= \lambda \integral{D}{ u\overline{\grad\psi}}{\nu}, \quad \forall \psi\in\smooth{D}.
-\end{align*}
-This gives rise to the notion of $\nu$-divergence free functions, which we define as follows.
-\begin{definition}
+The colloquially-named ``curl of the curl" equation 
+\begin{align} \label{eq:curlOfCurlEqn}
+	\curl{\nu}\bracs{A\curl{\nu}u} = f, &\quad u\in\curlSob{D}{\nu}, f\in\ltwo{D}{\nu}^3,
+\end{align}
+typically arises from the study of the Maxwell system of equation; where the vector field $u$ is interpreted as either the magnetic or electric field, and then matrix $A$ (if present) the magnetic permeability or electric permittivity.
+Maxwell's equations also include a condition that the divergence of the magnetic field is zero, as is that of the electric field in the presence of no external charges.
+This divergence-free condition must be imposed alongside \eqref{eq:curlOfCurlEqn} for a complete physical description of the system, and in particular requires the function $f$ to be divergence-free too.
+Due to the nature of our Sobolev spaces and mathematical tools, we can only interpret ``divergence-free" as meaning ``orthogonal to all gradients", as the following definition clarifies.
+\begin{definition}[Divergence-Free]
+	Define 
+	\begin{align*}
+		W_{\mathrm{grad}}\bracs{D,\nu} &:= \overline{\clbracs{ \bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{D} }}
+	\end{align*}
+	where the closure is with respect to the norm of $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^3$.
 	A function $u\in\ltwo{D}{\nu}^3$ is $\nu$-divergence free if
 	\begin{align*}
-		\integral{D}{ u\cdot\overline{\grad_{\nu}f} }{\nu} &= 0, \quad \forall f\in\gradSob{D}{\nu}.
+		\integral{D}{ u\cdot g }{\nu} &= 0, \quad \forall \bracs{z,g}\in W_{\mathrm{grad}}\bracs{D,\nu}.
 	\end{align*}	 
 \end{definition}
-Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ and it's orthogonal compliment; plus the density of $\smooth{D}$ in $\gradZero{D}{\nu}^{\perp}$, it is sufficient to test the conditions
+
+Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ and it's orthogonal compliment, it is sufficient to test the conditions
 \begin{align*}
-	\integral{D}{ u\cdot\overline{\grad\psi} }{\nu} &= 0, \quad \forall \psi\in\smooth{D}, \\
-	\integral{D}{ u\cdot\overline{z} }{\nu} &= 0, \quad \forall g\in\gradZero{D}{\nu},
+	\integral{D}{ u\cdot\overline{\grad_{\nu}v} }{\nu} &= 0, \quad \forall v\in\gradSob{D}{\nu}, \\
+	\integral{D}{ u\cdot\overline{g} }{\nu} &= 0, \quad \forall g\in\gradZero{D}{\nu},
 \end{align*}
 to show that $u$ is $\nu$-divergence free.
-
-\tstk{on the divergence-free condition and why we need it !!!}
 
 \section{Illustrative Examples} \label{sec:CurlExamples}
 \tstk{everything is a curl of zero on segment example, and (hopefully, if you fix it!) the plane-example for the interpretation.}
@@ -150,6 +149,7 @@ It will be shown in the relevant sections that these sets are invariant under ch
 Throughout this section we will also assume our usual set-up; we have some period cell $\ddom$ in which is an embedded graph $\graph=\bracs{V,E}$, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
 
 \subsection{$\bracs{\wavenumber,\qm}$-gradients} \label{sec:ktGradients}
+\tstk{we probably need to state that an analogue of the theorem of vertex continuity also holds here before we deduce the form of tangential gradients on segments. Although the proof will literally be identical because the 3rd component is redundant in these cases.}
 In this subsection we will work towards characterising $\bracs{\wavenumber,\qm}$-tangential gradients.
 This will first involve us characterising the set of gradients of zero, $\kgradZero{\ddom}{\ddmes}$, however there will be several parallels with the methods and results of section \ref{sec:ScalarExample}. 
 We begin by showing that the gradients of zero that we shall be dealing with are invariant under changes in $\qm$ (just like in the scalar case) and so throughout the notation $\kgradZero{\ddom}{\ddmes}$ will be sufficient, and we can always consider the $\qm=0$ case in our working.
@@ -255,7 +255,6 @@ The form for the tangential $\kt$-gradient when the segment $I$ is at an arbitra
 		\left.\ktgrad_{\ddmes}u\right\vert_{I_{jk}} = \begin{pmatrix} R_{jk}^\top & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ u' + i\bracs{R_{jk}\qm}_2 u \\ iku \end{pmatrix},
 	\end{align*}
 	for every $I_{jk}\in E$.
-\tstk{this was $y_1$ parallel to $I_{jk}$, the 1st component of $R_{jk}\qm$, and was placed in the first component of the vector, but the two are equivalent... I think :L}
 \end{cory}
 \begin{proof}
 	It is sufficient to find an edge-wise characterisation for the tangential $\kt$-gradient, and we can apply a rotation to the result of proposition \ref{prop:ktTangentialGradientSegment} to obtain the form for the tangential $\kt$-gradient on any segment in $\ddom$.
@@ -285,7 +284,7 @@ As usual it is sufficient for us to consider a single edge $I$ and the edge-wise
 	We now check orthogonality of $u$ against smooth $\kt$-gradients by letting $\phi\in\smooth{D}$, and considering the requirement that
 	\begin{align*}
 		0 &= \integral{\ddom}{ u\cdot\overline{\ktgrad\psi} }{\lambda_I}
-		&= \integral{\ddom}{u_2\bracs{\partial_2\overline{\psi} + i\qm_2\overline{\psi}} - i\wavenumber u_3\overline{\psi}}{\lambda_I} \\
+		= \integral{\ddom}{u_2\bracs{\partial_2\overline{\psi} + i\qm_2\overline{\psi}} - i\wavenumber u_3\overline{\psi}}{\lambda_I} \\
 		&= \int_0^{\abs{I}} \widetilde{u}_2\overline{\bracs{\widetilde{\psi}' + i\qm_2 \widetilde{\psi}}} - i\wavenumber\widetilde{u}_3\overline{\widetilde{\psi}} \ \md t \\
 		&= \int_0^{\abs{I}} \overline{\widetilde{\psi}}\bracs{-\widetilde{u}'_2 - i\qm_2 \widetilde{u}_2 - i\wavenumber\widetilde{u}_3} \ \md t.
 	\end{align*}
@@ -317,21 +316,44 @@ Thus we arrive at the following classification for divergence-free functions on 
 	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$.
 	For each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supported on $I_{jk}$, and denote $u^{(jk)} = u\vert_{I_{jk}}$ as the restriction of $u$ to $I_{jk}$.
 	Let $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ be the change of variables map $r(t)=v_{j} + te_{jk}$ where $e_{jk}$ is the unit vector parallel to $I_{jk}$ directed from $v_j$ to $v_k$.
-	Suppose $u\in\ktcurlSob{\ddom}{\ddmes}$ is divergence-free.
-	Then for each $I_{jk}\in E$; the functions 
+	Suppose $u\in\ktcurlSob{\ddom}{\ddmes}$, and set 
 	\begin{align*}
 		\widetilde{u}^{(jk)}_2 = u^{(jk)}_2 \circ r_{jk},
 		&\quad \widetilde{u}^{(jk)}_3 = u^{(jk)}_3 \circ r_{jk},
 	\end{align*}
-	satisfy \tstk{shouldn't there also be a resulting vertex condition too?? Probably need to do some graph-wide analysis of this!}
+	for each $I_{jk}\in E$.
+	Then we have that
 	\begin{align*}
-		-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}^{(jk)}_2 &= i\wavenumber\widetilde{u}^{(jk)}_3,
+		u \text{ is divergence free } \Leftrightarrow 
+		& \ \text{(i)} \ -\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}^{(jk)}_2 = i\wavenumber\widetilde{u}^{(jk)}_3 \ \forall I_{jk}\in E, \\
+		& \ \text{(ii)} \ \sum_{j\sim k}u_2^{(jk)}\bracs{v_j} = 0 \ \forall v_j\in V, \\
+		& \ \text{(iii)} \ u \perp \kgradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E.
 	\end{align*}
-	where the derivative is understood in the $\gradSob{\interval{I_{jk}}}{t}$ sense.
+	where derivatives are understood in the $\gradSob{\interval{I_{jk}}}{t}$ sense.
 \end{cory}
 \begin{proof}
-	\tstk{need to think about this proof!}
-	Given the edge-wise form for $\kgradZero{\ddom}{\ddmes}$ by corollary \ref{cory:ktTangentialGradientForm}, we can repeat the argument of 
+	First we prove the right-directed implication ($\Rightarrow$).
+	Given the result of corollary \ref{cory:CharacterisationkGradientsZero} it can clearly be seen that $u\perp\kgradZero{\ddom}{\ddmes}$ given that (iii) holds.
+	As for $u$ being orthogonal to gradients, take some $v\in\ktgradSob{\ddom}{\ddmes}$.
+	Then due to \tstk{result for iff conditions for $\ktgradSob{\ddom}{\ddmes}$},
+	\begin{align*}
+		\integral{\ddom}{u\cdot\overline{\ktgrad_\ddmes v}}{\ddmes}
+		&= \sum_{j\sim k}\integral{I_{jk}}{u\cdot\overline{\ktgrad_{\lambda_{jk}} v}}{\lambda_{jk}} \\
+		&= \sum_{j\sim k}\int_0^{\abs{I_{jk}}} \widetilde{u}_2^{(jk)}\overline{\widetilde{v}}' - \bracs{i\wavenumber\widetilde{u}_3^{(jk)} + i\bracs{R_{jk}\qm}_2\widetilde{u}_2^{(jk)}}\overline{\widetilde{v}} \ \md t \\
+		&= \sum_{j\sim k}\int_0^{\abs{I_{jk}}} \bracs{-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}^{(jk)}_2 - i\wavenumber\widetilde{u}^{(jk)}_3}\overline{\widetilde{v}} \ \md t \\
+		& \quad + \sum_{j\sim k}\sqbracs{\widetilde{u}_2^{(jk)}\overline{\widetilde{v}}}_0^{\abs{I_{jk}}} \\
+		&= \sum_{j\sim k} 0 + \sum_{j\sim k} \bracs{ u_2^{(jk)}\bracs{v_k}\overline{v}\bracs{v_k} - u_2^{(jk)}\bracs{v_j}\overline{v}\bracs{v_j} } \\
+		&= \overline{v}\bracs{v_k}\sum_{k\sim j} u_2^{(kj)}\bracs{v_k}
+		- \overline{v}\bracs{v_j}\sum_{j\sim k} u_2^{(jk)}\bracs{v_j} \\
+		&= 0
+	\end{align*}
+	Thus we have that $u$ is divergence-free. \newline
+	
+	For the left-directed implication ($\Leftarrow$), take some divergence-free $u\in\ktcurlSob{\ddom}{\ddmes}$.
+	Again corollary \ref{cory:CharacterisationkGradientsZero} easily gives us that (iii) must hold.
+	Condition (i) follows from the fact that any $v\in\ktgradSob{\ddom}{\lambda_{jk}}$ is also an element of $\ktgradSob{\ddom}{\ddmes}$ with $\ktgrad_\ddmes v = \ktgrad_{\lambda_{jk}}v$, and following a similar vein of working to proposition \ref{prop:DivFreeGeneralSegment}.
+	Condition (ii) then follows from considering those functions $v\in\gradSob{\ddom}{\ddmes}$ whose support contains precisely one of the vertices $v_j$, performing the change of variables $r_{jk}$ on each segment, and integrating by parts in the $\gradSob{\interval{I_{jk}}}{t}$-sense.
+	After integration by parts, the resulting integral will vanish leaving only boundary terms at the vertex $v_j$, which coincides with condition (ii).
 \end{proof}
 
 \subsection{$\bracs{\wavenumber,\qm}$-curls} \label{sec:ktCurls}
