@@ -9,6 +9,7 @@
 *.out
 *.snm
 *.pdf
+!/Diagrams/Numerical_Results/*.pdf
 */__pycache__
 /PhD-QuantumGraphNumerics/*Results*.csv
 /PhD-QuantumGraphNumerics/TFR_*.csv
