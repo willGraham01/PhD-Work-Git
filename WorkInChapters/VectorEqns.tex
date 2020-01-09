@@ -877,6 +877,22 @@ These are complimented by the boundary conditions
 \end{subequations}
 Noting that any functions that satisfy two of \eqref{eq:CurlEdgeEquations1}-\eqref{eq:CurlEdgeEquations2} necessarily satisfy the remaining one, \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions} provide us with enough equations and boundary conditions to solve for the eigenpairs $\bracs{\omega^2, u}$.
 
-\section{Example Systems} \label{sec:CurlEqnExamples}
-
 \section{Chapter Summary} \label{sec:CurlSummary}
+The theory presented in this chapter serves as justification and motivation for the problems that we will be considering in subsequent chapters and work.
+We provide a construction of the Sobolev spaces $\curlSob{D}{\nu}$ for a domain $D$ and Borel measure $\nu$, which comes in much the same ilk as that in chapter \ref{ch:ScalarEqns}.
+Some examples of the implications of this construction are discussed in section \ref{sec:CurlExamples}, however we do not develop the general theory any further.
+Instead the focus of section \ref{sec:ktOperator} has been solely on the spaces we will be using in our wave-propagation problems (see chapter \tstk{chapter where we discuss the physical wave-guide system, probably intro}), and so we move onto the analysis of $\kt$-curls, -gradients, and $\ktgrad$-divergence free conditions on graphs. \newline
+
+Construction and analysis of $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ enables us to make sense of variational problems such as \eqref{eq:CurlCurlEquationDivFree} and the analysis of section \ref{sec:ktOperator} provides us with a means to reformulate this problem as a more familiar and accessible system of differential equations.
+The operator $\ktgrad$ is our primary concern because it appears in our wave-propagation problems after taking a Fourier transform in the direction of wave-propagation (introducing the variable $\wavenumber$ and removing the $x_3$-dependence) and a Gelfand transform in the periodic cross-section.
+This then leaves us with a family of problems parametrised by $\qm$ on the unit graph $\graph$ (or unit cell $\ddom$), posed with respect to the singular measure $\ddmes$.
+We end up reaching a characterisation for each of the spaces $\ktgradSob{\ddom}{\ddmes}$, $\ktcurlSob{\ddom}{\ddmes}$, and $\ktcurlSobDivFree{\ddom}{\ddmes}$ in terms of the behaviour on each edge of our graph $\graph$.
+This decomposition into some kind of edge-wise behaviour (plus some continuity conditions at the vertices) is expected for $\ktgradSob{\ddom}{\ddmes}$ due to our analysis in chapter \ref{ch:ScalarEqns}.
+Using this as motivation, we also follow a similar vein of investigation to deduce that elements of $\ktcurlSob{\ddom}{\ddmes}$ also display this edge-wise behaviour (section \ref{sec:ktOperator}) and some additional matching conditions (section \ref{sec:ktcurlSobExtraProperties}).
+In particular we establish that any element $u\in\ktcurlSob{\ddom}{\ddmes}$ has a third component that is an element of $\ktgradSob{\ddom}{\ddmes}$, and that a converse also holds.
+Due to the fact that the $\ktgrad$-divergence free condition ties to $\ktgradSob{\ddom}{\ddmes}$ and $\kgradZero{\ddom}{\ddmes}$, it is unsurprising to learn we have an edge-wise characterisation (plus some matching conditions) arising from this condition too.
+These conditions together provide us with the tools to reformulate problems such as \eqref{eq:CurlCurlEquationDivFree} into quantum graph problems as in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}, which are more amiable to analytic (and numeric) than the variational formulations. \newline
+
+In chapter \tstk{example systems and numerical results} we will tie together the work of this chapter and chapter \tstk{quantum graphs} and present some example wave-guidance problems, solved using the approaches described in those chapters.
+We will not be developing the theory of the spaces $\ktcurlSob{\ddom}{\ddmes}$, $\ktgradSob{\ddom}{\ddmes}$, or $\ktcurlSobDivFree{\ddom}{\ddmes}$ any further than what has been done in this chapter; because for our purposes we now have all the requirements we need to justify and solve the class of problems that we wish to consider.
+One can find further information on spaces such as $\curlSob{D}{\nu}$ in \tstk{references, probably Kirill \& Serena's paper} and how they may be used in a more analytic context.
