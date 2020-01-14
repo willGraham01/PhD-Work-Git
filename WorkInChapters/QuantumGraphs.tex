@@ -1,0 +1,48 @@
+\chapter{Quantum Graphs} \label{ch:QuantumGraphs}
+In this chapter we shall introduce the concept of Quantum Graphs, their associated function spaces, and operators defined on these spaces.
+Heavy references throughout to EKK, Kuchment, I guess Olaf \& Post too maybe?
+
+\section{Introduction, Notation and Conventions}
+It's really hard to define this shit.
+
+\tstk{we only work with finite graphs!}
+\begin{definition}[Graph] \label{def:Graph}
+	Let $N\in\naturals$ and $V=\clbracs{v_j \ \vert \ j\in\clbracs{1,2,...,N}}$ be a set of labels $v_j$ bijective to $\clbracs{1,2,...,N}$ via the map $j\rightarrow v_j$.
+	Let $E\subset V\times V$ be a finite set of pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
+	Assume further that if $\bracs{v_j,v_k}\in E$, then $\bracs{v_k,v_j}\not\in E$ if $j\neq k$, and write $I_{jk} = \bracs{v_j,v_k}$.
+	Then $\graph=\bracs{V,E}$ is a (finite) graph with vertex set $V$ and edge set $E$.
+	Elements of the set $V$ are called vertices of the graph $\graph$ and elements of $E$ are referred to as edges of $\graph$.	
+\end{definition}
+Definition \ref{def:Graph} is not as general as others that can be found in graph theory, however we work with this definition because it is sufficient for our later purposes so the loss of generality and certain features is not an issue.
+In particular we highlight some features of this definition below.
+\begin{itemize}
+	\item The definition requires that there is only a single edge $I_{jk}$ connecting any pair of vertices, and that edges do not have an associated direction, so the choice of the ordering of $j,k$ in $I_{jk}$ for a graph is arbitrary.
+	We will shortly define the concept of a directed graph where we allow two edges between any pair of vertices, each with an associated direction.
+	We do not go any further than this, even though it is possible by introducing certain equivalence relations on the sets $V$ and $E$, simply because we will not be interested in any systems that require this functionality. 
+	\item A graph has a finite number of vertices and edges.
+	This does not need to be true in general, and there is nothing wrong with removing the restriction that $V$ and $E$ be finite.
+	However since we shall be wanting to use graphs to represent physical structures in some sense (\tstk{chapter ref}), we will not be needing this functionality.
+	\item Loops (edges of the form $I_{jj}$) are permitted, but a given vertex can only have at most one loop.
+	\item The labels $v_j$ are slightly unnecessary, as one can just work directly with the index set $\clbracs{1,2,...,N}$.
+	However we will be wanting labels for our vertices and edges when we come to consider quantum and embedded graphs.
+\end{itemize}
+
+Having laid out this basis for the concept of a graph, we can now present some further definitions.
+\begin{definition}[Directed Graph] \label{def:DirectedGraph}
+	Let $N\in\naturals$ and $V=\clbracs{v_j \ \vert \ j\in\clbracs{1,2,...,N}}$ be a set of labels $v_j$ bijective to $\clbracs{1,2,...,N}$ via the map $j\rightarrow v_j$.
+	Let $E\subset V\times V$ be a finite set of pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
+	Write $I_{jk} = \bracs{v_j,v_k}$ for the elements of $E$.
+	Then $\graph=\bracs{V,E}$ is a (finite) directed graph with vertex set $V$ and edge set $E$.
+	Elements of the set $V$ are called vertices of the graph $\graph$ and elements of $E$ are referred to as edges of $\graph$.
+	Each edge $I_{jk}$ where $j\neq k$ is referred to as the edge directed from $v_j$ to $v_k$, or just the edge from $v_j$ to $v_k$.
+	\tstk{and your notation for loops Will?}
+\end{definition}
+
+need Quantum Graph (directed + lengths and intervals), embedded graph (in space + quantum).
+Also loops!!!!! Why you exist?
+
+\section{Differential Equations on Quantum Graphs}
+
+\section{Spectral Problems and the M-Matrix}
+
+\section{Summary}

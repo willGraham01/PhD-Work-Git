@@ -4,28 +4,46 @@ It will tie together the VectorEqns and QG chapters and display how we are using
 
 \section{Preliminaries}
 We should recall the necessary things, such as the definition of the M-matrix, how QG problems work, that now our edges need to be directed as do our derivatives (MB I've used that derivatives INTO the vertex are positive but the opposite convention amounts to multiplying the M-matrix by -1), the vector QG system we are solving, how to build the M-matrix etc.
-Also in here should be the general result for the M-matrix column contributions - similar in ilk to EKK paper which should be referenced (again here, if necessary).
+Also in here should be the general result for the M-matrix column contributions - similar in ilk to EKK paper which should be referenced (again here, if necessary). \newline
 
-Here are the curl-curl edge equations without the tildes because that'll of been explained away, and without $u_2$ because we've gotten rid of that by substitution and so can just focus on the $u_3$ and finding $\omega$. 
-They're just here so that all my internal referencing will work as I write the other parts of the section!
+Our focus in the examples of this chapter will be to determine the eigenvalues $\omega^2$ of \eqref{eq:CurlCurlEquationDivFree},
+\begin{align*}
+	-\ktcurl{\ddmes}\bracs{\ktcurl{\ddmes}u} &= \omega^2 u, \quad u\in\ktcurlSobDivFree{\ddom}{\ddmes}.
+\end{align*}
+Note that in the process we will also determine the eigenfunctions $u$, however these are not the focus of our analysis.
+Using the work of chapter \ref{sec:CurlReductionToQG}; we know that we can determine the eigenvalues by solving the quantum graph problem given in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
+To save on notational clutter we drop the overhead tilde notation for $\widetilde{u}_{2,jk},\widetilde{u}_{3,jk}$ that was used in section \ref{sec:CurlReductionToQG} and also define some convenient constants
+\begin{align*}
+	\qm_{jk} &= \bracs{R_{jk}\qm}_2, \quad \forall I_{jk}\in E,\\
+	\effFreq &= \sqrt{\omega^2 - \wavenumber^2}.
+\end{align*}
+We also make use of some of the properties of \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
+In particular any (general) solution pair $u_{2,jk},u_{3,jk}$ that solves any two of \eqref{eq:CurlEdgeEquations} necessarily satisfies the remaining equation.
+As such we can substitute \eqref{eq:CurlEdgeEquations3} into \eqref{eq:CurlEdgeEquations2} to obtain a single equation in $u_{3,jk}$.
+The (general) solution $u_{3,jk}$ that would be obtained from this equation would then allow us to recover $u_{2,jk}$ and satisfy the remaining \eqref{eq:CurlEdgeEquations1}.
+Similarly we can also note that a solution pair to \eqref{eq:CurlEdgeEquations} that satisfies \eqref{eq:CurlVertexConditions1}, then satisfies \eqref{eq:CurlVertexConditionsSum2} if and only if it satisfies \eqref{eq:CurlVertexConditionsDeriv}.
+Given that our objective is just determining the eigenvalues of \eqref{eq:CurlCurlEquationDivFree}, it is thus sufficient for us to solve the system
 \begin{align} \label{eq:QGEquation}
 	0 &= -\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{3,jk} + \bracs{\wavenumber^2 - \omega^2}u_{3,jk}.
 \end{align}
 \begin{subequations} \label{eq:QGVertexConditions}
 	\begin{align}
 		u_3 &\text{ is continuous at each } v_j\in V, \\
-		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{3,jk}\bracs{v_j}.
+		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{3,jk}\bracs{v_j},
 	\end{align}
 \end{subequations}
+for the eigenpairs $\bracs{\omega^2, u_{3,jk}}$.
+We shall take the system \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} as our starting point for the examples in this section.
+In addition, we compute the general form for $u_{3,jk}$ as
+\begin{align} \label{eq:CurlEdgeEqnGenSol}
+	u_{3,jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\effFreq t} + C_{-}^{(jk)}e^{i\effFreq t} },
+\end{align}
+which will be useful for proving the result of proposition \ref{prop:M-MatrixEntries}. \newline
 
-Here is the GS to \eqref{eq:QGEquation} without any boundary conditions (nb set $\eta = \bracs{\omega^2-\wavenumber^2}^{1/2}$).
-\begin{align*}
-	u_{3,jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\eta t} + C_{-}^{(jk)}e^{i\eta t} }
-\end{align*}
-
-\begin{prop}[$M$-matrix entries]
+\tstk{that's all you can write for this section without the quantum graphs section actually having some substance to motivate these objects and this method of solution, guess it's time to start on that!}
+\begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
-	Set $\eta = \bracs{\omega^2-\wavenumber^2}^{1/2}$, and for each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.
+	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.
 	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\reals^{\abs{V}}$.
 	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by \tstk{sim symbol! also all this notation needs to be set out at some point because I don't want to write out what it all is in the proposition hypothesis like i currently have}
 	\begin{align*}
@@ -36,19 +54,24 @@ Here is the GS to \eqref{eq:QGEquation} without any boundary conditions (nb set 
 			\end{aligned}			
 			& j \not\sim k, \\
 			\!\begin{aligned}
-				-\sum_{\substack{j\sim k, \\ j \text{ left}}} \eta e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\eta} 
-				\\ \quad - \sum_{\substack{j\sim k, \\ j \text{ right}}} \eta e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\eta}
+				-\sum_{\substack{j\sim k, \\ j \text{ left}}} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
+				\\ \quad - \sum_{\substack{j\sim k, \\ j \text{ right}}} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq}
 			\end{aligned}
 			& j\neq k, \ j\sim k, \\
 			\!\begin{aligned}
-				\sum_{\substack{j\sim l, \\ j \text{ left}}} \eta\cot\bracs{l_{jl}\eta}
-				+ \sum_{\substack{j\sim l, \\ j \text{ right}}} \eta\cot\bracs{l_{lj}\eta}
-				\\ \quad - 2\eta\sum_{j\sim j} \cot\bracs{l_{jj}\eta} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\eta}
+				\sum_{\substack{j\sim l, \\ j \text{ left}}} \effFreq\cot\bracs{l_{jl}\effFreq}
+				+ \sum_{\substack{j\sim l, \\ j \text{ right}}} \effFreq\cot\bracs{l_{lj}\effFreq}
+				\\ \quad - 2\effFreq\sum_{j\sim j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq}
 			\end{aligned}
 			& j=k.
 		\end{cases}
 	\end{align*}
 \end{prop}
+\begin{proof}
+	The proof is an explicit computation. \tstk{credit for proof to EKK paper, we just have QM here too}
+	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate the constants $C^{(jk)}_{\pm}$ in \eqref{eq:CurlEdgeEqnGenSol}.
+	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off the value of $\bracs{\nmap u}_j$ for each $j$.
+\end{proof}
 
 \section{The TFR setup but with curls}
 As the title says, but make it more formal and fancy and not in reference to the TFR. 

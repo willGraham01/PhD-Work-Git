@@ -870,9 +870,9 @@ Combining these, we arrive at the following system of equations on each interval
 These are complimented by the boundary conditions
 \begin{subequations} \label{eq:CurlVertexConditions}
 	\begin{align}
-		u_3 &\text{ is continuous at each } v_j\in V, \\
-		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber u_{2,jk}\bracs{v_j}, \\
-		0 &= \sum_{j\sim k}u_{2,jk}\bracs{v_j}, \ \forall v_j\in V.
+		u_3 &\text{ is continuous at each } v_j\in V, \label{eq:CurlVertexConditionsCty}\\
+		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber u_{2,jk}\bracs{v_j}, \label{eq:CurlVertexConditionsSumDeriv}\\
+		0 &= \sum_{j\sim k}u_{2,jk}\bracs{v_j}, \ \forall v_j\in V. \label{eq:CurlVertexConditionsSum2}
 	\end{align}
 \end{subequations}
 Noting that any functions that satisfy two of \eqref{eq:CurlEdgeEquations1}-\eqref{eq:CurlEdgeEquations2} necessarily satisfy the remaining one, \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions} provide us with enough equations and boundary conditions to solve for the eigenpairs $\bracs{\omega^2, u}$.
@@ -893,6 +893,6 @@ In particular we establish that any element $u\in\ktcurlSob{\ddom}{\ddmes}$ has 
 Due to the fact that the $\ktgrad$-divergence free condition ties to $\ktgradSob{\ddom}{\ddmes}$ and $\kgradZero{\ddom}{\ddmes}$, it is unsurprising to learn we have an edge-wise characterisation (plus some matching conditions) arising from this condition too.
 These conditions together provide us with the tools to reformulate problems such as \eqref{eq:CurlCurlEquationDivFree} into quantum graph problems as in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}, which are more amiable to analytic (and numeric) than the variational formulations. \newline
 
-In chapter \tstk{example systems and numerical results} we will tie together the work of this chapter and chapter \tstk{quantum graphs} and present some example wave-guidance problems, solved using the approaches described in those chapters.
+In chapter \ref{ch:ExampleSystems} we will tie together the work of this chapter and chapter \tstk{quantum graphs} and present some example wave-guidance problems, solved using the approaches described in those chapters.
 We will not be developing the theory of the spaces $\ktcurlSob{\ddom}{\ddmes}$, $\ktgradSob{\ddom}{\ddmes}$, or $\ktcurlSobDivFree{\ddom}{\ddmes}$ any further than what has been done in this chapter; because for our purposes we now have all the requirements we need to justify and solve the class of problems that we wish to consider.
 One can find further information on spaces such as $\curlSob{D}{\nu}$ in \tstk{references, probably Kirill \& Serena's paper} and how they may be used in a more analytic context.
