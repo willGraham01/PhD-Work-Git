@@ -8,16 +8,16 @@ It's really hard to define this shit.
 \tstk{we only work with finite graphs!}
 \begin{definition}[Graph] \label{def:Graph}
 	Let $N\in\naturals$ and $V=\clbracs{v_j \ \vert \ j\in\clbracs{1,2,...,N}}$ be a set of labels $v_j$ bijective to $\clbracs{1,2,...,N}$ via the map $j\rightarrow v_j$.
-	Let $E\subset V\times V$ be a finite set of pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
-	Assume further that if $\bracs{v_j,v_k}\in E$, then $\bracs{v_k,v_j}\not\in E$ if $j\neq k$, and write $I_{jk} = \bracs{v_j,v_k}$.
+	Let $E\subset V\times V$ be a finite set of \textit{unordered} pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
+	If $\bracs{v_j,v_k}\in E$ then write $I_{jk} = \bracs{v_j,v_k}$, note that $I_{jk}=I_{kj}$.
 	Then $\graph=\bracs{V,E}$ is a (finite) graph with vertex set $V$ and edge set $E$.
 	Elements of the set $V$ are called vertices of the graph $\graph$ and elements of $E$ are referred to as edges of $\graph$.	
 \end{definition}
 Definition \ref{def:Graph} is not as general as others that can be found in graph theory, however we work with this definition because it is sufficient for our later purposes so the loss of generality and certain features is not an issue.
 In particular we highlight some features of this definition below.
 \begin{itemize}
-	\item The definition requires that there is only a single edge $I_{jk}$ connecting any pair of vertices, and that edges do not have an associated direction, so the choice of the ordering of $j,k$ in $I_{jk}$ for a graph is arbitrary.
-	We will shortly define the concept of a directed graph where we allow two edges between any pair of vertices, each with an associated direction.
+	\item The definition requires that there is only a single edge $I_{jk}$ connecting any pair of vertices.
+	We will shortly define the concept of a directed graph where we allow two edges between any pair of vertices, having opposite ``directions".
 	We do not go any further than this, even though it is possible by introducing certain equivalence relations on the sets $V$ and $E$, simply because we will not be interested in any systems that require this functionality. 
 	\item A graph has a finite number of vertices and edges.
 	This does not need to be true in general, and there is nothing wrong with removing the restriction that $V$ and $E$ be finite.
@@ -30,18 +30,74 @@ In particular we highlight some features of this definition below.
 Having laid out this basis for the concept of a graph, we can now present some further definitions.
 \begin{definition}[Directed Graph] \label{def:DirectedGraph}
 	Let $N\in\naturals$ and $V=\clbracs{v_j \ \vert \ j\in\clbracs{1,2,...,N}}$ be a set of labels $v_j$ bijective to $\clbracs{1,2,...,N}$ via the map $j\rightarrow v_j$.
-	Let $E\subset V\times V$ be a finite set of pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
+	Let $E\subset V\times V$ be a finite set of \textit{ordered} pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\clbracs{1,2,...,N}$.
 	Write $I_{jk} = \bracs{v_j,v_k}$ for the elements of $E$.
 	Then $\graph=\bracs{V,E}$ is a (finite) directed graph with vertex set $V$ and edge set $E$.
 	Elements of the set $V$ are called vertices of the graph $\graph$ and elements of $E$ are referred to as edges of $\graph$.
 	Each edge $I_{jk}$ where $j\neq k$ is referred to as the edge directed from $v_j$ to $v_k$, or just the edge from $v_j$ to $v_k$.
-	\tstk{and your notation for loops Will?}
 \end{definition}
+Loops are still permitted by this definition, however the choice of a direction for these is essentially redundant.
+\begin{definition}[Quantum Graph] \label{def:QuantumGraph}
+	A Quantum Graph is a directed graph $\graph = \bracs{V,E}$ where each edge $I_{jk}\in E$ is assigned a length $l_{jk}\geq0$ and associated interval $\interval{l_{jk}}$.
+\end{definition}
+Note that there is no requirement for the edges (if they are present) $I_{jk}$ and $I_{kj}$ to have the same length, we shall see later why we wish to allow this.
+Loops are still permitted under this definition and will have an associated length $l_{jj}$.
+Quantum graphs will be the objects that the theory of this section will describe, however they are not the starting point for our physical problems \tstk{chapter/section ref}.
+We require one further definition that will enable us to link a structure in physical space to the more abstract Quantum graph.
 
-need Quantum Graph (directed + lengths and intervals), embedded graph (in space + quantum).
-Also loops!!!!! Why you exist?
+\begin{definition}[Embedded Graph] \label{def:EmbeddedGraph}
+	Set $d\geq2, D\subset\reals^d$ and $N\in\naturals$.
+	Let $V = \clbracs{\vec{v}_j \ \vert \ j\in\clbracs{1,2,...,N}}$ be a set of distinct points in $D$, and $E\subset V\times V$ be a set of \textit{ordered} pairs of points $I_{jk} := \bracs{\vec{v}_j, \vec{v}_k}$.
+	For each $I_{jk}\in E$ with $j\neq k$ let $\gamma_{jk}$ be a continuous curve in $D$ with endpoints $\vec{v}_j$ and $\vec{v}_k$, length $l_{jk}$ and smooth parametrisation $r_{jk}:\interval{l_{jk}}\rightarrow\gamma_{jk}$ such that $r_{jk}(0) = \vec{v}_j, r_{jk}\bracs{l_{jk}} = \vec{v}_k$.
+	For each $I_{jj}\in E$ let $\gamma_{jj}$ be a closed curve in $D$ passing through $\vec{v}_j$ and with smooth parametrisation $r_{jj}:\left[0,l_{jj}\right)\rightarrow\gamma_{jj}$ such that $r_{jj}(0) = \vec{v}_{j}, \lim_{t\rightarrow l_{jj}}r_{jj}(t) = \vec{v}_j$.
+	Assume that all curves $\gamma_{jk}$ are non-intersecting.
+	Then we call $\graph=\bracs{V, E, \clbracs{r_{jk}}}$ an embedded graph in $D$, or a graph embedded in $D$.
+\end{definition}
+Again we make some observations; and provide some motivation and conventions for this definition.
+\begin{itemize}
+	\item Because the maps $r_{jk}$ are tied to the edges $I_{jk}$, for shorthand we will forgo including these when we introduce an embedded $\graph$, unless there is a need for a notational change.
+	As such, we shall specify embedded graphs by the shorthand $\graph=\bracs{V,E}$, meaning $\graph=\bracs{V, E, \clbracs{r_{jk}}}$.
+	\item Am embedded graph $\graph = \bracs{V,E}$ is a framework for representing singular structures in physical space, by associating the vertices to points and the edges of a graph to curves connecting these points, we can think of the graph as occupying some physical volume/area.
+	We can also effectively treat $\graph$ as a subset of $D$, and perform set operations to construct sub-graphs, or use set intersections to pull out select portions of a graph.
+	For example, we may specify the sub-graph of $\graph$ composed of all the loops of $\graph$ by writing
+	\begin{align*}
+		S_{\graph} &:= \bigcup_{I_{jj}\in E} I_{jj}
+	\end{align*}
+	which should be taken to have the same meaning as the following;
+	\begin{align*}
+		V_S := \clbracs{\vec{v}_j\in V \ \vert \ I_{jj}\in E}, &\quad E_S := \clbracs{I_{jj} \ \vert \ I_{jj}\in E}, \\
+		R_S := \clbracs{r_{jj} \ \vert \ I_{jj}\in E}, &\\
+		S_{\graph} &:= \bracs{V_S, E_S, R_S}.
+	\end{align*}
+	Likewise we may also use $\graph$ as a set in the sense that
+	\begin{align*}
+		\graph &= \bigcup_{I_{jk}\in E} \gamma_{jk},
+	\end{align*}
+	so we could specify the subset of $D$ corresponding to the portion of the graph $\graph$ that occupies the square $\sqbracs{-\recip{2},\recip{2}}^2$ by writing
+	\begin{align*}
+		\graph \cap \sqbracs{-\recip{2},\recip{2}}^2.
+	\end{align*}
+	Essentially, we may treat $\graph$ as both a set in $D$ and in the sense of a graph as in definition \ref{def:DirectedGraph}.
+	\item Loops (closed curves) are permitted but require a slightly different treatment to ``regular" edges; and although they don't introduce major complexities in the theory that follows in this chapter, can introduce major complexities in the theory we wish to build on in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
+\end{itemize}
+
+NEED to talk to Kirill about this - in particular how do we talk about periodic graphs? Also we might end up with loops in our equivalent QG despite not having them in our embedded graphs.
+Also loops do nasty things to our gradients etc if they are in the embedded graphs, we don't consider embedded graphs with loops though.
+We do consider QGs though that come from period-cells of periodic graphs, in which case we need to talk about how we associate edges and how we can get loops out of non-loopy period cells.
+Essentially need a consistent framework to build off - the definition of embedded graph doesn't use any graph theory so is quite nice, but still need to define ``periodic embedded graph", unit cell, etc.
+Once we've done this it should be fine - we only ever work on the period cell which is a graph embedded into (WLOG) $\sqbracs{0,1}^2$ and so our finite graph terminology is sufficient from then on.
 
 \section{Differential Equations on Quantum Graphs}
+Since quantum graphs come with lengths (and intervals) associated to their edges, we can define function spaces on them by combining function spaces on these intervals.
+As such we define
+\begin{align*}
+	L^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} \ltwo{\interval{l_{jk}}}{t},
+	&\quad H^1\bracs{\graph} := \bigoplus_{I_{jk}\in E} \gradSob{\interval{l_{jk}}}{t}.
+\end{align*}
+A function $u\in L^2\bracs{\graph}$ is then determined by it's form on each edge $I_{jk}$ (and similarly for functions and their distributional derivatives in $H^1\bracs{\graph}$).
+Because we will mainly be working on the edges of our graphs, we define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of $u$ to the edge $I_{jk}$, extended by zero to the whole of $\graph$.
+Due to the fact that edges are directed, it is also necessary for us to adopt a notion of ``directional derivative" for the $u_{jk}$ at the ends of the edges.
+Specifically we must distinguish between a derivative directed into a vertex, and a derivative directed out from a vertex.
 
 \section{Spectral Problems and the M-Matrix}
 
