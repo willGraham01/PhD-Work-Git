@@ -87,17 +87,49 @@ We do consider QGs though that come from period-cells of periodic graphs, in whi
 Essentially need a consistent framework to build off - the definition of embedded graph doesn't use any graph theory so is quite nice, but still need to define ``periodic embedded graph", unit cell, etc.
 Once we've done this it should be fine - we only ever work on the period cell which is a graph embedded into (WLOG) $\sqbracs{0,1}^2$ and so our finite graph terminology is sufficient from then on.
 
+Also how we will use derivs with $t$ but still evaluate at $v_j$'s!
+\tstk{DEFINE SIM. Throughout this chapter I am going to use $j\conLeft k$ to mean ``$j$ connects to $k$ with $j$ on the left" and $j\conRight k$ to mean ``$j$ connects to $k$ with $j$ on the right. Have defined $j\con k$ for whatever symbol we want to use for ``$j$ connects to $k$, don't care about which side" - may need to go through other chapters to fix this notation and explain what it means in sums with $u_{jk}$, as the subscripts must not involve a direction any more.}
+
 \section{Differential Equations on Quantum Graphs}
 Since quantum graphs come with lengths (and intervals) associated to their edges, we can define function spaces on them by combining function spaces on these intervals.
 As such we define
-\begin{align*}
-	L^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} \ltwo{\interval{l_{jk}}}{t},
-	&\quad H^1\bracs{\graph} := \bigoplus_{I_{jk}\in E} \gradSob{\interval{l_{jk}}}{t}.
-\end{align*}
+\begin{subequations} \label{eq:GraphFuncSpaces}
+	\begin{align}
+		L^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} \ltwo{\interval{l_{jk}}}{t},
+		&\quad H^1\bracs{\graph} := \bigoplus_{I_{jk}\in E} \gradSob{\interval{l_{jk}}}{t}, \\
+		H^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} H^2_\mathrm{grad}\bracs{\interval{l_{jk}}, \md t}, &
+	\end{align}
+\end{subequations}
 A function $u\in L^2\bracs{\graph}$ is then determined by it's form on each edge $I_{jk}$ (and similarly for functions and their distributional derivatives in $H^1\bracs{\graph}$).
 Because we will mainly be working on the edges of our graphs, we define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of $u$ to the edge $I_{jk}$, extended by zero to the whole of $\graph$.
-Due to the fact that edges are directed, it is also necessary for us to adopt a notion of ``directional derivative" for the $u_{jk}$ at the ends of the edges.
-Specifically we must distinguish between a derivative directed into a vertex, and a derivative directed out from a vertex.
+Due to the fact that edges are directed, it is also necessary for us to adopt a notion of ``directional derivative" for the $u_{jk}$ at the ends of the edges (\tstk{EKK paper}), and so we adopt the following convention;
+\begin{align*}
+	\diff{}{t}u_{jk}\bracs{v_j} &= -u'_{jk}\bracs{v_j}, \\
+	\diff{}{t}u_{jk}\bracs{v_k} &= u'_{jk}\bracs{v_k}.
+\end{align*}
+Recall that the subscript $jk$ denotes that the edge $I_{jk}$ is directed from $v_j$ to $v_k$; so our convention is succinctly summarised as ``derivatives directed into a vertex are positive, whilst derivatives directed out of a vertex are negative". \tstk{this is opposite to EKK}
+
+This edge-wise breakdown of our function spaces allows us to define differential operators on $\graph$ by specifying the form of the operator on each edge $I_{jk}$ (by which we mean it's associated interval $\interval{l_{jk}}$).
+However it is important to note that the spaces $L^2\bracs{\graph}$ and the other spaces in \eqref{eq:GraphFuncSpaces} do not come with an in-built appreciation for the connectivity of the graph itself; and it is not hard to see that for two graphs with the same number of edges and identical lengths, these spaces will be identical.
+Thus to obtain a well-posed problem (strictly speaking, self-adjoint differential operator) on $\graph$, we require additional boundary conditions\footnote{Or matching conditions, or boundary data.} to obtain a unique solution to our problem.
+For quantum graphs, these boundary conditions come at the vertices of the graph and we shall be referring to them as vertex conditions.
+These conditions come in several types, and there is no requirement that every vertex in a graph has the same conditions imposed at it.
+That being said, most of the systems that we will want to be considering will adhere to this, although this is largely due to how we arrive at such systems from our variational framework (see chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}).
+The most intuitive vertex condition that we can impose at a given vertex $v_j$ is the requirement that the function $u$ be continuous at $v_j$.
+Indeed the construction of the spaces in \eqref{eq:GraphFuncSpaces} does not place any requirement that there be a common value of $u$ at the vertices (as each $u_{jk}$ is an $L^2$-function on a disjoint interval).
+If the condition of continuity is imposed at $v_j$ one can then also impose a Kirchoff-like condition on the (directional) derivatives of $u$ at the vertex,
+\begin{align*}
+	\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} &= \alpha_j u\bracs{v_j}.
+\end{align*}
+Here $\alpha_j\in\reals$ is a constant that is chosen for the vertex $v_j$, and the value $u\bracs{v_j}$ exists due to the condition of continuity at this vertex.
+If continuity of $u$ is not imposed at a vertex, is it still possible to pose conditions that are Kirchoff-like, such as
+\begin{align*}
+	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j, &\quad \alpha_j\in\reals, \\
+	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}, &\quad \alpha_j\in\reals.
+\end{align*}
+These conditions will not be of interest to us, and the theory we present in this section is simply a selection of the more general work of \tstk{references} which deals with this additional generality.
+
+Now define an ODE/QG problem (I guess use operators...) which then links to the final section on how we want to solve these things.
 
 \section{Spectral Problems and the M-Matrix}
 
