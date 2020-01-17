@@ -2,7 +2,11 @@
 In this chapter we shall introduce the concept of Quantum Graphs, their associated function spaces, and operators defined on these spaces.
 Heavy references throughout to EKK, Kuchment, I guess Olaf \& Post too maybe?
 
-\section{Introduction, Notation and Conventions}
+\section{Introduction}
+lit review part if it's needed, although we might have done this in the introduction chapter tbh.
+If so we won't need to revisit the Kuchment nor Olaf \& Post references again, and can just go straight to the definitions and throw in the stuff by EKK etc.
+
+\section{Notation, Definitions, and Conventions} \label{sec:QG-Notation}
 It's really hard to define this shit.
 
 \tstk{we only work with finite graphs!}
@@ -90,7 +94,11 @@ Once we've done this it should be fine - we only ever work on the period cell wh
 Also how we will use derivs with $t$ but still evaluate at $v_j$'s!
 \tstk{DEFINE SIM. Throughout this chapter I am going to use $j\conLeft k$ to mean ``$j$ connects to $k$ with $j$ on the left" and $j\conRight k$ to mean ``$j$ connects to $k$ with $j$ on the right. Have defined $j\con k$ for whatever symbol we want to use for ``$j$ connects to $k$, don't care about which side" - may need to go through other chapters to fix this notation and explain what it means in sums with $u_{jk}$, as the subscripts must not involve a direction any more.}
 
-\section{Differential Equations on Quantum Graphs}
+\section{Differential Equations on Quantum Graphs} \label{sec:DEonQG}
+Strictly speaking in this section we will be defining differential operators on function spaces that involve quantum graphs, in order to be consistent with several developments in the literature \tstk{refs!!!}.
+However we shall see that such operators and the functions in their domains are broken down in such a way that they can be thought of as a system of differential equations on intervals, coupled through (somewhat non-standard) boundary conditions.
+As such we will begin this section by defining several function spaces that we wish to work on, then providing examples of the types of boundary conditions that we might want to consider, before finally providing a concrete example of a differential operator on a quantum graph. \newline
+
 Since quantum graphs come with lengths (and intervals) associated to their edges, we can define function spaces on them by combining function spaces on these intervals.
 As such we define
 \begin{subequations} \label{eq:GraphFuncSpaces}
@@ -107,7 +115,7 @@ Due to the fact that edges are directed, it is also necessary for us to adopt a 
 	\diff{}{t}u_{jk}\bracs{v_j} &= -u'_{jk}\bracs{v_j}, \\
 	\diff{}{t}u_{jk}\bracs{v_k} &= u'_{jk}\bracs{v_k}.
 \end{align*}
-Recall that the subscript $jk$ denotes that the edge $I_{jk}$ is directed from $v_j$ to $v_k$; so our convention is succinctly summarised as ``derivatives directed into a vertex are positive, whilst derivatives directed out of a vertex are negative". \tstk{this is opposite to EKK}
+Recall that the subscript $jk$ denotes that the edge $I_{jk}$ is directed from $v_j$ to $v_k$; so our convention is succinctly summarised as ``derivatives directed into a vertex are positive, whilst derivatives directed out of a vertex are negative". \newline \tstk{this is opposite to EKK}
 
 This edge-wise breakdown of our function spaces allows us to define differential operators on $\graph$ by specifying the form of the operator on each edge $I_{jk}$ (by which we mean it's associated interval $\interval{l_{jk}}$).
 However it is important to note that the spaces $L^2\bracs{\graph}$ and the other spaces in \eqref{eq:GraphFuncSpaces} do not come with an in-built appreciation for the connectivity of the graph itself; and it is not hard to see that for two graphs with the same number of edges and identical lengths, these spaces will be identical.
@@ -127,10 +135,46 @@ If continuity of $u$ is not imposed at a vertex, is it still possible to pose co
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j, &\quad \alpha_j\in\reals, \\
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}, &\quad \alpha_j\in\reals.
 \end{align*}
-These conditions will not be of interest to us, and the theory we present in this section is simply a selection of the more general work of \tstk{references} which deals with this additional generality.
+These conditions will not be of interest to us, and the theory we present in this section is simply a selection of the more general work of \tstk{references} which deals with this additional generality. \newline
 
-Now define an ODE/QG problem (I guess use operators...) which then links to the final section on how we want to solve these things.
+We now provide a simple example of a differential operator $\mathcal{A}$ on $\graph$, however it is not hard to see how the construction can be made general.
+First we must provide a domain for $\mathcal{A}$ by deciding how much regularity we want in our functions, and the vertex conditions we want to impose;
+\begin{align*}
+	\mathrm{dom}\mathcal{A} &= \clbracs{ u\in H^2\bracs{\graph} \ \vert \ u \text{ is continuous at all } v_j\in V, \ \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = 0 \ \forall v_j\in V}.
+\end{align*}
+Note that different vertex conditions can be imposed at different vertices by specifying them in the domain of the operator, however to avoid a cumbersome example we have taken identical conditions at each vertex.
+The remaining ingredient for $\mathcal{A}$ is what it actually does to functions in it's domain, which is typically done by specifying the action on each edge of $\graph$ (hence the construction of the function spaces in \eqref{eq:GraphFuncSpaces});
+\begin{align*}
+	\mathcal{A} &= -\diff{}{t} \quad\text{on each } I_{jk}\in E.
+\end{align*}
+Of course, by ``on each $I_{jk}\in E$" we mean ``on the interval $\interval{l_{jK}}$ that we associate to $I_{jk}\in E$".
+Then for a function $f\in L^2\bracs{\graph}$ we can pose the resolvent problem of finding $u\in\mathrm{dom}\mathcal{A}$ such that
+\begin{align*}
+	\mathcal{A}u &= f;
+\end{align*}
+or alternatively can consider the spectral problem of finding eigenpairs $\bracs{\lambda,u}\in\complex\times u\in\mathrm{dom}\mathcal{A}$ such that
+\begin{align*}
+	\mathcal{A}u &= \lambda u.
+\end{align*}
+As the spaces in \eqref{eq:GraphFuncSpaces} break down into edge-wise components which are acted on individually by $\mathcal{A}$, and only linked through the vertex conditions, we can rewrite both of these problems as a set of ODEs on intervals coupled through vertex conditions;
+\begin{align*}
+	\mathcal{A}u = f \Leftrightarrow \
+	& (i) \ -\diff{u_{jk}}{t} = f_{jk} \ \text{on } \interval{l_{jk}}, \\
+	& (ii) \ u \text{ is continuous at each } v_j\in V, \\
+	& (iii) \ \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = 0 \ \forall v_j\in V, \\
+	\mathcal{A}u = \lambda u \Leftrightarrow \
+	& (i) \ -\diff{u_{jk}}{t} = \lambda u_{jk} \ \text{on } \interval{l_{jk}}, \\
+	& (ii) \ u \text{ is continuous at each } v_j\in V, \\
+	& (iii) \ \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = 0 \ \forall v_j\in V.
+\end{align*}
+We will largely pose differential equations on quantum graphs by specifying the information on the right hand side of these equivalences, as this is where our theory in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} will take us.
+Either of the equivalent forms above will be referred to as a ``quantum graph problem" or a set of ``differential equations on a (quantum) graph" for the purposes of this work.
+The reason for us making this equivalence so explicit is because the operator-theoretic approach to quantum graph problems has yielded some useful tools for determining the spectrum of such operators, which we discuss in the following section.
 
-\section{Spectral Problems and the M-Matrix}
+\section{Spectral Problems and the M-Matrix} \label{sec:M-MatrixTheory}
+Why do we care so much about the spectral problem?
+How do we propose to approach it?
+Define M-matrix... YAYAY :(
+Y is M-matrix good - computers and shit (NB should we talk about the numerical schemes or just hint at them in the relevant section... or tbh we don't actually use them yet as I've done everything by hand insofar, but might need this if we go the numerical route).
 
-\section{Summary}
+\section{Summary} \label{sec:QGSummary}
