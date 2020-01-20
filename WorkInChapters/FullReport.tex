@@ -5,6 +5,7 @@
 
 %for figures and graphics
 \usepackage{graphicx}
+\usepackage{subcaption}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
@@ -30,9 +31,9 @@
 
 %TITLE AND CONTENTS ETC; comment out to save computing time
 
-\maketitle 					%create title
-\tableofcontents 			%have a contents page
-\newpage 					%begin the actual report on a new page
+%\maketitle 					%create title
+%\tableofcontents 			%have a contents page
+%\newpage 					%begin the actual report on a new page
 
 %REPORT BEGINS
 
@@ -40,15 +41,15 @@
 %NB: Can use \include for speed, but then the directory fills up with useless .aux files.
 %To save time, comment out sections that aren't being edited. References may disappear but the file will still compile!
 
-\include{Introduction}
+%\include{Introduction}
 
 \include{QuantumGraphs}
 
-\include{ScalarEqns}
+%\include{ScalarEqns}
 
-\include{VectorEqns}
+%\include{VectorEqns}
 
-\include{ExampleSystems}
+%\include{ExampleSystems}
 
 \newpage %have a new page to start the bibliography
 \bibliographystyle{unsrt}
