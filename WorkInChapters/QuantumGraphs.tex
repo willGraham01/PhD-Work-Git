@@ -95,12 +95,16 @@ Lastly, we need to provide a notion of periodicity for graphs.
 	Let $e_1, e_2, ..., e_d$ be the canonical basis for $\reals^d$.
 	Suppose there exist real numbers $T_{j}\geq0, j\in\clbracs{1,...,d}$ such that for each $j\in\clbracs{1,...,d}$, the $\graph$ (treating it as a set of points in $\reals^d$) is invariant under the translation $T_j e_j$.
 	Then $\graph$ is a \textit{periodic (embedded) graph} (in $\reals^d$). \newline
-	Let $\mathcal{C}$ be the hyper-cuboid $\mathcal{C}:= \sqbracs{0,T_1}\times ... \times\sqbracs{0,T_d}$, then we define the \textit{period cell}, or \textit{period graph}, or \textit{unit cell}, of $\graph$ as the (embedded graph)
+	
+	Suppose further that the $T_j$ are minimal in the sense that for each $j$ there does not exist a $T_j'$ such that $T_j'<T_j$ and $\graph$ is invariant under $T_j' e_j$.
+	Let $\mathcal{C}$ be the hyper-cuboid $\mathcal{C}:= \sqbracs{0,T_1}\times ... \times\sqbracs{0,T_d}$, then we define the \textit{period cell}, or \textit{period graph}, or \textit{unit cell}, of $\graph$ as the (embedded graph in $\mathcal{C}$)
 	\begin{align*}
 		\graph_{\mathrm{P}} &:= \graph \cap \mathcal{C}.
 	\end{align*}
-	To avoid cutting edges in two we think of the hyper-cuboid $\mathcal{C}$ as being mapped onto the $d$-dimensional torus; with vertices that lie on the boundary of $\mathcal{C}$ being identified with each other, and curves ``leaving" a hyper-face of $\mathcal{C}$ connecting to the curve ``entering"  $\mathcal{C}$ from the opposite hyper-face.
+	To avoid cutting edges in two, we think of the hyper-cuboid $\mathcal{C}$ as being mapped onto the $d$-dimensional torus; with vertices that lie on the boundary of $\mathcal{C}$ being identified with each other, and curves ``leaving" a hyper-face of $\mathcal{C}$ connecting to the curve ``entering"  $\mathcal{C}$ from the opposite hyper-face.
 	This is illustrated in figure \ref{fig:PeriodCellIllustration} in two dimensions, for clarity.
+	
+	Of course, because we can identify sub-graphs of embedded graphs by providing the sets which contain them, we can also say that $\mathcal{C}$ is the unit cell of $\graph$ too provided we remember how to deal with edges cut in two, as above.
 \end{definition}
 \begin{figure}[h!]
 	\centering
@@ -131,12 +135,62 @@ Again we briefly discuss some potential concerns and conventions.
 	This associated quantum graph is what we will be posing our (new family) of problems on, post-Gelfand transform.
 	It is for this reason it is helpful to think of the period cell as living on a torus; we can still have continuous curves in the torus (of the same lengths as the edges) and smooth parametrisations that map these curves to intervals in $\reals$, which is all we require to pose a quantum graph problem.
 	\item Note that $\graph_{\mathrm{P}}$ (and hence it's associated quantum graph) can have loops even if $\graph$ did not, or rather did not appear to.
-	It is for this reason that we still provide results concerning quantum graphs with loops in chapter \ref{ch:ExampleSystems} even though our singular structures do not have loops themselves.
+	Because of this we still provide results concerning quantum graphs with loops in chapter \ref{ch:ExampleSystems} even though our singular structures do not have loops themselves.
 \end{itemize}
-To finish this section, we now outline some notation that we shall use in the rest of the report.
+
+\subsection{Connection and Summation Conventions} \label{sec:GraphSimDefinitions}
+We now outline some notation that we shall use in the rest of the report.
 For any quantum, directed, or embedded graph $\graph=\bracs{V,E}$ we will use the notation $j\conLeft k$ to mean $I_{jk}\in E$, which can be read as ``$j$ connects to $k$ with $j$ on the left".
 Similarly we use $j\conRight k$ to mean $I_{kj}\in E$, read as ``$j$ connects to $k$ with $j$ on the right.
 The use of the term right and left comes from the fact that the parametrisation $r_{jk}$ maps the left endpoint of $\sqbracs{0,l_{jk}}$ to $v_j$, and the right endpoint to $v_k$, and vice-versa for $r_{kj}$.
+We may also use $j\conLeft k$ as indices in summations, if $v_j$ is fixed a priori then the expression $\sum_{j\conLeft k}$ is taken to mean the sum over all $v_k\in V$ such that $I_{jk}\in E$.
+We assign the obvious similar meaning to $j\conRight k$ as a summation index, and note that (formally)
+\begin{align*}
+	\sum_{v_j\in V}\sum_{j\conLeft k} &= \sum_{v_j\in V}\sum_{j\conRight k} = \sum_{I_{jk}\in E},
+\end{align*}
+which provides us a succinct notation for summing over all the edges of $\graph$ by referencing their vertices.
+We will mainly use this notation when dealing with integrals taken with respect to singular measures supported on $\graph$, as outlined in \tstk{section ref}.
+
+\subsection{Embedded Graphs and Singular Measures} \label{sec:GraphSigularMeasuresDef}
+To complete in this section, we now briefly setup our framework that will provide us with a link between quantum graph problems (as in section \ref{sec:DEonQG}) and variational problems posed with respect to singular measures (which are the focus of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}). \newline
+
+\begin{definition}[Singular Measure on an (Embedded) Graph]
+Let $D\subset\reals^d, d\geq2$ and $\graph=\bracs{V,E}$ be a graph embedded into $D$ (note this encompasses period cells of periodic graphs).
+On $D$ and for each $I_{jk}\in E$ define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$, so for some Borel set $B\subset D$ we have that 
+\begin{align*}
+	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}}
+\end{align*}
+where $\lambda_1$ is the 1D-Lebesgue measure on $\reals$.
+Then set $\nu$ to be the (Borel) measure on $D$ defined by
+\begin{align*}
+	\nu\bracs{B} = \sum_{v_j\in V}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
+\end{align*}
+Then $\nu$ is the \textit{singular measure that supports $\graph$}; or alternatively the \textit{singular measure on $\graph$}, or the \textit{(singular) measure that supports the edges of $\graph$}.
+\end{definition}
+For a graph embedded into a 2D or 3D domain, the singular measure is illustrated in figure \ref{fig:Diagram_SingularMeasures}.
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=6cm]{Diagram_SingularMeasure2D.pdf}
+		\caption{\label{fig:Diagram_SingularMeasure2D} For a graph embedded in $\reals^2$, the measure of any Borel set $B$ by each $\lambda_{jk}$ is indicated by the thickened and coloured lines.
+		All other edge-measures give $B$ measure 0.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=6cm]{Diagram_SingularMeasure3D.pdf}
+		\caption{\label{fig:Diagram_SingularMeasure3D} Illustrating the singular measure of a cube $B$ for a graph in 3D.
+		The red portions of the edges indicate the contributions from each of the edge measures to the total measure $\nu\bracs{B}$.
+		Note that the vertices of the graph are inflated for visual effect.}
+	\end{subfigure}
+	\caption{\label{fig:Diagram_SingularMeasures} Visual illustration of singular measures of a graph in (\ref{fig:Diagram_SingularMeasure2D}) 2D and (\ref{fig:Diagram_SingularMeasure3D}) 3D. }
+\end{figure} \newline
+
+As discussed in \tstk{section reference}, a variational formulation is necessary for us to pose equations on singular domains.
+When our structure corresponds to an embedded graph, we will be using the singular measure on that graph as the foundations for our variational formulation.
+Intuitively the singular measure on a graph provides us with a measure that only respects the lower-dimensional structure of the graph, and thus integration (inherent to a variational problem) also ``respects" this structure.
+However this is discussed in greater detail in section \ref{sec:ScalarExample}.
 
 \section{Differential Equations on Quantum Graphs} \label{sec:DEonQG}
 Strictly speaking in this section we will be defining differential operators on function spaces that involve quantum graphs, in order to be consistent with several developments in the literature \tstk{refs!!!}.
@@ -164,7 +218,7 @@ A further complication arising from the fact that our edges are directed is that
 Recall that the subscript $jk$ denotes that the edge $I_{jk}$ is directed from $v_j$ to $v_k$; so our convention is succinctly summarised as ``derivatives directed into a vertex are positive, whilst derivatives directed out of a vertex are negative". 
 Lastly we provide another piece of notation that will ease the notational burden of the following work.
 We write $j\con k$ to mean ``the vertex $v_j$ connects to $v_k$", or formally $j\con k$ if and only if $I_{jk}\in E$ or $I_{kj}\in E$.
-In summations we may use $j\con k$ as a summation index for expressions like
+In summations we may (for a fixed $v_j$) use $j\con k$ as a summation index for expressions like
 \begin{align*}
 	\sum_{j\con k} u_{jk}\bracs{v_j},
 \end{align*} 
@@ -173,7 +227,9 @@ formally meaning the sum is taken over all $j\conLeft k$ and $j\conRight k$, wit
 	\sum_{j\con k} u_{jk}\bracs{v_j} &:= \sum_{j\conLeft k}u_{jk}\bracs{v_j} + \sum_{j\conRight k}u_{kj}\bracs{v_j}, \\
 	\sum_{j\con k} \diff{u_{jk}}{t}\bracs{v_k} &:= \sum_{j\conLeft k} \diff{u_{jk}}{t}\bracs{v_k} + \sum_{j\conRight k} \diff{u_{kj}}{t}\bracs{v_k}
 \end{align*}
-Note that (importantly) the point of evaluation of functions in these summations does not change. \newline
+The interpretations then follow from the interpretation of the $j\conLeft k$ and $j\conRight k$ sums.
+This notation will mainly be used when we look to derive properties of functions $u\in L^2\bracs{\graph}$ (or similar function spaces) at the vertices of $\graph$, or obtaining boundary conditions from a variational problem (see chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}).
+Note that (importantly) the point of evaluation of functions in these summations does not change, this notation is simply a shorthand to save us having to write out two cases in every sum we consider over the edges of $\graph$. \newline
 
 This edge-wise breakdown of our function spaces allows us to define differential operators on $\graph$ by specifying the form of the operator on each edge $I_{jk}$ (by which we mean it's associated interval $\interval{l_{jk}}$).
 However it is important to note that the spaces $L^2\bracs{\graph}$ and the other spaces in \eqref{eq:GraphFuncSpaces} do not come with an in-built appreciation for the connectivity of the graph itself; and it is not hard to see that for two graphs with the same number of edges and identical lengths, these spaces will be identical.
@@ -249,7 +305,7 @@ Assuming we are using the labels $v_j, j\in\clbracs{1,...,\abs{V}}$ for the vert
 	\bracs{\dmap u}_j &= u\bracs{v_j}, \\
 	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}.
 \end{align*}
-The $M$-matrix is then defined as follows the unique map
+The $M$-matrix is then defined as the unique map
 \begin{align*}
 	M\bracs{\lambda}:\complex^{\abs{V}} &\rightarrow \complex^{\abs{V}},
 \end{align*}
@@ -265,9 +321,10 @@ If the form for the $M$-matrix can be determined analytically (or even numerical
 	M_{\qm}\bracs{\lambda}v &= 0, \quad \lambda\in\complex, v\in\complex^{\abs{V}},
 \end{align}
 for each $\qm\in[-\pi,\pi)^2$.
-Of course the approach to solving such a problem will be different if one is looking to pursue the spectrum analytically or numerically.
+Of course the approach to solving such a problem will be different if one is looking to pursue the spectrum analytically or numerically, and the discussion here will be developed when we come to consider some examples in chapter \ref{ch:ExampleSystems}.
 Using the numerical approach, thinking of the problem as a generalised eigenvalue problem is much more suitable as one can use numerical schemes for generalised eigenvalue problems, such as those offered in \cite{guttel2017nonlinear}.
 Of course there is the problem with this approach of how to deal with the need to ``sweep" across each value of $\qm$; for example one could choose to discretise $[-\pi,\pi)^2$ but then has to concede to solving one such eigenvalue problem per discrete value of $\qm$.
+A final point on the numerical side is how easy to actually construct the $M$-matrix (for a given value of $\lambda$) in the first place, and how costly this is - although we will see in chapter \ref{ch:ExampleSystems} that in a select few cases we can proceed analytically to bypass this issue.
 Taking an analytical approach, we shall see (chapter \ref{ch:ExampleSystems}) it is often better to consider $\mathrm{det}M_{\qm}\bracs{\lambda} = 0$ and attempt to derive conditions on $\lambda$ in terms of $\qm$ (which can then be explored numerically if so desired).
 
 \section{Chapter Summary} \label{sec:QGSummary}

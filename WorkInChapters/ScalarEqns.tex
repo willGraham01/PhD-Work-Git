@@ -7,7 +7,7 @@ At the conclusion of this chapter we will have highlighted the techniques that a
 
 \section{The Scalar Sobolev Spaces} \label{sec:ScalarSobSpaces}
 In this section we look to construct the function spaces that we shall be working with throughout the chapter, as well as discussing some of the consequences of this construction.
-What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with an adapted notation which will suit our needs when we later make a link to Quantum Graph problems. \newline
+What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with an adapted notation which coincides with that of chapter \ref{ch:QuantumGraphs}. \newline
 
 Let $N\in\naturals$, $D\subset\reals^N$ and $\nu$ be a (Borel) measure on $D$.
 Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\nu}$ be the closure of the set of pairs $\bracs{\phi,\grad\phi}$ in $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^N$, where $\phi\in\smooth{D}$.
@@ -21,10 +21,10 @@ Suppose that $\bracs{u,z}\in W$ and $\bracs{0,y}\in W$, then we also have $\brac
 As a result each $u\in\ltwo{D}{\nu}$ has multiple (distinct) functions $z\in\ltwo{D}{\nu}^n$ such that $\bracs{u,z}\in W$; and so as it stands it does not make sense to associate ``\textit{a} gradient" to $u$, because $u$ has multiple candidates for this role.
 In what follows we will look into this quirk, and deduce that we can make sense of the idea of ``\textit{the} gradient". \newline
 
-Let use denote the set of ``gradients of zero" by $\gradZero{D}{\nu}$, that is
+Let us denote the set of ``gradients of zero" by $\gradZero{D}{\nu}$, that is
 \begin{align*}
 	\gradZero{D}{\nu} &= \clbracs{z\in\ltwo{D}{\nu}^N \ \vert \ \bracs{0,z}\in W}, \\
-	&= \clbracs{z\in\ltwo{D}{\nu}^N \ \vert \ \exists\phi_n\in\smooth{D} \text{ such that } \phi_n\lconv{\ltwo{D}{\nu}}0, \grad\phi_n\lconv{\ltwo{D}{\nu}^N}z}, \labelthis\label{eq:GradZeroSequenceDefinition}
+	&= \clbracs{z\in\ltwo{D}{\nu}^N \ \vert \ \exists\phi_n\in\smooth{D} \text{ s.t. } \phi_n\lconv{\ltwo{D}{\nu}}0, \grad\phi_n\lconv{\ltwo{D}{\nu}^N}z}, \labelthis\label{eq:GradZeroSequenceDefinition}
 \end{align*}
 the construction of $W$ ensuring the two sets coincide.
 A fact that follows immediately from this definition and will be used later is that $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^N$.
@@ -156,21 +156,13 @@ The second result that we present is essentially the equivalent of the product r
 
 \section{An Example System} \label{sec:ScalarExample}
 To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example and some analysis of it.
-Let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$. \tstk{may not need this clarification once the quantum graphs chapter is written up}
-By this we associate each vertex $v_j\in V$ with a point $\vec{v}_j\in\reals^2$, and each edge $\bracs{v_j,v_k}\in E$ to the segment $I_{jk}=\sqbracs{\vec{v}_j,\vec{v}_k}$.
-In a slight abuse of notation we drop the distinction between the vertices $v_j$ of $\graph$ and their associated points $\vec{v}_j\in\ddom$, and simply use the notation $v_j$ for both objects.
-Similarly we adopt the notation $I_{jk}$ for both the edges of $\graph$ and their associated segments in $\ddom$.
-Because of the embedding we can also consider $\graph$ as a subset of $\ddom$ itself, and so can make sense of expressions like $\graph\cap[0,1]^2$ by interpreting $\graph$ as the intersection of its segments $I_{jk}$. 
-On $\ddom$ we define the measure $\ddmes$ as the measure which supports 1D Lebesgue measure on the edges of $\graph$, so for some $B\subset\ddom$ we have that 
-\begin{align*}
-	\ddmes\bracs{B} = \sum_{I_{ij}\in E}\lambda_{ij}\bracs{B \cap I_{ij}}
-\end{align*}
-where $\lambda_{ij}$ is the measure on $\reals^2$ that supports 1D Lebesgue measure down the edge $I_{ij}$. 
+For the remainder of this chapter, let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$, with $\ddmes$ the singular measure that supports the edges of $\graph$.
+The reader should review section \ref{sec:GraphSigularMeasuresDef} for a reminder of the definitions of these objects.
 We are interested in the (spectral) problem
 \begin{align} \label{eq:ScalarExampleStrongForm}
 	-\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u
 \end{align}
-for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues ($\omega^2$). \newline
+for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues $\omega^2>0$. \newline
 
 It is worthwhile highlighting how the setup just detailed relates to the wave propagation problems that we wish to consider in future, which is illustrated in figure \ref{fig:ScalarStrucDiagram}.
 \begin{figure}[b!]
@@ -222,13 +214,19 @@ which are clearly both smooth functions by composition.
 	\end{align*}
 \end{lemma}
 \begin{proof}
-	We can directly prove this convergence by estimating the integral from above:
+	We can directly prove this convergence by estimating the integral from above, WLOG assuming all the balls that are considered lie within $\ddom$:
 	\begin{align*}
 		\begin{split}
-			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} &= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
-			&= \integral{\graph\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ + &\integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
-			&\leq \integral{\graph \cap \bracs{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}}{}{\ddmes} + \integral{\graph\cap B_{1/n}\bracs{v_j}}{}{\ddmes} \\
-			&=\integral{\graph\cap B_{2/n}\bracs{v_j}}{}{\ddmes} = \ddmes\bracs{\graph\cap B_{2/n}\bracs{v_j}} \\
+			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} 
+			&= \integral{\ddom\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} 
+			+ \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ 
+			&\quad + \integral{B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
+			&= \integral{\ddom\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ 
+			&\quad + \integral{B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&\leq \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{}{\ddmes} 
+			+ \integral{B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+			&= \integral{B_{2/n}\bracs{v_j}}{}{\ddmes} 
+			= \ddmes\bracs{B_{2/n}\bracs{v_j}} \\
 			&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
 		\end{split}
 	\end{align*}
@@ -369,7 +367,7 @@ Furthermore any gradient orthogonal to $\gradZero{\ddom}{\ddmes}$ is directed pa
 This interpretation is further reinforced by the following analysis, which characterises $\gradZero{\ddom}{\ddmes}$ when the segment $I$ is not (necessarily) parallel to the $x_1$-axis. \newline
 
 \begin{prop}[Rotation of Edge Gradients] \label{prop:RotationOfEdgeGradients}
-	Consider the case when $\graph$ consists of a single segment $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
+	Consider the case when $\graph$ consists of a single edge (or segment) $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
 	Let $R$ be the orthogonal change of co-ordinates $x=Ry$ with $x=\bracs{x_1,x_2}$ the orthogonal co-ordinate system along the axes.
 	Then
 	\begin{align*}
@@ -434,7 +432,8 @@ or more formally as in the following corollary.
 \subsubsection{Graphs with Multiple Edges}
 So far we have only described gradients of zero on single segments, that is when we have a one-edge graph embedded in the $\bracs{x_1,x_2}$-plane.
 However we can build up an understanding of gradients of zero on more complex (finite) graphs using these results.
-As such in this section we work with an embedded graph $\graph = \bracs{V,E}$ with supporting singular measure $\ddmes$; and we look to show that gradients of zero on the whole graph admit an edge-wise form that coincides with proposition \ref{prop:RotationOfEdgeGradients}.
+As such in this section we pursue results for a general finite embedded graph $\graph = \bracs{V,E}$ (without loops) and it's singular measure $\ddmes$.
+We look to show that gradients of zero on the whole graph admit an edge-wise form that coincides with proposition \ref{prop:RotationOfEdgeGradients}.
 Namely we wish to prove that
 \begin{align*}
 	\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
@@ -539,16 +538,16 @@ The idea for the proof is to use the fact that we can extend a gradient of zero 
 \begin{proof}
 	Take $g\in B$, and define a family of functions $g_n$ by
 	\begin{align*}
-		g_n\bracs{x} &= \recip{2}\sum_{j\in V}\sum_{j\sim k}\eta_j^n\bracs{x}\eta_k^n\bracs{x}g\vert_{I_{jk}}\bracs{x}
+		g_n\bracs{x} &= \sum_{j\in V}\sum_{j\conLeft k}\eta_j^n\bracs{x}\eta_k^n\bracs{x}g\vert_{I_{jk}}\bracs{x},
 	\end{align*}
-	where the notation $j\sim k$ means that there is an edge $(j,k)\in E$, and the sum is taken over such edges. \tstk{may not be needed if explained in QG chapter.}
-	Recall that $\graph$ is assumed finite so there are no convergence issues with the double sum.
-	Then for each $j,k$ with $j\sim k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
+	refer to section \ref{sec:GraphSimDefinitons} for a reminder on the notation.
+	Recall that $\graph$ is assumed finite so there are no convergence issues with the sum.
+	Then for each $j,k$ with $j\conLeft k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
 	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_n\in\gradZero{\ddom}{\ddmes}$ too, $\forall n\in\naturals$.
 	By closure of $\gradZero{\ddom}{\ddmes}$ in $\ltwo{\ddom}{\ddmes}^2$; $g_n$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, and so it remains to show that $g_n\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
-	However with the result of lemma \ref{lem:etaConv}, we have that $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ and hence \tstk{sim notation!!}
+	However with the result of lemma \ref{lem:etaConv}, we have that $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ and hence
 	\begin{align*}
-		g_n \lconv{\ltwo{\ddom}{\ddmes}^2} &\recip{2}\sum_{j\in V}\sum_{j\sim k}g\vert_{I_{jk}} = g \toInfty{n},
+		g_n \lconv{\ltwo{\ddom}{\ddmes}^2} &\sum_{j\in V}\sum_{j\conLeft k}g\vert_{I_{jk}} = g \toInfty{n},
 	\end{align*}
 	so $g\in\gradZero{\ddom}{\ddmes}$.
 \end{proof}
@@ -571,11 +570,11 @@ Physically this will represent our photonic fibre's cross sectional structure \t
 This will require us to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}, as the Gelfand transform will break the problem in the infinite plane into a family of problems on the period cell, parametrised by 2 quasi-momenta.
 We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a Quantum Graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
 
-Embed a periodic graph into the $\bracs{x_1,x_2}$-plane, with period cell $\ddom = \sqbracs{0,1}^2$ and ``period graph" $\graph=(V,E)$.
-Let $\ddmes$ be the singular measure that supports the edges of $\graph$. \tstk{possible worth defining a `scenario G" or something to save writing out all the notational stuff for a graph each time!}
+Let $\graph^*$ be a periodic embedded graph in $\reals^2$ and $\ddmes^*$ it's singular measure.
+Suppose that the period graph $\graph$ of $\graph^*$ is contained in $\ddom:=\bracs{0,1}^2$ and has singular measure $\ddmes$.
 Consider the problem
 \begin{align} \label{eq:WholeSpaceScalarProblem}
-	-\grad_\ddmes \cdot \grad_\ddmes u &= \omega^2 u,
+	-\grad_{\ddmes^*} \cdot \grad_{\ddmes^*} u &= \omega^2 u,
 \end{align}
 posed in $\reals^2$. \tstk{either refer back to, or discuss here, the spectral problem and why we need the Gelfand transform to make sense of what is going on. Also it may be useful to talk about why we care so much about the spectral, rather than the resolvant, problem.}
 
@@ -583,7 +582,7 @@ Using the Gelfand transform, we introduce a quasi-momentum parameter $\qm\in[-\p
 \begin{align*}
 	\grad_\ddmes^\qm \cdot \grad_\ddmes^\qm u &= \omega^2 u,
 \end{align*}
-on the period cell $\ddom$ and hence the period graph $\graph$.
+on the period graph $\graph$ in $\ddom$.
 There is some work to be done regarding the operator $\grad_\ddmes^\qm$, but for smooth functions we can define the suggestive $\grad^\qm$ by
 \begin{align*}
 	\grad^\qm &:= \grad + i\qm, \\
@@ -678,8 +677,7 @@ That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMG
 
 \begin{cory}[Tangential $\qm$-Gradient on Graphs] \label{cory:TangentialQMGradientGraphs}
 	Let $\graph=(V,E)$ be a graph embedded into $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$, and let $x=\bracs{x_1,x_2}$ be the axes co-ordinate system.
-	For each $I_{jk}\in E$, denote the restriction of $u$ to $I_{jk}$ by $u_{jk} = u\vert_{I_{jk}}$.
-	Also equip each $I_{jk}$ with a local orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ parallel to $I_{jk}$, such that $x = R_{jk}y$ for some $R_{jk}\in\mathrm{SO}(2)$.
+	Equip each $I_{jk}\in E$ with a local orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ parallel to $I_{jk}$, such that $x = R_{jk}y$ for some $R_{jk}\in\mathrm{SO}(2)$.
 	If $u\in\gradSobQM{\ddom}{\ddmes}$, then
 	\begin{align*}
 		\grad_\ddmes^\qm u \big\vert_{I_{jk}} &= R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix}
@@ -900,16 +898,16 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 	By the product rule (proposition \ref{prop:ProductRuleGradients}) we have that $u_n^{(jk)}\in\gradSob{\ddom}{\lambda_{jk}}$, and so by the extension lemma (lemma \ref{lem:ExtensionLemmaAllGradients}) $u_n^{(jk)}\in\gradSob{\ddom}{\ddmes}$ too.
 	Now for each $n\in\naturals$ set
 	\begin{align*}
-		u_n := &\sum_{j\sim k}u_n^{(jk)}, \text{ so that } \\
-		\grad_\ddmes u_n = &\sum_{j\sim k} \grad_{\ddmes}u_n^{(jk)} \\
-		= &\sum_{j\sim k} u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u
+		u_n := &\sum_{v_j\in V}\sum_{j\conLeft k}u_n^{(jk)}, \text{ so that } \\
+		\grad_\ddmes u_n = &\sum_{v_j\in V}\sum_{j\conLeft k} \grad_{\ddmes}u_n^{(jk)} \\
+		= &\sum_{v_j\in V}\sum_{j\conLeft k} u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u
 	\end{align*}
 	and each pair $\bracs{u_n, \grad_\ddmes u_n}\in\gradSob{\ddom}{\ddmes}$ by linearity.
 	Then we can show that
 	\begin{align*}
 		\integral{\ddom}{\abs{ u_n - u }^2}{\ddmes}
-		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{ \sum_{l\sim m}\chi_{lm}^n u - u }^2}{\lambda_{jk}} \\
-		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{u}^2\abs{ \chi_{jk}^n - 1 }^2}{\lambda_{jk}} \\
+		&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\abs{ \sum_{v_l\in V}\sum_{l\conLeft m}\chi_{lm}^n u - u }^2}{\lambda_{jk}} \\
+		&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\abs{u}^2\abs{ \chi_{jk}^n - 1 }^2}{\lambda_{jk}} \\
 		&\rightarrow 0 \toInfty{n}
 	\end{align*}
 	by lemma \ref{lem:ChiConv}.
@@ -917,11 +915,11 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 	To this end we can make some progress estimating the $\ltwo{\ddom}{\ddmes}^2$-norm of these gradients,
 	\begin{align*}
 		\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2
-		&= \sum_{j\sim k}\integral{I_{jk}}{\abs{ u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u }^2}{\lambda_{jk}} \\
-		&\leq 2\sum_{j\sim k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2
-		+ 2\sum_{j\sim k}\integral{I_{jk}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}} \\
-		&= 2\sum_{j\sim k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2
-		+ 2\sum_{j\sim k}\integral{\clbracs{0\leq\chi_{jk}^n\leq 1}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}}.
+		&= \sum_{v_j\in V}\sum_{j\conLeft k} \integral{I_{jk}}{\abs{ u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u }^2}{\lambda_{jk}} \\
+		&\leq 2\sum_{v_j\in V}\sum_{j\conLeft k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 \\
+		&\quad + 2\sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}} \\
+		&= 2\sum_{v_j\in V}\sum_{j\conLeft k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 \\
+		&\quad + 2\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\clbracs{0\leq\chi_{jk}^n\leq 1}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}}.
 	\end{align*}
 	The norms in the first sum existing because of the assumption (i), and the domain being smaller in the second integral because 
 	\begin{align*}
@@ -960,7 +958,7 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 	Thus
 	\begin{align*}
 		\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2
-		&\leq 2\sum_{j\sim k}\bracs{ \norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 + \frac{c}{3}},
+		&\leq 2\sum_{v_j\in V}\sum_{j\conLeft k}\bracs{ \norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 + \frac{c}{3}},
 	\end{align*}
 	so $\grad_{\ddmes}u_n$ is a bounded sequence in $\ltwo{\ddom}{\ddmes}^2$.
 	By proposition \ref{prop:Lemma5-5}, we have that $\grad_\ddmes u$ exists and that
@@ -983,10 +981,10 @@ Maintaining the notation as set out in corollary \ref{cory:TangentialQMGradientG
 \begin{align*}
 	\omega^2 \integral{\ddom}{u\overline{\phi}}{\ddmes} 
 	&= \integral{\ddom}{\grad_\ddmes^\qm u \cdot \overline{\grad^\qm \phi}}{\ddmes} \quad \forall \phi\in\smooth{\ddom}, \text{ implying that} \\
-	\omega^2 \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{u_{jk}\overline{\phi}}{\ddmes} 
-	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot \overline{\grad^\qm \phi}}{\lambda_{jk}} \\
-	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{\begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot R_{jk}\overline{\grad^\qm \phi}}{\lambda_{jk}} \\
-	&= \sum_{v_j\in V}\sum_{j\sim k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}}}{\lambda_{jk}}. \labelthis\label{eq:EquationReductionSumExpression}
+	\omega^2 \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{u_{jk}\overline{\phi}}{\ddmes} 
+	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot \overline{\grad^\qm \phi}}{\lambda_{jk}} \\
+	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot R_{jk}\overline{\grad^\qm \phi}}{\lambda_{jk}} \\
+	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}}}{\lambda_{jk}}. \labelthis\label{eq:EquationReductionSumExpression}
 \end{align*}
 At this point we note that this expression holds for all $\phi\in\smooth{\ddom}$, so in particular must hold when the support of $\phi$ intersects the (interior of the) edge $I_{jk}$ only, and so we have equality of matching terms in both sums.
 That is
@@ -1006,31 +1004,31 @@ If we now make the assumption that $u'_{jk}$ has enough regularity to be differe
 \end{align}
 This means that under suitable regularity conditions we obtain a differential equation for $u_{jk}$ on each of the segments (or the interval that corresponds to them) $I_{jk}$.
 Of course, \eqref{eq:EdgeEquationStrongForm} does not provide a solution on it's own, as boundary conditions are required to close the system and remove any multiplicative constants that might arise.
-We have already found some of these boundary (or rather, ``vertex") conditions in section \ref{sec:VertexContinuity}, clearly we must impose the condition of continuity of $u$ at the vertices so we obtain the matching conditions
+We have already found some of these boundary (or rather, ``vertex") conditions in section \ref{sec:VertexContinuity}, which are the conditions of continuity of $u$ at the vertices, thus providing the matching conditions
 \begin{align} \label{eq:EdgeEquationsMatchingConditons}
-	u_{jk}\bracs{v_j} &= u_{jl}\bracs{v_j} \quad \forall v_j\in V, \text{ whenever } j\sim k \text{ and } j\sim l.
+	u \text{ is continuous at all } v_j\in V.
 \end{align}
-This still does not provide enough matching conditions for the whole system - to find the remaining conditions we return to \eqref{eq:EquationReductionSumExpression} and note that this equation also holds when the test functions $\phi$ have a support that contains $v_j$ in it's interior, for each $v_j\in V$.
+This still does not provide enough matching conditions for the whole system - to find the remaining conditions we return to \eqref{eq:EquationReductionSumExpression} and note that this equation also holds when the test functions $\phi$ have a support that contains one particular $v_j$ in it's interior (and not other vertices), for each $v_j\in V$.
 Hence we observe that
 \begin{align*}
-	0 &= \sum_{j\sim k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}_{jk}}{\lambda_{jk}} \\
-	&= \sum_{j\sim k}\int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \md t
+	0 &= \sum_{j\con k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}_{jk}}{\lambda_{jk}} \\
+	&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \md t
 \end{align*}
 holds for all $v_j\in V$.
 But under the regularity assumptions on $u_{jk}$, we can integrate this expression by parts, and we obtain
 \begin{align*}
-	0 &= \sum_{j\sim k} -\int_0^{\abs{I_{jk}}} \bracs{\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{jk} + \omega^2 u_{jk}}\overline{\phi} \md t 
-	+ \sum_{j\sim k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} \\
-	&= \sum_{j\sim k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j},
+	0 &= \sum_{j\con k} -\int_0^{\abs{I_{jk}}} \bracs{\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{jk} + \omega^2 u_{jk}}\overline{\phi} \md t 
+	+ \sum_{j\con k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} \\
+	&= \sum_{j\con k}\overline{\phi}\bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j},
 \end{align*}
 as we know that the integrand is identically zero by \eqref{eq:EdgeEquationStrongForm}, and the support of $\phi$ contains the vertex $v_j$ and no other vertices of $\graph$.
 Hence the value of $\overline{\phi}\bracs{v_j}$ cancels in the above expression, and we obtain the Kirchoff condition at each vertex $v_j\in V$:
 \begin{align} \label{eq:EdgeEquationsKirchoffCondition}
-	\sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} &= 0 \quad \forall v_j\in V.
+	\sum_{j\con k} \bracs{\diff{}{t} + i\qm_{jk}}u_{jk}\big\vert_{v_j} &= 0 \quad \forall v_j\in V.
 \end{align}
-So the problem \eqref{eq:ScalarPeriodCellSystem} is equivalent to solving the Quantum Graph problem defined by \eqref{eq:EdgeEquationStrongForm}, \eqref{eq:EdgeEquationsMatchingConditons}, and \eqref{eq:EdgeEquationsKirchoffCondition} under suitable regularity assumptions on the solution $u$.
+So the problem \eqref{eq:ScalarPeriodCellSystem} is equivalent to solving the quantum graph problem defined by \eqref{eq:EdgeEquationStrongForm}, \eqref{eq:EdgeEquationsMatchingConditons}, and \eqref{eq:EdgeEquationsKirchoffCondition} under suitable regularity assumptions on the solution $u$.
 This alternative problem can be approached using the methods detailed in chapter \ref{ch:QuantumGraphs}, which offer much more in the way of obtaining a solution and computing the eigenvalues $\omega^2$ for a general graph $\graph$.
-Also note how the geometric information about the embedded graph $\graph$ appears in the resulting Quantum Graph system - the quasi-momentum is rotated (as $\qm_{jk} = \bracs{R_{jk}\qm}_1$), the lengths of the edges contribute to the domain of the Quantum Graph problem, and the gradients that appear are all directed along the edges $I_{jk}$.
+Also note how the geometric information about the embedded graph $\graph$ appears in the resulting quantum graph system - the quasi-momentum is rotated (as $\qm_{jk} = \bracs{R_{jk}\qm}_1$), the lengths of the edges pass directly into the underlying quantum graph, and the gradients that appear are all directed along the edges $I_{jk}$.
 
 \section{Chapter Summary}
 The content of this chapter demonstrates how we can construct Sobolev spaces with respect to arbitrary (Borel) measures $\nu$; provide a coherent notion of a gradient, and pose variational problems on such spaces.

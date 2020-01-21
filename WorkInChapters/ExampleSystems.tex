@@ -29,7 +29,7 @@ Given that our objective is just determining the eigenvalues of \eqref{eq:CurlCu
 \begin{subequations} \label{eq:QGVertexConditions}
 	\begin{align}
 		u_3 &\text{ is continuous at each } v_j\in V, \\
-		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{3,jk}\bracs{v_j},
+		0 &= \sum_{j\sim k} \bracs{\diff{}{t} + i\qm_{jk}}u_{3,jk}\bracs{v_j}, \quad\forall v_j\in V
 	\end{align}
 \end{subequations}
 for the eigenpairs $\bracs{\omega^2, u_{3,jk}}$.
@@ -45,32 +45,34 @@ which will be useful for proving the result of proposition \ref{prop:M-MatrixEnt
 	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
 	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.
 	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\reals^{\abs{V}}$.
-	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by \tstk{sim symbol! also all this notation needs to be set out at some point because I don't want to write out what it all is in the proposition hypothesis like i currently have}
+	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by
 	\begin{align*}
 		\bracs{\nmap u}_j &= 
 		\begin{cases}
 			\!\begin{aligned}
 				0	
 			\end{aligned}			
-			& j \not\sim k, \\
+			& j \not\con k, \\
 			\!\begin{aligned}
-				-\sum_{\substack{j\sim k, \\ j \text{ left}}} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
-				\\ \quad - \sum_{\substack{j\sim k, \\ j \text{ right}}} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq}
+				-\sum_{j\conLeft} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
+				\\ \quad - \sum_{j\conRight} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq}
 			\end{aligned}
-			& j\neq k, \ j\sim k, \\
+			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				\sum_{\substack{j\sim l, \\ j \text{ left}}} \effFreq\cot\bracs{l_{jl}\effFreq}
-				+ \sum_{\substack{j\sim l, \\ j \text{ right}}} \effFreq\cot\bracs{l_{lj}\effFreq}
-				\\ \quad - 2\effFreq\sum_{j\sim j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq}
+				\sum_{j\conLeft l} \effFreq\cot\bracs{l_{jl}\effFreq}
+				+ \sum_{j\conRight l} \effFreq\cot\bracs{l_{lj}\effFreq}
+				\\ \quad - 2\effFreq\sum_{j\conLeft j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq}
 			\end{aligned}
 			& j=k.
 		\end{cases}
 	\end{align*}
+	Note the choice of $j\conLeft j$ in the contributions from loops is simply a convention, $j\conRight j$ is equivalent here.
 \end{prop}
 \begin{proof}
-	The proof is an explicit computation. \tstk{credit for proof to EKK paper, we just have QM here too}
+	The proof is an explicit computation, and follows the same idea as in \tstk{EKK paper result, we just have QM here too} with adjustments for the fact that there are $\wavenumber$ and $\qm$ terms floating around.
 	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate the constants $C^{(jk)}_{\pm}$ in \eqref{eq:CurlEdgeEqnGenSol}.
-	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off the value of $\bracs{\nmap u}_j$ for each $j$.
+	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off their values at any relevant vertices.
+	This then provides us with the value of each term in the sum in $\bracs{\nmap u}_j$, for each $j$.
 \end{proof}
 
 \section{The TFR setup but with curls}
