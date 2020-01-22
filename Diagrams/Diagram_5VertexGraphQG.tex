@@ -1,0 +1,33 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{arrows} 
+
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',auto,node distance=3cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+	%nodes and edges
+	\node[main node] (1) {$v_1=v_5$};% {$v_1$}; %
+	\node[main node] (2) [right of=1] {$v_2$};
+	\node[main node] (3) [right of=2] {$v_3 = v_4$}; %{$v_3$};%
+	
+	\path[every node/.style={font=\sffamily\small}]
+		(1) edge[] (2)
+		(2) edge[bend right] (3)
+		(2) edge[] (3)
+		(3) edge[bend right] (1);
+	
+	%edge labels
+	\node[anchor=south] at (3,1.1) {$I_{35} = I_{31}$};	
+	\node[anchor=north] at (1.5,0) {$I_{12}$};
+	\node[anchor=south] at (4.5,0) {$I_{23}$};
+	\node[anchor=north] at (4.5,-0.6) {$I_{24}$};	
+	
+	
+\end{tikzpicture}
+
+\end{document}

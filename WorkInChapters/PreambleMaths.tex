@@ -21,6 +21,16 @@
 
 \allowdisplaybreaks %allows equations in the same align environment to split over multiple pages.
 
+%this adds extra functionality to pmatrix, vmatrix, bmatrix etc by allowing you to pass an optional argument in [FACTOR] to multiply the default spacing between elements by FACTOR
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}
+  }
+\makeatother
+
 %begin the macros via newcommand. Try to group them up reasonably!
 
 %notation and variable use throughout the file

@@ -19,9 +19,11 @@ If so we won't need to revisit the Kuchment nor Olaf \& Post references again, a
 Definition \ref{def:Graph} is not as general as others that can be found in graph theory, however we work with this definition because it is sufficient for our later purposes so the loss of generality and certain features is not an issue.
 We highlight some features this definition imposes on our graphs that may be seen as ``non-standard" or ``restrictive" below.
 \begin{itemize}
-	\item Definition \ref{def:Graph} requires that there is at most a single edge $I_{jk}$ connecting any pair of vertices (and similarly at most one loop $I_{jj}$).
-	We will shortly define the concept of a directed graph where we allow two edges between any pair of vertices, having opposite ``directions".
-	We do not go any further than this, even though it is possible by introducing certain equivalence relations on the sets $V$ and $E$, simply because we will not be interested in any systems that require this functionality.
+	\item Definition \ref{def:Graph} uses a notation that suggests that there is at most a single edge $I_{jk}$ connecting any pair of vertices (and similarly at most one loop $I_{jj}$), and in the definitions that follow this will come across as implying there can only be one edge with the same direction between two vertices.
+	Contrary to this implication, we do not rule out the possibility of there being more than one (directed) edge between two vertices, even though it is suggested by the notation $I_{jk}$.
+	To account for this one can introduce an additional superscript, along the lines of $I_{jk}^{l}$, for this possibility and then define certain equivalence relations on the sets $V$ and $E$ to make the notation we introduce later consistent.
+	However we elect to save on the notational (and mathematical) load by not including this superscript simply because will not be interested in many systems that require this functionality, and where it is required the meaning of the notation we later introduce is implicit either way.
+	Allowing for this possibility also doesn't change any of the results presented here, and if we do need to consider a graph with multiple edges between two vertices we will be explicit in how we are handling the specific situation.
 	\item The labels $v_j$ are slightly unnecessary, as one can just work directly with the index set $\Lambda$.
 	Because we will be wanting labels for our vertices and edges when we come to consider quantum and embedded graphs, we include them in this definition for consistency even though they are not strictly necessary.
 \end{itemize}
@@ -137,6 +139,8 @@ Again we briefly discuss some potential concerns and conventions.
 	\item Note that $\graph_{\mathrm{P}}$ (and hence it's associated quantum graph) can have loops even if $\graph$ did not, or rather did not appear to.
 	Because of this we still provide results concerning quantum graphs with loops in chapter \ref{ch:ExampleSystems} even though our singular structures do not have loops themselves.
 \end{itemize}
+Finally, an assumption that we shall make from this point onwards in this work is that the edges or curves of an embedded graph are always the straight line segments that join the two vertices at either end.
+Much like excluding the possibility of loops, allowing for curved edges is not a major issue (simply introducing some small complications in the expressions one gets when reducing variational problems to quantum graph ones) but we will not be interested in systems that exhibit curved edges, and so opt for the simplicity that making this assumption comes with.
 
 \subsection{Connection and Summation Conventions} \label{sec:GraphSimDefinitions}
 We now outline some notation that we shall use in the rest of the report.

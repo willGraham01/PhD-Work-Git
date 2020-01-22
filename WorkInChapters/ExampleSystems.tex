@@ -1,20 +1,20 @@
 \chapter{Example Systems} \label{ch:ExampleSystems}
-this chapter is all about the actual examples that we've worked through and got an answer for.
-It will tie together the VectorEqns and QG chapters and display how we are using the theory to solve problems that might represent physical wave-guides.
+In this chapter we present how the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns} comes together, and how we can determine the spectrum of variational problems on singular structures.
+We also aim to illustrate some of the difficulties in this process, both numerically and analytically, and provide a brief discussion of these issues as they arise.
+Some potential avenues of exploration for bypassing these issues (particularly on the numerical side) are suggested, and will be revisited in chapter \ref{ch:Conclusion}. \tstk{make this chapter!}
+Throughout, it may be useful to the reader to recall the physical setup that our graphs in the plane represent (section \tstk{MAKE IT!}).
 
-\section{Preliminaries}
-We should recall the necessary things, such as the definition of the M-matrix, how QG problems work, that now our edges need to be directed as do our derivatives (MB I've used that derivatives INTO the vertex are positive but the opposite convention amounts to multiplying the M-matrix by -1), the vector QG system we are solving, how to build the M-matrix etc.
-Also in here should be the general result for the M-matrix column contributions - similar in ilk to EKK paper which should be referenced (again here, if necessary). \newline
-
-Our focus in the examples of this chapter will be to determine the eigenvalues $\omega^2$ of \eqref{eq:CurlCurlEquationDivFree},
+\section{Preliminaries} \label{sec:ExamplePrelims}
+Our focus in the examples of this chapter will be to determine the eigenvalues $\omega^2$ of the problem \eqref{eq:CurlCurlEquationDivFree}, which we recall below
 \begin{align*}
 	-\ktcurl{\ddmes}\bracs{\ktcurl{\ddmes}u} &= \omega^2 u, \quad u\in\ktcurlSobDivFree{\ddom}{\ddmes}.
 \end{align*}
-Note that in the process we will also determine the eigenfunctions $u$, however these are not the focus of our analysis.
-Using the work of chapter \ref{sec:CurlReductionToQG}; we know that we can determine the eigenvalues by solving the quantum graph problem given in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
-To save on notational clutter we drop the overhead tilde notation for $\widetilde{u}_{2,jk},\widetilde{u}_{3,jk}$ that was used in section \ref{sec:CurlReductionToQG} and also define some convenient constants
+In the process we employ we will also determine the eigenfunctions $u$, however these are not the focus of our analysis.
+We shall change the underlying (period) graph $\graph$ between sections, but will make clear any changes prior to beginning any examples.
+Using the work of section \ref{sec:CurlReductionToQG}; we know that we can determine the eigenvalues by solving the quantum graph problem given in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
+To save on notational clutter we drop the overhead tilde notation for $\widetilde{u}_{2,jk},\widetilde{u}_{3,jk}$ that was used in section \ref{sec:CurlReductionToQG} and also define some convenient constants, for a given $\qm$ and $\wavenumber$,
 \begin{align*}
-	\qm_{jk} &= \bracs{R_{jk}\qm}_2, \quad \forall I_{jk}\in E,\\
+	\qm_{jk} &= \bracs{R_{jk}\qm}_2, \quad\forall I_{jk}\in E,\\
 	\effFreq &= \sqrt{\omega^2 - \wavenumber^2}.
 \end{align*}
 We also make use of some of the properties of \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
@@ -22,7 +22,7 @@ In particular any (general) solution pair $u_{2,jk},u_{3,jk}$ that solves any tw
 As such we can substitute \eqref{eq:CurlEdgeEquations3} into \eqref{eq:CurlEdgeEquations2} to obtain a single equation in $u_{3,jk}$.
 The (general) solution $u_{3,jk}$ that would be obtained from this equation would then allow us to recover $u_{2,jk}$ and satisfy the remaining \eqref{eq:CurlEdgeEquations1}.
 Similarly we can also note that a solution pair to \eqref{eq:CurlEdgeEquations} that satisfies \eqref{eq:CurlVertexConditions1}, then satisfies \eqref{eq:CurlVertexConditionsSum2} if and only if it satisfies \eqref{eq:CurlVertexConditionsDeriv}.
-Given that our objective is just determining the eigenvalues of \eqref{eq:CurlCurlEquationDivFree}, it is thus sufficient for us to solve the system
+Given that our objective is just determining the eigenvalues of \eqref{eq:CurlCurlEquationDivFree}, it is thus sufficient for us to solve the (quantum graph) problem
 \begin{align} \label{eq:QGEquation}
 	0 &= -\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{3,jk} + \bracs{\wavenumber^2 - \omega^2}u_{3,jk}.
 \end{align}
@@ -38,9 +38,9 @@ In addition, we compute the general form for $u_{3,jk}$ as
 \begin{align} \label{eq:CurlEdgeEqnGenSol}
 	u_{3,jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\effFreq t} + C_{-}^{(jk)}e^{i\effFreq t} },
 \end{align}
-which will be useful for proving the result of proposition \ref{prop:M-MatrixEntries}. \newline
-
-\tstk{that's all you can write for this section without the quantum graphs section actually having some substance to motivate these objects and this method of solution, guess it's time to start on that!}
+which will be useful for proving the result of proposition \ref{prop:M-MatrixEntries}. 
+As discussed in chapter \ref{ch:QuantumGraphs}, and as the eigenfunctions $u$ are not our primary interest, we are interested in obtaining the $M$-matrix for the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} (see section \ref{sec:M-MatrixTheory} for definition and details).
+In fact, we can actually compute the $M$-matrix for a given value of $\effFreq$ and $\qm$ simply by examining \eqref{eq:QGEquation}, resulting in the following proposition.
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
 	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.
@@ -50,23 +50,26 @@ which will be useful for proving the result of proposition \ref{prop:M-MatrixEnt
 		\bracs{\nmap u}_j &= 
 		\begin{cases}
 			\!\begin{aligned}
-				0	
+				&0,
 			\end{aligned}			
 			& j \not\con k, \\
 			\!\begin{aligned}
-				-\sum_{j\conLeft k} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
-				\\ \quad - \sum_{j\conRight k} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq}
+				&-\sum_{j\conLeft k} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
+				\\ &\quad - \sum_{j\conRight k} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq},
 			\end{aligned}
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				\sum_{j\conLeft l} \effFreq\cot\bracs{l_{jl}\effFreq}
-				+ \sum_{j\conRight l} \effFreq\cot\bracs{l_{lj}\effFreq}
-				\\ \quad - 2\effFreq\sum_{j\conLeft j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq}
+				&\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq}
+				\\ &\quad - 2\effFreq\sum_{j\conLeft j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq},
 			\end{aligned}
 			& j=k.
 		\end{cases}
 	\end{align*}
 	Note the choice of $j\conLeft j$ in the contributions from loops is simply a convention, $j\conRight j$ is equivalent here.
+	Also recall the convention for summing over $j\con k$:
+	\begin{align*}
+		\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq} &= \sum_{j\conLeft l} \effFreq\cot\bracs{l_{jl}\effFreq}	+ \sum_{j\conRight l} \effFreq\cot\bracs{l_{lj}\effFreq}
+	\end{align*}
 \end{prop}
 \begin{proof}
 	The proof is an explicit computation, and follows the same idea as in \tstk{EKK paper result, we just have QM here too} with adjustments for the fact that there are $\wavenumber$ and $\qm$ terms floating around.
@@ -74,37 +77,193 @@ which will be useful for proving the result of proposition \ref{prop:M-MatrixEnt
 	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off their values at any relevant vertices.
 	This then provides us with the value of each term in the sum in $\bracs{\nmap u}_j$, for each $j$.
 \end{proof}
+Note that in proving this proposition one also obtains an analytic form for the edge solutions $u_{3,jk}$, and that the $M$-matrix can be thought of as a function of $\effFreq$ parametrised by $\qm$, $M_{\qm}\bracs{\effFreq}$.
 
-\section{The TFR setup but with curls}
+\subsection{Approaches to Finding Spectra via the M-Matrix} \label{sec:NumericalMethodsDiscussion}
+Section \ref{sec:M-MatrixTheory} briefly touched on two approaches to using the $M$-matrix as a tool for determining the spectrum of a quantum graphs problem, which we now discuss in light of proposition \ref{prop:M-MatrixEntries}. \newline
+
+It is possible to determine the spectrum of a quantum graph problem numerically, by solving a generalised (matrix) eigenvalue problem involving the $M$-matrix.
+Of course such a scheme requires the ability to evaluate the $M$-matrix as a function of $\effFreq$ (and in our case, parametrised by $\qm$ too).
+It is entirely possible to do this using \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} as the starting point - one simply goes through the computation in the proof of proposition \ref{prop:M-MatrixEntries} numerically, each time the $M$-matrix needs to be evaluated at a new value of $\effFreq$ and $\qm$.
+This requires solving the ODE \eqref{eq:QGEquation} $\abs{E}\times\abs{V}$ times per evaluation of the $M$-matrix\footnote{Once for each column of the $M$-matrix, giving the factor $\abs{V}$. 
+Then given a column, each edge has to be solved on with the appropriate boundary conditions, giving the factor $\abs{E}$. 
+Of course, there are prudent ways to reduce this cost by ignoring edges with 0 Dirichlet data at each end, for example.}
+then computing the values of the components of $\nmap u$ using the function values found by the numerical solver, and hence constructing the $M$-matrix.
+Proposition \ref{prop:M-MatrixEntries} essentially bypasses the problems associated with solving \eqref{eq:QGEquation} many times, allowing us to skip directly to building the $M$-matrix for given $\omega^2$ and $\kt$.
+With careful programming one can even make building the $M$-matrix a function call that is passed $\bracs{\omega^2, \wavenumber, \qm}$ and only relies on knowing the $\qm_{jk}$; and the lengths and adjacency matrix of $\graph$ to return the $M$-matrix. \tstk{hermitian so only need half too!}
+Whilst this is a very helpful consequence of proposition \ref{prop:M-MatrixEntries}, there are other things that a numerical approach must consider.
+\begin{itemize}
+	\item One of the foremost problems is that we are actually looking to solve each member of a family of generalised eigenvalue problems (parametrised by $\qm$) to determine the spectrum of our original variational problem.
+	Although there is always the naive approach of discretising the range of $\qm$ and solving $M_{\qm}\bracs{\effFreq}v=0$ for each discrete value, this raises further questions on how fine our discretisation needs to ensure we do not miss any features of the spectrum in our results, not to mention the increase in computational cost that comes with solving many generalised eigenvalue problems.
+	\item Although the $M$-matrix has several useful analytic properties (section \ref{sec:M-MatrixTheory}) these do not translate into nice properties of the solutions to the generalised eigenvalue problem.
+	In particular, for a given $\qm$ the $M$-matrix will in general have a (countably) infinite number of eigenvalues due to the fact that it is periodic in $\effFreq$ (this period is computable as the lowest common multiple of all the $l_{jk}$, or if there are loops in $\graph$ of all the $l_{jk}$ and $\qm_{jj}l_{jj}$).
+	If we are to solve numerically we need a method for dealing with this caveat, for example working out the period of the $M$-matrix and only search for eigenvalues in that range.
+	But even then this requires our numerical scheme to be able to find all the distinct eigenvalues in over one period of the $M$-matrix, and in general there is no easy check that we can perform to validate that the output of our numerical scheme has done this.
+	\item Utilising symmetries in the quantum graph $\graph$ may help reduce the complexity of the process of building the $M$-matrix.
+	In particular if both $I_{jk}$ and $I_{kj}$ are edges with the same length and $\qm_{jk}=\qm_{kj}$, the $j\neq k, j\con k$ case of proposition \ref{prop:M-MatrixEntries} reduces to $-2\sum_{j\conLeft k}\effFreq\cos\bracs{\qm_{jk}l_{jk}}\csc\bracs{l_{jk}\effFreq}$ (equivalently we could use $j\conRight k$).
+	In this case the numerical scheme no longer has to deal with complex floats, and there are slightly fewer terms in $M$ to construct.
+	If there is also a symmetry in $\qm$, then it is sufficient to fix the second component of $\qm$ as 0 and effectively ``halve" the size of the family of problems that need to be solved.
+\end{itemize}
+So whilst it is possible to conceive of a numerical method that begins from the equations or $M$-matrix and computes the spectrum of the original variational problem, in practice there are a number of complications that must be considered first.
+The paragraph below briefly discusses how in some cases proceeding analytically can help, but this is usually limited to small or somewhat specialised graphs. \newline
+
+Progress can be made analytically on finding the spectrum if one is willing to plough through the long and complex expressions that can come out of proposition \ref{prop:M-MatrixEntries}.
+To this end, the starting point is often considering the equation $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$.
+For graphs with a lot of symmetries and a small number of vertices this approach becomes much more appealing as the size of $M$ is reduced, as is the complexity of it's components.
+And even if exact solution is impossible, one can often arrive at a simpler problem that can be tackled numerically, without as many problems as the generalised eigenvalue problem faces.
+This is the approach that we take in our examples, using proposition \ref{prop:M-MatrixEntries} to write out the $M$-matrix, then manipulating $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to obtain an expression of the form $0 = \mathcal{F}\bracs{\effFreq, \qm}$, which we can then treat as the situation requires.
+
+\section{Cross in the Periodic Plane} \label{sec:ExampleCrossInPlane}
 As the title says, but make it more formal and fancy and not in reference to the TFR. 
 Spectrum is whole real line, because no gaps open...
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.75]{Diagram_TFRGraph.pdf}
-	\caption{\label{fig:Diagram_TFRGraph}}
-\end{figure}
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.75]{Diagram_TFRQuantumGraph.pdf}
-	\caption{\label{fig:Diagram_TFRQuantumGraph}}
-\end{figure}
 
-\section{General period cell with lengths system}
+We begin with an example primarily for illustrative purposes, as we shall see that the spectrum we obtain doesn't possess any interesting features.
+Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
+\begin{align*}
+	v_1^{\bracs{n,m}} = \bracs{\recip{2},0} + \bracs{n,m}, 
+	&\quad v_2^{\bracs{n,m}} = \bracs{0,\recip{2}} + \bracs{n,m}, \\
+	v_3^{\bracs{n,m}} = \bracs{\recip{2},\recip{2}} + \bracs{n,m}. & \\
+	I_{13}^{\bracs{n,m}} = \sqbracs{v_1^{\bracs{n,m}}, v_3^{\bracs{n,m}}},
+	&\quad I_{23}^{\bracs{n,m}} = \sqbracs{v_2^{\bracs{n,m}}, v_3^{\bracs{n,m}}}, \\
+	I_{31}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_1^{\bracs{n+1,m}}},
+	&\quad I_{32}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_2^{\bracs{n,m+1}}}.
+\end{align*}
+Then with 
+\begin{align*}
+	V^* &= \clbracs{v_j^{\bracs{n,m}} \ \vert \ j\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2}, \\
+	E^* &= \clbracs{I_{jk}^{\bracs{n,m}} \ \vert \ j,k\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2},
+\end{align*}
+$\graph^* = \bracs{V^*,E^*}$ is an embedded, periodic graph in $\reals^2$.
+It's period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \ref{fig:Diagram_TFRGraph}; consisting of 5 (although due to the association at the edges, effectively 3) vertices and 4 edges.
+\begin{figure}[b!]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_TFRGraph.pdf}
+		\caption{\label{fig:Diagram_TFRGraph} The period graph that we are considering. All edges have length $\recip{2}$, and the quasi-momentum on horizontal edges is $-\qm_1$ and on vertical edges is $-\qm_2$.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_TFRQuantumGraph.pdf}
+		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that our problem corresponds to. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
+	\end{subfigure}
+	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period graph that we are considering, corresponding to a waveguide with a cross-like pattern in the cross-section. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions}, retaining the lengths $l_{jk}$ and $\qm_{jk}$ from the edges of the original period cell.}
+\end{figure}
+It is possible of course to draw the period graph with 3 vertices wholly within $\sqbracs{0,1}^2$ and 4 hanging edges.
+After associating the edges of the period graph, we obtain it's associated quantum graph $\graph=\bracs{V,E}$ with $V=\clbracs{v_1,v_2,v_3}$, $E=\clbracs{I_{13},I_{23},I_{31},I_{32}}$ with lengths
+\begin{align*}
+	l_{13} = l_{23} = l_{31} = l_{32} = \recip{2}.
+\end{align*}
+Given that all the edges of $\graph^*$ are parallel to the co-ordinate axes, it is also fairly easy to compute the values of $\qm_{jk}$ for each $I_{jk}\in E$ and a given $\qm=\bracs{\qm_1,\qm_2}\in[-\pi,\pi)^2$;
+\begin{align*}
+	\qm_{13} = \qm_{31} = -\qm_2, &\quad \qm_{23} = \qm_{32} = -\qm_1.
+\end{align*}
+
+We now look to determine the spectrum of the problem \eqref{eq:CurlCurlEquationDivFree} on $\graph\subset\sqbracs{0,1}^2$ with respect to the singular measure $\ddmes$ on $\graph$.
+We know that this is equivalent to determining the eigenvalues $\omega^2$ of the system \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions}, and using proposition \ref{prop:M-MatrixEntries} we can write down the $M$-matrix as
+\begin{align*}
+	M_{\qm}\bracs{\effFreq} &=
+	\begin{pmatrix}
+		2\effFreq\cot\bracs{\frac{\effFreq}{2}} & 0 & -2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_2}{2}} \\
+		0 & 2\effFreq\cot\bracs{\frac{\effFreq}{2}} & -2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_1}{2}} \\
+		-2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_2}{2}} & -2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_1}{2}} & 4\effFreq\cot\bracs{\frac{\effFreq}{2}}
+	\end{pmatrix}.
+\end{align*}
+At this point we have the option of solving for the spectrum numerically or analytically, however because we have such a small and symmetric problem we can actually determine the spectrum of the problem analytically by solving for when the determinant of $M_{\qm}$ is 0.
+After some calculation and cancellation we find that
+\begin{align*} 
+	\det\bracs{M_{\qm}\bracs{\effFreq}} = 0& \\
+	&\Leftrightarrow\cos\effFreq = \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}}. \labelthis\label{eq:ExampleCrossInPlaneSolution}
+\end{align*}
+Note that \eqref{eq:ExampleCrossInPlaneSolution} has the symmetries in $\qm_1$ and $\qm_2$ that we expect from the geometry of $\graph^*$.
+Given this symmetry and that $\qm\in[-\pi,\pi)^2$, the right hand side of \eqref{eq:ExampleCrossInPlaneSolution} attains every value in the interval $\sqbracs{0,1}$ and thus, for every $\effFreq>0$ there exists a $\qm\in[-\pi,\pi)^2$ such that \eqref{eq:ExampleCrossInPlaneSolution} holds.
+And so we must conclude that the spectrum of the quantum graph problem on $\graph$, and hence the spectrum of the variational problem on the embedded graph $\graph^*$, is the region $\omega^2\in\bracs{\wavenumber^2, \infty}$. \newline
+
+Whilst this result is not particularly exciting nor useful for wave-guidance in a photonic fibre context; this simple example highlights the reasons why we have adopted this approach.
+Foremost is the ability to use the $M$-matrix to obtain a result like \eqref{eq:ExampleCrossInPlaneSolution}, where we can just read off the spectrum of the quantum graph problem and hence original variational problem.
+Without the use of the $M$-matrix; determining the eigenvalues would have to be done by imposing the boundary conditions \eqref{eq:QGVertexConditions} on the general solutions \eqref{eq:CurlEdgeEqnGenSol}, which would lead to a complex system of simultaneous equations in the constants $C_{\pm}^{jk}$ that would need to be solved (then repeated for each $\qm$ if done numerically).
+Another benefit that is made apparent is that simplifying the condition $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$, even if it yields an equation without a closed form, normally provides something that is easier to solve numerically.
+Enough progress analytically can replace the need to solve a generalised eigenvalue problem with a (comparatively simple) root-finding problem, or (as is the case here) provide the entire spectrum immediately.
+In sections \ref{sec:ExampleGeneralLengths} and \ref{sec:ExampleThickVertex} we will explore systems where we have to take this ``hybrid" mixture of working from $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$ to obtain an equation that we can then explore numerically.
+
+\tstk{what about the chevron example?}
+
+\section{General period cell with lengths system} \label{sec:ExampleGeneralLengths}
 the one with the lengths and the annoying result for the determinant.
 Play with this to see if any band-gaps emerge :L
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.75]{Diagram_5VertexGraph.pdf}
-	\caption{\label{fig:Diagram_5VertexGraph}}
-\end{figure}
+NB: Erm... two edges going same way into one vertex in the equivalent QG... gulp!
 
-\section{Thick Vertex Case}
+We now turn to a more general example, and assume the period graph $\graph=\bracs{V,E}\subset\sqbracs{0,1}^2$ as shown in figure \ref{fig:Diagram_5VertexGraph}.
+\begin{figure}[b!]
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[height=5cm]{Diagram_5VertexGraph.pdf}
+		\caption{\label{fig:Diagram_5VertexGraph} The period graph that we are considering. The need for periodicity forces the placement of $v_4$ and $v_5$ on the opposite side of the unit cell to $v_2$ and $v_1$ respectively.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.75]{Diagram_5VertexGraphQG.pdf}
+		\caption{\label{fig:Diagram_5VertexGraphQG} The associated quantum graph for this problem. Due to the association of $v_3$ and $v_4$, we have two edges directed out of $v_2$ into the single vertex $v_3=v_4$, however this does not introduce any theoretical complexities.}
+	\end{subfigure}
+	\caption{\label{fig:GeneralLengthsDiagrams} The period graph and it's associated quantum graph for the problem in section \ref{sec:ExampleGeneralLengths}. }
+\end{figure}
+For formality, we set $l_1,l_2,l_3,l_4>0$ and place vertices
+\begin{align*}
+	v_1 = \bracs{0,l_1}, &\quad v_2 = \bracs{l_2,l_1+l_4}, \quad v_3 = \bracs{l_2+l_3, 0}, \\
+	v_4 = \bracs{l_2+l_3, 1}, &\quad v_5 = \bracs{1, l_1}.
+\end{align*}
+Then we place edges $I_{12}$, $I_{23}$, $I_{24}$, $I_{35}$ corresponding to the segments joining the relevant vertices, and can compute the lengths
+\begin{align*}
+	l_{12} &= \sqrt{l_2^2 + l_4^2}, &\quad l_{23} = \sqrt{l_3^2+\bracs{l_1+l_4}^2}, \\
+	l_{24} &= \sqrt{l_3^2 + \bracs{1-l_1-l_4}^2}, &\quad l_{35} = \sqrt{l_1^2+\bracs{1-l_2-l_3}^2}.
+\end{align*}
+We also have to compute the rotation matrices $R_{jk}$ for the edges and hence (given $\qm\in[-\pi,\pi)^2$), the parameters $\qm_{jk}$ \tstk{write these down!}.
+Note that due to the association at the edges of $\graph$, $v_1$ and $v_5$ are associated, as are $v_3$ and $v_4$, so we again have an associated 3-vertex quantum graph, which is shown in figure \ref{fig:Diagram_5VertexGraphQG}.
+Furthermore we have arrived at a quantum graph that possesses two edges directed out of $v_2$ into the same vertex $v_3=v_4$, and it is for this reason that we keep the distinct labels $I_{23}$ and $I_{24}$ for these edges and only relabel $I_{35}$ as $I_{31}$.
+In terms of our existing notation, the only proviso we need to make is that (formally)
+\begin{align*}
+	\sum_{2\conLeft 3} = \sum_{I_{23}} + \sum_{I_{24}}.
+\end{align*}
+Seeking to determine the spectrum of \eqref{eq:CurlCurlEquationDivFree} via \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions}, we use proposition \ref{prop:M-MatrixEntries} to construct the ($3\times3$) $M$-matrix,
+\begin{align*}
+	M_{\qm}\bracs{\effFreq} &= \effFreq
+	\begin{pmatrix}[3]
+		\cot\bracs{l_{12}\effFreq} & -
+		e^{-i\qm_{12}l_{12}}\csc\bracs{l_{12}\effFreq} &
+		-e^{-i\qm_{31}l_{31}}\csc\bracs{l_{31}\effFreq} \\
+		-e^{i\qm_{12}l_{12}}\csc\bracs{l_{12}\effFreq} &
+		\!\begin{aligned} \cot\bracs{l_{12}\effFreq} & + \cot\bracs{l_{23}\effFreq} \\ & \ \ + \cot\bracs{l_{24}\effFreq} \end{aligned} &
+		\!\begin{aligned} & -e^{-i\qm_{23}l_{23}}\csc\bracs{l_{23}\effFreq} \\ & \ \ - e^{-i\qm_{24}l_{24}}\csc\bracs{l_{24}\effFreq} \end{aligned} \\
+		-e^{i\qm_{31}l_{31}}\csc\bracs{l_{31}\effFreq} &
+		\!\begin{aligned} & -e^{i\qm_{23}l_{23}}\csc\bracs{l_{23}\effFreq} \\ & \ \ - e^{i\qm_{24}l_{24}}\csc\bracs{l_{24}\effFreq} \end{aligned} &
+		\!\begin{aligned} \cot\bracs{l_{23}\effFreq} & + \cot\bracs{l_{24}\effFreq} \\ & \ \ + \cot\bracs{l_{31}\effFreq}  \end{aligned}
+	\end{pmatrix}.
+\end{align*}
+Whilst not the nicest to look at, $M_{\qm}$ is still fairly simple to evaluate on a computer.
+For those who would persist with an analytical approach, we can proceed further from $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to deduce that
+\begin{align*}
+	0 &= -\bracs{2 + \cot_{12} + \cot_{23} + \cot_{24} + \cot_{31}} \\
+	&\quad +2\csc_{12}\csc_{23}\csc_{31} \bracs{ \cos_{12}\cos_{23}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{23}+\beta_{31}} } \\
+	&\quad +2\csc_{12}\csc_{24}\csc_{31} \bracs{ \cos_{12}\cos_{24}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{24}+\beta_{31}} } \\
+	&\quad +2\csc_{23}\csc_{24} \bracs{ \cos_{23}\cos_{24} - \cos\bracs{\beta_{23}-\beta_{24}} },
+\end{align*}
+under the conventions
+\begin{align*}
+	\cot_{jk} = \cot\bracs{l_{jk}\effFreq}, &\quad \csc_{jk} = \csc\bracs{l_{jk}\effFreq}, \\
+	\cos_{jk} = \cos\bracs{l_{jk}\effFreq}, &\quad \beta_{jk} = \qm_{jk}l_{jk}.
+\end{align*}
+Needless to say, having broken most symmetries of $\graph$ the equation we are rewarded with isn't particularly fun to work with\footnote{Understatement intended.}.
+\tstk{time to play with this system and plot the spectrum Will... :(}
+
+\section{Thick Vertex Case} \label{sec:ExampleThickVertex}
 Will need to say ``we can use thick vertices and all remains the same because.." but otherwise then we can give some analysis.
-Can include the pretty bandgap plot that I made here :)
+Can include the pretty bandgap plot that I made here :) - might want to remove the colourbar though! Might also want the plot that comes out of the 1D (fixed $\kappa$) case.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.5]{TFR_Curls_BandgapPlot_alpha-1.pdf}
-	\caption{\label{fig:TFR_Curls_BandgapPlot_alpha-1}}
+	\caption{\label{fig:TFR_Curls_BandgapPlot_alpha-1} Dispersion plot for the system in \ref{sec:ExampleThickVertex}, yellow regions correspond to $\omega, \wavenumber$ pairs that solve \eqref{eq:CurlCurlEquationDivFree}. We observe spectral ``band-gaps" in $\omega$ for each $\wavenumber$, and \tstk{maybe compare to physical plot from papers?}}
 \end{figure}
 
 \section{Summary}
