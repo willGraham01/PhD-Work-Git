@@ -13,7 +13,7 @@ titStr = strcat('Spectral Plot, $\kappa=', num2str(kappa, '%.2f'), ', \ \alpha='
 %w<kappa not allowed!
 wPts = 1000;
 wRange = linspace(0,6*pi,wPts) + kappa;
-drVals = DispExpr(wRange, kappa, alpha);
+drVals = ThickVertex_DispExpr(wRange, kappa, alpha);
 
 %highlight spectrum in red
 specPlot = zeros(size(drVals));
@@ -33,13 +33,3 @@ xlim([wRange(1)/pi wRange(end)/pi])
 yDist = 5;
 ylim([-1-yDist, 1+yDist])
 title(titStr, 'interpreter','latex')
-
-function [val] = DispExpr(w, kappa, alpha)
-%this is the expression which, when it's between -1 and 1, gives
-%eigenvalues w.
-
-eta = sqrt(w.*w - kappa.*kappa);
-
-val = cos(eta) - (alpha/4).*(w.*w).*sin(eta)./eta;
-
-end% function

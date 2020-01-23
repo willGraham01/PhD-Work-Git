@@ -25,7 +25,7 @@ for k=1:kPts
     firstInd = find(wRange>=kappa, 1);
         
     %compute spectrum for all allowable values of w
-    drVals = DispExpr(wRange(firstInd:end), kappaRange(k), alpha);
+    drVals = ThickVertex_DispExpr(wRange(firstInd:end), kappaRange(k), alpha);
     %insert into matrix of dispersion relation values
     drValsMatrix(k, firstInd:end) = drVals;
     %set non-admissible w values to be NaNs in the drValsMatrix
@@ -40,7 +40,7 @@ bandgapPlot = sign(abs(drValsMatrix)<=1);
 
 figure;
 %contour(wRange./pi, kappaRange./pi, bandgapPlot);
-surf(wRange./pi, kappaRange./pi, bandgapPlot, 'Edgecolor','none'); view(0,90); colorbar;
+surf(wRange./pi, kappaRange./pi, bandgapPlot, 'Edgecolor','none'); view(0,90); %colorbar;
 xlabel('Frequency, $\frac{\omega}{\pi}$','interpreter','latex');
 ylabel('Wavenumber, $\frac{\kappa}{\pi}$','interpreter','latex');
 xlim([wRange(1)/pi wRange(end)/pi])
@@ -64,13 +64,3 @@ fig.PaperSize = [fig_pos(3) fig_pos(4)];
 %safer for now!
 % print(fig,'MySavedFile','-dpdf')
 % fprintf('Saved figure to MySavedFile.pdf - previous has been overwritten!');
-
-function [val] = DispExpr(w, kappa, alpha)
-%this is the expression which, when it's between -1 and 1, gives
-%eigenvalues w.
-
-eta = sqrt(w.*w - kappa.*kappa);
-
-val = cos(eta) - (alpha/4).*(w.*w).*sin(eta)./eta;
-
-end% function
