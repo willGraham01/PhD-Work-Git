@@ -748,12 +748,13 @@ Thus we arrive at the following classification for divergence-free functions on 
 	\end{align*}
 	This holds for every $v\in\ktgradSob{\ddom}{\lambda_{jk}}$ and thus we have condition (i).
 	With this knowledge we now fix $v_j$ and take some $v\in\ktgradSob{\ddom}{\ddmes}$ with support that contains the vertex $v_j$ and no other vertices,
+	%these \con-s are correct as we have fixed v_j
 	\begin{align*}
 		0 = \integral{\ddom}{u\cdot\overline{\ktgrad_\ddmes v}}{\ddmes}
-		&= \sum_{j\sim k}\integral{I_{jk}}{u\cdot\overline{\ktgrad_{\lambda_{jk}} v}}{\lambda_{jk}} \\
-		&= \sum_{j\sim k}\int_0^{\abs{I_{jk}}} \bracs{-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}^{(jk)}_2 - i\wavenumber\widetilde{u}^{(jk)}_3}\overline{\widetilde{v}} \ \md t \\
-		& \quad + \sum_{j\sim k}\sqbracs{\widetilde{u}_2^{(jk)}\overline{\widetilde{v}}}_0^{\abs{I_{jk}}} \\
-		&= \sum_{j\sim k} - u_2^{(jk)}\bracs{v_j}\overline{v}\bracs{v_j}
+		&= \sum_{j\con k}\integral{I_{jk}}{u\cdot\overline{\ktgrad_{\lambda_{jk}} v}}{\lambda_{jk}} \\
+		&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \bracs{-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}^{(jk)}_2 - i\wavenumber\widetilde{u}^{(jk)}_3}\overline{\widetilde{v}} \ \md t \\
+		& \quad + \sum_{j\con k}\sqbracs{\widetilde{u}_2^{(jk)}\overline{\widetilde{v}}}_0^{\abs{I_{jk}}} \\
+		&= \sum_{j\con k} - u_2^{(jk)}\bracs{v_j}\overline{v}\bracs{v_j}
 	\end{align*}
 	Thus we have condition (ii) (as $v$ is continuous at the vertices) and we are done with the right-directed implication. \newline
 	
