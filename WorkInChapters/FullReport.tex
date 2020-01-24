@@ -1,13 +1,15 @@
 \documentclass[11pt]{report}
 
+\usepackage{url}
 \usepackage{geometry} % See geometry.pdf to learn the layout options. There are lots.
-\geometry{a4paper} %or letterpaper or a5paper or ... 
+\geometry{a4paper} %or letterpaper or a5paper or ...
 
 %for figures and graphics
 \usepackage{graphicx}
 \usepackage{subcaption} %allows subfigures
-\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\usepackage[bottom]{footmisc} %footnotes go below figures
 
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 \graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
 
 %\input imports all commands from the target files
@@ -31,7 +33,7 @@
 
 %TITLE AND CONTENTS ETC; comment out to save computing time
 
-%\maketitle 					%create title
+%\maketitle 				%create title
 %\tableofcontents 			%have a contents page
 %\newpage 					%begin the actual report on a new page
 
@@ -48,8 +50,10 @@
 %\include{ScalarEqns}
 %
 %\include{VectorEqns}
-
+%
 \include{ExampleSystems}
+%
+%\include{Conclusion}
 
 \newpage %have a new page to start the bibliography
 \bibliographystyle{unsrt}

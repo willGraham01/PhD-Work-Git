@@ -317,12 +317,14 @@ such that whenever $u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}$,
 \begin{align*}
 	M\bracs{\lambda}\dmap u &= \nmap u.
 \end{align*}
-Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur at those $\lambda$ such that $\mathrm{det}M\bracs{\lambda} = 0$. \tstk{also holomorphic, hermitian? so that's some simplifying stuff we should mention. ALSO coupling constants not equal to zero?}
+Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur at those $\lambda$ such that $\mathrm{det}\bracs{M\bracs{\lambda} -\lambda A}= 0$, where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{V}}}$ is the diagonal matrix of the coupling constants.
+For ease we will tend to write $M_{\qm}\bracs{\lambda}v=0$ or $\det\bracs{M_{\qm}\bracs{\lambda}}=0$ for this problem; because the majority of our examples (chapter \ref{ch:ExampleSystems}) with have all coupling constants equal to 0.
+Furthermore we can always relabel $\widetilde{M}_{\qm}\bracs{\lambda} = M_{\qm}\bracs{\lambda}-\lambda A$ if the need arises, which may be particularly useful if a numerical scheme is to be used. \tstk{also holomorphic, hermitian? so that's some simplifying stuff we should mention. ALSO coupling constants not equal to zero?}
 
 Due to the fact that we will be taking a Gelfand transform, each problem in the family parametrised by $\qm$ will yield a different $M$-matrix, so we adopt the notation $M_{\qm}\bracs{\lambda}$ to provide distinction when we require it.
 If the form for the $M$-matrix can be determined analytically (or even numerically) then determining the spectrum is now a case of solving the generalised eigenvalue problem
 \begin{align} \label{eq:M-MatrixEvalProb}
-	M_{\qm}\bracs{\lambda}v &= 0, \quad \lambda\in\complex, v\in\complex^{\abs{V}},
+	\bracs{M_{\qm}\bracs{\lambda}-\lambda A}v &= 0, \quad \lambda\in\complex, v\in\complex^{\abs{V}},
 \end{align}
 for each $\qm\in[-\pi,\pi)^2$.
 Of course the approach to solving such a problem will be different if one is looking to pursue the spectrum analytically or numerically, and the discussion here will be developed when we come to consider some examples in chapter \ref{ch:ExampleSystems}.

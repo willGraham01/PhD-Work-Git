@@ -12,8 +12,14 @@ Each ProblemInstance takes in a value for the quasi-momentum and the length para
 import numpy as np
 from numpy import sqrt, sin, cos, tan
 
+import matplotlib.pyplot as plt
+
+from AuxPlotFns import FastFunctionPlot as FFP
+from AuxMethods import csc, cot, AbsLess
+
 #edge lengths
-l1 = 0.25;	l2 = 0.25;	l3 = 0.25;	l4 = 0.25; lengths=np.asarray([l1,l2,l3,l4])
+#l1 = 0.25;	l2 = 0.25;	l3 = 0.25;	l4 = 0.25; lengths=np.asarray([l1,l2,l3,l4])
+l1 = 0.5;	l2 = 0.5;	l3 = 0.;	l4 = 0.; lengths=np.asarray([l1,l2,l3,l4])
 qm = np.asarray([0,0],dtype=float)
 
 class ProblemInstance:
@@ -105,24 +111,36 @@ class ProblemInstance:
 		return DetM
 
 #end of class definition
-		
-#auxillary functions
-def csc(x):
-	'''
-		Cosecant function, derived from np.sin
-		INPUTS:
-			x: 	(array-like), values to evaluate csc at
-		OUTPUTS:
-			cscx: 	numpy array, cosecant of each value in x
-	'''
-	return 1/ sin(x)
 
-def cot(x):
+def WorkedEquation(effFreq):
 	'''
-		Cotangent function, derived from np.tan
-		INPUTS:
-			x: 	(array-like), values to evaluate cot at
-		OUTPUTS:
-			cotx: 	numpy array, cotangent of each value in x
+	For when l1=l2=0.5, l3=l4=0, this is the equivalent expression for effFreq to give an e'value when it's between the values -3 and 1.5.
+	INPUTS:
+		effFreq: 	(n,) float numpy array, values of effFreq to use
+	OUTPUTS:
+		val: 	(n,) float numpy array, values of the equation
 	'''
-	return 1/ tan(x)
+	val = 0;	r2 = sqrt(2); rm = (r2-1)/r2;	rp = (r2+1)/r2
+	val += (1/2)*cos(effFreq/r2)
+	val += (3/8)*cos(rm*effFreq)
+	val += (9/8)*cos(rp*effFreq)
+	val += (1/2)*sin(rp*effFreq)
+	val += -(1/2)*sin(rm*effFreq)
+	
+	return val
+
+if __name__=='__main__':
+	
+	wPts = 10000
+	w = np.linspace(0,25*np.pi,wPts)
+	vals = WorkedEquation(w)
+	eValInds = AbsLess(vals, -3, 1.5)
+	
+	fig, ax = plt.subplots(1)
+	ax.plot(w/np.pi, vals)
+	ax.plot(w/np.pi, -3*np.ones((wPts,)), 'k')
+	ax.plot(w/np.pi, 1.5*np.ones((wPts,)), 'k')
+	ax.scatter(w[eValInds]/np.pi, np.zeros_like(w[eValInds], dtype=float), s=1, c='r', marker='x')
+	ax.set_xlabel(r'Frequency, $\frac{\omega}{\pi}$')
+	ax.set_ylabel(r'Dispersion Expression Value')
+	ax.set_xlim([w[0]/np.pi, w[-1]/np.pi])
