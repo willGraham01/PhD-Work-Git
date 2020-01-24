@@ -9,13 +9,20 @@ This file concerns the Thick-Vertex TFR graph, with the Curl-Curl equations pose
 
 NB: We assume the opposite convention to the EKK paper, hence the parameter alpha is negative throughout to be consistent with the TFR results and that paper
 """
-
+#numpy is always needed
 import numpy as np
+from numpy import sqrt, sin, cos
+from numpy import pi
+#pandas in case we use dataframes
+import pandas as pd
+#warnings for plot saving handling
+from warnings import warn
+#matplotlib for plotting in 3d and 2d
 import matplotlib.pyplot as plt
 from matplotlib import rc, cm
 from mpl_toolkits.mplot3d import axes3d
-from numpy import sqrt, sin, cos
-from numpy import pi
+
+import seaborn as sns
 
 def FigWindowSettings(axis):
 	'''
@@ -83,7 +90,6 @@ def FixedWavenumberSlice(wavenumber, alpha, wPts=1000, saveFig=False, saveStr='.
 	validEvals = abs(drVals)<=1
 
 	#create plot
-	rc('text', usetex=True) #default use latex in axis labels
 	fig, ax = plt.subplots(1) #create axes for plotting
 	FigWindowSettings(ax) #change figure format to be nice
 	ax.plot(w/pi, drVals) #actual dispersion relation
@@ -96,11 +102,17 @@ def FixedWavenumberSlice(wavenumber, alpha, wPts=1000, saveFig=False, saveStr='.
 	ax.set_title(GenTitStr(wavenumber, alpha))
 	
 	#if we want to save things
-	if saveFig==True and len(saveStr)>4:
-		fig.savefig(saveStr)
-	elif saveFig:
-		raise ValueError('Invalid filename, try something with an extension and at least 2 characters.')
-	#return plot if sucessful
+	try:
+		if saveFig==True and len(saveStr)>4:
+			fig.savefig(saveStr)
+		elif saveFig:
+			raise ValueError('Invalid filename, try something with an extension and at least 2 characters.')
+	except ValueError:
+		warn('Invalid filename provided, figure not saved!')
+	except:
+		warn('Unexpected error occurred whilst saving, run in debug mode.')
+	
+	#if successful, return the plot handles
 	return fig, ax
 
 def DispersionPlot(alpha, wPts=1000, kPts=1000, saveFig=False, saveStr='.pdf'):
@@ -129,30 +141,110 @@ def DispersionPlot(alpha, wPts=1000, kPts=1000, saveFig=False, saveStr='.pdf'):
 		firstInd = np.nonzero(wRange>kVal)[0][0] #first index of wRange that has w>kVal
 		dRSurf[firstInd:, k] = DispExpr(wRange[firstInd:], kVal, alpha) #DispExpr values that we can compute
 		dRSurf[:firstInd, k] = np.NaN #values that the DR cannot be evaluated at
+		dRIndicator[:firstInd, k] = -1 #set these to be -1 for consistency in plotting the bandgaps
 	
-	#now indicate the points where eigenvalues exist (+1) or don't exist (-1)
+	#now indicate the points where eigenvalues exist (+1) or don't exist (-1). NaNs might play up but numpy handles them correctly in array comparison slicing
 	dRIndicator[abs(dRSurf)<=1] = 1
 	dRIndicator[abs(dRSurf)>1] = -1
 	
-	#dRIndicator is now ready to be contour or surface plotted
+	#dRIndicator is now ready to be contour or surface plotted via Plot3D if we want
+	#fig, ax = Plot3D(wRange, kRange, dRIndicator)
+	
+	#plot as 2D heatmap via seaborn
+	#indicatorFrame = pd.DataFrame(np.transpose(dRIndicator), columns=kRange/pi, index=wRange/pi)
+	#surfFrame = pd.DataFrame(np.transpose(dRSurf), columns=kRange/pi, index=wRange/pi)
+	#fig, ax = PlotHeatmap(indicatorFrame)
+	
+	#plot as contour using matplotlib
+	fig, ax = PlotContour(wRange/pi, kRange/pi, np.transpose(dRIndicator))
+
+	#labels that apply regardless of which plot we made
+	ax.set_xlabel(r'Frequency, $\frac{\omega}{\pi}$')
+	ax.set_ylabel(r'Wavenumber, $\frac{\kappa}{\pi}$')
+	ax.set_title(r'Bandgap Plot')
+	
+	#if we want to save things
+	try:
+		if saveFig==True and len(saveStr)>4:
+			fig.savefig(saveStr)
+		elif saveFig:
+			raise ValueError('Invalid filename, try something with an extension and at least 2 characters.')
+	except ValueError:
+		warn('Invalid filename provided, figure not saved!')
+	except:
+		warn('Unexpected error occurred whilst saving, run in debug mode.')
+		
+	#return plot if sucessful
+	return fig, ax
+
+def PlotHeatmap(df):
+	'''
+	Plots the data in the dataframe provided and returns the plot handles.
+	INPUTS:
+		df: 	pandas dataframe in xyz format
+	OUTPUTS:
+		fig: 	matplotlib.pyplot.figure object, belonging to the plot that was produced
+		ax: 	matplotlib.pyplot.axes object, belonging to the axes on which the DR was plotted
+	'''
+	
+	fig, ax = plt.subplots(1)
+	FigWindowSettings(ax)
+	ax = sns.heatmap(df, xticklabels=False, yticklabels=False, cbar=False) #needs labels redrawn, etc
+	ax.invert_yaxis()
+	
+	return fig, ax
+
+def PlotContour(x, y, z):
+	'''
+	Creates a (filled) contour plot of the surface z
+	INPUTS:
+		x: 	(nx,) float numpy array, range of w values that surfData is plotted over
+		y: 	(ny,) float numpy array, range of k values that surfData is plotted over
+		z: 	(ny, nx) float numpy array, surface values to be plotted
+	OUTPUTS:
+		fig: 	matplotlib.pyplot.figure object, belonging to the plot that was produced
+		ax: 	matplotlib.pyplot.axes object, belonging to the axes on which the DR was plotted
+	'''
+	
+	fig, ax = plt.subplots(1)
+	FigWindowSettings(ax)
+	ax.contourf(x, y, z, levels=1, colors=['blue','yellow'])
+	
+	return fig, ax
+
+def Plot3D(wRange, kRange, surfData):
+	'''
+	Plots a 3D surface (viewed from above) using matplotlib.pyplot.
+	INPUTS:
+		wRange: 	(wPts,) float numpy array, range of w values that surfData is plotted over
+		kRange: 	(kPts,) float numpy array, range of k values that surfData is plotted over
+		surfData: 	(wPts, kPts) float numpy array, surface values to be plotted
+	OUTPUTS:
+		fig: 	matplotlib.pyplot.figure object, belonging to the plot that was produced
+		ax: 	matplotlib.pyplot.axes object, belonging to the axes on which the DR was plotted	
+	'''
+
+	W, K = np.meshgrid(wRange, kRange)
 	fig = plt.figure()
 	ax = fig.gca(projection='3d')
-	cset = ax.contourf(wRange, kRange, dRIndicator, cmap=cm.coolwarm)
-	ax.clabel(cset, fontsize=9, inline=1)
+	ax.plot_surface(W, K, surfData, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 	ax.view_init(elev=-90, azim=0)
-	plt.show()
+	fig.show()
 	
 	return fig, ax
 
 #stuff we actually want to do when we run the script
 if __name__=='__main__':
+	#default use latex in axis labels
+	rc('text', usetex=True) 
+	
 	#some parameter values to set
 	wavenumber = pi
-	alpha = -1
+	alpha = -4
 	wPts = 1000
 	kPts = 1000
 	saveStr = input('Save figure as (.pdf appended automatically): ') + '.pdf'
 	print('Filename provided: ', saveStr)
 	
-	#fig, ax = FixedWavenumberSlice(wavenumber, alpha, wPts, saveFig=False, saveStr=saveStr)
-	fig, ax = DispersionPlot(alpha, wPts=wPts, kPts=kPts, saveFig=False, saveStr=saveStr)
+	fig, ax = FixedWavenumberSlice(wavenumber, alpha, wPts, saveFig=True, saveStr=saveStr)
+	#fig, ax = DispersionPlot(alpha, wPts=wPts, kPts=kPts, saveFig=True, saveStr=saveStr)
