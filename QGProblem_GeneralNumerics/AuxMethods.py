@@ -204,57 +204,16 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False):
 		vStar: 	(n,) complex numpy array, the eigenvector that was found
 		conIss: 	list, empty if conLog is False. Otherwise conIss contains debugger information on cases when the solver failed (write more details Will).
 	METHOD:
-		tstk WHAT IS THIS WILL MAYBE YOU SHOULD WRITE THIS DOWN!!!!!! Use the paper
+		Choose an initial pair (w_0, v_0) with ||v_0||=1 and non-zero vector u that will be used to check normality of the solution.
+		Then until convergence or escape do:
+			Solve f(w_k)v_k+1 = df(w_k)v_k for v_k+1
+			Set w_k+1 = w_k - u.v_k/u.v_k+1
+			Normalise v_k+1
 	'''
 	
 	#determine the dimension of the vectors that we are using
 	n = np.shape(v0)[0]
-	
-	#Scipy cannot solve systems of equations with complex values, so we need a wrapper for this function which outputs real arrays. As such, the following function outputs a (2n,) vector of real values corresponding to the real and imaginary parts of the equation.
 
-	return
-
-#make this as general as possible! Possibly better to write an entirely new function and rename this one for the time being
-# we should, for the time being, remove the graphs-specific stuff like theta, etc.
-def Old_NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxItt=100, tol=1.0e-8, conLog=True, talkToMe=False):
-	'''
-	Solve the nonlinear eigenvalue problem M(w,theta)v = 0 for an eigenpair (w,v) using the Nonlinear Inverse Iteration method (see Guttel & Tisseur, 2017).
-	INPUTS:
-		M: 	lambda function, evaluates M(w,theta) at arguments (w,theta)
-		Mprime: 	lambda function, evaluates d/dw M(w,theta) at arguments (w,theta)
-		v0: 	(n,) numpy array, initial guess for the eigenvector
-		u: 	(n,) numpy array, the vector u is used to normalise the output eigenvector and can be used to avoid repeat convergence to the same eigenpair in the case of holomorphic M
-		w0: 	(optional) float, starting guess for the eigenvalue w. Default np.pi
-		theta: 	(optional) (2,) numpy array, the quasimomentum value for this solve. Default [0,0]
-		maxItt: 	(optional) int, maximum number of iterations to perform. Default 100
-		tol: 	(optional) float, solution tolerance. Default 1.0e-8
-		conLog: 	(optional) bool, if True then a list storing the information after each iteration plus any errors or warnings will be returned. Default True.
-		talkToMe: 	(optional) bool, if True then the method will printout information about the converged solution at the end of the run. Default False
-	OUTPUTS:
-		wStar: 	complex float, eigenvalue that the solver converged to
-		vStar: 	(n,) complex numpy array, eigenvector that the solver converged to
-		conIss 	: (optional) list that logs any issues with non-convergence, only returned if conLog is True. More details below (write this Will)
-	'''
-	#first, figure out what size vectors we are dealing with!
-	n = np.shape(u)[0]
-	
-	###GOT TO HERE - NEED TO MAKE THE SOLVING FUNCTION ENTIRELY REAL, SO TURN IT INTO A 2N VECTOR OF REAL VALUES, THEN CAST IT BACK AT THE END :l SEE https://stackoverflow.com/questions/21834459/finding-complex-roots-from-set-of-non-linear-equations-in-python OR SIMILAR
-	
-	#create lambda function that we will pass to fsolve in each loop of the iteration.
-	fsolveFn = lambda x,w,v: np.matmul(M(w,theta),x) - np.matmul(Mprime(w,theta),v)
-	#annoyingly, scipy cannot deal with complex valued equations, so we need a wrapper for this function which outputs real arrays. As such, the following function outputs a (2n,) vector of real values corresponding to the real and imaginary parts of the equation.
-	def fRealFn(z,w,v):
-		'''
-		z should be a (2n,) numpy array which we convert to a complex-valued (n,) array, pass into fsolveFn, then cast the result back to a (2n,) real valued array.
-		For internal use only, not to be seen externally.
-		'''
-
-		x = RealToComp(z) #cast back to complex
-		fComplexValue = fsolveFn(x,w,v) #evaluate
-		realOut = CompToReal(fComplexValue) #cast back to real array...
-		
-		return realOut
-	
 	#storage for iteration outputs
 	wStore = np.zeros((maxItt+1), dtype=complex); wStore[0] = w0
 	vStore = np.zeros((n,maxItt+1), dtype=complex); vStore[:,0] = v0	
@@ -262,10 +221,25 @@ def Old_NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxIt
 	#iteration counter
 	currItt = 1
 	
+	#Scipy cannot solve systems of equations with complex values, so we need a wrapper for this function which outputs real arrays. As such, the following function outputs a (2n,) vector of real values corresponding to the real and imaginary parts of the equation.
+
+	def fRealFn(z,w,v):
+		'''
+		z should be a (2n,) numpy array which we convert to a complex-valued (n,) array, pass into fsolveFn, then cast the result back to a (2n,) real valued array.
+		For internal use only, not to be seen externally.
+		'''
+
+		x = RealToComp(z) #cast back to complex
+		fComplexValue = np.matmul(f(w),x) - np.matmul(df(w),v) #evaluate
+		realOut = CompToReal(fComplexValue) #cast back to real array...
+		
+		return realOut
+	
+	#now we start the iteration
 	while currItt<=maxItt and errStore[currItt-1]>tol:
 		#whilst we have no exceeded the maximum number of iterations and the current tolerance in the solution is too high
 		
-		#solve M(w_k)x = M'(w_k)v_k for x; but we need to use z=real,imag (x) because SciPy
+		#solve f(w_k)x = df(w_k)v_k for x; but we need to use z=real,imag (x) because SciPy
 		func = lambda z: fRealFn(z,wStore[currItt-1],vStore[:,currItt-1])
 		#for want of a better guess, use the current "eigenvector" as a guess of the solution...
 		z = fsolve(func, CompToReal(vStore[:,currItt-1]))
@@ -277,41 +251,48 @@ def Old_NLII(M, Mprime, v0, u, w0=np.pi, theta=np.zeros((2), dtype=float), maxIt
 		#normalise eigenvalue
 		vStore[:,currItt] = x/norm(x)
 		
-		#compute error, ||M(w_k+1)v_k+1||_2 should be small
-		errStore[currItt] = norm(np.matmul(M(wStore[currItt],theta),vStore[:,currItt]))
+		#compute error, ||f(w_k+1)v_k+1||_2 should be small
+		errStore[currItt] = norm(np.matmul(f(wStore[currItt]),vStore[:,currItt]))
 		
 		#incriment counter
-		currItt += 1
+		currItt += 1	
 
 	#dump values for manual investigation
 	conIss = []
 	#warnings that we might encounter
+	#max iteration limit
 	if currItt>=maxItt:
 		warn('Solver reached iteration limit')
 		conIss.append('MaxItter')
 	else:
-		if talkToMe:
-			print('Solver stopped at iteration %d' % (currItt-1))
-		#shave off excess storage space to save some memory in this case
+		#if we didn't hit max iterations we can shave off the extra memory space we allocated for our variable stores
 		#remember slicing in python is a:b goes from index a through to b-1 inclusive!
 		wStore = wStore[0:currItt]
 		vStore = vStore[:,0:currItt]
 		errStore = errStore[0:currItt]
+	#tolerance not reached
 	if errStore[currItt-1]>tol:
 		warn('Solver did not find a solution to the required tolerance: needed %.2e but only reached %.5e' % (tol, errStore[-1]))
 		conIss.append('NoConv')
-	else:
-		if talkToMe:
-			print('Difference from zero in converged eigenpair: %.5e' % errStore[currItt-1])
+	#converged to zero eigenvector
 	if np.abs(norm(vStore[:,currItt-1])-1)>=tol:
 		warn('Eigenvector is approximately 0')
 		conIss.append('ZeroEVec')
-	
+	#rappend to the log if we wanted this information, else we return an empty list
 	if conLog:
-		#if we want the massive error log we need to return it here
 		conIss.append(wStore)
 		conIss.append(vStore)
 		conIss.append(errStore)
-		return wStore[currItt-1], vStore[:,currItt-1], conIss
 	#otherwise, we just return the "answer"
-	return wStore[currItt-1], vStore[:,currItt-1]
+	return wStore[currItt-1], vStore[:,currItt-1], conIss
+
+#delete this Will when you are done with testing the solver
+if __name__=='__main__':
+	
+	#A = np.asarray([[1,0,0],[0,2,0],[0,0,3]], dtype=float)
+	A = np.random.rand(3,3)
+	I = np.eye(3)
+	def f(w):
+		return A - (w**2)*I - w*I
+	def df(w):
+		return -2*w*I - I
