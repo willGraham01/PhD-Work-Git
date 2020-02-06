@@ -40,14 +40,16 @@ class Edge:
 		self.leftV = Vertex(leftV.vID, leftV.vPos, leftV.coupConst)
 		self.rightV = Vertex(rightV.vID, rightV.vPos, rightV.coupConst)
 		
-		if length=='auto':
+		if isinstance(length, str):
 			#no length provided, so compute it manually
 			self.length = norm(rightV.vPos - leftV.vPos)
+			if self.length == 0:
+				raise ZeroDivisionError('Automatic length requested but computed as zero. Reminder: loops require manual length input.')
 		else:
 			#length provided, ignore distances
 			self.length = length
 		
-		if qm=='auto':
+		if isinstance(qm, str):
 			#no quasi-momentum coefficients provided, compute them manually
 			eI = rightV.vPos - leftV.vPos #unit vector along edge
 			RI = np.asarray([ [eI[1], -eI[0]], [eI[0], eI[1]] ]) / norm(rightV.vPos - leftV.vPos) #rotation matrix R_I
