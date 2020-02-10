@@ -55,12 +55,12 @@ In fact, we can actually compute the $M$-matrix for a given value of $\effFreq$ 
 			& j \not\con k, \\
 			\!\begin{aligned}
 				&-\sum_{j\conLeft k} \effFreq e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\effFreq} 
-				\\ &\quad - \sum_{j\conRight k} \effFreq e^{i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq},
+				\\ &\quad - \sum_{j\conRight k} \effFreq e^{-i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\effFreq},
 			\end{aligned}
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				&\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq}
-				\\ &\quad - 2\effFreq\sum_{j\conLeft j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq},
+				&\sum_{j\con l} \effFreq\cot\bracs{l_{jl}\effFreq}
+				\\ &\quad + 2\effFreq\sum_{j\conLeft j} \cot\bracs{l_{jj}\effFreq} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\effFreq},
 			\end{aligned}
 			& j=k.
 		\end{cases}
@@ -68,7 +68,7 @@ In fact, we can actually compute the $M$-matrix for a given value of $\effFreq$ 
 	Note the choice of $j\conLeft j$ in the contributions from loops is simply a convention, $j\conRight j$ is equivalent here.
 	Also recall the convention for summing over $j\con k$:
 	\begin{align*}
-		\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq} &= \sum_{j\conLeft l} \effFreq\cot\bracs{l_{jl}\effFreq}	+ \sum_{j\conRight l} \effFreq\cot\bracs{l_{lj}\effFreq}
+		\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq} &= \sum_{j\conLeft k} \effFreq\cot\bracs{l_{jl}\effFreq}	+ \sum_{j\conRight k} \effFreq\cot\bracs{l_{lj}\effFreq}
 	\end{align*}
 \end{prop}
 \begin{proof}
