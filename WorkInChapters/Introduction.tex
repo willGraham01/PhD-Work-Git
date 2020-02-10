@@ -2,14 +2,55 @@
 This chapter should essentially be a lit review, whilst also explaining how we are going to treat the physical systems we want to represent mathematically.
 
 \section{Motivation} \label{sec:ProjectMotivation}
-The stuff on photonic fibres, refs to Knight etc.
-There is a section of the TFR that did this well - wonder if I can reference that?
+Optical fibres are the \textit{de facto} industry standard for large telecommunications systems, thanks to their ability to transmit information quickly and with far less signal loss than other methods (such as metal cables).
+The technology has rapidly developed since the first optical fibres were fabricated in the 1970s \cite{knight2003photonic} and optical fibres in use today present a balance between several competing factors to deliver a reliable performance.
+Factors such as (optical) loss are inherent, brought about by the materials needed to build the fibres; whilst other factors can be influenced by design (group-velocity dispersion) or the fabrication process (which can lead to imperfections and polarisation effects).
+Despite the technological developments of the fibres, the underpinning physical processes remain unchanged --- all improvements to the technology have been incremental and largely centre around the manufacturing process.
+The fibre will have a core made of a dielectric (non-conducting) material with a given refractive index and will be surrounded by a cladding; another dielectric material of a lower refractive index.
+Typically the difference in refractive indices of the core and cladding is very small \tstk{silica fibres and doping, get some numbers}. 
+By choosing a lower refractive index for the cladding material than the core, modes of light\footnote{A mode of light is a mono-frequency solution to the governing equations of electromagnetism in the fibre.} can be confined to the core of an optical fibre via the phenomenon of Total Internal Reflection (TIR) \tstk{reference, cba to explain as it's not important to the report}, allowing guided propagation of light over \tstk{actual distance?} hundreds of kilometres.\newline
 
-\section{Mathematical Treatment of Physical Systems}
+Photonic crystal fibres (PCFs) are a departure from the setup of core surrounded by cladding \cite{russell2003photonic}; instead relying on the micro-structure of the photonic crystal to alter the optical properties of the fibre it forms.
+This microstructure can cause the crystal to exhibit band-gaps; frequency ranges where there are no propagating modes of light in the crystal, despite the existence of propagating modes at lower (and/or higher) frequencies.
+These band-gaps allow for light to be confined to core materials previously thought impossible (like air), or even when the core itself consists of vacuum.
+This gives rise to the idea of a ``hollow-core fibre"; a PCF with air (or vacuum) as its core material, guiding light at frequencies determined by the band-gaps of the photonic crystal itself.
+For the record, PCFs can also be ``solid core", that is have a more conventional material like silica as the core material, or even have metallic cores \tstk{David's paper he gave us}.
+Crucially though, PCFs do not use TIR to guide light but rather exploit the fact that light at particular frequencies is confined to the cores simply because it is unable to propagate in the surrounding crystal, due to the optical properties bestowed on the crystal by its micro-structure.
+\tstk{illustrative diagram of fibre differences?}
+
+PCFs have been the subject of a number of mathematical models in recent years, and we will elaborate on our chosen approach to modelling these fibres in section \ref{sec:MathTreatmentPhysSystems}. \tstk{as well as this, maybe also reference some of David's papers and discuss use of numerical approaches too}
+A typical starting point for established models is the time-harmonic system of Maxwell equations
+\begin{align*}
+	\grad\wedge\mathbf{E} &= i\omega\mu_{P}\mathbf{H}, &\quad \grad\wedge\mathbf{H} &= -i\omega\varepsilon_{P},\mathbf{E},
+\end{align*} 
+where $\mathbf{E}$ and $\mathbf{H}$ are the electric and magnetic-displacement fields respectively, and the medium in which the problem is posed has electric permittivity $\varepsilon_{P}$ and magnetic permeability $\mu_{P}$. 
+Note that the reason for using the time-harmonic Maxwell system arises from consideration of the fibre structure and seeking ``Bloch wave" solutions via an ansatz of the form $\hat{\mathbf{E}}=\mathbf{E}e^{i\bracs{k_{p}x_3-\omega t}}$ (and similarly for the magnetic field), where $x_3$ is the axis of the fibre.
+Further assumptions are also made on the fields, namely that the amplitude coefficients $\mathbf{E},\mathbf{H}$ are functions of the fibre cross-section axes variables $\bracs{x_1,x_2}$ only.
+This assumption is well-grounded as these models are seeking waves that will propagate down the fibre, and expect the $\mathbf{E}$ and $\mathbf{H}$ fields to vary only in the plane perpendicular to the direction of propagation.
+As for the domain of the problem which describes the micro structure and hence the fibre, models assume a unit cell (commonly taken to be the unit square) and periodically extend the domain from this.
+The unit cell itself is taken to be composed of two materials with different material constants, which means $\varepsilon_{P}$ and $\mu_{P}$ become piecewise-constant functions of the $\bracs{x_1,x_2}$ variables.
+This provides a general model for any kind of periodic structure, rather than the specific geometry we will restrict ourselves to in future.
+Analysis of this model and the solution properties can be found in (for example) \cite{cooper2014bandgaps}.
+The approach is to apply homogenisation theory due to the periodic structure of the domain, and introduce an appropriate representation of a periodic problem on the unit cell.
+One can then prove convergence results for various aspects of the unit-cell problem and the original periodic problem (most notably the spectrum of the problem, which determines the frequencies $\omega$ of light which can propagate). \newline
+
+In summary, PCFs present a cautiously optimistic improvement to the current industry standard.
+The physical theory underlying the process by which they operate means that PCFs have the potential to replace optical fibres as the industry standard.
+Whilst this is not a simple case of fabricating better fibres, as highlighted in \cite{knight2003photonic} there are several industry standards that will need to be met before PCFs are accepted and implemented over optical fibres.
+However PCFs have an advantage over conventional optical fibres in that their applications are not limited to telecommunications.
+Prominent alternative applications include (but are not limited to) non-linear optics (where they offer high optical intensities per unit power, making them highly efficient) and atom and particle guidance (dielectric particles can be guided by the dipole forces exerted by light).
+Hence there has been much to motivate study of the optical properties of PCFs; and understand how the design (geometry of the fibre, fabrication material) affects these, resulting in the models based on the Maxwell equations and development of spectral convergence results for periodic problems.
+The work in this report is motivated by this application to PCFs, albeit in a slightly convoluted manner.
+In section \ref{sec:MathTreatmentPhysSystems} when we detail the systems that we are investigating; which will resemble the structure of PCFs, and also describe (and justify) the assumptions we will be using in our model.
+This will bring us through to section \ref{sec:GraphLitReview}; where we will link the system that we have arrived at in section \ref{sec:MathTreatmentPhysSystems} to the PCFs we have described here, before setting the stage for a review of the relevant theory in chapters \ref{ch:QuantumGraphs} and \ref{ch:ScalarEqns}.
+
+\section{Mathematical Treatment of Physical Systems} \label{sec:MathTreatmentPhysSystems}
 This section will explain how the problems we are considering relate to the physical setups we want to represent - the ``modelling assumptions" slide from BUC-XVI presentation again springs to mind.
 Will need to talk about Gelfand \& Fourier transformsand their uses, as well as variational problems by Zhikov.
 Kuchment and Olaf \& Post will most likely also crop up here, and we should probably also mention quantum graphs too.
 May even be worth breaking this section into two - one for just the lit review and the other for how we are going about manipulating the physical setup to make it amiable to modelling, and how we will go about this.
+
+\section{Singular Structure Problems} \label{sec:GraphLitReview}
 
 \section{Overview of Research} \label{sec:ReportOverview}
 Essentially a commentary on each section of the report, standard ending to the introductory chapter which is effectively an introduction-summary :L.
