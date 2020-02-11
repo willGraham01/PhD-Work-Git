@@ -28,36 +28,52 @@ The work in this report is motivated by this application to PCFs, albeit in a sl
 In section \ref{sec:MathTreatmentPhysSystems} when we detail the systems that we are investigating; which will resemble the structure of PCFs, and also describe (and justify) the assumptions we will be using in our model.
 This will bring us through to section \ref{sec:GraphLitReview}; where we will link the system that we have arrived at in section \ref{sec:MathTreatmentPhysSystems} to the PCFs we have described here, before setting the stage for a review of the relevant theory in chapters \ref{ch:QuantumGraphs} and \ref{ch:ScalarEqns}.
 
-\section{Mathematical Treatment of Physical Systems} \label{sec:MathTreatmentPhysSystems}
-\tstk{This section will explain how the problems we are considering relate to the physical setups we want to represent - the ``modelling assumptions" slide from BUC-XVI presentation again springs to mind.
-Will need to talk about Gelfand \& Fourier transforms and their uses, as well as variational problems by Zhikov.
-Kuchment and Olaf \& Post will most likely also crop up here, and we should probably also mention quantum graphs too.
-NEED TO FIND THE KUCHMENT STUFF ON CONVERGENCE TO QG, AS CURRENTLY ONLY HAVE HIS BOOK ON QG THEORY.
-May even be worth breaking this section into two - one for just the lit review and the other for how we are going about manipulating the physical setup to make it amiable to modelling, and how we will go about this.}
-
-PCFs have been the subject of a number of mathematical models in recent years, and we will elaborate on our chosen approach to modelling these fibres in section \ref{sec:MathTreatmentPhysSystems}. \tstk{as well as this, maybe also reference some of David's papers \cite{birks2006approximate} and discuss use of numerical approaches too}
-A typical starting point for established models is the time-harmonic system of Maxwell equations
+\section{Exisiting Models for PCFs} \label{sec:ExistingPCFModels}
+PCFs have been the subject of a number of models in recent years. 
+The most conceptually straightforward being the use of numerical techniques to solve Maxwell's equations
 \begin{align*}
-	\grad\wedge\mathbf{E} &= i\omega\mu_{P}\mathbf{H}, &\quad \grad\wedge\mathbf{H} &= -i\omega\varepsilon_{P},\mathbf{E},
+	\grad\wedge\mathbf{E} &= \pdiff{\bracs{\mu_{P}\mathbf{H}}}{t}, 
+	&\quad \grad\wedge\mathbf{H} &= -\pdiff{\bracs{\varepsilon_{P}\mathbf{E}}}{t},	
 \end{align*} 
-where $\mathbf{E}$ and $\mathbf{H}$ are the electric and magnetic-displacement fields respectively, and the medium in which the problem is posed has electric permittivity $\varepsilon_{P}$ and magnetic permeability $\mu_{P}$. 
-Note that the reason for using the time-harmonic Maxwell system arises from consideration of the fibre structure and seeking ``Bloch wave" solutions via an ansatz of the form $\hat{\mathbf{E}}=\mathbf{E}e^{i\bracs{\wavenumber x_3-\omega t}}$ (and similarly for the magnetic field), where $x_3$ is the axis of the fibre and $\wavenumber$ the component of the wave-vector in $x_3$.
-Further assumptions are also made on the fields, namely that the amplitude coefficients $\mathbf{E},\mathbf{H}$ are functions of the fibre cross-section axes variables $\bracs{x_1,x_2}$ only.
+to determine modes (single-frequency solutions) that are supported by the PCF.
+Here $\mathbf{E}$ and $\mathbf{H}$ are the electric and magnetic-displacement fields respectively; with $\varepsilon_{P}$ and $\mu_{P}$ being material parameters (the electric permittivity and magnetic permeability respectively).
+These modes can then be used to construct an approximate band-gap plot for the fibre, with the level of precision in the computational results coming at the cost of increasing the computing time.
+Whilst this can provide detailed information about a fibre, it does not provide any insight into how the structure of the PCF has contributed or affected the resulting band-gap plot.
+Furthermore numerical schemes (particularly those based off finite elements) are known to require special treatment when being used to solve Maxwell's equations, but this in itself has been studied in detail (see for example \cite{monk2003finite}).
+To avoid the need for complex numerical solvers, models that make simplifying approximations have been proposed and found to be in good agreement with results from computations.
+In particular the ARROW model \tstk{citations, follow refs in \cite{birks2006approximate}} has seen some success in retaining the key features of band-gap plots; by considering the physical origins of band-gaps in fibres as arising from the resonant properties of the cores (treated as rods).
+The model works on the assumption that the frequency-bands of the fibre correspond to coupled modes in the array of cores that make up the fibre, so the band-gaps can be found by only considering the modes of a single core.
+These methods have made several insights into the band-gap structures, but are limited by their approximations in the information they provide about the fibres themselves.
+Intermediate approaches have also been proposed, for example in \cite{birks2006approximate} which proposes a model that considers the sizes of the regions separating the cores in the PCF, and provides alternative boundary conditions for when the unit cell of the fibre cross-section is hexagonal or circular.
+The method eventually relies on a numerical scheme; but only to the point of root-finding for analytic expressions, and produces band-gap plots that are in good agreement with the more complete numerical models provided certain scaling between parameters is adhered to.
+This makes such approaches useful when speed is more important than high accuracy, or when an intuitive picture of the band-structure is required. \newline
+
+Alternative approaches to modelling band-gap structures use the time-harmonic system of Maxwell equations,
+\begin{align*}
+	\grad\wedge\mathbf{E} &= i\omega\mu_{P}\mathbf{H}, &\quad \grad\wedge\mathbf{H} &= -i\omega\varepsilon_{P}\mathbf{E},
+\end{align*} 
+as a starting point.
+Time-harmonic Maxwell system arises from seeking ``Bloch wave" solutions in the fibre via an ansatz of the form $\hat{\mathbf{E}}=\mathbf{E}e^{i\bracs{\wavenumber x_3-\omega t}}$ (and similarly for the magnetic field), where $x_3$ is the axis of the fibre and $\wavenumber$ the component of the wave-vector in $x_3$.
+Equivalently one can view this as taking a Fourier transform along the axis of the fibre.
+Further assumptions are also made on the fields, namely that the amplitude coefficients $\mathbf{E},\mathbf{H}$ are functions of the fibre cross-sectional axes variables $\bracs{x_1,x_2}$ only.
 This assumption is well-grounded as these models are seeking waves that will propagate down the fibre, and expect the $\mathbf{E}$ and $\mathbf{H}$ fields to vary only in the plane perpendicular to the direction of propagation.
 As for the domain of the problem which describes the micro structure and hence the fibre, models assume a unit cell (commonly taken to be the unit square) and periodically extend the domain from this.
 The unit cell itself is taken to be composed of two materials with different material constants, which means $\varepsilon_{P}$ and $\mu_{P}$ become piecewise-constant functions of the $\bracs{x_1,x_2}$ variables.
 This provides a general model for any kind of periodic structure, rather than the specific geometry we will restrict ourselves to in future.
-Analysis of this model and the solution properties can be found in (for example) \cite{cooper2014bandgaps}.
+Analysis of this model and the solution properties can be found in (for example) \cite{cooper2014bandgaps}. \tstk{doesn't Kirill have a paper on this too?}
 The approach is to apply homogenisation theory due to the periodic structure of the domain, and introduce an appropriate representation of a periodic problem on the unit cell.
 One can then prove convergence results for various aspects of the unit-cell problem and the original periodic problem (most notably the spectrum of the problem, which determines the frequencies $\omega$ of light which can propagate). \newline
-
 \tstk{scaling discussion RE David \cite{birks2004scaling}}
-The starting point our models also stems from the physical design of PCFs, however we make a number of modelling assumptions to bring us to a formulation different to that of the models described above.
-In this section we will discuss the domains or setups that we will be concerned with, and how they relate to physical PCFs.
-Of course we also require a system of governing equations to complete our model, however we do not go into detail about this in this section - the issue will be highlighted in section \ref{sec:ModellingAssumption2} and revisited in section \ref{sec:ReportOverview}.
-For the time being it is sufficient to assume we have some underlying governing equations that describe wave propagation down a PCF; and we are concerned with determining whether the structure of the PCF admits frequency (equivalently spectral) band-gaps in these equations. \newline
 
-We consider a photonic crystal fibre as an object with a lattice-like structure in the cross sectional (transverse) $\bracs{x_1,x_2}$ plane, which is extruded into the $x_3$ direction to produce a fibre whose structure is translation invariant down it's axis.
+\section{Domain Structure for Our Model} \label{sec:OurPhysicalSetup}
+In this section we will discuss the domains or setups that we will be concerned with, and how they relate to physical PCFs.
+The purpose of our model is to provide insight into the band-gap structure of PCFs, by considering an appropriate ``limit problem" for the cross-sectional structure.
+We will elaborate further on what the phrase ``limit problem" means in section \ref{sec:GraphLitReview}, but for now we just outline the domains (or the physical structures) that our model will consider.
+These domains are motivated by the physical design of PCFs, however we make a number of modelling assumptions about fibre structure to bring us to a formulation different to that of the models described in section \ref{sec:ExistingPCFModels}.
+Of course we also require a system of governing equations to complete our model, however we do not go into detail about this in this section - the issue will be highlighted in section \ref{sec:ModellingAssumption2} and revisited in section \ref{sec:ReportOverview}.
+For the time being it is sufficient to assume we have some system of governing equations that describe wave propagation down a PCF; and we are concerned with determining whether the structure of the PCF admits frequency (equivalently spectral) band-gaps in these equations. \newline
+
+We consider a PCF as an object with a lattice-like structure in the cross-sectional (transverse) $\bracs{x_1,x_2}$ plane, which is extruded into the $x_3$ direction to produce a fibre whose structure is translation invariant down it's axis.
 The cross-sectional lattice (or structure, as we will refer to it henceforth) will itself be a repeating pattern composed of a number of unit cells, with the thickness of the lattice ``struts" being of some finite (but small) length $l$.
 This is schematically sketched in figure \ref{fig:Diagram_ThinStructurePeriodCell}, where for consistency later we have also given a length scale $r$ to lattice ``junction regions".
 \begin{figure}[b!]
@@ -75,43 +91,67 @@ This is schematically sketched in figure \ref{fig:Diagram_ThinStructurePeriodCel
 	\end{subfigure}
 	\caption{\label{fig:ThinToSingularStructure} An illustration of how the unit cell of a physical PCF relates to that of the systems that we shall be considering. This will be elaborated on in section \ref{sec:GraphLitReview}.}
 \end{figure}
-From here one can simply impose governing equations on the PCF either in the cross section after imposing a Bloch-wave ansatz or use a numerical scheme such as the Finite Element Method to solve the chosen system of governing equations\footnote{In the context of PCFs, typically it will be Maxwell's equations that need to be solved. These are known to require some special treatment if techniques based on Finite Elements are to be used, but there is an extensive discourse on this in for example \cite{monk2003finite}.}.
-Our concern however is mainly with determining whether a certain cross-sectional structure admits frequency band-gaps, and ideally maintaining an analytic approach to this problem for as long as possible, and so we make the following assumptions for our system.
+Our concern is mainly with determining whether a certain cross-sectional structure admits frequency band-gaps, and ideally maintaining an analytic approach to this problem for as long as possible, and so we make the following assumptions for our system.
 
 \subsection{Fibres are Invariant along the Fibre Axis} \label{sec:ModellingAssumption1}
 We first make the assumption that the PCF is translation invariant along it's fibre axis, aligned to the $x_3$-direction.
-This is a standard modelling assumption for fibres in general, unless one wants to incorporate roughness into their model.
-For us; determining propagation modes (equivalently band-gaps) is the priority rather than modelling fibre loss due to roughness, so we adopt this assumption.
-As a bonus this also allows us to use a Fourier transform in $x_3$ to remove the $x_3$-spatial dependency from the governing equations we choose to adopt, replacing it with factors of the wave-number $\wavenumber$ of the wave propagating down the fibre.
+This is a standard modelling assumption for fibres in general unless surface roughness of the fibre needs to be incorporated.
+Since our objective is determining propagation modes (equivalently band-gaps) rather than modelling fibre loss due to roughness, we too adopt this assumption.
+This enables us to use a Fourier transform in $x_3$ to remove the $x_3$-spatial dependency from the governing equations we choose to adopt, replacing it with factors of the wave-number $\wavenumber$ of the wave propagating down the fibre.
+Furthermore we are now considering a model that on a 2D-domain rather than a 3D one (although if we are considering the Maxwell system, the fields $\mathbf{E}, \mathbf{H}$ would still be vector-valued).
 
 \subsection{Infinite Cross-Sectional Lattice} \label{sec:ModellingAssumption2}
-We now move onto assumptions specific to our model, beginning with the assumption that the cross-sectional PCF lattice is infinite and periodic in extent, with a unit cell contained in $\sqbracs{0,1}^2$.
+We now move onto assumptions rather specific to our model, beginning with the assumption that the cross-sectional PCF lattice is infinite and periodic in extent, with a unit cell contained in $\sqbracs{0,1}^2$.
 Physically we can justify this assumption because the size of a lattice unit cell is much smaller than the (transverse) extent of the fibre itself.
 Mathematically we make this assumption because it allows us to make use of several tools and results from analysis.
 Specifically we want to use a Gelfand transform on our governing equations to move from a problem on an infinite-but-periodic domain to a family of problems on the unit cell of said domain.
-This family of problems is parametrised by the ``quasi-momentum" $\qm\in[-\pi,\pi)^2$, whose role is to account for integer-wavelength ``mismatches" at the boundary of the period cell.
-In this case, combined with the Fourier transform to remove the $x_3$-dependency, this takes us from a problem on full extent of the PCF cross-section to a family of problems on $\sqbracs{0,1}^2$.
+Formally the Gelfand transform is used to provide a fibre representation of an operator defined on a periodic domain, and the theory surrounding it is much more extensive than what we require it for, but the following interpretation is sufficient for us.
+For a function $u:\reals^{d_1}\rightarrow\complex^{d_2}$ defined on a periodic domain with unit cell $\sqbracs{0,1}^{d_1}$, the Gelfand transform can be thought of as mapping $u$ to the family of functions $\widehat{u}$ defined by
+\begin{align*}
+	\widehat{u}: &\sqbracs{0,1}^{d_2} \rightarrow \complex^{d_2}, \\
+	\widehat{u}\bracs{x} &= \sum_{n\in\integers^{d_1}} u\bracs{x + n}e^{-i\qm\bracs{x + n}}, \\
+	\qm &\in [-\pi,\pi)^{d_1},
+\end{align*}
+the parameter $\qm$ is called the quasi-momentum.
+Now if we have some system of differential equations in $u$ on $\reals^{d_1}$, this transform effectively takes us from a problem involving $u$ on the entire domain $\reals^{d_1}$ to a family of slightly altered problems on the unit cell ($\sqbracs{0,1}^{d_1}$), for each $\qm$.
+The extent of the alteration (to the equations in this context) is effectively applying a shift to any derivative we take, formally any partial derivative transforms as
+\begin{align*}
+	\pdiff{}{x_j} &\rightarrow \pdiff{}{x_j} - i\qm_j,
+\end{align*}
+the purpose of this shift being to account for integer-``mismatches" of $\widetilde{u}$ at the boundary of the period cell.
+If we are looking at a spectral problem in $\reals^{d_1}$, we can recover the spectrum of the original problem by solving each spectral problem we obtain from the Gelfand transform, and taking the union of all the spectra over $\qm$. \newline
+
+In our case; with our cross-section being two dimensional and infinite in extent, we can obtain a family of spectral problems on the (finite) unit cell and solve these instead (for each $\qm$) to recover the spectrum of our original problem.
+Combined with the Fourier transform to remove the $x_3$-dependency, this takes us from a problem on an infinite 3D domain to a family of problems on $\sqbracs{0,1}^2$.
+Having a finite domain is appealing from a numerical perspective for obvious practical reasons, but will also be useful to us analytically after considering the final assumption in section \ref{sec:ModellingAssumption3}.
 
 \subsection{Singular Structure Lattice} \label{sec:ModellingAssumption3}
 Finally, we assume that the lattice in the cross-section is composed of a singular structure, rather than a thin structure.
 Physically this assumption can be interpreted as saying that the lattice thickness is much smaller than the unit cell size.
-Mathematically, this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$; and colloquially we can describe the physical system that as that obtained by setting $l=r=0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
+Mathematically this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$ (chapter \ref{ch:QuantumGraphs}); and colloquially we can describe the physical system that as that obtained by setting $l=r=0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
 The foremost being that we now require some form of understanding as to how we can pose (differential) equations on our domain now that it is essentially a one-dimensional subset of the unit cell $\sqbracs{0,1}^2$.
 This requires us to consider a variational formulation with respect to non-Lebesgue measures; and construct appropriate function spaces to make sense of the concepts of gradient, curl, and divergence.
 This allows us to consider systems such as Maxwell's equations on these singular structures - we will revisit this point in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
-Secondly we should justify why this is helpful to us and how we can expect the results we obtain from this new setup to relate back to those for a thin-structure system.
+Secondly we should justify why this is helpful to us and how we can expect the results we obtain from this new setup to relate back to those for a thin-structure PCF.
 This is the subject of section \ref{sec:GraphLitReview}, but for now it is enough to say that a framework for working with (differential) equations on graphs already exists and provides us with some further analytical tools that will aid us later (see chapter \ref{ch:QuantumGraphs}).
 As for how we maintain relevance to the original thin-structure system; there exist convergence results which justify the use of a singular-structure model as a formal limit of a sequence of thin-structure problems with $l,r\rightarrow0$, although interestingly the relative scaling between these two scales as they tend to 0 can change the resulting ``limit" problem we obtain.
 Again, we shall discuss this in section \ref{sec:GraphLitReview}.
 
 \subsection{Resulting System} \label{sec:OurSystem}
-Under the assumptions laid out in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3}, we arrive at the following formulation, which will be the starting point for the problems that we consider throughout this report.
-Begin with a fibre invariant along it's axis (parallel to the $x_3$-direction), and having some lattice-like structure in it's cross-section.
+We can summarise the affects of the assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} as follows.
+We begin with a fibre invariant along it's axis (parallel to the $x_3$-direction), and having some lattice-like structure in it's cross-section.
 We then assume that the cross-sectional lattice is periodic and infinite, occupying the whole $\bracs{x_1,x_2}$-plane; and that is is singular, rather than of a finite but thin thickness, so that we can model it as a graph embedded into the unit cell.
-On this singular structure we then pose an appropriate variational problem (chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}), using a combination of Gelfand- and Fourier transforms to examine a family of equivalent problems on the unit cell of the lattice.
+The link between the graph structure and the corresponding PCF cross-section is discussed in section \ref{sec:GraphLitReview}.
+On this singular structure we will then pose an appropriate variational problem (chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}), using a combination of Gelfand- and Fourier transforms to examine a family of equivalent problems on the unit cell of the lattice.
 The result is a family of variational problems on the unit cell of (the graph describing the) singular lattice which we look to solve using the theory of chapter \ref{ch:QuantumGraphs}.
+We will assume this domain structure throughout the remainder of the report, and will use it as our starting point when we consider examples in chapter \ref{ExampleSystems}.
+In chapters \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}, \ref{ch:VectorEqns}, we will simply take a graph and variational formulation as our starting point for the theory that is presented in those sections, with the underlying relevance to wave-guidance problems in PCFs having been detailed here.
 
 \section{Singular Structure Problems} \label{sec:GraphLitReview}
+\tstk{
+Kuchment and Olaf \& Post will most likely also crop up here, and we should probably also mention quantum graphs too.
+NEED TO FIND THE KUCHMENT STUFF ON CONVERGENCE TO QG, AS CURRENTLY ONLY HAVE HIS BOOK ON QG THEORY.
+May even be worth breaking this section into two - one for just the lit review and the other for how we are going about manipulating the physical setup to make it amiable to modelling, and how we will go about this.}
 you promised a link between singular-structure and thin-structure systems, so you need to give it here (Olaf, Kuchment).
 This section is also the lit-review part of chapter 2 (although we can move it across if it doesn't read well), so that needs to be done too!
 

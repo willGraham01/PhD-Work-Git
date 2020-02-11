@@ -253,7 +253,6 @@ and then let $\chi_{I}^\eps\in\smooth{\ddom}$ be the function such that
 Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that lies in the support of $\chi_I^\eps$ is $I$, otherwise we apply a scaling to the argument of $\chi_I^\eps$ to avoid this issue.
 When we want to emphasise that the edge $I=I_{jk}$ for some $v_j, v_k\in V$, we will write the function as $\chi_{jk}^\eps$.
 
-\tstk{fix characteristic function to be a bold 1, but packages are needed and texmaker doesn't seem to like them.}
 \begin{lemma}[Convergence of $\chi_I^\eps$] \label{lem:ChiConv}
 	Let $\charFunc{I}$ denote the characteristic function of the interval $I$ (that is $\charFunc{I}=1$ on $I$ and zero elsewhere).
 	Then we have that 
@@ -567,7 +566,7 @@ Following that, there is some focus on the inherent properties of the space $\gr
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed in an infinite plane with a finite period cell.
-Physically this will represent our photonic fibre's cross sectional structure \tstk{earlier section discussion?}, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform.
+Physically this will represent our photonic fibre's cross sectional structure, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform (section \ref{sec:ModellingAssumption2}.
 This will require us to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}, as the Gelfand transform will break the problem in the infinite plane into a family of problems on the period cell, parametrised by 2 quasi-momenta.
 We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a Quantum Graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
 
@@ -577,8 +576,7 @@ Consider the problem
 \begin{align} \label{eq:WholeSpaceScalarProblem}
 	-\grad_{\ddmes^*} \cdot \grad_{\ddmes^*} u &= \omega^2 u,
 \end{align}
-posed in $\reals^2$. \tstk{either refer back to, or discuss here, the spectral problem and why we need the Gelfand transform to make sense of what is going on. Also it may be useful to talk about why we care so much about the spectral, rather than the resolvant, problem.}
-
+posed in $\reals^2$.
 Using the Gelfand transform, we introduce a quasi-momentum parameter $\qm\in[-\pi,\pi)^2$ and study the resulting family of problems
 \begin{align*}
 	\grad_\ddmes^\qm \cdot \grad_\ddmes^\qm u &= \omega^2 u,

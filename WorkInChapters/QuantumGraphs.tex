@@ -2,12 +2,7 @@
 In this chapter we shall introduce the concept of Quantum Graphs, their associated function spaces, and operators defined on these spaces.
 Heavy references throughout to EKK, Kuchment, I guess Olaf \& Post too maybe?
 
-\section{Introduction}
-lit review part if it's needed, although we might have done this in the introduction chapter tbh.
-If so we won't need to revisit the Kuchment nor Olaf \& Post references again, and can just go straight to the definitions and throw in the stuff by EKK etc.
-
 \section{Notation, Definitions, and Conventions} \label{sec:QG-Notation}
-\tstk{do we ever use this definition? Maybe keep it anyway just so we can make the observations below}
 \begin{definition}[Graph] \label{def:Graph}
 	Let $\Lambda\subset\naturals$ and $V=\clbracs{v_j \ \vert \ j\in\Lambda}$ be a set of labels $v_j$ bijective to $\Lambda$ via the map $j\rightarrow v_j$.
 	Let $E\subset V\times V$ be a set of \textit{unordered} pairs $\bracs{v_j,v_k}\in E$ where $j,k\in\Lambda$.
@@ -16,7 +11,7 @@ If so we won't need to revisit the Kuchment nor Olaf \& Post references again, a
 	Elements of the set $V$ are called \textit{vertices} of the graph $\graph$ and elements of $E$ are referred to as \textit{edges} of $\graph$. \newline
 	We say $\graph$ is a \textit{finite graph} if $\Lambda$ (and consequently $V$ and $E$) are finite, and similarly say $\graph$ is an \textit{infinite graph} if $\Lambda$ is infinite.
 \end{definition}
-Definition \ref{def:Graph} is not as general as others that can be found in graph theory, however we work with this definition because it is sufficient for our later purposes so the loss of generality and certain features is not an issue.
+Definition \ref{def:Graph} is not as general as others that can be found in graph theory, however we work with this definition because it is sufficient for our purposes.
 We highlight some features this definition imposes on our graphs that may be seen as ``non-standard" or ``restrictive" below.
 \begin{itemize}
 	\item Definition \ref{def:Graph} uses a notation that suggests that there is at most a single edge $I_{jk}$ connecting any pair of vertices (and similarly at most one loop $I_{jj}$), and in the definitions that follow this will come across as implying there can only be one edge with the same direction between two vertices.
@@ -25,11 +20,11 @@ We highlight some features this definition imposes on our graphs that may be see
 	However we elect to save on the notational (and mathematical) load by not including this superscript simply because will not be interested in many systems that require this functionality, and where it is required the meaning of the notation we later introduce is implicit either way.
 	Allowing for this possibility also doesn't change any of the results presented here, and if we do need to consider a graph with multiple edges between two vertices we will be explicit in how we are handling the specific situation.
 	\item The labels $v_j$ are slightly unnecessary, as one can just work directly with the index set $\Lambda$.
-	Because we will be wanting labels for our vertices and edges when we come to consider quantum and embedded graphs, we include them in this definition for consistency even though they are not strictly necessary.
+	However we will be wanting labels for our vertices and edges when we come to consider quantum and embedded graphs, so we include them in this definition for consistency.
+	\item It is also worth mentioning that although we have not stated it in definition \ref{def:Graph}, we will be assuming throughout this report that all of our graphs are connected.
+	That is, for any pair of vertices $v_j, v_k\in V$ there exists a finite set of vertices $v_{n_m}, m=1,...,N\in\naturals$ such that $I_{jn_1}, I_{n_1 n_2}, ... , I_{n_m k}\in E$.
+	In the case of our graphs being directed (as is the case with the remaining definitions that follow) for the purposes of connectedness we ignore any direction that is assigned to an edge. 
 \end{itemize}
-It is also worth mentioning that although we have not stated it in definition \ref{def:Graph}, we will be assuming throughout this report that all of our graphs are connected.
-That is, for any pair of vertices $v_j, v_k\in V$ there exists a finite set of vertices $v_{n_m}, m=1,...,N\in\naturals$ such that $I_{jn_1}, I_{n_1 n_2}, ... , I_{n_m k}\in E$.
-In the case of our graphs being directed (as is the case with the remaining definitions that follow) for the purposes of connectedness we ignore any direction that is assigned to an edge. \newline
 
 Having laid out this basis for the concept of a graph, we can now present some further definitions.
 \begin{definition}[Directed Graph] \label{def:DirectedGraph}
@@ -45,8 +40,7 @@ Loops are still permitted by this definition, however the choice of a direction 
 \begin{definition}[Quantum Graph] \label{def:QuantumGraph}
 	A \textit{quantum graph} is a directed graph $\graph = \bracs{V,E}$ where each edge $I_{jk}\in E$ is assigned a length $l_{jk}>0$ and associated interval $\sqbracs{0,l_{jk}}$.
 \end{definition}
-Note that there is no requirement for the edges (if they are present) $I_{jk}$ and $I_{kj}$ to have the same length, we shall see later why we wish to allow this.
-Quantum graphs will be the objects that the theory of this section will describe, however they are not the starting point for our physical problems \tstk{chapter/section ref}. \newline
+Note that there is no requirement for the edges (if they are present) $I_{jk}$ and $I_{kj}$ to have the same length, we shall see later why we wish to allow this. \newline
 
 We require two further definitions that will enable us to link a structure in physical space to the more abstract Quantum graph.
 \begin{definition}[Embedded Graph] \label{def:EmbeddedGraph}
@@ -141,6 +135,8 @@ Again we briefly discuss some potential concerns and conventions.
 \end{itemize}
 Finally, an assumption that we shall make from this point onwards in this work is that the edges or curves of an embedded graph are always the straight line segments that join the two vertices at either end.
 Much like excluding the possibility of loops, allowing for curved edges is not a major issue (simply introducing some small complications in the expressions one gets when reducing variational problems to quantum graph ones) but we will not be interested in systems that exhibit curved edges, and so opt for the simplicity that making this assumption comes with.
+Quantum graphs will be the objects that the theory of the remainder of this chapter section will describe, although they are not the starting point for the domains of our model (section \ref{sec:OurPhysicalSetup}). 
+Rather we will begin with a periodic embedded graph, and then under our modelling assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} we will obtain an equivalent problem on the period graph, which gives rise to a quantum graph to which we can apply the following theory.
 
 \subsection{Connection and Summation Conventions} \label{sec:GraphSimDefinitions}
 We now outline some notation that we shall use in the rest of the report.
@@ -153,11 +149,10 @@ We assign the obvious similar meaning to $j\conRight k$ as a summation index, an
 	\sum_{v_j\in V}\sum_{j\conLeft k} &= \sum_{v_j\in V}\sum_{j\conRight k} = \sum_{I_{jk}\in E},
 \end{align*}
 which provides us a succinct notation for summing over all the edges of $\graph$ by referencing their vertices.
-We will mainly use this notation when dealing with integrals taken with respect to singular measures supported on $\graph$, as outlined in \tstk{section ref}.
+We will mainly use this notation when dealing with integrals taken with respect to singular measures (section \ref{sec:GraphSigularMeasuresDef}) supported on $\graph$.
 
 \subsection{Embedded Graphs and Singular Measures} \label{sec:GraphSigularMeasuresDef}
-To complete in this section, we now briefly setup our framework that will provide us with a link between quantum graph problems (as in section \ref{sec:DEonQG}) and variational problems posed with respect to singular measures (which are the focus of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}). \newline
-
+To complete in this section, we now briefly setup the framework that will link quantum graph problems (as in section \ref{sec:DEonQG}) and variational problems posed with respect to singular measures (which are the focus of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}).
 \begin{definition}[Singular Measure on an (Embedded) Graph]
 Let $D\subset\reals^d, d\geq2$ and $\graph=\bracs{V,E}$ be a graph embedded into $D$ (note this encompasses period cells of periodic graphs).
 On $D$ and for each $I_{jk}\in E$ define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$, so for some Borel set $B\subset D$ we have that 
@@ -189,17 +184,18 @@ For a graph embedded into a 2D or 3D domain, the singular measure is illustrated
 		Note that the vertices of the graph are inflated for visual effect.}
 	\end{subfigure}
 	\caption{\label{fig:Diagram_SingularMeasures} Visual illustration of singular measures of a graph in (\ref{fig:Diagram_SingularMeasure2D}) 2D and (\ref{fig:Diagram_SingularMeasure3D}) 3D. }
-\end{figure} \newline
+\end{figure}
 
-As discussed in \tstk{section reference}, a variational formulation is necessary for us to pose equations on singular domains.
+As discussed in section \ref{sec:ReportOverview}, a variational formulation is necessary for us to pose equations on singular domains.
 When our structure corresponds to an embedded graph, we will be using the singular measure on that graph as the foundations for our variational formulation.
-Intuitively the singular measure on a graph provides us with a measure that only respects the lower-dimensional structure of the graph, and thus integration (inherent to a variational problem) also ``respects" this structure.
-However this is discussed in greater detail in section \ref{sec:ScalarExample}.
+Intuitively the singular measure on a graph provides us with natural way to ``respect" the lower-dimensional structure of the graph, and thus integration (inherent to a variational problem) also ``respects" this structure.
+The precise nuances of adopting these measures is the focus of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
 
 \section{Differential Equations on Quantum Graphs} \label{sec:DEonQG}
-Strictly speaking in this section we will be defining differential operators on function spaces that involve quantum graphs, in order to be consistent with several developments in the literature \tstk{refs!!!}.
+In this section we will be working with differential operators on function spaces that involve quantum graphs, in order to be consistent with several developments in the literature.
 However we shall see that such operators and the functions in their domains are broken down in such a way that they can be thought of as a system of differential equations on intervals, coupled through (somewhat non-standard) boundary conditions.
-As such we will begin this section by defining several function spaces that we wish to work on, then providing examples of the types of boundary conditions that we might want to consider, before finally providing a concrete example of a differential operator on a quantum graph. \newline
+As such we will begin this section by defining several function spaces that we wish to work on, then providing examples of the types of boundary conditions that we might want to consider, before finally providing a concrete example of a differential operator on a quantum graph. \tstk{something like reader is referred to SOME REFS, which is where the information presented here is transcluded from.}
+\newline
 
 Since quantum graphs come with lengths (and intervals) associated to their edges, we can define function spaces on them by combining function spaces on these intervals.
 As such we define
@@ -214,7 +210,7 @@ A function $u\in L^2\bracs{\graph}$ is then determined by it's form on each edge
 Because we will mainly be working on the edges of our graphs, we define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of $u$ to the edge $I_{jk}$, extended by zero to the whole of $\graph$.
 Because we associate the directed edge $I_{jk}$ to the interval $\sqbracs{0,l_{jk}}$, for a function $u\in L^2\bracs{\graph}$ we will sometimes use the shorthand $u_{jk}\bracs{v_k}$ to mean the value of the function $u_{jk}$ at the point in $\sqbracs{0,l_{jk}}$ corresponding to $v_k$, and similarly for $u_{jk}\bracs{v_j}$.
 If $u$ is continuous at the vertex $v_j$, we will use the notation $u\bracs{v_j}$ for this value.
-A further complication arising from the fact that our edges are directed is that it is necessary for us to adopt a notion of ``directional derivative" for functions $u_{jk}$ at the ends of the edges (\tstk{EKK paper}), and so we adopt the following convention;  \tstk{this is opposite to EKK}
+A further complication arising from the fact that our edges are directed is that it is necessary for us to adopt a notion of ``directional derivative" for functions $u_{jk}$ at the ends of the edges \cite{ershova2014isospectrality}, and so we adopt the following convention\footnote{Note that this is the opposite convention to that of \cite{ershova2014isospectrality}.};
 \begin{align*}
 	\diff{}{t}u_{jk}\bracs{v_j} &= -u'_{jk}\bracs{v_j}, \\
 	\diff{}{t}u_{jk}\bracs{v_k} &= u'_{jk}\bracs{v_k}.
@@ -253,7 +249,7 @@ If continuity of $u$ is not imposed at a vertex, is it still possible to pose co
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j, &\quad \alpha_j\in\reals, \\
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \alpha_j \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}, &\quad \alpha_j\in\reals.
 \end{align*}
-These conditions will not be of interest to us, and the theory we present in this section is simply a selection of the more general work of \tstk{references} which deals with this additional generality. \newline
+These conditions will not be of interest to us, and the theory we present in this section is simply a selection of the more general work of \cite{ershova2014isospectrality}, \cite{ershova2016isospectrality} which deal with this additional generality. \newline
 
 We now provide a simple example of a differential operator $\mathcal{A}$ on $\graph$, however it is not hard to see how the construction can be made general.
 First we must provide a domain for $\mathcal{A}$ by deciding how much regularity we want in our functions, and the vertex conditions we want to impose;
@@ -292,12 +288,12 @@ The reason for us making this equivalence so explicit is because the operator-th
 \section{Spectral Problems and the M-Matrix} \label{sec:M-MatrixTheory}
 Since we are primarily looking to consider wave-guidance problems in electromagnetism, we will often be concerned with determining the spectrum of a problem as the eigenvalues relate to the frequencies that can be guided by our fibre designs.
 In particular we will be looking to determine whether such a spectrum exhibits band-gaps, and ideally a method to explore the spectrum numerically.
-Because of our use of the Gelfand transform \tstk{ref to part when we say we use this} to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
+Because of our use of the Gelfand transform (section \ref{sec:ModellingAssumption2}) to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
 This prompts us to look for tools that enable us to determine the spectrum of one of these smaller problems both procedurally and efficiently, crucial if a numerical approach is to be used but also helpful if an analytic approach can be taken too.
 In this section we will be discussing the tool that we are going to use; the $M$-matrix, and why it is appropriate for both a numerical and analytic approach to solving determining the spectra of quantum graph problems. \newline
 
 To properly define the $M$-matrix we will need to introduce a few new concepts.
-As discussed in \tstk{lit review section that involves the M-matrix}, the $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples, and what we present here is simply the framework that we require without any of the generality of this theory.
+As discussed in section \ref{sec:GraphLitReview}, the $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples, and what we present here is simply the framework that we require without any of the generality of this theory.
 Let $\mathcal{A}$ be (an operator that defines) a quantum graph problem on a quantum graph $\graph=\bracs{V,E}$.
 Define the maps
 \begin{align*}
