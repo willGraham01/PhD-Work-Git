@@ -1,5 +1,4 @@
 \chapter{Introduction} \label{ch:Intro}
-This chapter should essentially be a lit review, whilst also explaining how we are going to treat the physical systems we want to represent mathematically.
 
 \section{Motivation} \label{sec:ProjectMotivation}
 Optical fibres are the \textit{de facto} industry standard for large telecommunications systems, thanks to their ability to transmit information quickly and with far less signal loss than other methods (such as metal cables).
@@ -74,8 +73,10 @@ Of course we also require a system of governing equations to complete our model,
 For the time being it is sufficient to assume we have some system of governing equations that describe wave propagation down a PCF; and we are concerned with determining whether the structure of the PCF admits frequency (equivalently spectral) band-gaps in these equations. \newline
 
 We consider a PCF as an object with a lattice-like structure in the cross-sectional (transverse) $\bracs{x_1,x_2}$ plane, which is extruded into the $x_3$ direction to produce a fibre whose structure is translation invariant down it's axis.
-The cross-sectional lattice (or structure, as we will refer to it henceforth) will itself be a repeating pattern composed of a number of unit cells, with the thickness of the lattice ``struts" being of some finite (but small) length $l$.
-This is schematically sketched in figure \ref{fig:Diagram_ThinStructurePeriodCell}, where for consistency later we have also given a length scale $r$ to lattice ``junction regions".
+The cross-sectional lattice (or structure, as we will refer to it henceforth) will itself be a repeating pattern composed of a number of unit cells, with the thickness of the lattice ``struts" being of some finite (but small) width $l$.
+This is schematically sketched in figure \ref{fig:Diagram_ThinStructurePeriodCell}, where for consistency later we have also given a length scale $r$ to lattice ``junction regions"\footnote{There is some ambiguity in specifying the shape of a ``junction region"; but it is sufficient to simply think of these as regions in our domain where lattice struts overlap.
+In figure \ref{fig:Diagram_ThinStructurePeriodCell} for example, we have taken the ``junction regions" as circular, however one could also take them as square (or as slightly smaller circles, even).
+This is not a major issue as the convergence results of \cite{exner2005convergence} and \tstk{kuchment convergence stuff} rely only on how the area of these ``junction regions" scales with powers of $r$.}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -128,14 +129,17 @@ Having a finite domain is appealing from a numerical perspective for obvious pra
 \subsection{Singular Structure Lattice} \label{sec:ModellingAssumption3}
 Finally, we assume that the lattice in the cross-section is composed of a singular structure, rather than a thin structure.
 Physically this assumption can be interpreted as saying that the lattice thickness is much smaller than the unit cell size.
-Mathematically this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$ (chapter \ref{ch:QuantumGraphs}); and colloquially we can describe the physical system that as that obtained by setting $l=r=0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
+Mathematically this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$ (chapter \ref{ch:QuantumGraphs}); and colloquially we can describe the physical system that as that obtained by letting $l,r\rightarrow0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
 The foremost being that we now require some form of understanding as to how we can pose (differential) equations on our domain now that it is essentially a one-dimensional subset of the unit cell $\sqbracs{0,1}^2$.
 This requires us to consider a variational formulation with respect to non-Lebesgue measures; and construct appropriate function spaces to make sense of the concepts of gradient, curl, and divergence.
-This allows us to consider systems such as Maxwell's equations on these singular structures - we will revisit this point in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
+This allows us to consider systems such as Maxwell's equations on these singular structures - we will revisit this point in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}. \newline
+
 Secondly we should justify why this is helpful to us and how we can expect the results we obtain from this new setup to relate back to those for a thin-structure PCF.
 This is the subject of section \ref{sec:GraphLitReview}, but for now it is enough to say that a framework for working with (differential) equations on graphs already exists and provides us with some further analytical tools that will aid us later (see chapter \ref{ch:QuantumGraphs}).
 As for how we maintain relevance to the original thin-structure system; there exist convergence results which justify the use of a singular-structure model as a formal limit of a sequence of thin-structure problems with $l,r\rightarrow0$, although interestingly the relative scaling between these two scales as they tend to 0 can change the resulting ``limit" problem we obtain.
 Again, we shall discuss this in section \ref{sec:GraphLitReview}.
+
+\tstk{section on variational problems on singular structures (IE Zhikov lit review)????}
 
 \subsection{Resulting System} \label{sec:OurSystem}
 We can summarise the affects of the assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} as follows.
@@ -147,15 +151,88 @@ The result is a family of variational problems on the unit cell of (the graph de
 We will assume this domain structure throughout the remainder of the report, and will use it as our starting point when we consider examples in chapter \ref{ExampleSystems}.
 In chapters \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}, \ref{ch:VectorEqns}, we will simply take a graph and variational formulation as our starting point for the theory that is presented in those sections, with the underlying relevance to wave-guidance problems in PCFs having been detailed here.
 
-\section{Singular Structure Problems} \label{sec:GraphLitReview}
-\tstk{
-Kuchment and Olaf \& Post will most likely also crop up here, and we should probably also mention quantum graphs too.
-NEED TO FIND THE KUCHMENT STUFF ON CONVERGENCE TO QG, AS CURRENTLY ONLY HAVE HIS BOOK ON QG THEORY.
-May even be worth breaking this section into two - one for just the lit review and the other for how we are going about manipulating the physical setup to make it amiable to modelling, and how we will go about this.}
-you promised a link between singular-structure and thin-structure systems, so you need to give it here (Olaf, Kuchment).
-This section is also the lit-review part of chapter 2 (although we can move it across if it doesn't read well), so that needs to be done too!
+\section{Thin and Singular Structure Problems} \label{sec:GraphLitReview}
+Quantum graphs have existed in some form (although not necessarily under that name) since the 1930s \cite{berkolaiko2013introduction} as surrogate models for various processes in chemistry, physics (including optical fibres) and mathematics (\tstk{kirill's elasticity paper with QGs?}).
+However there has only recently been a push to develop a standard basis for the theory in the past few decades, with works produced before this time tending to focus on specific examples relevant to the application being considered.
+At heart, quantum graph are graphs that are equipped with some concept of length or bulk; and quantum graph problems are simply a framework for (differential) operators on such graphs.
+This is a departure from combinatorial graphs, where the vertices of the graph are the significant features and the edges merely represent some connections or processes.
+Instead quantum graph problems focus largely on the lengths (and thus ``physical space") occupied by the edges, with the role of the vertices being reduced to that analogous to a boundary in more familiar differential equation settings.
+A comprehensive introduction to the field can be found in \cite{berkolaiko2013introduction}, in which the main concepts and techniques for quantum graphs are gathered.
+There have been several further advances in the theory of quantum graphs that will be relevant to our work though, notably surrounding analysis of spectral problems. 
+It has been shown that by utilising the theory of boundary triples \tstk{refs!} and in particular an object called the Weyl-Titchmarsh M-function, spectral problems on quantum graphs can be drastically reduced in complexity \tstk{something like EKK \cite{ershova2014isospectrality}, and the other EKK? \cite{ershova2016isospectrality}}, or at least reframed in a manner more open to analysis.
+This has opened up routes for exploration of resolvent and spectral properties of quantum graph problems, as well as producing tools and techniques that aid in the solution to such problems on a practical level.
+Indeed with enough information about the spectral problem to be solved and the underlying quantum graph, it is possible to reduce the task of determining the spectrum of a (differential) operator to that of finding the eigenvalues of a finite matrix\footnote{This matrix itself being the particular form of the Weyl-Titchmarsh M-function in the context of quantum graphs}.
+This last development is of particular importance to us; as it provides a tool that can take us to the solution of any (spectral) quantum graph problems that we come across, and opens us potential for numerical schemes should exact analysis prove difficult.
+We will highlight this idea again in section \ref{sec:M-MatrixTheory}, when we have presented some of the theory of quantum graphs, and discuss it in more detail in section \ref{sec:NumericalMethodsDiscussion}.
+For now; having provided some background on quantum graph problems we now look to highlight the link between them, the structures that arise out of our modelling assumptions, and how they retain relevance to models for PCFs. \newline
+
+The modelling assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} move us away from a structure that can be physically fabricated and into a singular-structure domain instead.
+An important question to address at this point is whether the resulting singular-structure problem is still relevant to the original thin-structure problem.
+It is not hard to believe that there will be some link between quantum graph problems and the singular-structure problems that we are going to propose, given that quantum graphs provide a framework for working on graphs with ``physical presence", which is precisely what our lattice-structures have been reduced to.
+The exact nature of how one moves from the singular-structure (variational) problem to a quantum graph problem is covered in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}, so we do not elaborate further here.
+However it is important that we provide the link (hinted at in section \ref{sec:ModellingAssumption3}) between the original thin-structure problem modelling a PCF and quantum graph problems.
+This link largely comes about due to the work of \cite{exner2005convergence} and \tstk{kuchment convergence stuff}.
+These works are presented in a setting far more abstract than that which we require; in particular the setting of \cite{exner2005convergence} proves convergence results for graph-like manifolds, so we restrict ourselves to discussing the implications for work in our context.
+Being somewhat blas\'e, we can summarise the link between thin-structure problems and quantum graphs by saying that the quantum graph problems are (effectively) limits of thin-structure problems (figure \ref{fig:ThinToSingularStructure}).
+A more detailed explanation is as follows; suppose we have some connected, lattice-like domain $D$ such as that in figure \ref{fig:Diagram_ThinStructurePeriodCell}, and with two length scales $l$ and $r$ which capture the characteristic thickness/size of the lattice struts and size of the junction regions respectively.
+For each $l,r>0$ assume that we pose a system of differential equations on our domain $D$\footnote{For clarity, these being the \textit{same} system of equations for each $\bracs{l,r}$ pair, only the size of the domain is changing}, and we are interested in computing the eigenvalues of this system.
+Denote this problem by $\mathcal{P}_{l,r}$, and the resulting spectrum by $\clbracs{\sigma}_{l,r}$.
+One can then ask the question of what happens to $\clbracs{\sigma}_{l,r}$ as $l,r\rightarrow0$; the answer being that $\clbracs{\sigma}_{l,r}$ converges\footnote{In an appropriate notion of convergence for sets.} to the spectrum of a quantum graph problem.
+We denote this quantum graph problem by $\mathcal{P}_0$ and it's spectrum by $\clbracs{\sigma}_0$.
+This means that in the limit as the thin-structure becomes increasingly fine, the spectrum of a problem on the thin structure approaches the spectrum given by a quantum graph problem.
+By taking the assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3}, we are making the approximation that our fibre's microstructure is of a scale small enough to be approximated by this quantum graph problem $\mathcal{P}_0$. \newline
+
+Interestingly the problem $\mathcal{P}_0$ and thus the spectrum $\clbracs{\sigma}_0$ depends on the relative scaling of $l$ and $r$ \cite{exner2005convergence} \tstk{sasha said that this is actually not vertex area - vol. area but rather something to do with the contact area of the edges and vertices.}.
+As $l$ quantifies the size of the lattice struts, which in the limit $l\rightarrow0$ become graph edges, $l$ effectively determines how fast the edges are shrinking.
+So for each $l>0$ we can define an ``edge area" $V_{\mathrm{edge}} \propto l^{\alpha}$ for some power $\alpha$, which decays to 0 as $l\rightarrow0$.
+There is a similar concept of ``vertex area" $V_{\mathrm{vert}} \propto r^{\beta}$ which $r$ provides.
+Then depending on the relative size of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$ as $l,r\rightarrow0$ simultaneously; the problem $\mathcal{P}_0$, or rather the vertex conditions in this problem (see section \ref{sec:sec:DEonQG}) are different.
+\begin{itemize}
+	\item In the case when $V_{\mathrm{edge}} \ll V_{\mathrm{vert}}$, the vertices dominate in the limit problem.
+	This case is also referred to as ``Dirichlet decoupling" - the result is a quantum graph problem where the boundary conditions at the vertices require that the solution take the value 0 at each of these points.
+	This makes $\mathcal{P}_0$ merely a system of independent (that is, decoupled) ODEs on the edges of the graph.
+	Intuitively we can think of this as saying that; with the edges decaying faster than the vertices, the vertices are large enough to prevent any interaction between any edges that share a common vertex.
+	\item In the case when $V_{\mathrm{edge}} \gg V_{\mathrm{vert}}$, the edges dominate in the limit problem.
+	This results in a quantum graph problem $\mathcal{P}_0$ where the boundary conditions at the vertices  are strict matching conditions.
+	That is; the functions we are solving for are required to be continuous across at each vertex, and derivatives of functions at the vertex are required to sum to zero (the coupling constant $\alpha=0$ in a Kirchoff condition).
+	Intuitively it can be thought that $V_{\mathrm{vert}}$ decaying faster than $V_{\mathrm{edge}}$ results in the vertices disappearing from the system, and with nothing to separate the edges, function values must match where there is overlap.
+	\item In the case when $V_{\mathrm{edge}} \approx V_{\mathrm{vert}}$, we arrive at a quantum graph problem that falls between the other two cases.
+	Namely the boundary conditions at the vertices still require continuity of the solution at the vertices, but conditions on the derivates are relaxed.
+	Instead one can obtain Kirchoff-like conditions at the vertices for the derivates; and the coupling constants that appear in these conditions are related to the ratio of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$.
+	In this case we think of the vertices and edges shrinking at a rate which keeps them of comparable size, so the effect of decoupling the solutions (due to the vertex area) is balanced out by the need for consistency across the vertices (the effect of the edge area).
+\end{itemize}
+
+This neatly ties together the variational problems that we will consider as a result of our assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3}, quantum graph problems, and their relevance to thin-structure PCF models.
+The variational problems give provide us with equivalent quantum graph problems, which serve as approximations to PCF structures in the limit of small PCF cross-sectional microstructure.
+Chapter \ref{ch:QuantumGraphs} elaborates on the ideas that have been presented in our review of the existing theory for quantum graphs, providing the formal statement of any definitions and results that we require for our work.
+In chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} we will demonstrate how a variational problem on a singular structure is equivalent to a quantum graph problem that coincides with the $V_{\mathrm{edge}} \gg V_{\mathrm{vert}}$ case; whilst in chapter \ref{ch:ExampleSystems} we will briefly explain how to obtain a quantum graph problem that coincides with the $V_{\mathrm{edge}} \approx V_{\mathrm{vert}}$ case.
 
 \section{Overview of Research} \label{sec:ReportOverview}
-Essentially a commentary on each section of the report, standard ending to the introductory chapter which is effectively an introduction-summary :L.
+In this chapter we have provided some motivation for the kinds of problems we will be considering later, whilst also touching on several of the advantages and nuances of taking this approach.
+How the topics discussed in this section fit together, including what we will be pursuing in this report, is illustrated in figure \ref{fig:Diagram_RelationBetweenMathematicalFields}.
+\begin{figure}[b!]
+	\centering
+	\includegraphics[scale=0.75]{Diagram_RelationBetweenMathematicalFields.pdf}
+	\caption{\label{fig:Diagram_RelationBetweenMathematicalFields} A visualisation of the topics covered in this chapter, how they link together and the research which we shall pursue.}
+\end{figure}
+Current models for PCFs fall broadly into three categories (section \ref{sec:ExistingPCFModels}):
+\begin{itemize}
+	\item Numerical schemes that look to solve systems of governing equations for a specific fibre geometries.
+	These can provide accurate band-gap plots for the fibre geometry of interest, but do not provide any general insights into how the influence of the various PCF parameters.
+	\item Analytical models that make several simplifying assumptions have had success in replicating broad features of PCF band-gap plots.
+	However they are limited in the information they can provide about the fibres themselves.
+	\item Intermediate models have been proposed that aim to strike a balance between these two approaches, which have seen success and do not suffer (to the same extent) the weaknesses of the other models.
+\end{itemize}
+The work in this report aims to study variational problems that can be seen as approximations to PCFs; looking to work analytically to provide insight into how the cross-sectional geometry of a fibre influences it's spectral band-gaps, and proposing numerical approaches when an analytic approach becomes unfeasible. \newline
 
-This section also needs to provide the link between the physical systems we described in \ref{sec:MathTreatmentPhysSystems}, the lit review in \ref{sec:GraphLitReview}, and chapters 2,3,4.
+We have highlighted that quantum graph problems naturally arise as a limit of thin-structure problems (section \ref{sec:GraphLitReview}); which solidifies the link between the singular-structure variational problems we will consider and thin-structure PCF models, through quantum graph problems.
+By utilising developments in the theory of boundary triples and the existing theory for quantum graphs (section \ref{sec:GraphLitReview}) we can make the task of solving quantum graph problems easier still, and potentially open to rather general numerical schemes (section \ref{sec:NumericalMethodsDiscussion}).
+The quantum graphs framework will also allow us to pursue analytical analysis of the problems we want to consider, helping us to strike a balance between modelling specific fibre geometries and providing more general insights into the effect of fibre geometry on the spectrum.
+We will present the theory on quantum graphs that we require in chapter \ref{ch:QuantumGraphs}. \newline
+
+The starting point for much of our work will be singular-structure variational problems, however this starting point is motivated by physical (thin-) structures of PCFs and use of the assumptions in section \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3}.
+It is helpful to consider these modelling assumptions though, as doing so raises several of the issues that will need to be addressed to maintain the relation between our work and physical PCFs.
+In particular, we are required to adopt a variational framework for our model that respects the lower-dimensional singular-structure we obtain. \tstk{Zhikov review section}
+In turn this requires some analysis of how we can interpret concepts like gradient, curl, and divergence, which is the subject of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
+We also look to demonstrate the equivalence between singular-structure problems and quantum graph problems in these chapters, and in chapter \ref{ch:ExampleSystems} will consider some examples that arise from problems in wave-guidance. 
+Chapter \ref{ch:Conclusion} provides a summary of the work presented and discusses further avenues for exploration, and future work that could be undertaken.
