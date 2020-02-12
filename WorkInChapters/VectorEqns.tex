@@ -1,5 +1,4 @@
 \chapter{Vector Equations} \label{ch:VectorEqns}
-\tstk{SIM NOTATION NEEDS ADDRESSING!}
 Chapter \ref{ch:ScalarEqns} introduced the theory of Sobolev spaces $\gradSob{D}{\nu}$ with respect to arbitrary (Borel) measures $\nu$, and how we can make sense of the notion of ``derivative" and pose problems in these spaces.
 Also investigated was how (under suitable regularity assumptions) the variational problems that can be posed are reduced to Quantum Graph problems, when the measure $\nu$ supports a graph embedded into the domain $D$. \newline
 
@@ -120,17 +119,14 @@ But then applying density arguments for $\smooth{\reals^3}$ in $\ltwo{\reals^3}{
 \tstk{what about plane-measure case? Can't get that to work still - can in-plane directions are arbitrary l2 functions, but can't prove that orthogonal part to plane is zero.}
 
 \section{The $\ktgrad$ operator} \label{sec:ktOperator}
-As discussed in chapter \ref{ch:Intro}, the physical systems of interest to us are those involving wave-guidance .
-In particular we will typically be seeking solutions in the form of a travelling wave down the axis of the wave-guide, and solving for the transverse components of the wave in the cross-section of the guide.
-In such problems it is standard practice to take a Fourier transform in the direction along the wave-guide axis; in our case this coincides with the $x_3$ co-ordinate direction.
+We now move into a context that better suits the domain setups that we described in section \ref{sec:OurPhysicalSetup}.
+Throughout this section we assume we have some period cell $\ddom$ in which is the period graph $\graph=\bracs{V,E}$ of some larger periodic embedded graph, and we denote by $\ddmes$ the singular measure of $\graph$.
+Because we will be making use of Fourier and Gelfand transforms (sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption2}), it will be necessary for us to consider slightly modified gradient, curl, and divergence operators.
 As such we introduce the Fourier variable $\wavenumber$ and accordingly adjust the $\grad$ operator to account for this transform, denoting by $\kgrad$ the operator that acts component-wise as
 \begin{align*}
 	\kgrad := \begin{pmatrix} \partial_1 \\ \partial_2 \\ i\wavenumber\end{pmatrix}.
 \end{align*}
-In addition to the translation invariance of our domain in the $x_3$-direction (section \ref{sec:PhysicalSystem}) \tstk{this needs to exist at some point!} we will also be taking a Gelfand transform in our cross-section (the $\bracs{x_1,x_2}$-plane).
-However the structure in the cross section is a periodic embedded graph, so we obtain a family of problems on the period cell $\graph\subset\ddom:=\bracs{0,1}^2$ parametrised by the quasi-momentum $\qm$.
-Denote by $\ddmes$ the singular measure of $\graph$.
-Thus in the systems that we are considering it will be necessary for us to consider the operator $\ktgrad$ which component-wise is acts as
+Then due to our Gelfand transform in the periodic cross-section, we have to make a further adjustment to $\kgrad$ and consider the operator $\ktgrad$ which component-wise is acts as
 \begin{align*}
 	\ktgrad := \kgrad + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}.
 \end{align*}
@@ -150,8 +146,6 @@ We will adopt the notation $\kcurlZero{\ddom}{\ddmes}$ for the set of ``$\wavenu
 	\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z}\in W^{\wavenumber}_{\mathrm{grad}}}.
 \end{align*}
 It will be shown in the relevant sections that these sets are invariant under changes to $\qm$ hence we only write the superscript $\wavenumber$ on these sets. \newline
-
-For the remainder of this section we will also assume our usual set-up; we have some period cell $\ddom$ in which is the period graph $\graph=\bracs{V,E}$ of some larger periodic embedded graph, and we denote by $\ddmes$ the singular measure supported on the edges of $\graph$.
 
 \subsection{$\kt$-gradients} \label{sec:ktGradients}
 In this subsection we will work towards characterising $\bracs{\wavenumber,\qm}$-tangential gradients.
@@ -885,7 +879,7 @@ Noting that any functions that satisfy two of \eqref{eq:CurlEdgeEquations1}-\eqr
 The theory presented in this chapter serves as justification and motivation for the problems that we will be considering in subsequent chapters and work.
 We provide a construction of the Sobolev spaces $\curlSob{D}{\nu}$ for a domain $D$ and Borel measure $\nu$, which comes in much the same ilk as that in chapter \ref{ch:ScalarEqns}.
 Some examples of the implications of this construction are discussed in section \ref{sec:CurlExamples}, however we do not develop the general theory any further.
-Instead the focus of section \ref{sec:ktOperator} has been solely on the spaces we will be using in our wave-propagation problems (see chapter \tstk{chapter where we discuss the physical wave-guide system, probably intro}), and so we move onto the analysis of $\kt$-curls, -gradients, and $\ktgrad$-divergence free conditions on graphs. \newline
+Instead the focus of section \ref{sec:ktOperator} has been solely on the domains we will be using in our wave-propagation problems (section \ref{sec:OurPhysicalSetup}), and so we move onto the analysis of $\kt$-curls, -gradients, and $\ktgrad$-divergence free conditions on graphs. \newline
 
 Construction and analysis of $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ enables us to make sense of variational problems such as \eqref{eq:CurlCurlEquationDivFree} and the analysis of section \ref{sec:ktOperator} provides us with a means to reformulate this problem as a more familiar and accessible system of differential equations.
 The operator $\ktgrad$ is our primary concern because it appears in our wave-propagation problems after taking a Fourier transform in the direction of wave-propagation (introducing the variable $\wavenumber$ and removing the $x_3$-dependence) and a Gelfand transform in the periodic cross-section.
