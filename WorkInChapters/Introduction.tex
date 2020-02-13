@@ -5,9 +5,10 @@ Optical fibres are the \textit{de facto} industry standard for large telecommuni
 The technology has rapidly developed since the first optical fibres were fabricated in the 1970s \cite{knight2003photonic} and optical fibres in use today present a balance between several competing factors to deliver a reliable performance.
 Factors such as (optical) loss are inherent, brought about by the materials needed to build the fibres; whilst other factors can be influenced by design (group-velocity dispersion) or the fabrication process (which can lead to imperfections and polarisation effects).
 Despite the technological developments of the fibres, the underpinning physical processes remain unchanged --- all improvements to the technology have been incremental and largely centre around the manufacturing process.
-The fibre will have a core made of a dielectric (non-conducting) material with a given refractive index and will be surrounded by a cladding; another dielectric material of a lower refractive index.
-Typically the difference in refractive indices of the core and cladding is very small \tstk{silica fibres and doping, get some numbers}. 
-By choosing a lower refractive index for the cladding material than the core, modes of light\footnote{A mode of light is a mono-frequency solution to the governing equations of electromagnetism in the fibre.} can be confined to the core of an optical fibre via the phenomenon of Total Internal Reflection (TIR) \tstk{reference, cba to explain as it's not important to the report}, allowing guided propagation of light over \tstk{actual distance?} hundreds of kilometres.\newline
+The fibre will have a core made of a dielectric (non-conducting) material with a given refractive index and will be surrounded by a cladding, another dielectric material of a lower refractive index.
+In practice this is normally achieved using a core material which is simply a doped version of the cladding material, with silica and doped silica are common choices, which leads to typical differences in refractive indices of the core and cladding of around $0.001$.
+By choosing a lower refractive index for the cladding material than the core, modes of light\footnote{A mode of light is a mono-frequency solution to the governing equations of electromagnetism in the fibre.} can be confined to the core of an optical fibre via the phenomenon of Total Internal Reflection (TIR), allowing guided propagation of light over tens of kilometres (before a signal boost is required).
+Wave guidance in fibres using TIR is known as weakly guiding, and the majority of modern optical fibres utilise this method of guidance. \newline
 
 Photonic crystal fibres (PCFs) are a departure from the setup of core surrounded by cladding \cite{russell2003photonic}; instead relying on the micro-structure of the photonic crystal to alter the optical properties of the fibre it forms.
 This microstructure can cause the crystal to exhibit band-gaps; frequency ranges where there are no propagating modes of light in the crystal, despite the existence of propagating modes at lower (and/or higher) frequencies.
@@ -24,8 +25,8 @@ However PCFs have an advantage over conventional optical fibres in that their ap
 Prominent alternative applications include (but are not limited to) non-linear optics (where they offer high optical intensities per unit power, making them highly efficient) and atom and particle guidance (dielectric particles can be guided by the dipole forces exerted by light).
 Hence there has been much to motivate study of the optical properties of PCFs; and understand how the design (geometry of the fibre, fabrication material) affects these, resulting in the models based on the Maxwell equations and development of spectral convergence results for periodic problems.
 The work in this report is motivated by this application to PCFs, albeit in a slightly convoluted manner.
-In section \ref{sec:MathTreatmentPhysSystems} when we detail the systems that we are investigating; which will resemble the structure of PCFs, and also describe (and justify) the assumptions we will be using in our model.
-This will bring us through to section \ref{sec:GraphLitReview}; where we will link the system that we have arrived at in section \ref{sec:MathTreatmentPhysSystems} to the PCFs we have described here, before setting the stage for a review of the relevant theory in chapters \ref{ch:QuantumGraphs} and \ref{ch:ScalarEqns}.
+In section \ref{sec:OurPhysicalSetup} we detail the systems that we are investigating; which will resemble the structure of PCFs, and also describe (and justify) the assumptions we will be using in our model.
+This will bring us through to section \ref{sec:GraphLitReview}; where we will link the system that we have arrived at in section \ref{sec:OurPhysicalSetup} to the PCFs we have described here, before setting the stage for a review of the relevant theory in chapters \ref{ch:QuantumGraphs} and \ref{ch:ScalarEqns}.
 
 \section{Exisiting Models for PCFs} \label{sec:ExistingPCFModels}
 PCFs have been the subject of a number of models in recent years. 
@@ -39,10 +40,11 @@ Here $\mathbf{E}$ and $\mathbf{H}$ are the electric and magnetic-displacement fi
 These modes can then be used to construct an approximate band-gap plot for the fibre, with the level of precision in the computational results coming at the cost of increasing the computing time.
 Whilst this can provide detailed information about a fibre, it does not provide any insight into how the structure of the PCF has contributed or affected the resulting band-gap plot.
 Furthermore numerical schemes (particularly those based off finite elements) are known to require special treatment when being used to solve Maxwell's equations, but this in itself has been studied in detail (see for example \cite{monk2003finite}).
-To avoid the need for complex numerical solvers, models that make simplifying approximations have been proposed and found to be in good agreement with results from computations.
-In particular the ARROW model \tstk{citations, follow refs in \cite{birks2006approximate}} has seen some success in retaining the key features of band-gap plots; by considering the physical origins of band-gaps in fibres as arising from the resonant properties of the cores (treated as rods).
-The model works on the assumption that the frequency-bands of the fibre correspond to coupled modes in the array of cores that make up the fibre, so the band-gaps can be found by only considering the modes of a single core.
-These methods have made several insights into the band-gap structures, but are limited by their approximations in the information they provide about the fibres themselves.
+To avoid the need for complex numerical solvers, models that make simplifying approximations have been proposed.
+Works such as \tstk{citations, follow refs 9,10,\cite{laegsgaard2004gap} in \cite{birks2006approximate}} have seen some success in retaining the key features of band-gap plots; by considering the physical origins of band-gaps in fibres as arising from the resonant properties of the cores (treated as rods).
+These largely consider the origins of band-gaps to stem from the resonant properties of these cores; in particular the spectral bands of a PCF are taken to correspond to modes that couple between the cores.
+As a result only information about the modes of a single core, plus the relative core spacing and size, are needed to build an approximate band-gap plot.
+These methods have made several insights into the origins of band-gap structures, but are limited by their approximations in the information they provide about the fibres themselves.
 Intermediate approaches have also been proposed, for example in \cite{birks2006approximate} which proposes a model that considers the sizes of the regions separating the cores in the PCF, and provides alternative boundary conditions for when the unit cell of the fibre cross-section is hexagonal or circular.
 The method eventually relies on a numerical scheme; but only to the point of root-finding for analytic expressions, and produces band-gap plots that are in good agreement with the more complete numerical models provided certain scaling between parameters is adhered to.
 This makes such approaches useful when speed is more important than high accuracy, or when an intuitive picture of the band-structure is required. \newline
@@ -59,7 +61,7 @@ This assumption is well-grounded as these models are seeking waves that will pro
 As for the domain of the problem which describes the micro structure and hence the fibre, models assume a unit cell (commonly taken to be the unit square) and periodically extend the domain from this.
 The unit cell itself is taken to be composed of two materials with different material constants, which means $\varepsilon_{P}$ and $\mu_{P}$ become piecewise-constant functions of the $\bracs{x_1,x_2}$ variables.
 This provides a general model for any kind of periodic structure, rather than the specific geometry we will restrict ourselves to in future.
-Analysis of this model and the solution properties can be found in (for example) \cite{cooper2014bandgaps}. \tstk{doesn't Kirill have a paper on this too?}
+Analysis of this model and the solution properties can be found in (for example) \cite{cooper2014band}. \tstk{doesn't Kirill have a paper on this too?}
 The approach is to apply homogenisation theory due to the periodic structure of the domain, and introduce an appropriate representation of a periodic problem on the unit cell.
 One can then prove convergence results for various aspects of the unit-cell problem and the original periodic problem (most notably the spectrum of the problem, which determines the frequencies $\omega$ of light which can propagate). \newline
 \tstk{scaling discussion RE David \cite{birks2004scaling}}
@@ -132,26 +134,56 @@ Physically this assumption can be interpreted as saying that the lattice thickne
 Mathematically this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$ (chapter \ref{ch:QuantumGraphs}); and colloquially we can describe the physical system that as that obtained by letting $l,r\rightarrow0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
 The foremost being that we now require some form of understanding as to how we can pose (differential) equations on our domain now that it is essentially a one-dimensional subset of the unit cell $\sqbracs{0,1}^2$.
 This requires us to consider a variational formulation with respect to non-Lebesgue measures; and construct appropriate function spaces to make sense of the concepts of gradient, curl, and divergence.
-This allows us to consider systems such as Maxwell's equations on these singular structures - we will revisit this point in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}. \newline
+We will discuss the literature that is available to us in this field in section \ref{sec:VariationalProblemLitReview}, and will demonstrate how variational formulations allow us to consider wave-propagation problems on singular structures in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}. \newline
 
 Secondly we should justify why this is helpful to us and how we can expect the results we obtain from this new setup to relate back to those for a thin-structure PCF.
 This is the subject of section \ref{sec:GraphLitReview}, but for now it is enough to say that a framework for working with (differential) equations on graphs already exists and provides us with some further analytical tools that will aid us later (see chapter \ref{ch:QuantumGraphs}).
 As for how we maintain relevance to the original thin-structure system; there exist convergence results which justify the use of a singular-structure model as a formal limit of a sequence of thin-structure problems with $l,r\rightarrow0$, although interestingly the relative scaling between these two scales as they tend to 0 can change the resulting ``limit" problem we obtain.
 Again, we shall discuss this in section \ref{sec:GraphLitReview}.
 
-\tstk{section on variational problems on singular structures (IE Zhikov lit review)????}
-
 \subsection{Resulting System} \label{sec:OurSystem}
 We can summarise the affects of the assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} as follows.
 We begin with a fibre invariant along it's axis (parallel to the $x_3$-direction), and having some lattice-like structure in it's cross-section.
 We then assume that the cross-sectional lattice is periodic and infinite, occupying the whole $\bracs{x_1,x_2}$-plane; and that is is singular, rather than of a finite but thin thickness, so that we can model it as a graph embedded into the unit cell.
 The link between the graph structure and the corresponding PCF cross-section is discussed in section \ref{sec:GraphLitReview}.
-On this singular structure we will then pose an appropriate variational problem (chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}), using a combination of Gelfand- and Fourier transforms to examine a family of equivalent problems on the unit cell of the lattice.
+On this singular structure we will then pose an appropriate variational problem (section \ref{sec:VariationalProblemLitReview}), using a combination of Gelfand- and Fourier transforms to examine a family of equivalent problems on the unit cell of the lattice.
 The result is a family of variational problems on the unit cell of (the graph describing the) singular lattice which we look to solve using the theory of chapter \ref{ch:QuantumGraphs}.
-We will assume this domain structure throughout the remainder of the report, and will use it as our starting point when we consider examples in chapter \ref{ExampleSystems}.
+We will assume this domain structure throughout the remainder of the report, and will use it as our starting point when we consider examples in chapter \ref{ch:ExampleSystems}.
 In chapters \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}, \ref{ch:VectorEqns}, we will simply take a graph and variational formulation as our starting point for the theory that is presented in those sections, with the underlying relevance to wave-guidance problems in PCFs having been detailed here.
 
-\section{Thin and Singular Structure Problems} \label{sec:GraphLitReview}
+\section{Variational Problems for Singular Structures} \label{sec:VariationalProblemLitReview}
+With the assumption in section \ref{sec:ModellingAssumption3} taking us to a domain which is essentially a 1D object embedded into a 2D plane, we need to address several issues that arise from this transition.
+For clarity of terminology; we will refer to the domains we arrive at as singular-structure domains, or just singular-structures.
+Whilst visualising the domain we arrive at is not taxing, determining what happens to the boundary conditions and governing equations from our original, thin-structure problem needs addressing.
+In terms of the equations themselves; we need to justify what happens to concepts like gradients, curls and divergence now that we are working on a lower-dimensional structure.
+This then relates to the problems involving the boundary conditions; for systems like Maxwell's equations one typically imposes conditions on the derivates of the normal- and tangential-field components at the domain boundary, but without a concept of gradient, and also a different (lower-dimensional) boundary, what form should these conditions take? \newline
+
+The solution to these issues is to take a step back from the original equations, and consider it in a variational (or weak) form.
+For example; rather than considering the problem of finding some function $u$ such that 
+\begin{align*}
+	-\grad\cdot\grad u &= f, \quad\text{ in } D\subset\reals^2, \\
+	\pdiff{u}{n}\big\vert_{\partial D} &= 0,
+\end{align*}
+for an appropriate domain $D$ and forcing function $f$, we consider it's variational form
+\begin{align*}
+	\integral{D}{\grad u \cdot \grad \phi}{x} &= \integral{D}{f\phi}{x}, \quad\forall \phi\in V_{\mathrm{test}},
+\end{align*}
+for some appropriate set of test functions $V_{\mathrm{test}}$.
+Formally integrating by parts in the variational formulation then produces the original second-order differential equation plus it's boundary conditions.
+For thin-structure problems considering the variational form of a problem is a standard step in the derivation of numerical schemes like the Finite Element Method.
+However for us it provides us with an idea as to how we can produce a similar problem on a singular-structure; change the measure that the integration in the variational problem is with respect to, so that it respects the singular-structure of our domain.
+This doesn't come without costs; we now need to produce some appropriate spaces for our functions and their gradients, curls, and divergences to live in (not to mention still need to qualify what we mean by these concepts), and we also throw away several techniques - notably integration by parts.
+However we can at least pose a consistent variational problem in this setting, and we will later demonstrate that these retain a connection to PCF models. \newline
+
+In terms of work that has already been done regarding variational problems posed with respect to non-Lebesgue measures, there has been a lot of activity in the context of the equations of elasticity.
+Notably the work in \cite{zhikov2000extension} lays a foundation for considering such problems in the context of elasticity, defining the appropriate function spaces and concepts of (symmetric) gradients.
+This work will also serve largely as the motivation for the work in chapter \ref{ch:VectorEqns}, when we look to study our singular-structure variational problems (a specific choice of measure) and define the appropriate function spaces in a wave-propagation context.
+Also presented in this work are some preliminary results on whether such variational problems are well-posed, including existence results for solutions.
+The work in \cite{zhikov2002homogenization} further develops on this, by bringing techniques from homogenisation theory into the framework of these (elasticity-based) variational problems and discussing how they are adapted to be applied in these contexts. 
+Outside of the context of elasticity; work has been done on singular-structure problems for scalar-valued functions, for example in \cite{cherednichenko2018elliptic} where operator-norm estimates are derived from elliptic equations on (scaled) periodic domains. 
+In the context of electromagnetic wave-guidance problems, there have been similar developments for solution estimates for Maxwell's equations on periodic singular structures, such as in \cite{cherednichenko2018maxwell}. \tstk{more refs surely?}
+
+\section{Quantum Graphs, and their relation to Thin-Structure Problems} \label{sec:GraphLitReview}
 Quantum graphs have existed in some form (although not necessarily under that name) since the 1930s \cite{berkolaiko2013introduction} as surrogate models for various processes in chemistry, physics (including optical fibres) and mathematics (\tstk{kirill's elasticity paper with QGs?}).
 However there has only recently been a push to develop a standard basis for the theory in the past few decades, with works produced before this time tending to focus on specific examples relevant to the application being considered.
 At heart, quantum graph are graphs that are equipped with some concept of length or bulk; and quantum graph problems are simply a framework for (differential) operators on such graphs.
@@ -186,7 +218,7 @@ Interestingly the problem $\mathcal{P}_0$ and thus the spectrum $\clbracs{\sigma
 As $l$ quantifies the size of the lattice struts, which in the limit $l\rightarrow0$ become graph edges, $l$ effectively determines how fast the edges are shrinking.
 So for each $l>0$ we can define an ``edge area" $V_{\mathrm{edge}} \propto l^{\alpha}$ for some power $\alpha$, which decays to 0 as $l\rightarrow0$.
 There is a similar concept of ``vertex area" $V_{\mathrm{vert}} \propto r^{\beta}$ which $r$ provides.
-Then depending on the relative size of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$ as $l,r\rightarrow0$ simultaneously; the problem $\mathcal{P}_0$, or rather the vertex conditions in this problem (see section \ref{sec:sec:DEonQG}) are different.
+Then depending on the relative size of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$ as $l,r\rightarrow0$ simultaneously; the problem $\mathcal{P}_0$, or rather the vertex conditions in this problem (see section \ref{sec:DEonQG}) are different.
 \begin{itemize}
 	\item In the case when $V_{\mathrm{edge}} \ll V_{\mathrm{vert}}$, the vertices dominate in the limit problem.
 	This case is also referred to as ``Dirichlet decoupling" - the result is a quantum graph problem where the boundary conditions at the vertices require that the solution take the value 0 at each of these points.
@@ -232,7 +264,7 @@ We will present the theory on quantum graphs that we require in chapter \ref{ch:
 
 The starting point for much of our work will be singular-structure variational problems, however this starting point is motivated by physical (thin-) structures of PCFs and use of the assumptions in section \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3}.
 It is helpful to consider these modelling assumptions though, as doing so raises several of the issues that will need to be addressed to maintain the relation between our work and physical PCFs.
-In particular, we are required to adopt a variational framework for our model that respects the lower-dimensional singular-structure we obtain. \tstk{Zhikov review section}
+In particular, we are required to adopt a variational framework for our model that respects the lower-dimensional singular-structure we obtain (section \ref{sec:VariationalProblemLitReview}.
 In turn this requires some analysis of how we can interpret concepts like gradient, curl, and divergence, which is the subject of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
 We also look to demonstrate the equivalence between singular-structure problems and quantum graph problems in these chapters, and in chapter \ref{ch:ExampleSystems} will consider some examples that arise from problems in wave-guidance. 
 Chapter \ref{ch:Conclusion} provides a summary of the work presented and discusses further avenues for exploration, and future work that could be undertaken.

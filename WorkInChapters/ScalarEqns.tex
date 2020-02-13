@@ -540,7 +540,7 @@ The idea for the proof is to use the fact that we can extend a gradient of zero 
 	\begin{align*}
 		g_n\bracs{x} &= \sum_{j\in V}\sum_{j\conLeft k}\eta_j^n\bracs{x}\eta_k^n\bracs{x}g\vert_{I_{jk}}\bracs{x},
 	\end{align*}
-	refer to section \ref{sec:GraphSimDefinitons} for a reminder on the notation.
+	refer to section \ref{sec:GraphSimDefinitions} for a reminder on the notation.
 	Recall that $\graph$ is assumed finite so there are no convergence issues with the sum.
 	Then for each $j,k$ with $j\conLeft k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
 	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_n\in\gradZero{\ddom}{\ddmes}$ too, $\forall n\in\naturals$.
