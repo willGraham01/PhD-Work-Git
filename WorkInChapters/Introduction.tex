@@ -66,19 +66,18 @@ The approach is to apply homogenisation theory due to the periodic structure of 
 One can then prove convergence results for various aspects of the unit-cell problem and the original periodic problem (most notably the spectrum of the problem, which determines the frequencies $\omega$ of light which can propagate). \newline
 \tstk{scaling discussion RE David \cite{birks2004scaling}}
 
-\section{Domain Structure for Our Model} \label{sec:OurPhysicalSetup}
-In this section we will discuss the domains or setups that we will be concerned with, and how they relate to physical PCFs.
-The purpose of our model is to provide insight into the band-gap structure of PCFs, by considering an appropriate ``limit problem" for the cross-sectional structure.
-We will elaborate further on what the phrase ``limit problem" means in section \ref{sec:GraphLitReview}, but for now we just outline the domains (or the physical structures) that our model will consider.
-These domains are motivated by the physical design of PCFs, however we make a number of modelling assumptions about fibre structure to bring us to a formulation different to that of the models described in section \ref{sec:ExistingPCFModels}.
-Of course we also require a system of governing equations to complete our model, however we do not go into detail about this in this section - the issue will be highlighted in section \ref{sec:ModellingAssumption2} and revisited in section \ref{sec:ReportOverview}.
-For the time being it is sufficient to assume we have some system of governing equations that describe wave propagation down a PCF; and we are concerned with determining whether the structure of the PCF admits frequency (equivalently spectral) band-gaps in these equations. \newline
+\section{Introduction to the Problems we shall Consider} \label{sec:OurPhysicalSetup}
+Having reviewed several existing models for PCFs in section \ref{sec:ExistingPCFModels}, we now set about introducing the problems that we will be analysing.
+Whilst our work is motivated by the study of band-gap spectra of PCFs, the problems that we shall be treating will begin from a singular-structure setting (which we will elaborate on shortly).
+At first this will appear to be removed from the more familiar thin-structure setting that the literature discussed in section \ref{sec:ExistingPCFModels} considers, where the cross-sectional structure of a PCF (or more generally any waveguide) is small but finite.
+Furthermore our approach will also not come without complications in terms of how we pose mathematical problems on such singular-structure domains.
+The purpose of this section will be to clarify use of the term ``singular-structure"; set out our research objectives, highlight the issues that our approach will raise, and how we propose to deal with them. \newline
 
-We consider a PCF as an object with a lattice-like structure in the cross-sectional (transverse) $\bracs{x_1,x_2}$ plane, which is extruded into the $x_3$ direction to produce a fibre whose structure is translation invariant down it's axis.
-The cross-sectional lattice (or structure, as we will refer to it henceforth) will itself be a repeating pattern composed of a number of unit cells, with the thickness of the lattice ``struts" being of some finite (but small) width $l$.
-This is schematically sketched in figure \ref{fig:Diagram_ThinStructurePeriodCell}, where for consistency later we have also given a length scale $r$ to lattice ``junction regions"\footnote{There is some ambiguity in specifying the shape of a ``junction region"; but it is sufficient to simply think of these as regions in our domain where lattice struts overlap.
-In figure \ref{fig:Diagram_ThinStructurePeriodCell} for example, we have taken the ``junction regions" as circular, however one could also take them as square (or as slightly smaller circles, even).
-This is not a major issue as the convergence results of \cite{exner2005convergence} and \tstk{kuchment convergence stuff} rely only on how the area of these ``junction regions" scales with powers of $r$.}.
+We work in domains in $\reals^3$, assuming they all exhibit structure that is translation invariant in the $x_3$-direction (which represents the axis of the PCF, along which light propagates down the fibre).
+The $\bracs{x_1,x_2}$-plane is referred to as the ``cross-section" or ``transverse plane" of the fibre, and is assumed to contain some periodic (micro-)structure with period cell $\sqbracs{0,1}^2$.
+For the models discussed in section \ref{sec:ExistingPCFModels}, this microstructure typically consists of a series of circular inclusions in the cross-section (hence forming the cores along the fibre axis) and provides a thin-structure problem on a periodic domain when a suitable set of governing equations are posed.
+Our starting point however is to take the cross-sectional structure as an embedded graph periodic in the two cross-sectional directions, giving rise to a so-called ``singular-structure" domain - the microstructure in our transverse plane does not have any thickness in the intuitive sense.
+Contrastingly a thin-structure problem might have a periodic lattice in the cross-section, whose struts would have some finite thickness $l$ and lattice-junctions some characteristic size $r$, as illustrated in figure \ref{fig:Diagram_ThinStructurePeriodCell}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -94,62 +93,43 @@ This is not a major issue as the convergence results of \cite{exner2005convergen
 	\end{subfigure}
 	\caption{\label{fig:ThinToSingularStructure} An illustration of how the unit cell of a physical PCF relates to that of the systems that we shall be considering. This will be elaborated on in section \ref{sec:GraphLitReview}.}
 \end{figure}
-Our concern is mainly with determining whether a certain cross-sectional structure admits frequency band-gaps, and ideally maintaining an analytic approach to this problem for as long as possible, and so we make the following assumptions for our system.
+It is not unreasonable to think that one of our singular-structure domains might arise from taking the limit as these scales $l,r\rightarrow0$, as sketched in figure \ref{fig:Diagram_SingularStructurePeriodCell}.
+Whilst geometrically this ``convergence" is quite easy to believe; it is less easy to deduce whether a mathematical problem can be posed on such a singular domain and still be consistent with this idea of it being a ``limit" in some sense of a family of thin-structure problems.
+We will revisit this topic in more detail in section \ref{sec:GraphLitReview}. \newline
 
-\subsection{Fibres are Invariant along the Fibre Axis} \label{sec:ModellingAssumption1}
-We first make the assumption that the PCF is translation invariant along it's fibre axis, aligned to the $x_3$-direction.
-This is a standard modelling assumption for fibres in general unless surface roughness of the fibre needs to be incorporated.
-Since our objective is determining propagation modes (equivalently band-gaps) rather than modelling fibre loss due to roughness, we too adopt this assumption.
-This enables us to use a Fourier transform in $x_3$ to remove the $x_3$-spatial dependency from the governing equations we choose to adopt, replacing it with factors of the wave-number $\wavenumber$ of the wave propagating down the fibre.
-Furthermore we are now considering a model that on a 2D-domain rather than a 3D one (although if we are considering the Maxwell system, the fields $\mathbf{E}, \mathbf{H}$ would still be vector-valued).
+Because our problems will be posed on singular structure domains; we will require a formulation for problems on such domains that respects this lower-dimensional structure provided by the embedded graph, and is consistent with the idea of being a ``limit" problem as discussed in section \ref{sec:GraphLitReview}.
+This will lead us to pose variational problems on our domains using non-Lebesgue measures (specifically, singular graph measures as defined in section \ref{sec:GraphSigularMeasuresDef}), the literature for which we discuss in section \ref{sec:VariationalProblemLitReview} and the theory we review in chapter \ref{ch:ScalarEqns} and develop ourselves in chapter \ref{ch:VectorEqns}.
+A ``singular-structure problem" can thus be defined as referring to a singular-structure domain equipped with such a variational problem.
+For the purposes of this section it is sufficient to think of these variational problems as providing a framework for posing differential equations (subject to defining appropriate function spaces) on singular-structure domains, and that we are able to look for eigenvalues and eigenfunctions of such equations.
+In doing so, we are able to employ a couple of transforms to aid our analysis.
+The most obvious being to apply a Fourier transform along the axis of the fibre, removing dependencies on $x_3$ and introducing it's Fourier variable $\wavenumber$, and effectively reducing our 3D problem to a 2D problem in the (periodic) cross-section.
+This is a standard modelling assumption for wave-guidance models in general, unless surface roughness of the fibre needs to be incorporated.
+Since our objective will be to determining propagation modes (equivalently band-gaps) rather than modelling fibre loss due to roughness, we too adopt this assumption for the simplifications it brings.
+Of course, taking the Fourier transform can be thought of as looking for Bloch wave solutions, as discussed in section \ref{sec:ExistingPCFModels}. \newline
 
-\subsection{Infinite Cross-Sectional Lattice} \label{sec:ModellingAssumption2}
-We now move onto assumptions rather specific to our model, beginning with the assumption that the cross-sectional PCF lattice is infinite and periodic in extent, with a unit cell contained in $\sqbracs{0,1}^2$.
-Physically we can justify this assumption because the size of a lattice unit cell is much smaller than the (transverse) extent of the fibre itself.
-Mathematically we make this assumption because it allows us to make use of several tools and results from analysis.
-Specifically we want to use a Gelfand transform on our governing equations to move from a problem on an infinite-but-periodic domain to a family of problems on the unit cell of said domain.
-Formally the Gelfand transform is used to provide a fibre representation of an operator defined on a periodic domain, and the theory surrounding it is much more extensive than what we require it for, but the following interpretation is sufficient for us.
-For a function $u:\reals^{d_1}\rightarrow\complex^{d_2}$ defined on a periodic domain with unit cell $\sqbracs{0,1}^{d_1}$, the Gelfand transform can be thought of as mapping $u$ to the family of functions $\widehat{u}$ defined by
+Given that we have also assumed our singular-structure to be composed of an embedded graph periodic in 2 dimensions, we can also employ a Gelfand transform to any singular-structure problems we consider.
+This will enable us to move from a variational problem on an infinite-but-periodic singular-structure domain to a family of variational problems on the unit cell (assumed $\sqbracs{0,1}^2$) of said domain.
+Formally the Gelfand transform provides a fibre representation of an operator defined on a periodic domain, and the theory surrounding it is much more extensive than what we require it for, but the following interpretation is sufficient for us.
+For a function $u:\reals^{2}\rightarrow\complex^{d}$ for which we are solving our singular-structure problem, the Gelfand transform can be thought of as mapping $u$ to the family of functions $\widehat{u}$ defined by
 \begin{align*}
-	\widehat{u}: &\sqbracs{0,1}^{d_2} \rightarrow \complex^{d_2}, \\
-	\widehat{u}\bracs{x} &= \sum_{n\in\integers^{d_1}} u\bracs{x + n}e^{-i\qm\bracs{x + n}}, \\
-	\qm &\in [-\pi,\pi)^{d_1},
+	\widehat{u}: &\sqbracs{0,1}^{2} \rightarrow \complex^{d}, \\
+	\widehat{u}\bracs{x} &= \sum_{n\in\integers^{2}} u\bracs{x + n}e^{-i\qm\bracs{x + n}}, \\
+	\qm &\in [-\pi,\pi)^{2},
 \end{align*}
 the parameter $\qm$ is called the quasi-momentum.
-Now if we have some system of differential equations in $u$ on $\reals^{d_1}$, this transform effectively takes us from a problem involving $u$ on the entire domain $\reals^{d_1}$ to a family of slightly altered problems on the unit cell ($\sqbracs{0,1}^{d_1}$), for each $\qm$.
-The extent of the alteration (to the equations in this context) is effectively applying a shift to any derivative we take, formally any partial derivative transforms as
+This transform effectively takes us from a singular-structure problem involving $u$ on the original (infinite) domain to a family of slightly altered singular-structure problems on the period cell, with the family parametrised by $\qm$.
+The extent of the alteration (to the variational formulation in this context) can be thought of as effectively applying a shift to any derivative we must take, formally any partial derivative transforms as
 \begin{align*}
-	\pdiff{}{x_j} &\rightarrow \pdiff{}{x_j} - i\qm_j,
+	\pdiff{}{x_j} &\rightarrow \pdiff{}{x_j} - i\qm_j.
 \end{align*}
-the purpose of this shift being to account for integer-``mismatches" of $\widetilde{u}$ at the boundary of the period cell.
-If we are looking at a spectral problem in $\reals^{d_1}$, we can recover the spectrum of the original problem by solving each spectral problem we obtain from the Gelfand transform, and taking the union of all the spectra over $\qm$. \newline
+The reason for this shift being to account for integer-``mismatches" of $\widetilde{u}$ at the boundary of the period cell.
+If we are considering spectral problems, the spectrum of the original problem (in the infinite domain) can be recovered from taking the union of the spectra of the transformed problems over $\qm$. \newline
 
-In our case; with our cross-section being two dimensional and infinite in extent, we can obtain a family of spectral problems on the (finite) unit cell and solve these instead (for each $\qm$) to recover the spectrum of our original problem.
-Combined with the Fourier transform to remove the $x_3$-dependency, this takes us from a problem on an infinite 3D domain to a family of problems on $\sqbracs{0,1}^2$.
-Having a finite domain is appealing from a numerical perspective for obvious practical reasons, but will also be useful to us analytically after considering the final assumption in section \ref{sec:ModellingAssumption3}.
-
-\subsection{Singular Structure Lattice} \label{sec:ModellingAssumption3}
-Finally, we assume that the lattice in the cross-section is composed of a singular structure, rather than a thin structure.
-Physically this assumption can be interpreted as saying that the lattice thickness is much smaller than the unit cell size.
-Mathematically this means that our lattice can be thought of as a graph embedded into $\sqbracs{0,1}^2$ (chapter \ref{ch:QuantumGraphs}); and colloquially we can describe the physical system that as that obtained by letting $l,r\rightarrow0$ (sketched in \ref{fig:Diagram_SingularStructurePeriodCell}), however there are several things which should be highlighted here.
-The foremost being that we now require some form of understanding as to how we can pose (differential) equations on our domain now that it is essentially a one-dimensional subset of the unit cell $\sqbracs{0,1}^2$.
-This requires us to consider a variational formulation with respect to non-Lebesgue measures; and construct appropriate function spaces to make sense of the concepts of gradient, curl, and divergence.
-We will discuss the literature that is available to us in this field in section \ref{sec:VariationalProblemLitReview}, and will demonstrate how variational formulations allow us to consider wave-propagation problems on singular structures in further detail in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}. \newline
-
-Secondly we should justify why this is helpful to us and how we can expect the results we obtain from this new setup to relate back to those for a thin-structure PCF.
-This is the subject of section \ref{sec:GraphLitReview}, but for now it is enough to say that a framework for working with (differential) equations on graphs already exists and provides us with some further analytical tools that will aid us later (see chapter \ref{ch:QuantumGraphs}).
-As for how we maintain relevance to the original thin-structure system; there exist convergence results which justify the use of a singular-structure model as a formal limit of a sequence of thin-structure problems with $l,r\rightarrow0$, although interestingly the relative scaling between these two scales as they tend to 0 can change the resulting ``limit" problem we obtain.
-Again, we shall discuss this in section \ref{sec:GraphLitReview}.
-
-\subsection{Resulting System} \label{sec:OurSystem}
-We can summarise the affects of the assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} as follows.
-We begin with a fibre invariant along it's axis (parallel to the $x_3$-direction), and having some lattice-like structure in it's cross-section.
-We then assume that the cross-sectional lattice is periodic and infinite, occupying the whole $\bracs{x_1,x_2}$-plane; and that is is singular, rather than of a finite but thin thickness, so that we can model it as a graph embedded into the unit cell.
-The link between the graph structure and the corresponding PCF cross-section is discussed in section \ref{sec:GraphLitReview}.
-On this singular structure we will then pose an appropriate variational problem (section \ref{sec:VariationalProblemLitReview}), using a combination of Gelfand- and Fourier transforms to examine a family of equivalent problems on the unit cell of the lattice.
-The result is a family of variational problems on the unit cell of (the graph describing the) singular lattice which we look to solve using the theory of chapter \ref{ch:QuantumGraphs}.
-We will assume this domain structure throughout the remainder of the report, and will use it as our starting point when we consider examples in chapter \ref{ch:ExampleSystems}.
-In chapters \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}, \ref{ch:VectorEqns}, we will simply take a graph and variational formulation as our starting point for the theory that is presented in those sections, with the underlying relevance to wave-guidance problems in PCFs having been detailed here.
+Whilst the work that follows in this report will use the singular-structure problems as described above as a starting point and as the basis of the theory we develop and present; the explicit examples that we shall consider will be grounded in modelling wave-guidance in PCFs.
+We will establish a link between our singular-structure problems and classical thin-structure problems in section \ref{sec:GraphLitReview}; and in chapters \ref{sec:ScalarEqns} and \ref{ch:VectorEqns} we focus our attention on two variational problems motivated by wave-guidance applications, completing this analysis with worked examples in chapter \ref{ch:ExampleSystems}.
+In section \ref{sec:VariationalProblemLitReview} we will provide a review of the available literature on variational problems posed with respect to non-Lebesgue measures, as well as any work that has already been undertaken in this field.
+We develop this theory in chapter \ref{ch:VectorEqns} so that we can examine wave-guidance problems, and also highlight how our variational problems give rise to ``quantum graph" problems that we introduce in section \ref{sec:GraphLitReview} and present the theory of in chapter \ref{ch:QuantumGraphs}.
+Finally in section \ref{sec:ReportOverview} we reiterate the problems that we are studying and provide the objectives of our research; having provided a review of each of the areas of mathematics that we will need to aid us in sections \ref{sec:VariationalProblemLitReview}-\ref{sec:GraphLitReview}.
 
 \section{Variational Problems for Singular Structures} \label{sec:VariationalProblemLitReview}
 With the assumption in section \ref{sec:ModellingAssumption3} taking us to a domain which is essentially a 1D object embedded into a 2D plane, we need to address several issues that arise from this transition.
