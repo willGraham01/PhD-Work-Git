@@ -288,7 +288,7 @@ The reason for us making this equivalence so explicit is because the operator-th
 \section{Spectral Problems and the M-Matrix} \label{sec:M-MatrixTheory}
 Since we are primarily looking to consider wave-guidance problems in electromagnetism, we will often be concerned with determining the spectrum of a problem as the eigenvalues relate to the frequencies that can be guided by our fibre designs.
 In particular we will be looking to determine whether such a spectrum exhibits band-gaps, and ideally a method to explore the spectrum numerically.
-Because of our use of the Gelfand transform (section \ref{sec:ModellingAssumption2}) to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
+Because of our use of the Gelfand transform (section \ref{sec:OurPhysicalSystem}) to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
 This prompts us to look for tools that enable us to determine the spectrum of one of these smaller problems both procedurally and efficiently, crucial if a numerical approach is to be used but also helpful if an analytic approach can be taken too.
 In this section we will be discussing the tool that we are going to use; the $M$-matrix, and why it is appropriate for both a numerical and analytic approach to solving determining the spectra of quantum graph problems. \newline
 
@@ -315,7 +315,7 @@ such that whenever $u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}$,
 \end{align*}
 Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur at those $\lambda$ such that $\mathrm{det}\bracs{M\bracs{\lambda} -\lambda A}= 0$, where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{V}}}$ is the diagonal matrix of the coupling constants.
 For ease we will tend to write $M_{\qm}\bracs{\lambda}v=0$ or $\det\bracs{M_{\qm}\bracs{\lambda}}=0$ for this problem; because the majority of our examples (chapter \ref{ch:ExampleSystems}) with have all coupling constants equal to 0.
-Furthermore we can always relabel $\widetilde{M}_{\qm}\bracs{\lambda} = M_{\qm}\bracs{\lambda}-\lambda A$ if the need arises, which may be particularly useful if a numerical scheme is to be used. \tstk{also holomorphic, hermitian? so that's some simplifying stuff we should mention. ALSO coupling constants not equal to zero?}
+Furthermore we can always relabel $\widetilde{M}_{\qm}\bracs{\lambda} = M_{\qm}\bracs{\lambda}-\lambda A$ if the need arises, which may be particularly useful if a numerical scheme is to be used. \newline
 
 Due to the fact that we will be taking a Gelfand transform, each problem in the family parametrised by $\qm$ will yield a different $M$-matrix, so we adopt the notation $M_{\qm}\bracs{\lambda}$ to provide distinction when we require it.
 If the form for the $M$-matrix can be determined analytically (or even numerically) then determining the spectrum is now a case of solving the generalised eigenvalue problem
@@ -335,9 +335,9 @@ Although not as general as they could be made, this is no great loss to us as th
 This also allows us to be somewhat more suggestive with our notation, terminology and interpretation of embeddings of graphs, whilst also maintaining rigour. \newline
 
 In terms of theory, sections \ref{sec:DEonQG} and \ref{sec:M-MatrixTheory} provide us with the objects and terminology we need to describe differential equations on graphs, and reduce spectral problems to the solution of matrix-eigenvalue problems.
-Having the M-matrix as a tool is invaluable, not just because it has a rich general theory to draw upon \tstk{refs} but also because it opens the door for numerical approaches to determining the spectrum of quantum graph problems.
+Having the M-matrix as a tool is invaluable, not just because it has a rich general theory to draw upon (section \ref{sec:GraphLitReview}) but also because it opens the door for numerical approaches to determining the spectrum of quantum graph problems.
 Much of this theory is well-established, and we do not go into the more abstract details of quantum graphs problems such as existence of solutions or being well-posed, as this is not the focus of the work of this report.
-The interested reader is directed to, for example, \tstk{refs!!!}. \newline
+The interested reader is directed to section \ref{sec:GraphLitReview} for further information. \newline
 
 In chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} we will largely focus on how to obtain a quantum graph problem from our physically motivated setup, but will use some of the notation and conventions from this chapter - in particular when defining quantum graph problems themselves.
 Chapter \ref{ch:ExampleSystems} will explore some example quantum graph problems using the theory from the aforementioned chapters and this one, and will also build on the proposed ideas for numerically determining the spectrum of a quantum graph problem.

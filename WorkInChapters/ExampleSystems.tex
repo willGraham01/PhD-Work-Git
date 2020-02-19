@@ -1,8 +1,8 @@
 \chapter{Example Systems} \label{ch:ExampleSystems}
-In this chapter we present how the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns} comes together, and how we can determine the spectrum of variational problems on singular structures.
+In this chapter we illustrate how the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns} comes together, and how we can determine the spectrum of variational problems on singular structures.
 We also aim to illustrate some of the difficulties in this process, both numerically and analytically, and provide a brief discussion of these issues as they arise.
-Some potential avenues of exploration for bypassing these issues (particularly on the numerical side) are suggested, and will be revisited in chapter \ref{ch:Conclusion}. \tstk{make this chapter!}
-Throughout, it may be useful to the reader to recall the physical setup that our graphs in the plane represent (section \tstk{MAKE IT!}).
+Some potential avenues of exploration for bypassing these issues (particularly on the numerical side) are suggested, and will be revisited in chapter \ref{ch:Conclusion}.
+Throughout, it may be useful to the reader to recall the physical setup that our graphs in the plane represent (section \ref{sec:OurPhysicalSetup}).
 
 \section{Preliminaries} \label{sec:ExamplePrelims}
 Our focus in the examples of this chapter will be to determine the eigenvalues $\omega^2$ of the problem \eqref{eq:CurlCurlEquationDivFree}, which we recall below
@@ -72,7 +72,7 @@ In fact, we can actually compute the $M$-matrix for a given value of $\effFreq$ 
 	\end{align*}
 \end{prop}
 \begin{proof}
-	The proof is an explicit computation, and follows the same idea as in \tstk{EKK paper result, we just have QM here too} with adjustments for the fact that there are $\wavenumber$ and $\qm$ terms floating around.
+	The proof is an explicit computation, and follows the same idea as in \cite{ershova2014isospectrality} with adjustments for the fact that there are $\wavenumber$ and $\qm$ terms floating around.
 	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate the constants $C^{(jk)}_{\pm}$ in \eqref{eq:CurlEdgeEqnGenSol}.
 	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off their values at any relevant vertices.
 	This then provides us with the value of each term in the sum in $\bracs{\nmap u}_j$, for each $j$.
@@ -90,7 +90,7 @@ Then given a column, each edge has to be solved on with the appropriate boundary
 Of course, there are prudent ways to reduce this cost by ignoring edges with 0 Dirichlet data at each end, for example.}
 then computing the values of the components of $\nmap u$ using the function values found by the numerical solver, and hence constructing the $M$-matrix.
 Proposition \ref{prop:M-MatrixEntries} essentially bypasses the problems associated with solving \eqref{eq:QGEquation} many times, allowing us to skip directly to building the $M$-matrix for given $\omega^2$ and $\kt$.
-With careful programming one can even make building the $M$-matrix a function call that is passed $\bracs{\omega^2, \wavenumber, \qm}$ and only relies on knowing the $\qm_{jk}$; and the lengths and adjacency matrix of $\graph$ to return the $M$-matrix. \tstk{hermitian so only need half too!}
+With careful programming one can even make building the $M$-matrix a function call that is passed $\bracs{\omega^2, \wavenumber, \qm}$ and only relies on knowing the $\qm_{jk}$; and the lengths and adjacency matrix of $\graph$ to return the $M$-matrix.
 Whilst this is a very helpful consequence of proposition \ref{prop:M-MatrixEntries}, there are other things that a numerical approach must consider.
 \begin{itemize}
 	\item One of the foremost problems is that we are actually looking to solve each member of a family of generalised eigenvalue problems (parametrised by $\qm$) to determine the spectrum of our original variational problem.
@@ -187,9 +187,7 @@ Another benefit that is made apparent is that simplifying the condition $\det\br
 Enough progress analytically can replace the need to solve a generalised eigenvalue problem with a (comparatively simple) root-finding problem, or (as is the case here) provide the entire spectrum immediately.
 In sections \ref{sec:ExampleGeneralLengths} and \ref{sec:ExampleThickVertex} we will explore systems where we have to take this ``hybrid" mixture of working from $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$ to obtain an equation that we can then explore numerically.
 
-\tstk{what about the chevron example?}
-
-\section{General period cell with lengths system} \label{sec:ExampleGeneralLengths}
+\section{A 5-Vertex Graph with a Single Interior Vertex} \label{sec:ExampleGeneralLengths}
 We now turn to a more general example, and assume the period graph $\graph=\bracs{V,E}\subset\sqbracs{0,1}^2$ as shown in figure \ref{fig:Diagram_5VertexGraph}.
 \begin{figure}[b!]
 	\begin{subfigure}[b]{0.45\textwidth}
