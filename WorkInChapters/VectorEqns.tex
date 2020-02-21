@@ -1,12 +1,13 @@
 \chapter{Vector Equations} \label{ch:VectorEqns}
-Chapter \ref{ch:ScalarEqns} introduced the theory of Sobolev spaces $\gradSob{D}{\nu}$ with respect to arbitrary (Borel) measures $\nu$, and how we can make sense of the notion of ``derivative" and pose problems in these spaces.
-Also investigated was how (under suitable regularity assumptions) the variational problems that can be posed are reduced to Quantum Graph problems, when the measure $\nu$ supports a graph embedded into the domain $D$. \newline
+Chapter \ref{ch:ScalarEqns} introduced the theory of variational problems with respect to arbitrary (Borel) measures $\nu$ involving scalar-valued functions, and how we can make sense of the notion of ``derivative" and define appropriate Sobolev spaces to work in.
+Also investigated was how (under suitable regularity assumptions) the variational problems that can be posed are reduced to quantum graph problems, when the measure $\nu$ supports a graph embedded into the domain $D$. \newline
 
-In this chapter we look to develop this theory to handling vector-valued systems of equations, which necessitates developing theory for the associated curl- and divergence-operations, as well as the associated Sobolev spaces.
+In this chapter we look to extend this theory to handling vector-valued systems of equations, which necessitates developing theory for the associated curl- and divergence-operations, as well as the associated Sobolev spaces.
 We begin with the definition and construction of these spaces, during which we will demonstrate parallels with the previously seen concepts of ``tangential-gradients".
 In fact, many of the arguments in this chapter will be inspired or grounded in the approaches taken in chapter \ref{ch:ScalarEqns}.
 After this we will discuss slightly altered versions of these spaces, which will arise from considering the wave-propagation problems of interest to us.
-We will provide a worked example in this context, and once again demonstrate how we can obtain a Quantum Graphs problem from a variational formulation when the measure $\nu$ supports a graph in the $\bracs{x_1,x_2}$-plane.
+We will provide a worked example in this context, and once again demonstrate how we can obtain a quantum graphs problem from a variational formulation when the measure $\nu$ supports a graph in the $\bracs{x_1,x_2}$-plane.
+This will enable us to present some illustrative examples of this theory in action, in chapter \ref{ch:ExampleSystems}.
 
 \section{Vector Sobolev Spaces} \label{sec:VectorSobSpaces}
 In this section we discuss the construction of Sobolev spaces of vector-valued functions that possess curls (in some sense) with respect to an arbitrary (Borel) measure $\nu$.
@@ -831,7 +832,7 @@ Given that this equation holds when we take pairs of the components $\phi_1,\phi
 		\end{split}
 	\end{align}
 \end{subequations}
-Assuming sufficient regularity in $\widetilde{u}_3$ and $\widetilde{u}_2$, we can integrate by parts in the above expressions and observe that we can apply \tstk{should probably have a number for our version of the fundamental lemma of calculus of variations} to obtain three equations;
+Assuming sufficient regularity in $\widetilde{u}_3$ and $\widetilde{u}_2$, we can integrate by parts in the above expressions and (as $\phi$ is an arbitrary test function) obtain three equations;
 \begin{align*}
 	\widetilde{u}_{1,jk} &= 0, \\
 	i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} + \wavenumber^2\widetilde{u}_{2,jk} &= \omega^2 \widetilde{u}_{2,jk}, \\
@@ -893,4 +894,4 @@ These conditions together provide us with the tools to reformulate problems such
 
 In chapter \ref{ch:ExampleSystems} we will tie together the work of this chapter and chapter \ref{ch:QuantumGraphs} and present some example wave-guidance problems, solved using the approaches described in those chapters.
 We will not be developing the theory of the spaces $\ktcurlSob{\ddom}{\ddmes}$, $\ktgradSob{\ddom}{\ddmes}$, or $\ktcurlSobDivFree{\ddom}{\ddmes}$ any further than what has been done in this chapter; because for our purposes we now have all the requirements we need to justify and solve the class of problems that we wish to consider.
-One can find further information on spaces such as $\curlSob{D}{\nu}$ in \tstk{references, probably Kirill \& Serena's paper} and how they may be used in a more analytic context.
+Section \ref{sec:VariationalProblemLitReview} directs the interested reader to a few further works, notably on homogenisation and norm-resolvent estimates for vector-valued variational problems.

@@ -1,13 +1,15 @@
 \chapter{Scalar Equations} \label{ch:ScalarEqns}
-In this chapter we look at scalar wave equations in our waveguide-like geometry, treating the cross-sectional structure as singular.
-We base our approach largely off the work of Zhikov \cite{zhikov2000extension}, in that we consider what can be colloquially described as ``differential equations with respect to a measure $\ddmes$".
-We will give a rigorous definition of the kinds of problems and spaces that this colloquialism covers in the following sections, and will demonstrate how this framework allows us to obtain a quantum graph problem from our variational formulation.
+In this chapter we look at scalar-wave equations in our waveguide-like geometry, treating the cross-sectional structure as singular.
+We base our approach largely off the work of Zhikov \cite{zhikov2000extension}, and consider variational problems with respect to a non-Lebesgue measure $\ddmes$.
+We will give a formal definition of said variational problems and the associated function spaces; before outlining some of the theoretical results we will make use of.
+Finally, we will consider a context that is specific to the singular-structure problems discussed in section \ref{sec:VariationalProblemLitReview} and will demonstrate how we can obtain an equivalent quantum graph problem from our original singular-structure problem.
 This will allow us to make use of the theory which was highlighted in \ref{ch:QuantumGraphs}, and additionally will make our variational problems open to numerical solution.
-At the conclusion of this chapter we will have highlighted the techniques that are available to us, and how we shall adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:VectorEqns}.
+The overall goal of this chapter is to highlight the existing ideas and techniques that are available to us, so that we can adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:VectorEqns}.
 
 \section{The Scalar Sobolev Spaces} \label{sec:ScalarSobSpaces}
 In this section we look to construct the function spaces that we shall be working with throughout the chapter, as well as discussing some of the consequences of this construction.
-What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with an adapted notation which coincides with that of chapter \ref{ch:QuantumGraphs}. \newline
+What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with the arguments given in a more verbose form so that we can demonstrate the underlying ideas. 
+We also use a notation which coincides with that of chapter \ref{ch:QuantumGraphs} for self-consistency. \newline
 
 Let $N\in\naturals$, $D\subset\reals^N$ and $\nu$ be a (Borel) measure on $D$.
 Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\nu}$ be the closure of the set of pairs $\bracs{\phi,\grad\phi}$ in $\ltwo{D}{\nu}\times\ltwo{D}{\nu}^N$, where $\phi\in\smooth{D}$.
@@ -36,7 +38,7 @@ With this in mind, consider the following variational problem; find a pair $\bra
 	\integral{D}{z \cdot \grad\overline{\phi} - u\overline{\phi}}{\nu} &= 0 \quad \forall\phi\in\smooth{D}.
 \end{align}
 Setting aside questions of existence and uniqueness of solutions to this problem for the purposes of illustration, take an element $g\in\gradZero{D}{\nu}$, and an approximating sequence $\phi_n$ as in the definition \eqref{eq:GradZeroSequenceDefinition}.
-Substituting $\phi_n$ into \eqref{eq:TangentialGradientVariationalMotivation} and employing a limit-argument, we can see that
+Substituting $\phi_n$ into \eqref{eq:TangentialGradientVariationalMotivation} and employing a density-argument, we can see that
 \begin{align*}
 	\integral{D}{z \cdot g}{\nu} &= 0 \quad \forall g\in\gradZero{D}{\nu}.
 \end{align*}
@@ -51,7 +53,7 @@ We therefore adopt the notation $z := \grad_\nu u$ for the second member of the 
 \begin{align*}
 	\gradSob{D}{\nu} &:= \clbracs{\bracs{u,\grad_\nu u}\in W \ \vert \ \grad_\nu u \perp \gradZero{D}{\nu}}.
 \end{align*}
-Furthermore we can now pose variational problems on this space; for example we would write \eqref{eq:TangentialGradientVariationalMotivation} as find $\bracs{u,\grad_\nu u}\in\gradSob{D}{\nu}$ such that
+Furthermore we can now pose variational problems on this space; for example we could express \eqref{eq:TangentialGradientVariationalMotivation} in the following manner: find $\bracs{u,\grad_\nu u}\in\gradSob{D}{\nu}$ such that
 \begin{align} \label{eq:GeneralVariationProblem}
 	\integral{D}{\grad_\nu u \cdot \grad\overline{\phi} - u\overline{\phi}}{\nu} &= 0 \quad \forall\phi\in\smooth{D}.
 \end{align}
@@ -60,7 +62,7 @@ We also adopt a shorthand notation for the problem \eqref{eq:GeneralVariationPro
 \begin{align} \label{eq:GeneralDifferentialProblem}
 	-\grad_\nu^2 u + u &= 0, \quad u\in\gradSob{D}{\nu}.
 \end{align}
-Of course this is just notation and has no meaning without \eqref{eq:GeneralVariationProblem}; one can envisage \eqref{eq:GeneralDifferentialProblem} as somehow being the weak form of \eqref{eq:GeneralVariationProblem} for analogy with classical Sobolev spaces and variational problems, however there is not formal link in this context (mainly because of the lack of the ``integration by parts" technique). \newline
+Of course this is just notation and has no meaning without \eqref{eq:GeneralVariationProblem}; one can envisage \eqref{eq:GeneralDifferentialProblem} as somehow being the weak form of \eqref{eq:GeneralVariationProblem} for analogy with classical Sobolev spaces and variational problems, however there is no formal link in this context (because of the lack of the ``integration by parts" technique). \newline
 
 In general for $f\in\ltwo{D}{\nu}$ and an elliptic matrix $A(x)$, we say that $u\in\gradSob{D}{\nu}$ is a solution to the (elliptic) equation
 \begin{align} \label{eq:GeneralScalarStrongForm}
@@ -68,7 +70,7 @@ In general for $f\in\ltwo{D}{\nu}$ and an elliptic matrix $A(x)$, we say that $u
 \end{align}
 to mean that $u\in\gradSob{D}{\nu}$ solves the variational problem
 \begin{align} \label{eq:GeneralScalarWeakForm}
-	\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \integral{D}{f\overline{\phi}}{\nu} \quad \forall \phi\in\smooth{D}.
+	\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \integral{D}{f\overline{\phi}}{\nu}, \quad \forall \phi\in\smooth{D}.
 \end{align}
 Again it is critical to highlight that \eqref{eq:GeneralScalarWeakForm} is the only way for us to assign a meaning to the problem \eqref{eq:GeneralScalarStrongForm}.
 However existence and uniqueness of the solution pair $\bracs{u,\grad_\nu u}$ is guaranteed by appealing to the Riesz Representation theorem and the bilinear form defined by \eqref{eq:GeneralScalarWeakForm}.
@@ -155,9 +157,9 @@ The second result that we present is essentially the equivalent of the product r
 \end{proof}
 
 \section{An Example System} \label{sec:ScalarExample}
-To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example and some analysis of it.
+To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example problem and some analysis of said problem.
 For the remainder of this chapter, let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$, with $\ddmes$ the singular measure that supports the edges of $\graph$.
-The reader should review section \ref{sec:GraphSigularMeasuresDef} for a reminder of the definitions of these objects.
+The reader should review section \ref{sec:GraphSingularMeasuresDef} for a reminder of the definitions of these objects.
 Also recall our assumption at the end of section \ref{sec:QG-Notation} that the curves (edges) $I_{jk}$ of our embedded graphs are assumed to be the line segments joining $v_j$ to $v_k$.
 We are interested in the (spectral) problem
 \begin{align} \label{eq:ScalarExampleStrongForm}
@@ -174,7 +176,7 @@ It is worthwhile highlighting how the setup just detailed relates to the wave pr
 We interpret $\ddom$ as being the period cell of the cross-section of some waveguide that extends into 3D, whose waveguide axis is parallel to the $x_3$-axis.
 The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only.
 In section \ref{sec:ScalarSystem} we will consider a similar system to this but with the addition a quasi-momentum parameter $\qm$ which reflects the fact that to obtain a problem on the period cell of the cross section ($\ddom$), we are required to apply a Gelfand problem to the full-space problem.
-We will elaborate further on this in the relevant section. \newline
+The use of the Gelfand transform in this case (and Fourier transform along the axis of the fibre) was discussed in section \ref{sec:OurPhysicalSystem}. \newline
 
 Before beginning our analysis, we first introduce some specific functions and useful results that we shall make use of throughout.
 The first result being a reminder of how gradients of smooth functions transform under rotations.
@@ -215,7 +217,7 @@ which are clearly both smooth functions by composition.
 	\end{align*}
 \end{lemma}
 \begin{proof}
-	We can directly prove this convergence by estimating the integral from above, WLOG assuming all the balls that are considered lie within $\ddom$:
+	We can directly prove this convergence by estimating the integral from above, without loss of generality assuming all the balls that are considered lie within $\ddom$:
 	\begin{align*}
 		\begin{split}
 			\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} 
@@ -307,7 +309,7 @@ We begin by first considering what $\gradZero{\ddom}{\ddmes}$ looks like when $\
 \end{prop}
 \begin{proof}
 	This result is quoted and illustrated in \cite{zhikov2000extension}.
-	However as we will be wanting to utilise the ideas in this proof in our later work, w provide a fuller argument here. \newline
+	However as we will be wanting to utilise the ideas in this proof in our later work, we provide a fuller argument here. \newline
 
 	Without loss of generality we assume $x_2=0$ on $I$, otherwise we apply a translation to the argument that follows.
 	Additionally it suffices to show that the set on the right hand side includes all functions of the specified form when $f$ is smooth, as we can then apply a density argument to deduce the result for all $f\in\ltwo{\ddom}{\lambda_I}$. \newline
@@ -363,7 +365,7 @@ The smooth gradient $\grad$ (from which $\grad_\ddmes$ is constructed) details t
 \end{figure}
 The measure $\ddmes$ however can only ``see" along (or alternatively ``only cares about") what's going on along the segment $I$, as this is it's entire support.
 As such $\ddmes$ can only see the change along the segment $I$, and hence we find that $\gradZero{\ddom}{\ddmes}$ consists of all the gradients that are directed perpendicular to $I$.
-Furthermore any gradient orthogonal to $\gradZero{\ddom}{\ddmes}$ is directed parallel to $I$, so $\grad_\ddmes$ can only ``see" rates of change parallel to the segment $I$.
+Furthermore any gradient orthogonal to $\gradZero{\ddom}{\ddmes}$ is directed parallel to $I$, again because $\grad_\ddmes$ can only ``see" rates of change parallel to the segment $I$.
 This interpretation is further reinforced by the following analysis, which characterises $\gradZero{\ddom}{\ddmes}$ when the segment $I$ is not (necessarily) parallel to the $x_1$-axis. \newline
 
 \begin{prop}[Rotation of Edge Gradients] \label{prop:RotationOfEdgeGradients}
@@ -562,16 +564,16 @@ For ease of reference later, we now state the result we sought from the beginnin
 
 This concludes our analysis of $\gradZero{\ddom}{\ddmes}$, as we now have an edge-wise characterisation for the functions in this set, as well as a form for the functions on each edge.
 In section \ref{sec:ScalarSystem} we consider the family of problems that arise from considering the operator that defines \eqref{eq:ScalarExampleStrongForm} in the infinite, periodic $\bracs{x_1,x_2}$-plane.
-Following that, there is some focus on the inherent properties of the space $\gradSob{\ddom}{\ddmes}$, as well as further develop this edge-wise characterisation that we have discovered thus far.
+Following that, we focus briefly on the inherent properties of the space $\gradSob{\ddom}{\ddmes}$, as well as further develop this edge-wise characterisation of the space.
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed in an infinite plane with a finite period cell.
-Physically this will represent our photonic fibre's cross sectional structure, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform (section \ref{sec:ModellingAssumption2}.
+Physically this will represent our photonic fibre's cross sectional structure, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform (section \ref{sec:OurPhysicalSystem}).
 This will require us to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}, as the Gelfand transform will break the problem in the infinite plane into a family of problems on the period cell, parametrised by 2 quasi-momenta.
-We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a Quantum Graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
+We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a quantum graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
 
 Let $\graph^*$ be a periodic embedded graph in $\reals^2$ and $\ddmes^*$ it's singular measure.
-Suppose that the period graph $\graph$ of $\graph^*$ is contained in $\ddom:=\bracs{0,1}^2$ and has singular measure $\ddmes$.
+Suppose that the period graph $\graph$ of $\graph^*$ is contained in $\ddom:=\sqbracs{0,1}^2$ and has singular measure $\ddmes$.
 Consider the problem
 \begin{align} \label{eq:WholeSpaceScalarProblem}
 	-\grad_{\ddmes^*} \cdot \grad_{\ddmes^*} u &= \omega^2 u,
@@ -965,7 +967,7 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 \end{proof}
 
 Propositions \ref{prop:CharGradSobRightImplies} and \ref{prop:CharGradSobLeftImplies}  conclude the proof of theorem \ref{thm:CharGradSob}.
-This solidifies our ability to break down a problem phrased with respect to $\ddmes$ into sets of smaller problems on\footnote{Formally, with respect to the measures supporting} the edges of $\graph$.
+This solidifies our ability to break down a problem phrased with respect to $\ddmes$ into sets of smaller problems on the edges of $\graph$.
 Furthermore the condition (ii) is important because it ensures that we have enough boundary data when we transition from our problem with respect to measures to a quantum graph problem, which is the focus of the next section.
 
 \section{Reduction to a Quantum Graph Problem} \label{sec:ReduceToQMProblem}
@@ -973,7 +975,7 @@ The analysis in sections \ref{sec:ScalarExample}, \ref{sec:ScalarSystem}, and \r
 \begin{align} \label{eq:ScalarPeriodCellSystem}
 	- \grad_\ddmes^\qm \cdot \grad_\ddmes^\qm u &= \omega^2 u, \quad u\in\gradSobQM{\ddom}{\ddmes}
 \end{align}
-to a system of ODEs on the edges of a graph, that is a Quantum Graph problem (see chapter \ref{ch:QuantumGraphs}).
+to a system of ODEs on the edges of a graph, that is a quantum graph problem (see chapter \ref{ch:QuantumGraphs}).
 This procedure is rather straightforward having deduced the form of the tangential $\qm$-gradient; one simply writes \eqref{eq:ScalarPeriodCellSystem} in it's interpreted (integral) form, substitutes for the form of the tangential $\qm$-gradient, and then performs a substitution along each edge $I_{jk}$.
 For illustrative purposes, and for comparison with the more complex vector-valued equations we will consider in chapter \ref{ch:VectorEqns}, we now demonstrate this process for the example above.
 Maintaining the notation as set out in corollary \ref{cory:TangentialQMGradientGraphs}, we begin from \eqref{eq:ScalarPeriodCellSystem} and perform some manipulations;
@@ -1039,7 +1041,7 @@ The results concerning $\gradZero{\ddom}{\ddmes}$ (corollary \ref{cory:Character
 These results on a bounded domain with a finite underlying graph $\graph$ allow us to move onto studying problems that are posed in a periodic space (with an underlying periodic, embedded graph), by means of the Gelfand transform.
 This transform turns the whole-space, periodic problem into a family of problems parametrised by the quasi-momentum $\qm\in[-\pi,\pi)^2$ on a bounded domain, which we can then analyse using the methods and theory we developed prior.
 We account for the affects of the quasi-momentum parameter, and see that we can still write tangential gradients edge-wise, and these include terms involving $\qm$.
-This allows us (under certain regularity assumptions) to arrive at an equivalent Quantum Graphs formulation for our original problem, which can be approached in the manner detailed in chapter \ref{ch:QuantumGraphs}, and in general is more admissible to numerical and analytical solution than our original problem. \newline
+This allows us (under certain regularity assumptions) to arrive at an equivalent quantum graphs formulation for our original problem, which can be approached in the manner detailed in chapter \ref{ch:QuantumGraphs}, and in general is more admissible to numerical and analytical solution than our original problem. \newline
 
 We will be looking to extend the concepts introduced here when we move towards considering systems of vector-valued functions in chapter \ref{ch:VectorEqns}, which are widely used in the description of physical systems.
 Our argumentative techniques employed here will also serve as the inspiration for many of the arguments we employ in that chapter too, and the results that have been proved will still be central to our analysis.

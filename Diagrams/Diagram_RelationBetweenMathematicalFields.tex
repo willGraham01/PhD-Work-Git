@@ -17,17 +17,18 @@
 	\node[main node, align=center] (Goal) at (0,-10) {Approximate \\ spectrum};
 	
 	\node[align=center] (NumMod) at (-4, 0) {Numerical \\ schemes};
-	\node[align=center] (ARROW) at (4, 0.75) {Simple analytic \\ models};
-	\node[align=center] (Intermediate) at (4,-0.75) {Intermediate \\ approaches};
+	\node[align=center] (ARROW) at (3.5, 3) {Simple analytic \\ models};
+	\node[align=center] (Reson) at (0, 2.5) {Resonance between \\ fibre cores};
+	\node[align=center] (Intermediate) at (-3.5,3) {Intermediate \\ approaches};
 	
 	\node[align=center] (GDC) at (-5,-8) {Gradient, curl, and \\ divergence analysis};
-	\node[align=center] (WaveMotivation) at (-8,-7) {Wave-guidence \\ motivation};
+	%\node[align=center] (WaveMotivation) at (-5,-1.5) {Wave-guidence \\ motivation};
 	
-	\node[align=center] (MMat) at (8,-7) {Theory of \\ boundary triples};
+	\node[align=center] (MMat) at (5,-1.5) {Theory of \\ boundary triples};
 	
 	%edges between main topics
 	\path[every node/.style={font=\sffamily\small}]
-		(TS) edge node[anchor=north west, align=center] {Modelling \\ assumptions} (SS)
+		(TS) edge node[anchor=north west, align=center] {Wave-guidance \\ motivation} (SS)
 		(SS) edge node[anchor=south] {Will demonstrate equivalence to} (QG)
 		(TS) edge node[anchor=north east, align=center] {Limit as length \\ scales tend to 0} (QG)
 		(QG) edge node[anchor=north west, align=center] {Analytic or \\ numerical techniques} (Goal);
@@ -39,10 +40,12 @@
 		(TS) edge (Intermediate)
 	%arrows off SS
 		(GDC) edge (SS)
-		(WaveMotivation) edge (SS)
+		%(WaveMotivation) edge (SS)
 	%arrows off QG
-		(MMat) edge (QG);
-
+		(MMat) edge (QG)
+	%arrows off Reson
+		(Reson) edge (ARROW)
+		(Reson) edge (Intermediate);
 
 \end{tikzpicture}
 
