@@ -24,7 +24,7 @@ The (general) solution $u_{3,jk}$ that would be obtained from this equation woul
 Similarly we can also note that a solution pair to \eqref{eq:CurlEdgeEquations} that satisfies \eqref{eq:CurlVertexConditionsSumDeriv}, then satisfies \eqref{eq:CurlVertexConditionsSum2} if and only if it satisfies \eqref{eq:CurlVertexConditionsSumDeriv}.
 Given that our objective is just determining the eigenvalues of \eqref{eq:CurlCurlEquationDivFree}, it is thus sufficient for us to solve the (quantum graph) problem
 \begin{align} \label{eq:QGEquation}
-	0 &= -\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{3,jk} + \bracs{\wavenumber^2 - \omega^2}u_{3,jk}.
+	0 &= -\bracs{\diff{}{t} + i\qm_{jk}}^2 u_{3,jk} + \bracs{\wavenumber^2 - \omega^2}u_{3,jk},
 \end{align}
 \begin{subequations} \label{eq:QGVertexConditions}
 	\begin{align}
@@ -68,7 +68,7 @@ In fact, we can actually compute the $M$-matrix for a given value of $\effFreq$ 
 	Note the choice of $j\conLeft j$ in the contributions from loops is simply a convention, $j\conRight j$ is equivalent here.
 	Also recall the convention for summing over $j\con k$:
 	\begin{align*}
-		\sum_{j\con k} \effFreq\cot\bracs{l_{jl}\effFreq} &= \sum_{j\conLeft k} \effFreq\cot\bracs{l_{jl}\effFreq}	+ \sum_{j\conRight k} \effFreq\cot\bracs{l_{lj}\effFreq}
+		\sum_{j\con k} \effFreq\cot\bracs{l_{jk}\effFreq} &= \sum_{j\conLeft k} \effFreq\cot\bracs{l_{jk}\effFreq}	+ \sum_{j\conRight k} \effFreq\cot\bracs{l_{kj}\effFreq}
 	\end{align*}
 \end{prop}
 \begin{proof}
@@ -114,9 +114,6 @@ And even if exact solution is impossible, one can often arrive at a simpler prob
 This is the approach that we take in our examples, using proposition \ref{prop:M-MatrixEntries} to write out the $M$-matrix, then manipulating $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to obtain an expression of the form $0 = \mathcal{F}\bracs{\effFreq, \qm}$, which we can then treat as the situation requires.
 
 \section{Cross in the Periodic Plane} \label{sec:ExampleCrossInPlane}
-As the title says, but make it more formal and fancy and not in reference to the TFR. 
-Spectrum is whole real line, because no gaps open...
-
 We begin with an example primarily for illustrative purposes, as we shall see that the spectrum we obtain doesn't possess any interesting features.
 Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
 \begin{align*}
@@ -267,22 +264,21 @@ Seeking to determine the spectrum of \eqref{eq:CurlCurlEquationDivFree} via \eqr
 \end{align*}
 Whilst not the nicest to look at, $M_{\qm}$ is still fairly simple to evaluate on a computer.
 For those who would persist with an analytical approach, we can proceed further from $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to deduce that
-\begin{align*}
+\begin{align} \label{eq:5VertexGraphGeneralDet0}
 	0 &= -\bracs{2 + \cot_{12} + \cot_{23} + \cot_{24} + \cot_{31}} \\
 	&\quad +2\csc_{12}\csc_{23}\csc_{31} \bracs{ \cos_{12}\cos_{23}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{23}+\beta_{31}} } \\
 	&\quad +2\csc_{12}\csc_{24}\csc_{31} \bracs{ \cos_{12}\cos_{24}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{24}+\beta_{31}} } \\
 	&\quad +2\csc_{23}\csc_{24} \bracs{ \cos_{23}\cos_{24} - \cos\bracs{\beta_{23}-\beta_{24}} },
-\end{align*}
+\end{align}
 under the conventions
 \begin{align*}
 	\cot_{jk} = \cot\bracs{l_{jk}\effFreq}, &\quad \csc_{jk} = \csc\bracs{l_{jk}\effFreq}, \\
 	\cos_{jk} = \cos\bracs{l_{jk}\effFreq}, &\quad \beta_{jk} = \qm_{jk}l_{jk}.
 \end{align*}
-Needless to say, having broken most symmetries of $\graph$ the equation we are rewarded with isn't particularly fun to work with\footnote{Understatement intended.}. 
-\tstk{time to play with this system and plot the spectrum Will... :(}
+Needless to say, having broken most symmetries of $\graph$ the equation we are rewarded with isn't particularly nice to work with, and so we turn to some numerical investigations. \newline
 
-have made some progress in the case when $l_1=l_2=0.5, l_3=l_4=0$ and numerics can confirm the existence of spectral band gaps. 
-It's a tricky argument but essentially we end up with
+We can demonstrate that this geometry is capable of exhibiting spectral band-gaps by persevering analytically in the case when $l_1=l_2=\recip{2}, l_3=l_4=0$, and using numerics to examine the resulting expression.
+After much simplification and starting from \eqref{eq:5VertexGraphGeneralDet0}, we arrive at
 \begin{align*}
 	\cos\qm_1 + \cos\qm_2 + \cos\bracs{\qm_1+\qm_2} &=
 	\recip{2}\cos\frac{\effFreq}{\sqrt{2}}
@@ -291,24 +287,40 @@ It's a tricky argument but essentially we end up with
 	&\quad + \recip{2}\sin\bracs{\frac{\sqrt{2}+1}{\sqrt{2}}\effFreq}
 	- \recip{2}\sin\bracs{\frac{\sqrt{2}-1}{\sqrt{2}}\effFreq}.
 \end{align*}
-Call the RHS $\Xi$ again.
-The LHS is bounded between $-3$ and $1.5$ for the range of $\qm$ (1.5 at $\qm_1=\qm_2=\frac{2\pi}{3}$, whilst min is at $\qm=0$).
-This means that we can try to solve $-3\leq \Xi\leq 1.5$ numerically, which I have done in my Python scripts, and there are (tiny, tiny, TINY) bandgaps in the spectrum.
-So we could produce another bandgap plot too, by sweeping through $\wavenumber$ too.
-In terms of validation, $\Xi$ is sadly not periodic (even though it's the sum of periodic functions...see for example \url{https://math.stackexchange.com/questions/1079/sum-of-two-periodic-functions}) so it's NOT NECESSARILY a genuine set of bandgaps, it could just be a finite number of finite-bandgaps which culminates in one infinite-bandgap.
-Sooooo.... fun times, I guess it would also be good to try and get the general NLII solver on this to try a more complicated system with the lengths not being so nice, but that, alas, proves nothing.
-That of course, also requires you having a working version of the NLII, of course - guess you've now got an ITT project!
+Call the right hand side of this expression $\Xi\bracs{\effFreq}$; and note that the left hand side of this expression is bounded between $-3$ ($\qm=0$) and $\frac{3}{2}$ ($\qm_1=\qm_2=\frac{2\pi}{3}$).
+This means that we can determine values $\effFreq$ such that $-3\leq \Xi\bracs{\effFreq} \leq 1.5$ numerically; with the result plotted in figure \ref{fig:5VertexGraph_SimplifiedLengths_Bandgaps}.
+\begin{figure}[t]
+	\centering
+	\includegraphics[scale=0.75]{5VertexGraph_SimplifiedLengths_Bandgaps.pdf}
+	\caption{\label{fig:5VertexGraph_SimplifiedLengths_Bandgaps} The function $\Xi$ over a range of $\effFreq$. Red regions indicate those $\effFreq$ that correspond to eigenvalues $\omega^2$, when $\Xi\bracs{\effFreq}$ takes values between $-3$ and $\frac{3}{2}$ (black lines). One can see gaps in the spectrum, however we cannot confirm that there are infinitely such many gaps (see text).}
+\end{figure}
+We can confirm that there exist values $\effFreq$, hence $\omega^2$ that do not correspond to eigenvalues and thus the spectrum of the problem is not the whole real line.
+However these are only confirmed numerically, and there is no guarantee that there will be infinitely many such gaps in the spectrum.
+Indeed $\Xi$ is not a periodic function of $\effFreq$ (note that the periods of the trigonometric functions are not rational multiples of each other) and so we cannot even plot $\Xi$ over one period in $\effFreq$ and deduce the whole spectrum as in section \ref{sec:ExampleCrossInPlane}.
+As such, although we can demonstrate there exist gaps in the spectrum, we cannot guarantee there are infinitely many of them.
+Given the complex expression for $\Xi$; from a practical point of view it would be prudent to probe this system numerically starting from the M-matrix, and solving the generalised eigenvalue problem for eigenvalues over a predetermined range of interest (such as those $\effFreq$ that correspond to typical operating frequencies and wavelengths for fibres).
+We have speculated on such a scheme in section \ref{sec:NumericalMethodsDiscussion}; however given that there is no obvious path for analytic progress with this system, we will now turn our attention to another example.
 
 \section{Thick Vertex Case} \label{sec:ExampleThickVertex}
-In our final example we return to the (period graph) defined in section \ref{sec:ExampleCrossInPlane}, and still examine \eqref{eq:QGEquation}.
-However make a slight departure from the boundary conditions in \eqref{eq:QGVertexConditions} and take a non-zero coupling constant $\alpha$ (c.f. section \ref{sec:DEonQG}) at the vertex $v_3$, meaning that our new boundary conditions are
+In our final example we look to examine a singular-structure problem which represents (through the equivalent quantum graph problem) the limit of a thin-structure problem in which the vertex- and edge-area scaling is comparable, as discussed in section \ref{sec:GraphLitReview}.
+To arrive at such a quantum graph problem from our singular-structure problems in chapter \ref{ch:VectorEqns} we are required to make a slight alteration to the measure we pose our variational problem with respect to.
+Specifically we must introduce a point mass at each vertex $v_j$ that is to have a non-zero coupling constant in the equivalent quantum graph problem. 
+In general the measure we would be considering in our variational problem would then be $\dddmes$;
+\begin{align*}
+	\dddmes &= \ddmes + \sum_{v_j\in V}\alpha_j \delta_{j}, \\
+	\delta_{j}\bracs{B} &= \begin{cases} 1 & v_j\in B, \\ 0 & v_j\not\in B, \end{cases} \quad\forall B\in\mathcal{B}_{\sqbracs{0,1}^2},
+\end{align*}
+where the $\alpha_j$ are the coupling constants to appear in the equivalent quantum graph problem (section \ref{sec:DEonQG}), and $\ddmes$ is the singular measure on the underlying (period) graph $\graph$ as defined in section \ref{sec:GraphSingularMeasuresDef}.
+Note that the case where $\alpha_j=0 \ \forall v_j\in V$ is the case that was studied in chapter \ref{ch:VectorEqns}, however one can repeat this analysis with respect to this more general measure without too much additional complexity.
+This results in the same equations on each edge of $\graph$ (as the $\delta_j$ only have an affect at the vertices) and modified boundary conditions that contain non-zero coupling constants. \newline
+
+For the geometry of this example, we return to the (period graph) defined in section \ref{sec:ExampleCrossInPlane}, and still examine \eqref{eq:QGEquation}.
+However we take a non-zero coupling constant $\alpha$ at the vertex $v_3$, meaning that our new boundary conditions are
 \begin{align} \label{eq:QGThickVertexConditions}
 		u_3 &\text{ is continuous at each } v_j\in V, \\
 		0 &= \sum_{j\con k} \bracs{\diff{}{t} + i\qm_{jk}}u_{3,jk}\bracs{v_j}, \quad j\in\clbracs{1,2,4,5}, \\
 		\alpha u_3\bracs{v_3} &= \sum_{3\con k} \bracs{\diff{}{t} + i\qm_{3k}}u_{3,3k}\bracs{v_3}.
 \end{align}
-\tstk{why? What? How is this legal? Refer back to Olaf-Post and Kuchment work when it was discussed for as to why we care about this problem, and then explain how we can add point masses to singular measures and go through the motions of the previous chapters to get this system. }
-
 The $M$-matrix itself is no different to that which we computed in section \ref{sec:ExampleCrossInPlane}, 
 \begin{align*}
 	M_{\qm}\bracs{\effFreq} &=
@@ -318,7 +330,7 @@ The $M$-matrix itself is no different to that which we computed in section \ref{
 		-2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_2}{2}} & -2\effFreq\csc\bracs{\frac{\effFreq}{2}}\cos\bracs{\frac{\qm_1}{2}} & 4\effFreq\cot\bracs{\frac{\effFreq}{2}}
 	\end{pmatrix},
 \end{align*}
-save now we have a non-zero matrix of coupling constants $A=\mathrm{diag}\bracs{0,0,\alpha}$ and will need to solve
+but now we have a non-zero matrix of coupling constants $A=\mathrm{diag}\bracs{0,0,\alpha}$ and will need to solve
 \begin{align*}
 	\bracs{M_{\qm}\bracs{\omega^2} - \omega^2 A}v = 0.
 \end{align*}
@@ -327,30 +339,45 @@ If we chose to proceed numerically we could make use of the suggestion in sectio
 	\det\bracs{\bracs{M_{\qm}\bracs{\omega^2} - \omega^2 A}} &= 0 \\
 	\Leftrightarrow \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} &= \cos\effFreq - \frac{\alpha}{4}\frac{\omega^2}{\effFreq}\sin\effFreq. \labelthis\label{eq:ExampleThickVertexSolution}
 \end{align*}
+For ease, we define
+\begin{align*}
+	\Xi\bracs{\omega, \wavenumber} := \cos\effFreq - \frac{\alpha}{4}\frac{\omega^2}{\effFreq}\sin\effFreq.
+\end{align*}
 As we might expect; there is a lot of similarity between \eqref{eq:ExampleCrossInPlaneSolution} and \eqref{eq:ExampleThickVertexSolution}, the only difference being the introduction of a term with a factor of $\alpha$.
 The left hand side of \eqref{eq:ExampleThickVertexSolution} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, but the right hand side cannot be written as a function of $\effFreq$ alone.
 So finding pairs\footnote{We could elect to find pairs $\bracs{\omega, \effFreq}$ of course; but as $\effFreq$ is a function of $\omega$ and $\wavenumber$, and the conventions that surround dispersion relations, it makes more sense to phrase things in terms of $\bracs{\omega, \wavenumber}$.} $\bracs{\omega, \wavenumber}$ amounts to finding all $\bracs{\omega, \wavenumber}$ such that
 \begin{align} \label{eq:ExampleThickVertexDispExpr}
-	-1 \leq \cos\effFreq - \frac{\alpha}{4}\frac{\omega^2}{\effFreq}\sin\effFreq =: \Xi\bracs{\omega, \wavenumber} \leq 1.
+	-1 \leq \Xi\bracs{\omega, \wavenumber} \leq 1.
 \end{align}
 One can visualise the curve $\Xi$ for a fixed value of $\wavenumber=\pi$ (and with $\alpha=-1$) in figure \ref{fig:ThickVertex_CurlsTFRSetup_k1a1}.
-\begin{figure}[b!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[scale=0.75]{ThickVertex_CurlsTFRSetup_k1a1.pdf}
 	\caption{\label{fig:ThickVertex_CurlsTFRSetup_k1a1} The function $\Xi$ for a fixed value of $\wavenumber=\pi$. Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi\bracs{\omega, \pi}$ takes values between $-1$ and $1$ (black lines). One can see the existence of spectral bands which shrink in size as $\omega\rightarrow\infty$.}
 \end{figure}
-We can observe that for a fixed $\wavenumber$ the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$. 
+We can observe that for a fixed $\wavenumber$ the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$. \tstk{can probably prove this too, use the TFR as motivation I guess :L}
 Of course the value of $\alpha$ changes the shape of $\Xi$ which in turn will also effect the set of points $\bracs{\omega, \wavenumber}$ that solve \eqref{eq:ExampleThickVertexDispExpr}. \newline
 
-More useful and relevant for wave-guidance purposes is that a dispersion- or band-gap-plot can be generated from \eqref{eq:ExampleThickVertexDispExpr}, as presented in figure \ref{fig:ThickVertex_CurlsTFRSetup}.
+Of course, of greater physical significance is the band-gap-plot that \eqref{eq:ExampleThickVertexDispExpr} gives rise to, as presented in figure \ref{fig:ThickVertex_CurlsTFRSetup}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.75]{ThickVertex_CurlsTFRSetup.pdf}
 	\caption{\label{fig:ThickVertex_CurlsTFRSetup} Dispersion plot for the system in section \ref{sec:ExampleThickVertex}, yellow regions correspond to $\omega, \wavenumber$ pairs that solve \eqref{eq:CurlCurlEquationDivFree}. We observe spectral ``band-gaps" in $\omega$ for each $\wavenumber$, and \tstk{maybe compare to physical plot from papers?}}
 \end{figure}
 In this figure points $\bracs{\omega, \wavenumber}$ in yellow correspond to solutions to \eqref{eq:ExampleThickVertexDispExpr}, whilst those in blue do not.
+Here we see that there are distinct branches or regions of $\bracs{\omega, \wavenumber}$ in which we obtain solutions to \eqref{eq:QGEquation} with \eqref{eq:QGThickVertexConditions} as the boundary conditions.
+Importantly the shape of these regions is similar to experimental band-gap plots in a photonic setting;
 \tstk{compare to David Papers? Also either recall or explain why this is useful in PCFs :L}
 
 \section{Summary}
 Chapter summary of the results and how they might be physically interpreted.
 Speculate on future developments.
+
+\begin{itemize}
+	\item Cross in plane - how ideas come together
+	\item 5 Vertex graph - gaps exist, but even simple setups are hard to treat analytically. Reiterate need for numerical stuff
+	\item Thick vertex - now in equal-scaling case, useful and interesting for problems we consider. Gaps arise easily and periodically in our simple example. Disp. plot shape agrees well with PCF plots.
+\end{itemize}
+Numerical scheme discussion, this is an avenue for future research.
+In summary though, we have gone from sing-struc to QG to spectrum, and maintained link to thin-struc as well.
+Next chapter is just a summary of the report, whilst this one tied together the theory from previous chapters.

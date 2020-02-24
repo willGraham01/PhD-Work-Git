@@ -9,12 +9,15 @@ File contains a class that defines a ProblemInstance.
 Each ProblemInstance takes in a value for the quasi-momentum and the length parameters l1,...,l4, and then can construct a function detM which evaluates the expression for the determinant of the M-matrix, for that problem at the specified value of the efFreq.
 """
 
+import sys
+sys.path.append('../')
+
 import numpy as np
-from numpy import sqrt, sin, cos, tan
+from numpy import sqrt, sin, cos
 
 import matplotlib.pyplot as plt
 
-from AuxPlotFns import FastFunctionPlot as FFP
+#from AuxPlotFns import FastFunctionPlot as FFP
 from AuxMethods import csc, cot, AbsLess
 
 #edge lengths
@@ -131,8 +134,8 @@ def WorkedEquation(effFreq):
 
 if __name__=='__main__':
 	
-	wPts = 10000
-	w = np.linspace(0,25*np.pi,wPts)
+	wPts = 25000
+	w = np.linspace(0,15*np.pi,wPts)
 	vals = WorkedEquation(w)
 	eValInds = AbsLess(vals, -3, 1.5)
 	
@@ -141,6 +144,12 @@ if __name__=='__main__':
 	ax.plot(w/np.pi, -3*np.ones((wPts,)), 'k')
 	ax.plot(w/np.pi, 1.5*np.ones((wPts,)), 'k')
 	ax.scatter(w[eValInds]/np.pi, np.zeros_like(w[eValInds], dtype=float), s=1, c='r', marker='x')
-	ax.set_xlabel(r'Frequency, $\frac{\omega}{\pi}$')
+	ax.set_xlabel(r'$\frac{\Lambda}{\pi}$')
 	ax.set_ylabel(r'Dispersion Expression Value')
 	ax.set_xlim([w[0]/np.pi, w[-1]/np.pi])
+	saveStr = input('Save figure as (.pdf appended automatically): ') + '.pdf'
+	if len(saveStr)<=4:
+		print('File not saved (invalid filename)')
+	else:
+		print('Filename provided: ', saveStr)
+		fig.savefig(saveStr)
