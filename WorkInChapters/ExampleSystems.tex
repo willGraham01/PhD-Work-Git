@@ -264,12 +264,12 @@ Seeking to determine the spectrum of \eqref{eq:CurlCurlEquationDivFree} via \eqr
 \end{align*}
 Whilst not the nicest to look at, $M_{\qm}$ is still fairly simple to evaluate on a computer.
 For those who would persist with an analytical approach, we can proceed further from $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to deduce that
-\begin{align} \label{eq:5VertexGraphGeneralDet0}
+\begin{align*} 
 	0 &= -\bracs{2 + \cot_{12} + \cot_{23} + \cot_{24} + \cot_{31}} \\
 	&\quad +2\csc_{12}\csc_{23}\csc_{31} \bracs{ \cos_{12}\cos_{23}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{23}+\beta_{31}} } \\
 	&\quad +2\csc_{12}\csc_{24}\csc_{31} \bracs{ \cos_{12}\cos_{24}\cos_{31} - \cos\bracs{\beta_{12}+\beta_{24}+\beta_{31}} } \\
-	&\quad +2\csc_{23}\csc_{24} \bracs{ \cos_{23}\cos_{24} - \cos\bracs{\beta_{23}-\beta_{24}} },
-\end{align}
+	&\quad +2\csc_{23}\csc_{24} \bracs{ \cos_{23}\cos_{24} - \cos\bracs{\beta_{23}-\beta_{24}} }, \labelthis\label{eq:5VertexGraphGeneralDet0}
+\end{align*}
 under the conventions
 \begin{align*}
 	\cot_{jk} = \cot\bracs{l_{jk}\effFreq}, &\quad \csc_{jk} = \csc\bracs{l_{jk}\effFreq}, \\
@@ -279,15 +279,15 @@ Needless to say, having broken most symmetries of $\graph$ the equation we are r
 
 We can demonstrate that this geometry is capable of exhibiting spectral band-gaps by persevering analytically in the case when $l_1=l_2=\recip{2}, l_3=l_4=0$, and using numerics to examine the resulting expression.
 After much simplification and starting from \eqref{eq:5VertexGraphGeneralDet0}, we arrive at
-\begin{align*}
+\begin{align*} 
 	\cos\qm_1 + \cos\qm_2 + \cos\bracs{\qm_1+\qm_2} &=
 	\recip{2}\cos\frac{\effFreq}{\sqrt{2}}
 	+ \frac{3}{8}\cos\bracs{\frac{\sqrt{2}-1}{\sqrt{2}}\effFreq}
 	+ \frac{9}{8}\cos\bracs{\frac{\sqrt{2}+1}{\sqrt{2}}\effFreq} \\
 	&\quad + \recip{2}\sin\bracs{\frac{\sqrt{2}+1}{\sqrt{2}}\effFreq}
-	- \recip{2}\sin\bracs{\frac{\sqrt{2}-1}{\sqrt{2}}\effFreq}.
+	- \recip{2}\sin\bracs{\frac{\sqrt{2}-1}{\sqrt{2}}\effFreq}. \labelthis\label{eq:5VertexGraphDispExpr}
 \end{align*}
-Call the right hand side of this expression $\Xi\bracs{\effFreq}$; and note that the left hand side of this expression is bounded between $-3$ ($\qm=0$) and $\frac{3}{2}$ ($\qm_1=\qm_2=\frac{2\pi}{3}$).
+Call the right hand side of \eqref{eq:5VertexGraphDispExpr} $\Xi\bracs{\effFreq}$; and note that the left hand side of this expression is bounded between $-3$ ($\qm=0$) and $\frac{3}{2}$ ($\qm_1=\qm_2=\frac{2\pi}{3}$).
 This means that we can determine values $\effFreq$ such that $-3\leq \Xi\bracs{\effFreq} \leq 1.5$ numerically; with the result plotted in figure \ref{fig:5VertexGraph_SimplifiedLengths_Bandgaps}.
 \begin{figure}[t]
 	\centering
@@ -355,7 +355,7 @@ One can visualise the curve $\Xi$ for a fixed value of $\wavenumber=\pi$ (and wi
 	\includegraphics[scale=0.75]{ThickVertex_CurlsTFRSetup_k1a1.pdf}
 	\caption{\label{fig:ThickVertex_CurlsTFRSetup_k1a1} The function $\Xi$ for a fixed value of $\wavenumber=\pi$. Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi\bracs{\omega, \pi}$ takes values between $-1$ and $1$ (black lines). One can see the existence of spectral bands which shrink in size as $\omega\rightarrow\infty$.}
 \end{figure}
-We can observe that for a fixed $\wavenumber$ the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$. \tstk{can probably prove this too, use the TFR as motivation I guess :L}
+We can observe that for a fixed $\wavenumber$ the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
 Of course the value of $\alpha$ changes the shape of $\Xi$ which in turn will also effect the set of points $\bracs{\omega, \wavenumber}$ that solve \eqref{eq:ExampleThickVertexDispExpr}. \newline
 
 Of course, of greater physical significance is the band-gap-plot that \eqref{eq:ExampleThickVertexDispExpr} gives rise to, as presented in figure \ref{fig:ThickVertex_CurlsTFRSetup}.
@@ -370,14 +370,28 @@ Importantly the shape of these regions is similar to experimental band-gap plots
 \tstk{compare to David Papers? Also either recall or explain why this is useful in PCFs :L}
 
 \section{Summary}
-Chapter summary of the results and how they might be physically interpreted.
-Speculate on future developments.
+The examples in this chapter demonstrate how we can determine the spectrum of singular-structure problems, bringing together the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns}, and also highlight several issues that need to be considered during the solution process.
+Of particular note is the central role that the M-matrix plays in our computations, and how it can be easily constructed by proposition \ref{prop:M-MatrixEntries}.
+Combined with the fact that determining the spectrum of our singular-structure problems amounts to solving a generalised eigenvalue problem, this provides us with a (albeit naive) numerical method for situations when analytic progress proves difficult.
+We have speculated on some of the issues such a numerical scheme would face in section \ref{sec:NumericalMethodsDiscussion}, and will revisit this idea of developing a suitable numerical scheme for handling these problems in chapter \ref{ch:Conclusion}. \newline
 
-\begin{itemize}
-	\item Cross in plane - how ideas come together
-	\item 5 Vertex graph - gaps exist, but even simple setups are hard to treat analytically. Reiterate need for numerical stuff
-	\item Thick vertex - now in equal-scaling case, useful and interesting for problems we consider. Gaps arise easily and periodically in our simple example. Disp. plot shape agrees well with PCF plots.
-\end{itemize}
-Numerical scheme discussion, this is an avenue for future research.
-In summary though, we have gone from sing-struc to QG to spectrum, and maintained link to thin-struc as well.
-Next chapter is just a summary of the report, whilst this one tied together the theory from previous chapters.
+The examples that we consider in sections \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleGeneralLengths} are chosen so as to demonstrate that analytic progress is possible for small graphs with simple geometries; but unless our system exhibits a great deal of symmetry we are often forced to resort to numerical techniques to investigate the spectrum.
+Section \ref{sec:ExampleCrossInPlane} gives an example of a problem whose spectrum can be determined analytically; although this spectrum turns out to be rather uninteresting from a wave-guidance viewpoint, as it doesn't exhibit band-gaps.
+It does provide a concrete example as to how we go about determining the spectrum of our singular-structure problems though, and illustrates the utility of the M-matrix in storing all the information we need about our problem to reach an understanding of it's spectrum.
+The example in section \ref{sec:ExampleGeneralLengths} illustrates how introducing slight complexities and breaking symmetries in the underlying geometry makes analytic progress difficult, but not impossible.
+Pursuing an analytic approach yields an expression for the spectrum that is difficult to treat, although some numerical investigations do confirm the existence of band-gaps in the spectrum.
+Whether there are infinitely many spectral bands however is still an open question, and would require a detailed analysis of \eqref{eq:5VertexGraphDispExpr} - at present all that has been carried out is an investigation into a single, rather simplified, case.
+Thinking from a practical viewpoint, a numerical scheme that begins from the M-matrix would be beneficial here because of the complexity of the resulting analytic expressions.
+Such a scheme could be used to investigate the spectrum at specific ranges of interest (for example, near operating frequencies for fibres), which bypasses the need to determine the complete spectrum. \newline
+
+In section \ref{sec:ExampleThickVertex} we explored an example quantum graph problem with non-zero coupling constants at the central vertices.
+This quantum graph problem represents the limit of a family of thin-structure problems with the thickness of the structure scaling in a different way to the previous examples, as discussed in section \ref{sec:GraphLitReview}.
+Also provided was the singular-structure problem that we would begin from to obtain this quantum graph problem as an equivalent formulation, following much the same analysis as in chapter \ref{ch:VectorEqns} but with slightly altered measures in our variational formulation.
+This example used the same geometry as the example of section \ref{sec:ExampleCrossInPlane}, however due to the presence of a non-zero coupling constant at the central vertex we observe spectral band-gaps in $\omega$ at all values of $\wavenumber$.
+The dispersion plot that we can produce from our analysis also bears resemblance in it's shape to experimentally-determined dispersion plots for band-gap fibres.
+This would imply that a specific scaling between the vertex- and edge-areas results in ``easier" opening of band-gaps in PCFs, although formal investigation needs to be carried out to validate this hypothesis.
+Also worthy of note in this example is that the M-matrix remains the same as that in section \ref{sec:ExampleCrossInPlane}, the only difference being that we have a non-zero matrix of coupling constants to handle.
+Again coming from a numerical viewpoint; this means that investigating the same geometries but with different vertex conditions will only require construction of (a function that evaluates) the M-matrix once, but the coupling constants in the quantum graph problem can then be readily changed without a need to rebuild the M-matrix. \newline
+
+In chapter \ref{ch:Conclusion} we will discuss some of the key concepts that we have developed in this report, and revisit some of the ideas highlighted by the examples in this section.
+We will also revisit the motivation of chapter \ref{ch:Intro} and reiterate the link between the work we have done here and the application it has to wave-guidance in PCFs, as well as speculate on the direction of future work.

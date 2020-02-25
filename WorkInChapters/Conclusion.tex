@@ -1,17 +1,50 @@
 \chapter{Conclusion} \label{ch:Conclusion}
-The conclusion chapter is great fun, and is the last thing that I'll write (even after the introduction)!
-Split into 3 sections, one to summarise the existing literature, theory, and the motivation of the project (chapters \ref{ch:Intro}, \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}), one for the work that has been done (\ref{ch:VectorEqns}, \ref{ch:ExampleSystems}) and a further section for the future direction and developments that should be explored.
+In this chapter we review the content of this report and speculate on the future direction of research.
+Section \ref{sec:ConcTheory} will provide an overview of the existing theory that we have utilised, the motivation for our project and restate our research objectives.
+We will then summarise the work we have done to build on this theory and towards these objectives in section \ref{sec:ConcWork}.
+Finally, in section \ref{sec:ConcFuture} we shall discuss some of the loose ends or open questions that have been raised by our research or not yet addressed, and provide some direction for future work.
 
-\section{Summary of Theory and Motivation}
-Mainly a summary of chapters \ref{ch:Intro}, \ref{ch:QuantumGraphs}, \ref{ch:ScalarEqns}, although we should lean more heavily on the physical interpretation stuff.
-Important points:
-\begin{itemize}
-	\item How this represents a physical system
-	\item Why we need to treat a variational approach
-	\item How do we tie QG to variational-formulation
-\end{itemize}
+\section{Summary of Motivation, Research Objectives, and Existing Theory} \label{sec:ConcTheory}
+Our research is motivated by applications to PCFs (section \ref{sec:ProjectMotivation}), specifically in investigating the nature how spectral band-gaps emerge due as a result of the geometries of the fibres.
+Although our research centres on singular-structure problems as a starting point (section \ref{sec:OurPhysicalSetup}), there is a link through quantum graph problems back to familiar thin-structure problems that are commonly used model PCFs (section \ref{sec:GraphLitReview}).
+This amounts to us being able to view our singular-structure problems in an intuitive manner - as the limit of thin-structure problems as the thickness of the structures tends to zero, although the manner in which this thickness tends to zero also influences the problems that we should be considering (section \ref{sec:GraphLitReview}).
+As such, the research goals that we set out to achieve were:
+\begin{enumerate}
+	\item To demonstrate that the singular-structure problems we consider give rise to equivalent quantum graph problems, in turn linking our singular-structure problems to formal ``limits" of thin-structure problems and hence PCF models.
+	\item To study singular-structure problems that can be seen as approximations to PCFs; deriving the equivalent quantum graph problems and providing insight into how the geometry of the fibre cross section influences the spectral band-gaps of the fibre.
+	\item To propose numerical approaches to determining these band-gaps in the event that an analytic approach proves unfeasible.
+\end{enumerate}
 
-\section{Summary of Work and Examples}
+As we discussed in sections \ref{sec:VariationalProblemLitReview}, choosing to study singular-structure problems required us to rethink the concepts of gradient, curl and divergence.
+This bought us to the theory of chapter \ref{ch:ScalarEqns}, in which we presented a framework for posing variational problems with respect to Borel measures and reviewed the existing theory on the matter.
+We also provided a geometric insight into what the concept of gradient meant in the context of our singular-structure problems, and demonstrated how we could obtain an equivalent quantum graph problem from a variational problem.
+These arguments formed the basis of our understanding and direction for our work in chapter \ref{ch:VectorEqns}. \newline
+
+Quantum graph problems are comparatively well studied, there even being a comprehensive introductory text on the subject and a recent spike in research interest (section \ref{sec:GraphLitReview}).
+As such we simply needed to borrow the relevant concepts and tools from the existing works in the area for our own purposes, which we did in chapter \ref{ch:QuantumGraphs}.
+Of particular importance was the M-matrix and it's utility in solving spectral problems on quantum graphs; and we briefly touched on how the M-matrix opens these spectral problems up to numerical schemes in chapter \ref{ch:ExampleSystems}, a topic which we revisit in section \ref{sec:ConcFuture}.
+We also use quantum graphs as the link between our singular-structure problems and thin-structure problems that describe PCFs.
+
+\section{Summary of Work and Examples} \label{sec:ConcWork}
+The work of chapter \ref{ch:VectorEqns} see us build on the existing work on variational problems by constructing the spaces $\ktgradSob{\ddom}{\ddmes}$, $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ and analysing the operator $\ktgrad$.
+We provide an interpretation for the $\ddmes$-curl of a vector field (section \ref{sec:CurlExamples}) and also prove various properties about the elements of the aforementioned spaces.
+In particular we deduce the form of the tangential $\kt$-curl and $\kt$-gradient, and characterise what it means to be divergence-free.
+We also prove that the space $\ktcurlSob{\ddom}{\ddmes}$ has some inherent structural properties that are not obvious from it's construction (section \ref{sec:ktcurlSobExtraProperties}).
+This analysis allows us to consider the singular-structure analogue of the ``curl-of-the-curl" equation, written in \eqref{eq:CurlCurlEquationDivFree} and determine the equivalent quantum graph problem in section \ref{sec:CurlReductionToQG}, forming the basis for our examples in chapter \ref{ch:ExampleSystems}.
+This theory is essential if we are to address the first of our research objectives, as without knowledge of the form of objects like $\ktcurl{\ddmes}u$, we have no hope of obtaining an equivalent quantum graph problem from our singular-structure problems.
+The fact that we can write problems like \eqref{eq:CurlCurlEquationDivFree} in the way they are presented is also satisfying in an intuitive sense; the ``equations" that we are studying have the same form as those which we would consider in the thin-structure setting, only now we have a different understanding of gradients (and curls, and divergences).
+Our development of this theory will likely prove valuable if we are to move on from the ``curl-of-the-curl" equation to a full Maxwell problem involving coupled $\mathbf{E}$ and $\mathbf{H}$ fields, which we revisit in section \ref{sec:ConcFuture}. \newline
+
+Having derived the equivalent quantum graph problem from our singular-structure problems, we spend chapter \ref{ch:ExampleSystems} looking over some examples and addressing the second and third objectives.
+Our examples demonstrate how to construct the M-matrix, and how it can be used either analytically or numerically to solve spectral problems and hence reveal insights about band-gaps.
+We take a mixture of numerical and analytic approaches in these examples, however stop short of a fully-fledged numerical scheme that begins from the M-matrix itself.
+This is discussed in section \ref{sec:NumericalMethodsDiscussion} however, and will be revisited in section \ref{sec:ConcFuture}, which follows.
+The examples also illustrate how it is possible to use the geometry of the cross-sectional structure to open band-gaps in the spectrum (section \ref{sec:ExampleGeneralLengths}).
+However our investigation is limited to a single, simplified case and analytic progress proves hard, again highlighting that, at least for practical purposes, a numerical scheme that focuses on a physically relevant part of the spectrum may be more useful and applicable. \newline
+
+We give a final example that corresponds to \tstk{thick vertex, different scaling limit.}
+
+
 A summary of chapters \ref{ch:VectorEqns}, \ref{ch:ExampleSystems}, leaning slightly towards the examples perhaps.
 Important points:
 \begin{itemize}
@@ -20,10 +53,10 @@ Important points:
 	\item Have encountered various problems numerically and analytically which need to be investigated
 \end{itemize}
 
-\section{Further Developments}
+\section{Further Developments} \label{sec:ConcFuture}
 ``We don't have to tie up loose ends so long as we organise them neatly."
 \begin{itemize}
 	\item There are still a few open questions from the introduction and linking process surrounding the thick vertex problem
-	\item Solving the $M$-matrix problems is hard!
-	\item Physical interpretation - Dielectric inclusions (more complex measures YAY)? Hexagonal unit cells?
+	\item Solving the $M$-matrix problems is hard! Numerical scheme discussion
+	\item Physical interpretation - Dielectric inclusions (more complex measures YAY)? Hexagonal unit cells? Full Maxwell?
 \end{itemize}
