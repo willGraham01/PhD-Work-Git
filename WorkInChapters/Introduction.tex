@@ -8,15 +8,24 @@ Despite the technological developments of the fibres, the underpinning physical 
 The fibre will have a core made of a dielectric (non-conducting) material with a given refractive index and will be surrounded by a cladding, another dielectric material of a lower refractive index.
 In practice this is normally achieved using a core material which is simply a doped version of the cladding material, with silica and doped silica are common choices, which leads to typical differences in refractive indices of the core and cladding of around $0.001$.
 By choosing a lower refractive index for the cladding material than the core, modes of light\footnote{A mode of light is a mono-frequency solution to the governing equations of electromagnetism in the fibre.} can be confined to the core of an optical fibre via the phenomenon of Total Internal Reflection (TIR), allowing guided propagation of light over tens of kilometres (before a signal boost is required).
-Wave guidance in fibres using TIR is known as weakly guiding, and the majority of modern optical fibres utilise this method of guidance. \newline
+Wave guidance in fibres using TIR is known as weakly guiding, and the majority of modern optical fibres utilise this method of guidance - an illustration is provided in figure \ref{fig:Diagram_OpticalFibre} for clarity. \newline
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Diagram_OpticalFibre.pdf}
+	\caption{\label{fig:Diagram_OpticalFibre} A schematic diagram of a weakly-guiding optical fibre. A core is surrounded by a cladding, giving a cross section composed of concentric circles. Light propagates along the fibre axis, confined to the core by the process of TIR. Note: this is illustrated with a ray picture of light.}
+\end{figure} 
 
 Photonic crystal fibres (PCFs) are a departure from the setup of core surrounded by cladding \cite{russell2003photonic}; instead relying on the micro-structure of the photonic crystal to alter the optical properties of the fibre it forms.
 This microstructure can cause the crystal to exhibit band-gaps; frequency ranges where there are no propagating modes of light in the crystal, despite the existence of propagating modes at lower (and/or higher) frequencies.
 These band-gaps allow for light to be confined to core materials previously thought impossible (like air), or even when the core itself consists of vacuum.
-This gives rise to the idea of a ``hollow-core fibre"; a PCF with air (or vacuum) as its core material, guiding light at frequencies determined by the band-gaps of the photonic crystal itself.
+This gives rise to the idea of a ``hollow-core fibre"; a PCF with air (or vacuum) as its core material, guiding light at frequencies determined by the band-gaps of the photonic crystal itself - we provide another schematic illustration in figure \ref{fig:Diagram_PhotonicFibre}.
 For completeness we should also mention that PCFs can also be ``solid core"; that is have a more conventional material like silica as the core material \cite{hou2008metallic}, or even be composed of metallic materials and still confine light \cite{luan2004allsolid}.
-Crucially though, PCFs do not use TIR to guide light but rather exploit the fact that light at particular frequencies is confined to the cores simply because it is unable to propagate in the surrounding crystal, due to the optical properties bestowed on the crystal by its micro-structure.
-\tstk{illustrative IMAGES of fibre differences! This is better than my sketches!}
+Crucially though, PCFs do not use TIR to guide light but rather exploit the fact that light at particular frequencies is confined to the cores simply because it is unable to propagate in the surrounding crystal, due to the optical properties bestowed on the crystal by its micro-structure. \newline
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.75]{Diagram_PhotonicFibre.pdf}
+	\caption{\label{fig:Diagram_PhotonicFibre} Schematic illustration of the cross-section of a PCF. A photonic crystal ``lattice" structure surrounds multiple cores, which may be hollow (contain air or vacuum) or made of an alternative dielectric material. The structure of the lattice-crystal prevents propagation of light at certain frequencies in the crystal; and thus those frequencies are confined to, and propagate down, the cores.}
+\end{figure}
 
 In summary, PCFs present a cautiously optimistic improvement to the current industry standard.
 The physical theory underlying the process by which they operate means that PCFs have the potential to replace optical fibres as the industry standard.
@@ -31,10 +40,10 @@ This will bring us through to section \ref{sec:GraphLitReview}; where we will li
 \section{Exisiting Models for PCFs} \label{sec:ExistingPCFModels}
 PCFs have been the subject of a number of modelling techniques in recent years. 
 The most conceptually straightforward being the use of numerical techniques to solve Maxwell's equations
-\begin{align*}
+\begin{align} \label{eq:MaxwellSystem}
 	\grad\wedge\mathbf{E} &= \pdiff{\bracs{\mu_{P}\mathbf{H}}}{t}, 
 	&\quad \grad\wedge\mathbf{H} &= -\pdiff{\bracs{\varepsilon_{P}\mathbf{E}}}{t},	
-\end{align*} 
+\end{align} 
 to determine modes (single-frequency solutions) that are supported by the PCF.
 Here $\mathbf{E}$ and $\mathbf{H}$ are the electric and magnetic-displacement fields respectively; with $\varepsilon_{P}$ and $\mu_{P}$ being material parameters (the electric permittivity and magnetic permeability respectively).
 These modes can then be used to construct an approximate band-gap plot for the fibre, with the level of precision in the computational results coming at the cost of increasing the computing time.

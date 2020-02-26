@@ -23,6 +23,9 @@
 %reminders of things to fill in
 %\newcommand{\tstk}[1]{\textbf{#1}\newline}
 
+%changes the title of the bibliograph page to ``References"
+\renewcommand{\bibname}{References}
+
 \title{Asymptotic and Numerical Analysis of Wave Propagation in Photonic Fibres with a Thin-Structure Cladding}  % Declares the document's title.
 \author{William Graham\footnote{Supervisors: Dr. Kirill Cherednichenko, Prof. David Bird, Prof. Chris Bowen}} 	% Declares the author's name.
 \date{\today}      % commenting out this command produces today's date.
@@ -44,8 +47,8 @@
 %NB: Can use \include for speed, but then the directory fills up with useless .aux files.
 %To save time, comment out sections that aren't being edited. References may disappear but the file will still compile!
 
-%\include{Introduction}
-%
+\include{Introduction}
+
 %\include{QuantumGraphs}
 %
 %\include{ScalarEqns}
@@ -54,7 +57,7 @@
 %
 %\include{ExampleSystems}
 %
-\include{Conclusion}
+%\include{Conclusion}
 
 \newpage %have a new page to start the bibliography
 \bibliographystyle{acm}

@@ -40,23 +40,56 @@ Our examples demonstrate how to construct the M-matrix, and how it can be used e
 We take a mixture of numerical and analytic approaches in these examples, however stop short of a fully-fledged numerical scheme that begins from the M-matrix itself.
 This is discussed in section \ref{sec:NumericalMethodsDiscussion} however, and will be revisited in section \ref{sec:ConcFuture}, which follows.
 The examples also illustrate how it is possible to use the geometry of the cross-sectional structure to open band-gaps in the spectrum (section \ref{sec:ExampleGeneralLengths}).
-However our investigation is limited to a single, simplified case and analytic progress proves hard, again highlighting that, at least for practical purposes, a numerical scheme that focuses on a physically relevant part of the spectrum may be more useful and applicable. \newline
+However our investigation is limited to a single, simplified case and analytic progress proves hard, again highlighting that, at least for practical purposes, a numerical scheme that focuses on a physically relevant part of the spectrum may be more useful and applicable.
+We provide a final example in section \ref{sec:ExampleThickVertex} that retains the geometry of the example in section \ref{sec:ExampleCrossInPlane}, but with a non-zero coupling constant at the central vertex.
+The corresponding singular-structure problem corresponds to a different scaling limit (section \ref{sec:GraphLitReview}) than the previous examples, and in this case we demonstrate that band-gaps are opened simply by the presence of this coupling constant.
+This in turn would suggest that thin-structures that adhere to this scaling between ``edge"- and ``vertex"-regions are more likely to give rise to band-gaps, however more work needs to be done beyond this example.
+We make this suggestion because these examples demonstrate that the addition of a non-zero coupling constant can lead to the opening of band-gaps, however this may again be an artefact of the geometry of the problem rather than a general principle.
+Another thing to be noted is that the M-matrix can be recycled from the first example, and the only difference in our solution method being that we consider a slightly different eigenvalue problem.
+This is potentially useful for any numerical schemes - we only need construct (a function that evaluates) the M-matrix once for a given geometry (and set of governing equations).
+If in addition we can produce results like proposition \ref{prop:M-MatrixEntries} for each quantum graph problem, there is the potential to further cut the complexity of such numerical constructions. \newline
 
-We give a final example that corresponds to \tstk{thick vertex, different scaling limit.}
-
-
-A summary of chapters \ref{ch:VectorEqns}, \ref{ch:ExampleSystems}, leaning slightly towards the examples perhaps.
-Important points:
-\begin{itemize}
-	\item Have developed the theory for treating vector equations
-	\item Have explored some example systems
-	\item Have encountered various problems numerically and analytically which need to be investigated
-\end{itemize}
+Whilst our examples help us explore the second and third objectives, and do provide us with some intuition about what to expect, they do not provide us with any general insights yet.
+This, alongside some of the considerations for a numerical scheme, are discussed in section \ref{sec:ConcFuture}.
 
 \section{Further Developments} \label{sec:ConcFuture}
-``We don't have to tie up loose ends so long as we organise them neatly."
-\begin{itemize}
-	\item There are still a few open questions from the introduction and linking process surrounding the thick vertex problem
-	\item Solving the $M$-matrix problems is hard! Numerical scheme discussion
-	\item Physical interpretation - Dielectric inclusions (more complex measures YAY)? Hexagonal unit cells? Full Maxwell?
-\end{itemize}
+The work that has been carried out thus far makes progress towards the research objectives that were set out in section \ref{sec:ReportOverview}, but stops short of providing definitive answers in places.
+In this section we examine some of these loose ends, and the direction of future work that could be undertaken to address them.
+We cover issues surrounding a numerical scheme for solving our singular-structure problems in section \ref{sec:ConcFutureNumerical}; how we might look to qualify the dependence of the graph geometry on the spectrum of our problems in section \ref{sec:ConcFutureGeometry}, and discuss how we might make progress onto modelling electromagnetic wave-guidance through Maxwell's equations in section \ref{sec:ConcFutureMaxwell}.
+Once we have explored these issues, we will conclude with section \ref{sec:ConcClosingRemarks}.
+
+\subsection{Considerations for Numerical Schemes} \label{sec:ConcFutureNumerical}
+Solving the $M$-matrix problems is hard! Numerical scheme discussion
+
+\subsection{Effect of Geometry on Spectra} \label{sec:ConcFutureGeometry}
+How to link geometry to spectrum? Is it possible? Hexagonal unit cells?
+
+\subsection{Generalisations to our Singular-Structure Systems} \label{sec:ConcFutureMaxwell}
+We focused our attention on the ``curl-of-the-curl" equation \eqref{eq:CurlCurlDivFree} in chapters \ref{ch:VectorEqns} and \ref{ch:ExampleSystems} because it arises from the time-harmonic Maxwell system which describes electromagnetic wave propagation.
+However the ``curl-of-the-curl" equation can only be derived if we assume a time-harmonic solution to the full Maxwell system, namely assume that the $\mathbf{E}$ and $\mathbf{H}$ fields are of the form
+\begin{align*}
+	\mathbf{E}\bracs{x_1,x_2,x_3} = \widehat{\mathbf{E}}\bracs{x_1,x_2,x_3}e^{-i\omega t}, 
+	&\quad  \mathbf{H}\bracs{x_1,x_2,x_3} = \widehat{\mathbf{H}}\bracs{x_1,x_2,x_3}e^{-i\omega t}.
+\end{align*}
+Substituting this ansatz into the system of Maxwell equations \eqref{eq:MaxwellSystem} and taking the curl of either equation and substituting the result into the other then provides the curl of the curl equation.
+Whilst there is probably little harm in using the ``curl-of-the-curl" equation as our starting point for out singular-structure problems; for the purposes of providing a complete description of electromagnetic wave-guidance on singular-structures it would be good to derive an equivalent quantum graph problem for the system of Maxwell equations.
+One could then use the quantum graph problem derived in chapter \ref{ch:VectorEqns} as a check for consistency in the system that was obtained.
+No major obstacles are expected by from leaving the dependence on time in the system, however there will need to be some care in how to setup the various function spaces that we are working with.
+However because the time co-ordinate is essentially separate from the spatial co-ordinates, we should be able to recycle the work in chapter \ref{ch:VectorEqns} here. \newline
+
+Another possible generalisation that could be made to our systems concerns the ``empty space" (the cores if we adopt the language of PCFs) in our cross-sectional structure.
+Currently our singular-structure problems effectively ignore this part of our domain, which lends itself to the description that there is no field $u$ in that part of the domain (or we don't care what it is).
+In the context of electromagnetism this would likely mean that this ``empty space" was actually filled with a metallic material, and so we wouldn't expect a field in this region.
+In reality this may not be the case (although metallic mode confinement in PCFs has been demonstrated, see \cite{hou2008metallic}), fibres are typically fabricated using two dielectric materials (one of which may be vacuum for PCFs).
+As such we would need to consider the system of Maxwell equations \eqref{eq:MaxwellSystem} both on the singular-structure and in the remainder of the domain, and the electric permittivity $\eps_{P}$ and magnetic permeability $\mu_{P}$ would no longer be constant across the whole domain.
+This opens up several avenues for exploration - foremost being how to correctly formulate Maxwell's equations in this instance.
+We would be required to keep the variational approach we have adopted to deal with the singular-structure correctly, and so the natural avenue of investigation would be to adapt the measure that we pose our variational problem with respect to.
+The foremost candidate being a ``Lebesgue plus singular graph" measure, namely a Borel measure
+\begin{align*}
+	\dddmes\bracs{B} &= \lambda_{2}\bracs{B} + \ddmes\bracs{B}, \quad B\in\mathcal{B}_{\ddom},
+\end{align*}
+where we now account for the singular structure using our singular measure on the underlying graph $\ddmes$ as before, but also add the standard 2D Lebesgue measure $\lambda_2$ so that we no longer discard the larger regions.
+Again using a variational problem posed with respect to $\dddmes$ will allow us to deal with the issue of boundary conditions between the singular structure and surrounding dielectric, but whether we can determine a method to solve such problems (as we did by borrowing theory from quantum graphs) remains open.
+There would also be similar questions raised about whether such a variational problem could still be thought of as the limit of some thin-structure problem, like with the singular-structure problems we have considered through this report thus far.
+
+\section{Closing Remarks} \label{sec:ConcClosingRemarks}
