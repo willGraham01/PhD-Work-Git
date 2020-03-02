@@ -61,14 +61,21 @@ This model is still based on the physical origins of the band-gaps being due to 
 But the numerical scheme is only needed to the extent of root-finding for analytic expressions, and produces band-gap plots that are in good agreement with the more fully-fledged numerical models, provided certain scaling between parameters is adhered to.
 This makes such approaches useful when speed is more important than high accuracy, or when an intuitive picture of the band-structure is required. \newline
 
-\tstk{this idea of band-gaps emerging from core resonances is not new to mathematics either}
-The work in \cite{cooper2014band} demonstrates mathematically how one can achieve resonant phenomena in any structure that has an inclusion with a refractive index contrast.
-This is done through consideration of the time-harmonic system of Maxwell equations\footnote{The time-harmonic Maxwell system arises from seeking ``Bloch wave" solutions in the fibre via an ansatz of the form $\hat{\mathbf{E}}=\mathbf{E}e^{i\bracs{\wavenumber x_3-\omega t}}$ (and similarly for the magnetic field), where $x_3$ is the axis of the fibre and $\wavenumber$ the component of the wave-vector in $x_3$.
-Equivalently one can view this as taking a Fourier transform along the axis of the fibre.},
+The idea or discovery of band-gaps emerging from core resonances has been treated mathematically as well, although there are some conflicts in the terms used in the mathematical literature and more physically-focused literature discussed previously (which we come to shortly).
+Work in \cite{cooper2014band} demonstrates mathematically how one can achieve resonant phenomena in any structure that has an inclusion with a refractive index contrast, using the time-harmonic system of Maxwell equations
 \begin{align*}
-	\grad\wedge\mathbf{E} &= i\omega\mu_{P}\mathbf{H}, &\quad \grad\wedge\mathbf{H} &= -i\omega\varepsilon_{P}\mathbf{E}.
+	\grad\wedge\mathbf{E} &= i\omega\mu_{P}\mathbf{H}, &\quad \grad\wedge\mathbf{H} &= -i\omega\varepsilon_{P}\mathbf{E},
 \end{align*}
-\tstk{re-read cooper paper and provide exact details on the small parameter $\alpha$ and the size of the contrast in terms of the small param that emerges.}
+as the starting point of the analysis.
+The time-harmonic Maxwell system arises from seeking ``Bloch wave" solutions in the fibre via an ansatz of the form $\hat{\mathbf{E}}=\mathbf{E}e^{i\bracs{\wavenumber x_3-\omega t}}$ (and similarly for the magnetic field), where $x_3$ is the axis of the fibre and $\wavenumber$ the component of the wave-vector in $x_3$.
+Equivalently one can view this as taking a Fourier transform along the axis of the fibre.
+We can demonstrate resonance phenomena as follows; first we label the inclusion as the region $Q_1$ with permittivity $\eps_{Q_1}$, and the surrounding matrix as $Q_2$ with permittivity $\eps_{Q_2}$ with $\eps_{Q_1}>\eps_{Q_2}$ and $Q_1\cup Q_2\subset\bracs{0,1}^2$.
+Then due to the refractive index contrast between the $Q_1$ and $Q_2$ the parameter
+\begin{align*}
+	\alpha &= \sqrt{\omega^2\mu_{P}\eps_{P} - \wavenumber^2}
+\end{align*}
+can be made small in $Q_1$ but finite in $Q_2$; provided we remain close to the lower ``light line", or formally sit on the line $\omega^2\mu_{P}\bracs{\eps_{Q_1}-\epsilon} = \wavenumber^2$ for some small $\epsilon>0$.
+This in turn causes any light waves incident on the structure with wavelength of the order $1$ to have this shrink to the order of $\epsilon^{-2}$ in the region $Q_1$, that is causing them to resonate with the inclusion.
 \tstk{now the reconciliation of resonance discussion that we need to sort out, IE scaling discussion RE David \cite{birks2004scaling}}
 
 \section{Introduction to the Problems we shall Consider} \label{sec:OurPhysicalSetup}

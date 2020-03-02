@@ -72,7 +72,10 @@ Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ a
 \end{align*}
 to show that $u$ is $\nu$-divergence free.
 
-\section{Illustrative Examples} \label{sec:CurlExamples}
+\section{Example: Segment in $\reals^3$} \label{sec:CurlExamples}
+In this section we provide an example of the spaces described in section \ref{sec:VectorSobSpaces}, for the case when we have a line segment in $\reals^3$ and the singular measure supporting it. 
+This example will also help us provide an interpretation for tangential $\kt$-curls that we will consider in section \ref{sec:ktCurlsTangential}, and highlight how the vector-function spaces behave differently to their scalar-valued counterparts of chapter \ref{ch:ScalarEqns}. \newline
+
 Let $I$ be a segment in $\reals^3$ with $x_2=x_3=0$ on $I$, and let $\nu$ be the singular measure on $\reals^3$ that supports 1D Lebesgue measure on $I$.
 In this setup we demonstrate that $\curlZero{\reals^3}{\nu}$ actually coincides with the whole of $\ltwo{\reals^3}{\nu}$, so the only tangential $\nu$-curl is the zero function!
 To this end, let $f\in\smooth{\reals^3}$, $v=\bracs{0,0,f}^\top\in\ltwo{\reals^3}{\nu}^3$ and consider the ``sequence" of functions $\phi^{(n)}=\phi=\bracs{-x_2 f, 0, 0}^\top$.
@@ -114,8 +117,13 @@ But then applying density arguments for $\smooth{\reals^3}$ in $\ltwo{\reals^3}{
 	} \\
 	&= \ltwo{\reals^3}{\nu}.
 \end{align*}
-
-\tstk{what about plane-measure case? Can't get that to work still - can in-plane directions are arbitrary l2 functions, but can't prove that orthogonal part to plane is zero.}
+This leaves us with the conclusion that the space $\curlZero{\reals^3}{\nu} = \ltwo{\reals^3}{\nu}^3$, that is the only tangential curl is the zero function!
+Fortunately for us this does not mean our singular-structure domains as described in section \ref{sec:OurPhysicalSystem} give only trivial solutions.
+This is because we have planes in (a subset of) $\reals^3$ - each plane is induced by an edge of the graph in the cross section, extended down the axis of the fibre. 
+Upon taking the Fourier transform in the axial direction we then arrive at the familiar singular-structure problem in the cross-section of the fibre, crucially having a 1D structure embedded in a 2D domain, rather than in a 3D domain as is the case with this example.
+As such we are required to consider a modified $\grad$ operator when constructing the spaces we will be using for our singular-structure problems; one which arises from taking the Fourier (and Gelfand) transforms of our problems on infinite, periodic domains.
+This is the subject of the following section \ref{sec:ktOperator}.
+We will also highlight how this example is consistent with the interpretation we derive for the tangential $\kt$-curl in section \ref{sec:ktCurlsTangential}.
 
 \section{The $\ktgrad$ operator} \label{sec:ktOperator}
 We now move into a context that better suits the domain setups that we described in section \ref{sec:OurPhysicalSetup}.
@@ -402,7 +410,6 @@ We begin our analysis by considering a single segment in the plane, parallel to 
 	Application of a density argument extends these results from smooth functions $f$ to $\ltwo{\ddom}{\lambda_I}$ functions, and then as $\kcurlZero{\ddom}{\lambda_I}$ is a (closed) linear subspace of $\ltwo{\ddom}{\lambda_I}^3$ we have the desired result.
 \end{proof}
 
-\tstk{if you get the illustrative examples section working, this stuff should go there instead and this part can become just a recall}
 Like with proposition \ref{prop:GradZeroParallelZhikov} we can provide some kind of geometric interpretation for this result, illustrated in figure \ref{fig:CurlZeroInterp}.
 \begin{figure}[b!]
 	\centering
@@ -648,14 +655,48 @@ We now present the form of the tangential $\kt$-curl on an arbitrary segment and
 Much like $\gradSob{\ddom}{\ddmes}$, there is some additional structure within the space $\ktcurlSob{\ddom}{\ddmes}$.
 This is mainly in the form of continuity conditions at the vertices of $\graph$ in the third components of vector fields $u\in\ktcurlSob{\ddom}{\ddmes}$.
 Given that we have effectively defined a notion of curl, it should be unsurprising to learn that this comes with the requirement of some level of continuity in our fields.
-\tstk{need to go over this section. Strictly speaking we have everything we need to use, which is the continuity condition on $u_3$ as our equations later imply that $u_1=0$ everywhere. That said, we still need one more set of boundary/vertex conditions, which will most likely have to do with $u_1$ as we get conditions for $u_2$ from the div-free stuff.}
-So far we can establish; (NB might even just be non-$\kt$-grad spaces)
+In fact we have the following proposition which immediately ties together $\ktgradSob{\ddom}{\ddmes}$ and one component of the functions $u\in\ktcurlSob{\ddom}{\ddmes}$.
+
+\begin{prop}[Continuity of 3\textsuperscript{rd} Components of $\ktcurlSob{\ddom}{\ddmes}$] \label{prop:Curl3rdComponentIFFInGradSpace}
+It holds that
 \begin{align*}
-	u\in\ktcurlSob{\ddom}{\ddmes} \Rightarrow
 	\begin{pmatrix} 0 \\ 0 \\ u_3 \end{pmatrix}\in\ktcurlSob{\ddom}{\ddmes} &\Leftrightarrow 
 	u_3\in\ktgradSob{\ddom}{\ddmes} \\
 	&\Leftrightarrow	\begin{cases} (i) \ u_3\in\ktgradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk} \\ (ii) \ u_3 \text{ is continuous at every } v_j\in V	\end{cases}
 \end{align*}
+for any $u_3\in\ktgradSob{\ddom}{\ddmes}$.
+\end{prop}
+\begin{proof}
+	Note that theorem \ref{thm:ktGradSobChar} means it is sufficient to show the equivalence on the first line.
+	Set $u = \bracs{0,0,u_3}^{\top}$.
+	For the right directed implication, it is sufficient to note that if $u_3\in\ktgradSob{\ddom}{\ddmes}$ then we can find a smooth approximating sequence
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\ddmes}} u_3, &\quad \ktgrad\phi_n \lconv{\ltwo{\ddom}{\ddmes}^3} \ktgrad_{\ddmes}u_3.
+	\end{align*}
+	This in turn implies that
+	\begin{align*}
+		\begin{pmatrix} 0 \\ 0 \\ \phi_n \end{pmatrix} \lconv{\ltwo{\ddom}{\ddmes}^3} u,
+		&\quad \ktcurl{} \begin{pmatrix} 0 \\ 0 \\ \phi_n \end{pmatrix} \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} \bracs{\ktgrad_{\ddmes}u_3}_2 \\ -\bracs{\ktgrad_{\ddmes}u_3}_1 \\ 0 \end{pmatrix},
+	\end{align*}
+	and hence $u\in\ktcurlSob{\ddom}{\ddmes}$.
+	Conversely, for the left-directed implication we can find a smooth approximating sequence $\psi^{(n)}$ such that
+	\begin{align*}
+		\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} u, 
+		&\quad \ktcurl{}\psi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} \ktcurl{\ddmes}u.
+	\end{align*}
+	Then this implies that the sequences
+	\begin{align*}
+		\psi^{(n)}_3 \lconv{\ltwo{\ddom}{\ddmes}} u_3,
+		&\quad \ktgrad\psi^{(n)}_3 \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} -\bracs{\ktcurl{\ddmes}u}_2 \\ \bracs{\ktcurl{\ddmes}u}_1 \\ 0 \end{pmatrix},
+	\end{align*}
+	and hence that $u_3\in\ktgradSob{\ddom}{\ddmes}$.
+\end{proof}
+This provides us with continuity of the third component of elements of $\ktcurlSob{\ddom}{\ddmes}$ as it is a vector space (so $\bracs{u_1,u_2,u_3}^{\top}\in\ktcurlSob{\ddom}{\ddmes} \implies \bracs{0,0,u_3}^{\top}\in\ktcurlSob{\ddom}{\ddmes}$).
+For the purposes of this report, this is all that we require for our analysis and the examples that we will consider in chapter \ref{ch:ExampleSystems}, because it provides us with enough vertex or boundary conditions in the equivalent quantum graph problem.
+We conjecture that there is more to be said here, notably about the first and second components of the elements of this space; and ideally would provide this missing condition in order to state an analogue of theorem \ref{thm:ktGradSobChar} for the space $\ktcurlSob{\ddom}{\ddmes}$, which from a theoretical standpoint is a significant step in classifying the behaviour of this space.
+Regrettably we do not yet have a candidate for such a condition, although we can hypothesise that it likely involves some kind of regularity of the components $u_1$ and $u_2$ on their approach to the vertices.
+That said the existence of such a condition is undoubtedly true because proposition \ref{prop:Curl3rdComponentIFFInGradSpace} doesn't involve the first and second components of elements of $\ktcurlSob{\ddom}{\ddmes}$, and so cannot provide a complete characterisation.
+As we shall see in section \ref{sec:ktDivFree}, if we also require elements $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence-free, we obtain another condition on the component $u_2$.
 
 \subsection{The Divergence-Free Condition} \label{sec:ktDivFree}
 Having established characterisations for both $\kgradZero{\ddom}{\ddmes}$ (corollary \ref{cory:CharacterisationkGradientsZero}) and the tangential gradients (corollary \ref{cory:ktTangentialGradientForm}), we can now examine what it means for a function $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence-free.
@@ -774,7 +815,7 @@ Thus we arrive at the following classification for divergence-free functions on 
 Having introduced the operator $\ktgrad$ due to our interests in wave-guidance problems; we have now completed our analysis of $\ktcurlSob{\ddom}{\ddmes}$ and the divergence-free condition in the sense of $\kt$-gradients.
 Our understanding of these is necessary for us to be able to reduce variational problems posed with respect to measures to quantum graph problems (section \ref{sec:CurlReductionToQG}).
 Of important note is that the underlying arguments for understanding $\ktgradSob{\ddom}{\ddmes}$ are essentially identical to those in sections \ref{sec:GradZeroGraphAnalysis}; \ref{sec:ScalarSystem}, and \ref{sec:VertexContinuity}, being suitably adapted for the 3D context.
-The path we take to understanding $\ktcurlSob{\ddom}{\ddmes}$ is also directed in much the same way as the arguments for $\gradSob{\ddom}{\ddmes}$ in these sections, and we even deduce a link between the two spaces \tstk{this will be in the continuity conditions section when that result is good}.
+The path we take to understanding $\ktcurlSob{\ddom}{\ddmes}$ is also directed in much the same way as the arguments for $\gradSob{\ddom}{\ddmes}$ in these sections, and we even deduce a link between the two spaces via proposition \ref{prop:Curl3rdComponentIFFInGradSpace}.
 The divergence-free condition is also studied because we will ultimately be considering examples of wave propagation in electromagnetic contexts.
 We will need the additional information from this condition to correctly formulate a variational problem, and from which obtain a quantum graph problem, that admits a solution.
 
@@ -853,7 +894,7 @@ That is, for each vertex $v_j$ we obtain a boundary condition forcing the sum of
 
 From the variational formulation, we have obtained two differential equations and one vertex/boundary condition, per vertex.
 This is still not enough information to obtain eigenpairs $\bracs{\omega^2, u}$, so we require the additional information from the divergence-free condition and the structure of $\ktcurlSob{\ddom}{\ddmes}$.
-Because we are working in $\ktcurlSobDivFree{\ddom}{\ddmes}$, which is a subspace of $\ktcurlSob{\ddom}{\ddmes}$, we know that the component $u_3$ of $u$ is continuous across the vertices of the graph by \tstk{this result needs to be written and referenced, it's the one which so far is just a bunch of IFF statements} and so obtain a further $n-1$ boundary conditions for each vertex of degree $n\geq2$.
+Because we are working in $\ktcurlSobDivFree{\ddom}{\ddmes}$, which is a subspace of $\ktcurlSob{\ddom}{\ddmes}$, we know that the component $u_3$ of $u$ is continuous across the vertices of the graph by proposition \ref{prop:Curl3rdComponentIFFInGradSpace} and so obtain a further $n-1$ boundary conditions for each vertex of degree $n\geq2$.
 The $\ktgrad$-divergence-free condition also provides us with a further differential equation and set of boundary conditions, as in corollary \ref{cory:DivFreeWholeGraph}.
 Combining these, we arrive at the following system of equations on each interval $\interval{I_{jk}}$,
 \begin{subequations} \label{eq:CurlEdgeEquations}

@@ -359,15 +359,16 @@ We can observe that for a fixed $\wavenumber$ the points $\omega$ that satisfy \
 Of course the value of $\alpha$ changes the shape of $\Xi$ which in turn will also effect the set of points $\bracs{\omega, \wavenumber}$ that solve \eqref{eq:ExampleThickVertexDispExpr}. \newline
 
 Of course, of greater physical significance is the band-gap-plot that \eqref{eq:ExampleThickVertexDispExpr} gives rise to, as presented in figure \ref{fig:ThickVertex_CurlsTFRSetup}.
-\begin{figure}[h]
+\begin{figure}[b!]
 	\centering
 	\includegraphics[scale=0.75]{ThickVertex_CurlsTFRSetup.pdf}
-	\caption{\label{fig:ThickVertex_CurlsTFRSetup} Dispersion plot for the system in section \ref{sec:ExampleThickVertex}, yellow regions correspond to $\omega, \wavenumber$ pairs that solve \eqref{eq:CurlCurlEquationDivFree}. We observe spectral ``band-gaps" in $\omega$ for each $\wavenumber$, and \tstk{maybe compare to physical plot from papers?}}
+	\caption{\label{fig:ThickVertex_CurlsTFRSetup} Dispersion plot for the system in section \ref{sec:ExampleThickVertex}, yellow regions correspond to $\omega, \wavenumber$ pairs that solve \eqref{eq:CurlCurlEquationDivFree}. We observe spectral ``band-gaps" in $\omega$ for each $\wavenumber$, with the same basic shape as those from fabricated PCFs, although lacking some specific features of these plots.}
 \end{figure}
 In this figure points $\bracs{\omega, \wavenumber}$ in yellow correspond to solutions to \eqref{eq:ExampleThickVertexDispExpr}, whilst those in blue do not.
 Here we see that there are distinct branches or regions of $\bracs{\omega, \wavenumber}$ in which we obtain solutions to \eqref{eq:QGEquation} with \eqref{eq:QGThickVertexConditions} as the boundary conditions.
-Importantly the shape of these regions is similar to experimental band-gap plots in a photonic setting;
-\tstk{compare to David Papers? Also either recall or explain why this is useful in PCFs :L}
+Importantly the shape of these regions is similar to experimental band-gap plots in a PCF setting, displaying bands that shrink in width as $\wavenumber$ increases in number.
+This should not be unexpected, but also should be interpreted cautiously, our singular-structure problem has recreated the basic shape of a band-gap plot, but lacks several features of experimental plots - notably the possibility of band-gaps merging as $\wavenumber$ increases or terminating (like a spike with it's tip) at some finite $\bracs{\omega, \wavenumber}$ values.
+Recovery of these features may be outside the scope of the curl-of-the-curl equation \eqref{eq:CurlCurlEquationDivFree}, and we may require a more general system of starting equations to capture this behaviour (section \ref{sec:ConcFutureMaxwell}).
 
 \section{Summary} \label{sec:ExamplesSummary}
 The examples in this chapter demonstrate how we can determine the spectrum of singular-structure problems, bringing together the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns}, and also highlight several issues that need to be considered during the solution process.
