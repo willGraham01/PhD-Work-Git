@@ -2,7 +2,7 @@
 In this chapter we will build on the review of quantum graphs provided in section \ref{sec:GraphLitReview}, defining the concepts central to our research and covering topics in the theory that we will be employing in later chapters.
 The primary reason for considering quantum graph problems is the ability to use the M-matrix (section \ref{sec:M-MatrixTheory}) to reduce the complexity of solving spectral problems, and potentially open up numerical approaches for said spectral problems.
 Furthermore, section \ref{sec:GraphLitReview} also explained how quantum graph problems can be thought of a limits of thin-structure problems, which will allow us to link our singular-structure problems back to thin-structure problems (chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}).
-Finally, as the singular-structure of the domains we shall consider for our variational problems (section \ref{sec:OurPhysicalSystem}) are naturally described by embedded graphs, we also use this chapter to establish a consistent notation for the remainder of the report, with a view to making transitions between quantum graph problems and singular-structure problems as seamless as possible.
+Finally, as the singular-structure of the domains we shall consider for our variational problems (section \ref{sec:OurPhysicalSetup}) are naturally described by embedded graphs, we also use this chapter to establish a consistent notation for the remainder of the report, with a view to making transitions between quantum graph problems and singular-structure problems as seamless as possible.
 We begin with the core concepts in section \ref{sec:QG-Notation}, before detailing how differential equations can be posed on quantum graphs (section \ref{sec:DEonQG}) and finally discussing the M-matrix and it's properties that we will need to use (section \ref{sec:M-MatrixTheory}).
 
 \section{Notation, Definitions, and Conventions} \label{sec:QG-Notation}
@@ -102,10 +102,9 @@ Lastly, we need to provide a notion of periodicity for graphs.
 	\end{align*}
 	To avoid cutting edges in two, we think of the hyper-cuboid $\mathcal{C}$ as being mapped onto the $d$-dimensional torus; with vertices that lie on the boundary of $\mathcal{C}$ being identified with each other, and curves ``leaving" a hyper-face of $\mathcal{C}$ connecting to the curve ``entering"  $\mathcal{C}$ from the opposite hyper-face.
 	This is illustrated in figure \ref{fig:PeriodCellIllustration} in two dimensions, for clarity.
-	
-	Of course, because we can identify sub-graphs of embedded graphs by providing the sets which contain them, we can also say that $\mathcal{C}$ is the unit cell of $\graph$ too provided we remember how to deal with edges cut in two, as above.
+	Of course, because we can identify sub-graphs of embedded graphs by providing the sets which contain them, we can also say that $\mathcal{C}$ is the unit cell of $\graph$ provided we remember how to deal with edges cut in two, as above.
 \end{definition}
-\begin{figure}[h!]
+\begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
@@ -139,7 +138,7 @@ Again we briefly discuss some potential concerns and conventions.
 Finally, an assumption that we shall make from this point onwards in this work is that the edges or curves of an embedded graph are always the straight line segments that join the two vertices at either end.
 Much like excluding the possibility of loops, allowing for curved edges is not a major issue (simply introducing some small complications in the expressions one gets when reducing variational problems to quantum graph ones) but we will not be interested in systems that exhibit curved edges, and so opt for the simplicity that making this assumption comes with.
 Quantum graphs will be the objects that the theory of the remainder of this chapter section will describe, although they are not the starting point for the domains of our model (section \ref{sec:OurPhysicalSetup}). 
-Rather we will begin with a periodic embedded graph, and then under our modelling assumptions in sections \ref{sec:ModellingAssumption1}-\ref{sec:ModellingAssumption3} we will obtain an equivalent problem on the period graph, which gives rise to a quantum graph to which we can apply the following theory.
+Rather we will begin with a periodic embedded graph, and then using a Gelfand transform we will obtain an equivalent problem on the period graph, which gives rise to a quantum graph to which we can apply the following theory.
 
 \subsection{Connection and Summation Conventions} \label{sec:GraphSimDefinitions}
 We now outline some notation that we shall use in the rest of the report.
@@ -168,9 +167,9 @@ Then set $\nu$ to be the (Borel) measure on $D$ defined by
 	\nu\bracs{B} = \sum_{v_j\in V}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
 \end{align*}
 Then $\nu$ is the \emph{singular measure that supports $\graph$}; or alternatively the \textit{singular measure on $\graph$}, or the \emph{(singular) measure that supports the edges of $\graph$}.
-\end{definition}
 For a graph embedded into a 2D or 3D domain, the singular measure is illustrated in figure \ref{fig:Diagram_SingularMeasures}.
-\begin{figure}[h!]
+\end{definition}
+\begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
@@ -291,7 +290,7 @@ The reason for us making this equivalence so explicit is because the operator-th
 \section{Spectral Problems and the M-Matrix} \label{sec:M-MatrixTheory}
 Since we are primarily looking to consider wave-guidance problems in electromagnetism, we will often be concerned with determining the spectrum of a problem as the eigenvalues relate to the frequencies that can be guided by our fibre designs.
 In particular we will be looking to determine whether such a spectrum exhibits band-gaps, and ideally a method to explore the spectrum numerically.
-Because of our use of the Gelfand transform (section \ref{sec:OurPhysicalSystem}) to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
+Because of our use of the Gelfand transform (section \ref{sec:OurPhysicalSetup}) to simplify our original problem to a family of problems on a periodic domain, determining the spectrum of a problem will require solving several (eigenvalue) problems parametrised by the quasi-momentum $\qm$.
 This prompts us to look for tools that enable us to determine the spectrum of one of these smaller problems both procedurally and efficiently, crucial if a numerical approach is to be used but also helpful if an analytic approach can be taken too.
 In this section we will be discussing the tool that we are going to use; the $M$-matrix, and why it is appropriate for both a numerical and analytic approach to solving determining the spectra of quantum graph problems. \newline
 

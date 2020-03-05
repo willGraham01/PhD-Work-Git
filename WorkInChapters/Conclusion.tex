@@ -78,7 +78,7 @@ We discuss each of these below, along with how they might be addressed. \newline
 
 \subsubsection{Construction of the M-Matrix} \label{sec:ConcFutureConstructM}
 Any numerical scheme will require a method for constructing the M-matrix, because the solver for the generalised eigenvalue problem will need this ability.
-Naively we can construct the M-matrix simply by following the constructive proof of proposition \ref{prop:MMatrixEntries} numerically, for each value of $\lambda$ that we are required to evaluate $M_{\qm}$ at.
+Naively we can construct the M-matrix simply by following the constructive proof of proposition \ref{prop:M-MatrixEntries} numerically, for each value of $\lambda$ that we are required to evaluate $M_{\qm}$ at.
 This involves solving each edge-ODE in $\mathcal{P}_{\qm}$ numerically, and once for each column of the M-matrix (although this is a large overestimate and can be reduced - see section \ref{sec:NumericalMethodsDiscussion}), reading off the approximate Neumann data for the edge solution, and then summing the appropriate combination of derivatives at the vertices.
 Needless to say this will be an expensive process for a large (in the sense of number of edges) graph, given that it needs to be done each time the M-matrix needs to be evaluated.
 Having said this we should also note that this method is relatively simple to program, and provided there was sufficient care in solving the edge-ODEs of $\mathcal{P}_{\qm}$ would provide access to the M-matrix. \newline
@@ -130,7 +130,7 @@ We expect the analysis we have carried out in chapter \ref{ch:VectorEqns} to sti
 Regardless, there is the option to investigate any changes that the shape of the period cell itself induces in the problems that we obtain, and the work in chapter \ref{ch:VectorEqns} can be used as a basis for this research.
 
 \subsection{Generalisations to our Singular-Structure Systems} \label{sec:ConcFutureMaxwell}
-We focused our attention on the ``curl-of-the-curl" equation \eqref{eq:CurlCurlDivFree} in chapters \ref{ch:VectorEqns} and \ref{ch:ExampleSystems} because it arises from the time-harmonic Maxwell system which describes electromagnetic wave propagation.
+We focused our attention on the ``curl-of-the-curl" equation \eqref{eq:CurlCurlEquationDivFree} in chapters \ref{ch:VectorEqns} and \ref{ch:ExampleSystems} because it arises from the time-harmonic Maxwell system which describes electromagnetic wave propagation.
 However the ``curl-of-the-curl" equation can only be derived if we assume a time-harmonic solution to the full Maxwell system, namely assume that the $\mathbf{E}$ and $\mathbf{H}$ fields are of the form
 \begin{align*}
 	\mathbf{E}\bracs{x_1,x_2,x_3} = \widehat{\mathbf{E}}\bracs{x_1,x_2,x_3}e^{-i\omega t}, 
@@ -159,7 +159,7 @@ There would also be similar questions raised about whether such a variational pr
 
 \section{Closing Remarks} \label{sec:ConcClosingRemarks}
 The work in this report has made progress towards addressing the research objectives that it set out to achieve, as laid out in chapter \ref{ch:Intro}.
-We look to consider singular-structure domains as setup in section \ref{sec:OurPhysicalSystem}, motivated by existing theory for variational problems (section \ref{se:VariationalProblemsLitReview}, chapter \ref{ch:ScalarEqns}) and seeking a consistent framework for our approximation to physical waveguides.
+We look to consider singular-structure domains as setup in section \ref{sec:OurPhysicalSetup}, motivated by existing theory for variational problems (section \ref{sec:VariationalProblemLitReview}, chapter \ref{ch:ScalarEqns}) and seeking a consistent framework for our approximation to physical waveguides.
 We develop this theory of variational problems in the context of our singular-structure problems in chapter \ref{ch:VectorEqns}; describing what the concepts of gradient, curl and divergence-free mean and hence building appropriate function spaces for our problems.
 Furthermore, a link to quantum graph problems from our singular-structure problems is established (section \ref{sec:CurlReductionToQG}), meaning we can bring in existing theory from quantum graph problems (section \ref{sec:GraphLitReview}, chapter \ref{ch:QuantumGraphs}) to aid in the solution to our original singular-structure problems, and open up the potential for numerical approaches to be used (section \ref{sec:NumericalMethodsDiscussion}).
 The link to quantum-graph problems also solidifies our singular-structure problems as formal limits of more familiar thin-structure models for waveguides (section \ref{sec:GraphLitReview}), addressing the first of the research objectives.

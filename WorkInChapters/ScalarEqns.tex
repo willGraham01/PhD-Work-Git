@@ -93,7 +93,7 @@ The first is a simple result which makes proving membership of $\gradSob{D}{\nu}
 	\begin{align*}
 		u\in\gradSob{D}{\nu};
 	\end{align*}
-	that is, $\grad_\nu u$ exists and the pair $\bracs{u,\grad_nu u}\in\gradSob{D}{\nu}$).
+	that is, $\grad_{\nu} u$ exists and the pair $\bracs{u,\grad_{\nu} u}\in\gradSob{D}{\nu}$).
 \end{prop}
 \begin{proof}
 	As $\grad_\nu u_n$ is bounded in $\ltwo{D}{\nu}^N$ it has a convergent subsequence that we denote by $\grad_\nu u_{n_k}$, and this sequence has some limit $v\in\ltwo{D}{\nu}^N$.
@@ -176,7 +176,7 @@ It is worthwhile highlighting how the setup just detailed relates to the wave pr
 We interpret $\ddom$ as being the period cell of the cross-section of some waveguide that extends into 3D, whose waveguide axis is parallel to the $x_3$-axis.
 The graph $\graph$ represents the (singular) structure within the period cell that is invariant down the waveguide, and the measure $\ddmes$ indicates that we are interested wave propagation on (the planes induced by) $\graph$ only.
 In section \ref{sec:ScalarSystem} we will consider a similar system to this but with the addition a quasi-momentum parameter $\qm$ which reflects the fact that to obtain a problem on the period cell of the cross section ($\ddom$), we are required to apply a Gelfand problem to the full-space problem.
-The use of the Gelfand transform in this case (and Fourier transform along the axis of the fibre) was discussed in section \ref{sec:OurPhysicalSystem}. \newline
+The use of the Gelfand transform in this case (and Fourier transform along the axis of the fibre) was discussed in section \ref{sec:OurPhysicalSetup}. \newline
 
 Before beginning our analysis, we first introduce some specific functions and useful results that we shall make use of throughout.
 The first result being a reminder of how gradients of smooth functions transform under rotations.
@@ -568,7 +568,7 @@ Following that, we focus briefly on the inherent properties of the space $\gradS
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed in an infinite plane with a finite period cell.
-Physically this will represent our photonic fibre's cross sectional structure, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform (section \ref{sec:OurPhysicalSystem}).
+Physically this will represent our photonic fibre's cross sectional structure, which we extend to an infinite lattice so that we can employ tools like the Gelfand transform (section \ref{sec:OurPhysicalSetup}).
 This will require us to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}, as the Gelfand transform will break the problem in the infinite plane into a family of problems on the period cell, parametrised by 2 quasi-momenta.
 We will then demonstrate how the analysis of section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a quantum graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
 
@@ -900,7 +900,7 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 	Now for each $n\in\naturals$ set
 	\begin{align*}
 		u_n := &\sum_{v_j\in V}\sum_{j\conLeft k}u_n^{(jk)}, \text{ so that } \\
-		\grad_\ddmes u_n = &\sum_{v_j\in V}\sum_{j\conLeft k} \grad_{\ddmes}u_n^{(jk)} \\
+		\grad_\ddmes u_n = &\sum_{v_j\in V}\sum_{j\conLeft k} \grad_{\lambda_{jk}}u_n^{(jk)} \\
 		= &\sum_{v_j\in V}\sum_{j\conLeft k} u\grad_{\lambda_{jk}}\chi_{jk}^n + \chi_{jk}^n\grad_{\lambda_{jk}}u
 	\end{align*}
 	and each pair $\bracs{u_n, \grad_\ddmes u_n}\in\gradSob{\ddom}{\ddmes}$ by linearity.
@@ -936,7 +936,7 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 	\begin{align*}
 		\widetilde{u}\bracs{t} &= \int_0^t \abs{\diff{\tilde{u}}{t}} \md t \\
 		&\leq \bracs{ \int_0^t \md t }^{\frac{1}{2}} \bracs{ \int_0^t \abs{\diff{\tilde{u}}{t}}^2 \md t }^{\frac{1}{2}} \\
-		&\leq t\times \norm{\widetilde{u}'}_{\ltwo{\ddom}{\lambda_{jk}}^2}.
+		&\leq \sqrt{t}\times \norm{\widetilde{u}'}_{\ltwo{\ddom}{\lambda_{jk}}^2}.
 	\end{align*}
 	Hence whenever we take $\abs{x-v_j}\leq\recip{n}$, 
 	\begin{align*}
