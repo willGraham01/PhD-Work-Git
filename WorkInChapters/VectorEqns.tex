@@ -667,11 +667,14 @@ We now present the form of the tangential $\kt$-curl on an arbitrary segment and
 	Let $I$ be a segment in $\ddom$ with local co-ordinate system $y=\bracs{y_1,y_2}$ with $y_2$ parallel to $I$, and let $\lambda_I$ be the singular measure supported on $I$.
 	Suppose $R\in\mathrm{SO}(2)$ is the change of co-ordinates $x=Ry$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system, and let $e_I$ be the unit vector directed along $I$ in the direction of $y_2$.
 	Further suppose that $r:\interval{I}\rightarrow I$ is the change of variables map $r(t) = v_I + te_I$ for the suitable endpoint $v_I$ of $I$.
-	Take $u\in\ktcurlSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r$.
-	Then
+	Take $u\in\ktcurlSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r$, and
 	\begin{align*}
-		\widetilde{u}_3 &\in \ktgradSob{\interval{I}}{t}, \\
-		\ktcurl{\lambda_I}u &= \begin{pmatrix} R & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} u_3' + i\bracs{R\qm}_2u_3 - i\wavenumber u_2 \\ 0 \\ 0 \end{pmatrix}
+		U &= R\begin{pmatrix} u_1 \\ u_2 \end{pmatrix}.
+	\end{align*}
+	Then we have that 
+	\begin{align*}
+		\widetilde{u}_3 &\in \ktgradSob{\interval{I}}{t}, \text{ and }\\
+		\ktcurl{\lambda_I}u &= \begin{pmatrix} R & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} u_3' + i\bracs{R\qm}_2u_3 - i\wavenumber U_2 \\ 0 \\ 0 \end{pmatrix}
 	\end{align*}
 	with $u_3 = \widetilde{u}_3' \circ r^{-1}$.
 \end{lemma}
@@ -679,20 +682,28 @@ We now present the form of the tangential $\kt$-curl on an arbitrary segment and
 	One uses the change of co-ordinates $\widetilde{R}$ (use of lemma  \ref{lem:CurlUnderRotation} is what introduces the pre-multiplication by $R$ of $\qm$) so that the framework now fits with lemma \ref{lem:ktTanCurlSegmentParallel}, and having done this the result given above follows.
 \end{proof}
 
-\begin{cory}[Tangential $\kt$-curls on Graphs] \label{cory:ktTanCurlsGraphs}
-	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and $\ddmes$ be the singular measure supported on $\graph$.
-	Let $x=\bracs{x_1,x_2}$ be the axis co-ordinate system.
-	For each $I_{jk}\in E$ equip $I_{jk}$ with local co-ordinate system $y_{jk}=\bracs{y_1^{(jk)}, y_2^{(jk)}}$ with $y_2^{(jk)}$ parallel to $I_{jk}$.
-	Let $R_{jk}\in\mathrm{SO}(2)$ be the change of co-ordinates $x=R_{jk}y_{jk}$.
-	Take $u\in\ktcurlSob{\ddom}{\ddmes}$, and denote by $u_{l,jk}$ (for $l\in\clbracs{1,2,3}$) the restriction of $u_l$ to $I_{jk}$ extended by zero to the whole of $\graph$.
+\begin{theorem}[Tangential $\kt$-curls on Graphs] \label{thm:ktTanCurlsGraphs}
+	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$, and suppose $u\in\ktcurlSob{\ddom}{\ddmes}$.
+	For each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supported on $I_{jk}$, and denote $u_{jk} = u\vert_{I_{jk}}$ as the restriction of $u$ to $I_{jk}$, extended by zero to the whole of $\graph$.
+	Also write $u_{l,jk}$ (for $l\in\clbracs{1,2,3}$) the restriction of the component $u_l$ to $I_{jk}$ extended by zero to the whole of $\graph$.
+	Additionally equip $I_{jk}$ with local co-ordinate system $y_{jk}=\bracs{y_1^{(jk)}, y_2^{(jk)}}$ with $y_2^{(jk)}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of co-ordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system.
+	For each $I_{jk}\in E$, also define
+	\begin{align*}
+		U_{jk} := R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}, \quad
+		\widetilde{U}_{jk} := U_{jk} \circ r_{jk},
+	\end{align*}
+	and let $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ be the change of variables map $r(t)=v_{j} + te_{jk}$ where $e_{jk}$ is the unit vector parallel to $I_{jk}$ directed from $v_j$ to $v_k$.
 	Then we have that 
 	\begin{align*}
 		\widetilde{u}_{3,jk} := u_{3,jk}\circ r_{jk}\in\ktgradSob{\ddom}{\lambda_{jk}}, &\ \forall I_{jk}\in E, \\
-		\bracs{\ktcurl{\ddmes}u}\vert_{I_{jk}} = \begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} u_{3,jk}' + i\bracs{R_{jk}\qm}_2 u_{3,jk} - i\wavenumber u_{2,jk} \\ 0 \\ 0 \end{pmatrix}, 
+		\bracs{\ktcurl{\ddmes}u}\vert_{I_{jk}} = \begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} u_{3,jk}' + i\bracs{R_{jk}\qm}_2 u_{3,jk} - i\wavenumber U_{2,jk} \\ 0 \\ 0 \end{pmatrix}, 
 		&\ \forall I_{jk}\in E,
 	\end{align*}
 	where $u_{3,jk}' = \widetilde{u}_{3,jk}' \circ r_{jk}^{-1}$.
-\end{cory}
+\end{theorem}
+\begin{proof}
+	This is simply a repeated application of lemma \ref{lem:kCurlZeroAnySegment} on each of the edges $I_{jk}$, noting that $u\in\ktcurlSob{\ddom}{\ddmes}$ implies that $u\in\ktcurlSob{\ddom}{\lambda_{jk}}$ too.
+\end{proof}
 
 \subsection{Additional Properties of $\ktcurlSob{\ddom}{\ddmes}$} \label{sec:ktcurlSobExtraProperties}
 Much like $\gradSob{\ddom}{\ddmes}$, there is some additional structure within the space $\ktcurlSob{\ddom}{\ddmes}$.
@@ -885,7 +896,7 @@ We can use these results to obtain the following characterisation of $\kt$-diver
 	For each $I_{jk}\in E$, also define
 	\begin{align*}
 		U_{jk} := R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}, \quad
-		\widetilde{U}_{2,jk} := U_{2,jk} \circ r_{jk},
+		\widetilde{U}_{jk} := U_{jk} \circ r_{jk},
 	\end{align*}
 	and let $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ be the change of variables map $r(t)=v_{j} + te_{jk}$ where $e_{jk}$ is the unit vector parallel to $I_{jk}$ directed from $v_j$ to $v_k$.
 	Then we have that
@@ -940,7 +951,8 @@ which of course is shorthand for the variational problem
 \end{align*}
 The bulk of the work to get from this variational formulation to a quantum graphs problem has been done in the previous sections, and it is now a case of applying the knowledge we have of the objects in \eqref{eq:CurlCurlEquationDivFree}. \newline
 
-We begin by recalling the form for the tangential $\kt$-curl given by corollary \ref{cory:ktTanCurlsGraphs}, and writing the integral in \eqref{eq:CurlCurlEquationDivFree} as a sum of integrals over the edges of $\graph$;
+\tstk{need to define $U$ again here and swap all the stuff over from $u_1\rightarrow U_1$ and similar for $U_2$s. Will also need to do this for the test function too}
+We begin by recalling the form for the tangential $\kt$-curl given by theorem \ref{thm:ktTanCurlsGraphs}, and writing the integral in \eqref{eq:CurlCurlEquationDivFree} as a sum of integrals over the edges of $\graph$;
 \begin{align*}
 	\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\ddom}{\bracs{\ktcurl{\lambda_{jk}}u}\cdot\overline{\bracs{\ktcurl{}\phi}}}{\lambda_{jk}} 
 	&= \omega^2\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\ddom}{u\cdot\overline{\phi}}{\lambda_{jk}}.
@@ -994,7 +1006,7 @@ That is, for each vertex $v_j$ we obtain a boundary condition forcing the sum of
 From the variational formulation, we have obtained two differential equations and one vertex/boundary condition, per vertex.
 This is still not enough information to obtain eigenpairs $\bracs{\omega^2, u}$, so we require the additional information from the divergence-free condition and the structure of $\ktcurlSob{\ddom}{\ddmes}$.
 Because we are working in $\ktcurlSobDivFree{\ddom}{\ddmes}$, which is a subspace of $\ktcurlSob{\ddom}{\ddmes}$, we know that the component $u_3$ of $u$ is continuous across the vertices of the graph by proposition \ref{prop:Curl3rdComponentIFFInGradSpace} and so obtain a further $n-1$ boundary conditions for each vertex of degree $n\geq2$.
-The $\ktgrad$-divergence-free condition also provides us with a further differential equation and set of boundary conditions, as in corollary \ref{cory:DivFreeWholeGraph}.
+The $\ktgrad$-divergence-free condition also provides us with a further differential equation and set of boundary conditions, as in theorem \ref{thm:DivFreeWholeGraph}.
 Combining these, we arrive at the following system of equations on each interval $\interval{I_{jk}}$,
 \begin{subequations} \label{eq:CurlEdgeEquations}
 	\begin{align}
@@ -1013,6 +1025,7 @@ These are complimented by the boundary conditions
 	\end{align}
 \end{subequations}
 Noting that any functions that satisfy two of \eqref{eq:CurlEdgeEquations1}-\eqref{eq:CurlEdgeEquations2} necessarily satisfy the remaining one, \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions} provide us with enough equations and boundary conditions to solve for the eigenpairs $\bracs{\omega^2, u}$.
+\tstk{either here or when we use it in ExampleSystems, we should note that we can effectively think of $U_2$ as being $u_2$ or something to this effect, basically how much do you want to rewrite? :L}
 
 \section{Chapter Summary} \label{sec:CurlSummary}
 The theory presented in this chapter serves as justification and motivation for the problems that we will be considering in subsequent chapters and work.
