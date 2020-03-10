@@ -1,5 +1,5 @@
 \chapter{Vector Equations} \label{ch:VectorEqns}
-Chapter \ref{ch:ScalarEqns} introduced the theory of variational problems with respect to arbitrary (Borel) measures $\nu$ involving scalar-valued functions, and how we can make sense of the notion of ``derivative" and define appropriate Sobolev spaces to work in.
+Chapter \ref{ch:ScalarEqns} introduced the theory of variational problems with respect to arbitrary (Borel) measures $\nu$ involving scalar-valued functions, and how we can make sense of the notion of ``gradient" and define appropriate Sobolev spaces to work in.
 Also investigated was how (under suitable regularity assumptions) the variational problems that can be posed are reduced to quantum graph problems, when the measure $\nu$ supports a graph embedded into the domain $D$. \newline
 
 In this chapter we look to extend this theory to handling vector-valued systems of equations, which necessitates developing theory for the associated curl- and divergence-operations, as well as the associated Sobolev spaces.
@@ -11,50 +11,68 @@ This will enable us to present some illustrative examples of this theory in acti
 
 \section{Vector Sobolev Spaces} \label{sec:VectorSobSpaces}
 In this section we discuss the construction of Sobolev spaces of vector-valued functions that possess curls (in some sense) with respect to an arbitrary (Borel) measure $\nu$.
-In later sections we will adapt the construction of these spaces to suit our physical wave-guide and photonic-fibre systems; by taking a Fourier transform along the axis of the wave-guide and also incorporating the quasi-momentum that arises from taking a Gelfand transform in the cross-section.
+In later sections we will adapt the construction of these spaces to suit our physical wave-guide and photonic-fibre systems (section \ref{sec:OurPhysicalSetup}); by taking into account a Fourier transform along the axis of the wave-guide and also incorporating the quasi-momentum that arises from taking a Gelfand transform in the cross-section.
 The reader is invited to bear in mind the arguments employed in section \ref{sec:ScalarSobSpaces} throughout this section. \newline
 
-Let $D\subset\reals^3$ be our 3D-domain, and let $\nu$ be an arbitrary (Borel) measure on $D$.
-Let $W=W\bracs{D,\md\nu}$ be the closure of the set of pairs $\bracs{\phi, \curl{}\phi}$ in $\ltwo{D}{\nu}^3\times\ltwo{D}{\nu}^3$ for $\phi\in\smooth{D}$.
+Take $D\subset\reals^3$ as our 3D-domain, and let $\nu$ be an arbitrary (Borel) measure on $D$.
+Set 
+\begin{align} \label{eq:WCurlGeneral}
+	W &= W\bracs{D,\md\nu} = \overline{ \clbracs{ \bracs{\phi, \curl{}\phi} \ \vert \ \phi\in\bracs{\smooth{D}}^3 } }
+\end{align}
+as the closure of the set of pairs $\clbracs{\bracs{\phi, \curl{}\phi}}$ in $\ltwo{D}{\nu}^3\times\ltwo{D}{\nu}^3$ for $\phi\in\bracs{\smooth{D}}^3$.
 Given that this is essentially the same construction as in section \ref{sec:ScalarSobSpaces}, it is unsurprising to learn that some work must be done before the element $c$ in the pair $\bracs{u,c}\in W$ can be thought of as a ``curl".
-Indeed we actually have the same problem as in the gradient case; if both $\bracs{u,c_1}, \bracs{0, c_2}\in W$ then $\bracs{u,c_1+c_2}\in W$, and so we define the set of $\nu$-curls of zero as
-\begin{align*}
-	\curlZero{D}{\nu} &:= \clbracs{ c\in\ltwo{D}{\nu}^3 \ \vert \ \bracs{0,c}\in W }, \\
-	&= \clbracs{ c\in\ltwo{D}{\nu}^3 \ \vert \ \exists\phi\in\bracs{\smooth{D}}^3 \text{ s.t. } \phi_n\lconv{\ltwo{D}{\nu}^3}0, \curl{}\phi_n\lconv{\ltwo{D}{\nu}^3}c }
-\end{align*}
-Fortunately we have the same methodology available to us as in the gradient case, to allow us address this issue.
-That is, we observe that $\curlZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^3$ so we can decompose
+Indeed we actually have the same problem as in the gradient case - if both $\bracs{u,c_1}, \bracs{0, c_2}\in W$ then $\bracs{u,c_1+c_2}\in W$.
+Fortunately we also have the same methodology available to address this issue, first we define the set of curls of zero.
+\begin{definition}[Set of Curls of Zero] \label{def:CurlZeroGeneral}
+	Let $D$, $\nu$ and $W$ be as in \eqref{eq:WCurlGeneral}.
+	The set of $\nu$-curls of zero is defined to be
+	\begin{align*}
+		\curlZero{D}{\nu} &:= \clbracs{ c\in\ltwo{D}{\nu}^3 \ \vert \ \bracs{0,c}\in W }, \\
+		&= \clbracs{ c\in\ltwo{D}{\nu}^3 \ \vert \ \exists\phi\in\bracs{\smooth{D}}^3 \text{ s.t. } \phi_n\lconv{\ltwo{D}{\nu}^3}0, \curl{}\phi_n\lconv{\ltwo{D}{\nu}^3}c },
+	\end{align*}
+	with the construction of $W$ ensuring the expressions for the right hand side coincide.
+\end{definition}
+
+We observe that $\curlZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^3$ so we can decompose
 \begin{align*}
 	\ltwo{D}{\nu}^3 = \curlZero{D}{\nu}^\perp \oplus \curlZero{D}{\nu}.
 \end{align*}
 Hence every $u\in\ltwo{D}{\nu}^3$ has a unique tangential $\nu$-curl, $\curl{\nu} u$ such that every $\bracs{u,c}\in W$ can be written in the form $\bracs{u, \curl{\nu}u + \widetilde{c}}\in W$ for some $\widetilde{c}\in\curlZero{D}{\nu}$.
-Thus we can define the Sobolev space of functions $u$ with $\nu$-curls by
-\begin{align*}
-	\curlSob{D}{\nu} := \clbracs{ \bracs{u,\curl{\nu}u}\in W },
+Thus we can define the Sobolev space of functions $u$ with $\nu$-curls.
+\begin{definition}[Sobolev Space $\curlSob{D}{\nu}$]
+	Let $D$, $\nu$, and $W$ be as in \eqref{eq:WCurlGeneral}.
+	Then the Sobolev space of functions with $\nu$-curls is defined to be
+	\begin{align*}
+	\curlSob{D}{\nu} := \clbracs{ \bracs{u,\curl{\nu}u}\in W \ \vert \ \curl{\nu}u \perp \curlZero{D}{\nu} }.
 \end{align*}
-and although elements of this space are technically pairs, it is sufficient to specify only the first component $u$ to identify the pair.
-We can also pose problems in this space using a variational formulation as was done in section \ref{sec:ScalarSobSpaces}, we write
-\begin{align*}
-	\curl{\nu}\bracs{A\curl{\nu}u} + u &= f, \quad u\in\curlSob{D}{\nu},
-\end{align*}
-and interpret this as the variational problem of finding $u\in\curlSob{D}{\nu}$ such that
+	Although elements of this space are technically pairs, it is sufficient to specify only the first component $u$ to identify the pair.
+\end{definition}
+We can also pose problems in this space using a variational formulation as was done in section \ref{sec:ScalarSobSpaces}.
+\begin{convention}[Shorthand for Variational Problems] \label{conv:VariationalShorthandCurls}
+We may write the variational problem of finding $u\in\curlSob{D}{\nu}$ such that
 \begin{align*}
 	\integral{D}{ A\bracs{\curl{\nu}u}\cdot\overline{\bracs{\curl{}\phi}} + u\overline{\phi}}{\nu} &= \integral{D}{ f\overline{\phi} }{\nu}, \quad \forall\phi\in\bracs{\smooth{D}}^3.
 \end{align*}
+in the shorthand
+\begin{align*}
+	\curl{\nu}\bracs{A\curl{\nu}u} + u &= f, \quad u\in\curlSob{D}{\nu}.
+\end{align*}
+\end{convention}
 Such problems actually serve as the motivation for the notion of the tangential curl that is provided in the same way as tangential gradients were motivated.
 The elliptic matrix $A$ simply requires us to write $A\curl{\nu}u$ for the element in $\curlZero{D}{\nu}^\perp$, the details again being analogous to those in section \ref{sec:ScalarSobSpaces} for gradients. \newline
 
 The problem that we shall be focusing on throughout this chapter is the colloquially-named ``curl of the curl" equation 
 \begin{align} \label{eq:curlOfCurlEqn}
-	\curl{\nu}\bracs{A\curl{\nu}u} = f, &\quad u\in\curlSob{D}{\nu}, f\in\ltwo{D}{\nu}^3,
+	\curl{\nu}\bracs{A\curl{\nu}u} = \omega^2 u, &\quad u\in\curlSob{D}{\nu},
 \end{align}
-typically arising from the study of Maxwell's equations.
-The vector field $u$ is interpreted as either the magnetic or electric field, and then matrix $A$ (if present) the inverse of the magnetic permeability or electric permittivity.
+typically arising from the study of Maxwell's equations\footnote{The spectral problem is presented here because one is typically considering a time-harmonic solution to Maxwell's equations in the derivation of this equation. The resolvent problem is a perfectly valid mathematical system but does not tend to arise in applications.}.
+The vector field $u$ is interpreted as either the magnetic or electric field, and the matrix $A$ (if present) the inverse of the magnetic permeability or electric permittivity.
 Maxwell's equations also include a condition that the divergence of the magnetic field is zero, as is that of the electric field in the presence of no external charges.
-This divergence-free condition must be imposed alongside \eqref{eq:curlOfCurlEqn} for a complete physical description of the system, and in particular requires the function $f$ to be divergence-free too.
+This divergence-free condition must be imposed alongside \eqref{eq:curlOfCurlEqn} for a complete physical description of the system\footnote{And in particular requires the forcing function $f$ to be divergence-free too, if the resolvent problem is being considered.}.
 Due to the nature of our Sobolev spaces and mathematical tools, we can only interpret ``divergence-free" as meaning ``orthogonal to all gradients", as the following definition clarifies.
-\begin{definition}[Divergence-Free]
-	Define 
+\begin{definition}[$\nu$-divergence-Free] \label{def:DivFreeGeneral}
+	Let $D\subset\reals^3$ and $\nu$ be a Borel measure on $D$.
+	Also let
 	\begin{align*}
 		W_{\mathrm{grad}}\bracs{D,\nu} &:= \overline{\clbracs{ \bracs{\phi, \grad\phi} \ \vert \ \phi\in\smooth{D} }}
 	\end{align*}
@@ -64,13 +82,18 @@ Due to the nature of our Sobolev spaces and mathematical tools, we can only inte
 		\integral{D}{ u\cdot g }{\nu} &= 0, \quad \forall \bracs{z,g}\in W_{\mathrm{grad}}\bracs{D,\nu}.
 	\end{align*}	 
 \end{definition}
-
-Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ and it's orthogonal compliment, it is sufficient to test the conditions
+Of course due to the decomposition of $\ltwo{D}{\nu}^n$ by $\gradZero{D}{\nu}$ and it's orthogonal compliment, we have the following equivalence for functions $u\in\ltwo{D}{\nu}^3$:
 \begin{align*}
-	\integral{D}{ u\cdot\overline{\grad_{\nu}v} }{\nu} &= 0, \quad \forall v\in\gradSob{D}{\nu}, \\
-	\integral{D}{ u\cdot\overline{g} }{\nu} &= 0, \quad \forall g\in\gradZero{D}{\nu},
+	u \text{ is } \nu\text{-divergence-free } \quad\Leftrightarrow\quad
+	\begin{cases}
+		\integral{D}{ u\cdot\overline{\grad_{\nu}v} }{\nu} = 0, & \forall v\in\gradSob{D}{\nu}, \\
+		\integral{D}{ u\cdot\overline{g} }{\nu} = 0, & \forall g\in\gradZero{D}{\nu}.
+	\end{cases}
 \end{align*}
-to show that $u$ is $\nu$-divergence free.
+In the following section (\ref{sec:CurlExamples}) we demonstrate that, unlike $\nu$-gradients, $\nu$-curls can display some unexpected behaviours for specific measures $\nu$.
+Following this example, section \ref{sec:ktOperator} will introduce the modified $\grad$ operator that we will be considering due to the fact that we will be taking Fourier and Gelfand transforms in our singular-structure problems.
+This section will also provide characterisations of the (modified) Sobolev spaces and the divergence-free condition.
+Finally, we conclude this chapter by demonstrating the the curl-of-the-curl equation \eqref{eq:curlOfCurlEqn} has an equivalent quantum graph formulation, which will be our starting point for the example systems we consider in chapter \ref{ch:ExampleSystems}.
 
 \section{Example: Segment in $\reals^3$} \label{sec:CurlExamples}
 In this section we provide an example of the spaces described in section \ref{sec:VectorSobSpaces}, for the case when we have a line segment in $\reals^3$ and the singular measure supporting it. 
@@ -133,7 +156,7 @@ As such we introduce the Fourier variable $\wavenumber$ and accordingly adjust t
 \begin{align*}
 	\kgrad := \begin{pmatrix} \partial_1 \\ \partial_2 \\ i\wavenumber\end{pmatrix}.
 \end{align*}
-Then due to our Gelfand transform in the periodic cross-section, we have to make a further adjustment to $\kgrad$ and consider the operator $\ktgrad$ which component-wise is acts as
+Then due to our Gelfand transform in the periodic cross-section, we have to make a further adjustment to $\kgrad$ due to the quasi-momentum $\qm$ and consider the operator $\ktgrad$ which component-wise is acts as
 \begin{align*}
 	\ktgrad := \kgrad + i\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}.
 \end{align*}
@@ -144,15 +167,50 @@ One can then construct the sets
 		W^{\wavenumber, \qm}_{\mathrm{grad}} &:= \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \ \vert \ \phi\in\smooth{\ddom} } },
 	\end{align}
 \end{subequations}
-(note that closures are taken in the respective product $\ltwo{\ddom}{\ddmes}$ norms) and then follow the construction method to obtain the spaces $\ktcurlSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\ddmes}$.
-Since $\ktgrad$ is nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}, the theory is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
-Since the operator $\ktgrad$ replaces the operator $\grad$, we are in effect seeking the $\kt$-tangential curl, $\kt$-tangential gradient, and $\kt$-divergence-free conditions. 
-We will adopt the notation $\kcurlZero{\ddom}{\ddmes}$ for the set of ``$\wavenumber$-curls of zero and $\kgradZero{\ddom}{\ddmes}$ for the set of $\wavenumber$-gradients of zero;
+(note that closures are taken in the respective product $\ltwo{\ddom}{\ddmes}$ norms).
+One then defines the relevant sets of curls and gradients of zero, and thus the spaces $\ktcurlSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\ddmes}$ as follows.
+\begin{definition}[$\kt$-Sobolev Spaces] \label{def:ktSobSpaces}
+	Let $\ddom$, $\graph$, $\ddmes$, $W^{\wavenumber, \qm}_{\mathrm{curl}}$, and $W^{\wavenumber, \qm}_{\mathrm{grad}}$ be as in \eqref{eq:WktDefinitions}.
+	Denote the set of ``$\wavenumber$-curls of zero" by
+	\begin{align*}
+		\kcurlZero{\ddom}{\ddmes} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber}_{\mathrm{curl}}},
+	\end{align*}
+	and the set of ``$\wavenumber$-gradients of zero" by
+	\begin{align*}
+		\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z}\in W^{\wavenumber}_{\mathrm{grad}}}.
+	\end{align*}
+	It will be shown in the relevant sections that these sets are invariant under changes to $\qm$ hence we only write the superscript $\wavenumber$ on them.
+	Then for a given $\kt$, one constructs the Sobolev spaces of $\kt$-curls and $\kt$-gradients (respectively) as
+	\begin{align*}
+		\ktcurlSob{\ddom}{\ddmes} &= \clbracs{ \bracs{u,\ktcurl{\ddmes}u}\in W^{\wavenumber, \qm}_{\mathrm{curl}} \ \vert \ \ktcurl{\ddmes}u \perp \kcurlZero{\ddom}{\ddmes} }, \\
+		\ktgradSob{\ddom}{\ddmes} &= \clbracs{ \bracs{u,\ktgrad_{\ddmes}u}\in W^{\wavenumber, \qm}_{\mathrm{grad}} \ \vert \ \ktgrad_{\ddmes}u \perp \kgradZero{\ddom}{\ddmes} }.
+	\end{align*}
+\end{definition}
+Since $\ktgrad$ is nothing more than the result of unitary transforms on the function spaces considered in section \ref{sec:VectorSobSpaces}; the theory concerning uniqueness of tangential curls and gradients is preserved, however we must still perform some explicit computations to characterise the objects that we will be working with.
+Since the operator $\ktgrad$ replaces the operator $\grad$, and we are dealing with $\kt$-tangential curls and $\kt$-tangential gradients, we also have to use a ``$\kt$-divergence-free condition", as below.
+\begin{definition}[$\kt$-divergence-free] \label{def:ktDivFreeCond}
+	Let $\ddom$, $\graph$, $\ddmes$, and $W^{\wavenumber, \qm}_{\mathrm{grad}}$ be as in \eqref{eq:WktDefinitions}.
+	A function $u\in\ltwo{\ddom}{\ddmes}^3$ is $\kt$-divergence-free if
+	\begin{align*}
+		\integral{\ddom}{ u\cdot g }{\ddmes} &= 0, \quad \forall \bracs{z,g}\in W^{\wavenumber, \qm}_{\mathrm{grad}}.
+	\end{align*}
+\end{definition}
+Again due to the decomposition of $\ltwo{\ddom}{\ddmes}^3$ by $\gradZero{\ddom}{\ddmes}$ and it's orthogonal compliment, we have the following equivalence for functions $u\in\ltwo{\ddom}{\ddmes}^3$:
 \begin{align*}
-	\kcurlZero{\ddom}{\ddmes} &= \clbracs{ c \ \vert \ \bracs{0,c}\in W^{\wavenumber}_{\mathrm{curl}}}, \\
-	\kgradZero{\ddom}{\ddmes} &= \clbracs{ z \ \vert \ \bracs{0,z}\in W^{\wavenumber}_{\mathrm{grad}}}.
+	u \text{ is } \kt\text{-divergence-free } \quad\Leftrightarrow\quad
+	\begin{cases}
+		\integral{\ddom}{ u\cdot\overline{\ktgrad_{\ddmes}v} }{\ddmes} = 0, & \forall v\in\ktgradSob{\ddom}{\ddmes}, \\
+		\integral{\ddom}{ u\cdot\overline{g} }{\ddmes} = 0, & \forall g\in\kgradZero{\ddom}{\ddmes}.
+	\end{cases}
 \end{align*}
-It will be shown in the relevant sections that these sets are invariant under changes to $\qm$ hence we only write the superscript $\wavenumber$ on these sets. \newline
+Finally, to save repeating the same assumptions in the results that follow, we adopt the following convention throughout the remainder of this chapter.
+\begin{convention}[Local Co-ordinates for Edges $I_{jk}$] \label{conv:LocalEdgeCoords}
+	Let $\graph=\bracs{V,E}$ be an embedded graph in $\ddom$.
+	Then for each $I_{jk}\in E$, equip $I_{jk}$ with local co-ordinate system $y_{jk} = \bracs{y_{jk}^{(1)},y_{jk}^{(2)}}$ with $y_{jk}^{(2)}$ parallel to $I_{jk}$.
+	Write $R_{jk}\in\mathrm{SO}(2)$ for the rotation such that $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system.
+\end{convention}
+In also recall that convention \ref{conv:StraightEdges} gives us a ready notation for the parametrisation $r_{jk}$ for each $I_{jk}$, the notation $e_{jk}$ for the unit vector directed along $I_{jk}$ from $v_j$ to $v_k$, and $\lambda_{jk}$ for the singular measure supported on $I_{jk}$.
+As such $e_{jk}$ is the unit vector directed in $y^{(jk)}_2$, and we will use $n_{jk}$ to denote the unit normal to $I_{jk}$ directed along $y^{(jk)}_1$.
 
 \subsection{$\kt$-gradients} \label{sec:ktGradients}
 In this subsection we will work towards characterising $\bracs{\wavenumber,\qm}$-tangential gradients.
@@ -215,11 +273,10 @@ Additionally, as the third component of $\ktgrad\phi$ is unaffected by rotations
 	This proof is an application of a rotation to proposition \ref{prop:kGradZeroParallel}, similar in detail to that of proposition \ref{prop:RotationOfEdgeGradients}.
 \end{proof}
 
+This brings us to the following characterisation of $\kgradZero{\ddom}{\ddmes}$.
 \begin{cory}[Characterisation of $\kgradZero{\ddom}{\ddmes}$] \label{cory:CharacterisationkGradientsZero}
 	Let $\graph=\bracs{V,E}$ be a finite graph embedded in $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$.
-	For each $I_{jk}\in E$, equip $I_{jk}$ with local co-ordinate system $y_{jk} = \bracs{y_{jk}^{(1)},y_{jk}^{(2)}}$ with $y_{jk}^{(2)}$ parallel to $I_{jk}$.
-	Suppose $R_{jk}\in\mathrm{SO}(2)$ is the rotation such that $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system, and set $e_{jk}$ to be the unit vector along $I_{jk}$.
-	Finally, let $\lambda_{jk}$ denote the singular measure along the edge $I_{jk}$.
+	Also recall convention \ref{conv:LocalEdgeCoords}.
 	Then
 	\begin{align*}
 		\kgradZero{\ddom}{\ddmes} &= 
@@ -278,9 +335,7 @@ We now provide the remaining details for characterising the tangential $\kt$-gra
 The form for the tangential $\kt$-gradient when the segment $I$ is at an arbitrary angle in the $\bracs{x_1,x_2}$-plane follows by applying a rotation to the previous result, and from this we deduce an analogue of corollary \ref{cory:TangentialQMGradientGraphs}.
 \begin{cory}[$\kt$-Tangential Gradient on Graphs] \label{cory:ktTangentialGradientForm}
 	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$.
-	Denote by $x=\bracs{x_1,x_2}$ the axes co-ordinate system.
-	For each $I_{jk}\in E$, equip $I_{jk}$ with a local orthogonal co-ordinate system $y_{jk}=\bracs{y^{(jk)}_1,y^{(jk)}_2}$ with $y^{(jk)}_2$ parallel to $I_{jk}$, such that $x=R_{jk}y_{jk}$ for some $R_{jk}\in\mathrm{SO}(2)$.
-	Finally, denote by $u_{jk}$ the restriction of $u$ to the edge $I_{jk}$, extended by zeros to the whole of $\graph$.
+	Recall convention \ref{conv:LocalEdgeCoords}.
 	If $u\in\ktgradSob{\ddom}{\ddmes}$, then we have that
 	\begin{align*}
 		\widetilde{u}_{jk} = u_{jk} \circ r_{jk} \in \ktgradSob{\interval{I_{jk}}}{t}, &\ \forall I_{jk}\in E, \\
@@ -297,7 +352,7 @@ The form for the tangential $\kt$-gradient when the segment $I$ is at an arbitra
 	from which the result claimed above follows.
 \end{proof}
 
-Finally we round off this section by stating the analogue of \ref{thm:CharGradSob}.
+Finally we round off this section by stating the analogue of \ref{thm:CharGradSob}, which provides us with some non-obvious additional structure for elements of $\ktgradSob{\ddom}{\ddmes}$.
 \begin{theorem}[Characterisation of $\ktgradSob{\ddom}{\ddmes}$] \label{thm:ktGradSobChar}
 	We have that
 	\begin{align*}
@@ -444,7 +499,7 @@ We begin our analysis by considering a single segment in the plane, parallel to 
 \end{proof}
 
 Like with proposition \ref{prop:GradZeroParallelZhikov} we can provide some kind of geometric interpretation for this result, illustrated in figure \ref{fig:CurlZeroInterp}.
-\begin{figure}[b!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[scale=0.75]{Diagram_CurlZeroPlane.pdf}
 	\caption{\label{fig:CurlZeroInterp} An illustration of $\wavenumber$-curls of zero. The curl is the axis of rotation of a small body in the vector field, whilst the measure we are using can only see things that happen in the plane/segment it supports. As such, unless the axis of rotation is normal to the plane, the measure $\lambda_I$ cannot ``see" it, and so it is a curl of zero.}
@@ -487,9 +542,7 @@ Having established the form of $\wavenumber$-curls of zero on individual segment
 Our goal will be the following theorem, which bears much resemblance to corollary \ref{cory:CharacterisationGradientsZero}:
 \begin{theorem}[Characterisation of $\kcurlZero{\ddom}{\ddmes}$] \label{thm:kCurlZeroGraphChar}
 	Let $\graph=\bracs{V,E}$ be a finite graph embedded in $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$.
-	For each $I_{jk}\in E$, equip $I_{jk}$ with local co-ordinate system $y_{jk} = \bracs{y_{jk}^{(1)},y_{jk}^{(2)}}$ with $y_{jk}^{(2)}$ parallel to $I_{jk}$.
-	Suppose $R_{jk}\in\mathrm{SO}(2)$ is the rotation such that $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system; and additionally set $e_{jk}$ to be the unit vector along $I_{jk}$ and $n_{jk}$ to be the unit normal to $I_{jk}$ (directed as $y_{jk}^{(1)}$).
-	Finally, let $\lambda_{jk}$ denote the singular measure along the edge $I_{jk}$.
+	Recall convention \ref{conv:LocalEdgeCoords}.
 	Then we have that
 	\begin{align*}
 		\kcurlZero{\ddom}{\ddmes} &= 
@@ -537,7 +590,7 @@ For ease we set $B = \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ c\in\kcurlZe
 \begin{proof}
 	As $c\cdot n_{jk} = 0$ on $I_{jk}^n$ and $c=0$ on $\ddom\setminus I_{jk}^n$, we have that $c\in\kcurlZero{\ddom}{\lambda_{jk}}$.
 	Hence we can find an approximating sequence $\phi^{(l)}$ for $c$.
-	Let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function defined in \eqref{eq:ChiDef}, and consider the sequence of functions $\psi^{(l)} := \chi_{jk}^n\phi^{(l)}$.
+	Let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function defined in definition \ref{def:ChiDef}, and consider the sequence of functions $\psi^{(l)} := \chi_{jk}^n\phi^{(l)}$.
 	By construction we have that
 	\begin{align*}
 		\integral{\ddom}{\abs{\psi^{(l)}}^2}{\ddmes}
@@ -585,7 +638,7 @@ For ease we set $B = \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \ \vert \ c\in\kcurlZe
 	\begin{align*}
 		c_n &= \sum_{v_j\in V}\sum_{j\conLeft k}\eta_j^n \eta_k^n c\vert_{I_{jk}},
 	\end{align*}
-	where $\eta_j^n, \eta_k^n$ are as defined in \eqref{eq:etaDef}.
+	where $\eta_j^n, \eta_k^n$ are as in definition \ref{def:etaDef}.
 	For each pair $j\conLeft k$, $\eta_j^n \eta_k^n c\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:kCurlZeroExtensionLemma} so is an element of $\kcurlZero{\ddom}{\ddmes}$.
 	As $\kcurlZero{\ddom}{\ddmes}$ is a closed linear subspace of $\ltwo{\ddom}{\ddmes}^3$, $c_n\in\kcurlZero{\ddom}{\ddmes} \ \forall n\in\naturals$.
 	By lemma \ref{lem:etaConv}, we conclude that $c_n$ converges to $c$ in $\ltwo{\ddom}{\ddmes}$ and as $\kcurlZero{\ddom}{\ddmes}$ is closed, $c\in\kcurlZero{\ddom}{\ddmes}$ as required.
@@ -601,7 +654,7 @@ As has become standard practice, we begin with by considering a segment that is 
 \begin{lemma}[Tangential $\kt$-curl on a Segment Parallel to the $x_2$-axis] \label{lem:ktTanCurlSegmentParallel}
 	Let $I$ be a segment in the $\bracs{x_1,x_2}$-plane parallel to the $x_1$-axis, and let $\lambda_I$ be the singular measure supported on $I$.
 	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space on the interval $\interval{I}$.
-	Take $r:\interval{I}\rightarrow I$ as the change of variables map $r(t) = v_I + te_I$ where $v_I$ is either endpoint $v_I$ of $I$ and $e_I$ is the unit vector along $I$ directed away from $v_I$.
+	Take $r:\interval{I}\rightarrow I$ as the change of variables map $r(t) = v_I + te_I$ where $v_I$ is the suitable endpoint of $I$ and $e_I$ is the unit vector along $I$ directed away from $v_I$.
 	Suppose $u\in\ktcurlSob{I}{\lambda_I}$.
 	Then $\widetilde{u}_3 := u_3 \circ r \in\gradSob{\interval{I}}{t}$ and with $u_3' := \widetilde{u}_3' \circ r^{-1}$,
 	\begin{align*}
@@ -679,20 +732,17 @@ We now present the form of the tangential $\kt$-curl on an arbitrary segment and
 	with $u_3 = \widetilde{u}_3' \circ r^{-1}$.
 \end{lemma}
 \begin{proof}
-	One uses the change of co-ordinates $\widetilde{R}$ (use of lemma  \ref{lem:CurlUnderRotation} is what introduces the pre-multiplication by $R$ of $\qm$) so that the framework now fits with lemma \ref{lem:ktTanCurlSegmentParallel}, and having done this the result given above follows.
+	One uses the change of co-ordinates $R$ (use of lemma  \ref{lem:CurlUnderRotation} is what introduces the pre-multiplication by $R$ of $\qm$) so that the framework now fits with lemma \ref{lem:ktTanCurlSegmentParallel}, and having done this the result given above follows.
 \end{proof}
 
 \begin{theorem}[Tangential $\kt$-curls on Graphs] \label{thm:ktTanCurlsGraphs}
 	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$, and suppose $u\in\ktcurlSob{\ddom}{\ddmes}$.
-	For each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supported on $I_{jk}$, and denote $u_{jk} = u\vert_{I_{jk}}$ as the restriction of $u$ to $I_{jk}$, extended by zero to the whole of $\graph$.
-	Also write $u_{l,jk}$ (for $l\in\clbracs{1,2,3}$) the restriction of the component $u_l$ to $I_{jk}$ extended by zero to the whole of $\graph$.
-	Additionally equip $I_{jk}$ with local co-ordinate system $y_{jk}=\bracs{y_1^{(jk)}, y_2^{(jk)}}$ with $y_2^{(jk)}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of co-ordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system.
+	Recall convention \ref{conv:LocalEdgeCoords}.
 	For each $I_{jk}\in E$, also define
 	\begin{align*}
 		U_{jk} := R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}, \quad
 		\widetilde{U}_{jk} := U_{jk} \circ r_{jk},
 	\end{align*}
-	and let $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ be the change of variables map $r(t)=v_{j} + te_{jk}$ where $e_{jk}$ is the unit vector parallel to $I_{jk}$ directed from $v_j$ to $v_k$.
 	Then we have that 
 	\begin{align*}
 		\widetilde{u}_{3,jk} := u_{3,jk}\circ r_{jk}\in\ktgradSob{\ddom}{\lambda_{jk}}, &\ \forall I_{jk}\in E, \\
@@ -732,7 +782,8 @@ for any $u_3\in\ktgradSob{\ddom}{\ddmes}$.
 		\begin{pmatrix} 0 \\ 0 \\ \phi_n \end{pmatrix} \lconv{\ltwo{\ddom}{\ddmes}^3} u,
 		&\quad \ktcurl{} \begin{pmatrix} 0 \\ 0 \\ \phi_n \end{pmatrix} \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} \bracs{\ktgrad_{\ddmes}u_3}_2 \\ -\bracs{\ktgrad_{\ddmes}u_3}_1 \\ 0 \end{pmatrix},
 	\end{align*}
-	and hence $u\in\ktcurlSob{\ddom}{\ddmes}$.
+	and hence $u\in\ktcurlSob{\ddom}{\ddmes}$. \newline
+	
 	Conversely, for the left-directed implication we can find a smooth approximating sequence $\psi^{(n)}$ such that
 	\begin{align*}
 		\phi^{(n)} \lconv{\ltwo{\ddom}{\ddmes}^3} u, 
@@ -746,11 +797,22 @@ for any $u_3\in\ktgradSob{\ddom}{\ddmes}$.
 	and hence that $u_3\in\ktgradSob{\ddom}{\ddmes}$.
 \end{proof}
 This provides us with continuity of the third component of elements of $\ktcurlSob{\ddom}{\ddmes}$ as it is a vector space (so $\bracs{u_1,u_2,u_3}^{\top}\in\ktcurlSob{\ddom}{\ddmes} \implies \bracs{0,0,u_3}^{\top}\in\ktcurlSob{\ddom}{\ddmes}$).
-For the purposes of this report, this combined with the divergence-free condition (section \ref{sec:ktDivFree}) is all that we require for our analysis and the examples that we will consider in chapter \ref{ch:ExampleSystems}, because it provides us with enough vertex or boundary conditions in the equivalent quantum graph problem.
-We conjecture that there is more to be said here, notably about the first and second components of the elements of this space; and ideally would provide this missing condition in order to state an analogue of theorem \ref{thm:ktGradSobChar} for the space $\ktcurlSob{\ddom}{\ddmes}$, which from a theoretical standpoint is a significant step in classifying the behaviour of this space.
-Regrettably we do not yet have a candidate for such a condition, although we can hypothesise that it likely involves some kind of regularity of the components $u_1$ and $u_2$ on their approach to the vertices.
-That said the existence of such a condition is undoubtedly true because proposition \ref{prop:Curl3rdComponentIFFInGradSpace} doesn't involve the first and second components of elements of $\ktcurlSob{\ddom}{\ddmes}$, and so cannot provide a complete characterisation.
-As we shall see in section \ref{sec:ktDivFree}, if we also require elements $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence-free, we obtain another condition on the component $u_2$.
+For the purposes of this report, this combined with the divergence-free condition (section \ref{sec:ktDivFree}) is all that we require for our analysis and the examples that we will consider in chapter \ref{ch:ExampleSystems}, because it provides us with enough vertex or boundary conditions in the equivalent quantum graph problem. \newline
+
+We conjecture that there is more to be said on this topic, namely some further conditions exist that can be added to the right hand side of the implication to form a set of necessary and sufficient conditions.
+The reason to believe that such conditions exist comes from the theory of ``classical" Sobolev spaces, namely that membership of $\curlSob{D}{\lambda_3}$ (for the 3D Lebesgue measure $\lambda_3$ and some domain $D\subset\reals^3$) and being divergence-free (in the Lebesgue sense) is sufficient for membership of $\gradSob{D}{\lambda_3}$.
+Ideally we would provide this missing condition and state an analogue of theorem \ref{thm:ktGradSobChar} for the space $\ktcurlSob{\ddom}{\ddmes}$, which from a theoretical standpoint is a significant step in classifying the behaviour of this space.
+Regrettably we do not yet have a candidate for such a condition, although we can hypothesise that these conditions (if they exist) likely involve some relation between the first and second components of the elements of $\ktcurlSob{\ddom}{\ddmes}$ on the approach to the vertices of $\graph$.
+At present though, we can only state the following;
+\begin{prop}[Necessary Conditions for Membership of $\ktcurlSob{\ddom}{\ddmes}$] \label{prop:NeccessaryConditionsForH1Curl}
+	Suppose $u=\bracs{u_1,u_2,u_3}^{\top} \in\ktcurlSob{\ddom}{\ddmes}$.
+	Then
+	\begin{align*}
+		u_3 &\in\ktgradSob{\ddom}{\ddmes}, \\
+		\bracs{u_1,u_2,u_3} &\in\ktcurlSob{\ddom}{\lambda_{jk}} \quad \forall I_{jk}\in E
+	\end{align*}
+\end{prop}
+In section \ref{sec:ktDivFree} we prove theorem \ref{thm:DivFreeWholeGraph}, which characterises divergence-free functions and provides another reason to believe that part of the description is missing from proposition \ref{prop:NeccessaryConditionsForH1Curl}, which will elevate the conditions to being necessary and sufficient.
 
 \subsection{The Divergence-Free Condition} \label{sec:ktDivFree}
 Having established characterisations for both $\kgradZero{\ddom}{\ddmes}$ (corollary \ref{cory:CharacterisationkGradientsZero}) and the tangential gradients (corollary \ref{cory:ktTangentialGradientForm}), we can now examine what it means for a function $u\in\ktcurlSob{\ddom}{\ddmes}$ to be divergence-free.
@@ -890,15 +952,11 @@ Namely, the component of the field normal to the segment is required to be $0$, 
 We can use these results to obtain the following characterisation of $\kt$-divergence-free functions on a graph; note that the condition (iv) changes to reflect the fact that multiple edges may now meet at a vertex, and so we no longer simply have a Dirichlet condition at the ends of the segments that make up the graph.
 \begin{theorem}[Divergence-Free Functions on a Graph] \label{thm:DivFreeWholeGraph}
 	Let $\graph=\bracs{V,E}$ be a graph embedded into $\ddom$ and $\ddmes$ the singular measure supported on the edges of $\graph$, and suppose $u\in\ktcurlSob{\ddom}{\ddmes}$.
-	For each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supported on $I_{jk}$, and denote $u_{jk} = u\vert_{I_{jk}}$ as the restriction of $u$ to $I_{jk}$, extended by zero to the whole of $\graph$.
-	Also write $u_{l,jk}$ (for $l\in\clbracs{1,2,3}$) the restriction of the component $u_l$ to $I_{jk}$ extended by zero to the whole of $\graph$.
-	Additionally equip $I_{jk}$ with local co-ordinate system $y_{jk}=\bracs{y_1^{(jk)}, y_2^{(jk)}}$ with $y_2^{(jk)}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of co-ordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system.
-	For each $I_{jk}\in E$, also define
+	Recall convention \ref{conv:LocalEdgeCoords}, and for each $I_{jk}\in E$ also define
 	\begin{align*}
 		U_{jk} := R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}, \quad
 		\widetilde{U}_{jk} := U_{jk} \circ r_{jk},
 	\end{align*}
-	and let $r_{jk}:\interval{I_{jk}}\rightarrow I_{jk}$ be the change of variables map $r(t)=v_{j} + te_{jk}$ where $e_{jk}$ is the unit vector parallel to $I_{jk}$ directed from $v_j$ to $v_k$.
 	Then we have that
 	\begin{align*}
 		u \text{ is divergence-free } &\quad\Leftrightarrow\quad
@@ -922,7 +980,7 @@ We can use these results to obtain the following characterisation of $\kt$-diver
 \end{proof}
 
 \subsection{Summary}
-Having introduced the operator $\ktgrad$ due to our interests in wave-guidance problems; we have now completed our analysis of $\ktcurlSob{\ddom}{\ddmes}$ and the divergence-free condition in the sense of $\kt$-gradients.
+Having introduced the operator $\ktgrad$ due to our interests in wave-guidance problems; we have now completed our analysis of $\ktgradSob{\ddom}{\ddmes}$, $\ktcurlSob{\ddom}{\ddmes}$ and the $\kt$-divergence-free condition in the sense of $\kt$-gradients.
 Our understanding of these is necessary for us to be able to reduce variational problems posed with respect to measures to quantum graph problems (section \ref{sec:CurlReductionToQG}).
 Of important note is that the underlying arguments for understanding $\ktgradSob{\ddom}{\ddmes}$ are essentially identical to those in sections \ref{sec:GradZeroGraphAnalysis}; \ref{sec:ScalarSystem}, and \ref{sec:VertexContinuity}, being suitably adapted for the 3D context.
 The path we take to understanding $\ktcurlSob{\ddom}{\ddmes}$ is also directed in much the same way as the arguments for $\gradSob{\ddom}{\ddmes}$ in these sections, and we even deduce a link between the two spaces via proposition \ref{prop:Curl3rdComponentIFFInGradSpace}.
@@ -936,9 +994,9 @@ Because we are focusing on electromagnetic wave-guidance, we shall be studying t
 Formally, we define
 \begin{align*}
 	\ktcurlSobDivFree{\ddom}{\ddmes} 
-	&:= \clbracs{ u\in\ktcurlSob{\ddom}{\ddmes} \ \vert \ u \text{ is } \ktgrad_\ddmes \text{-divergence free}}
+	&:= \clbracs{ u\in\ktcurlSob{\ddom}{\ddmes} \ \vert \ u \text{ is } \kt\text{-divergence free}}
 \end{align*}
-which is the subspace of $\ktcurlSob{\ddom}{\ddmes}$ that consists of all $\ktgrad_\ddmes$-divergence-free functions that have $\kt$-curls.
+which is the subspace of $\ktcurlSob{\ddom}{\ddmes}$ that consists of all $\kt$-divergence-free functions that have $\kt$-curls.
 We then concern ourselves with the spectral problem
 \begin{align*}
 	-\ktcurl{\ddmes}\bracs{\ktcurl{\ddmes}u} &= \omega^2 u, \quad u\in\ktcurlSobDivFree{\ddom}{\ddmes},
@@ -951,8 +1009,26 @@ which of course is shorthand for the variational problem
 \end{align*}
 The bulk of the work to get from this variational formulation to a quantum graphs problem has been done in the previous sections, and it is now a case of applying the knowledge we have of the objects in \eqref{eq:CurlCurlEquationDivFree}. \newline
 
-\tstk{need to define $U$ again here and swap all the stuff over from $u_1\rightarrow U_1$ and similar for $U_2$s. Will also need to do this for the test function too}
-We begin by recalling the form for the tangential $\kt$-curl given by theorem \ref{thm:ktTanCurlsGraphs}, and writing the integral in \eqref{eq:CurlCurlEquationDivFree} as a sum of integrals over the edges of $\graph$;
+Throughout this section we retain conventions \ref{conv:StraightEdges}, \ref{conv:LocalEdgeCoords} and additionally adopt the following:
+\begin{convention}[Rotated Components of Functions] \label{conv:RotatedComponents}
+	When working with the edge-wise forms for functions and their $\kt$-curls (and divergences) in $\ktcurlSobDivFree{\ddom}{\ddmes}$, we will be making use of the functions $U_{jk}$ and $\Phi_{jk}$ defined by
+	\begin{align*}
+		U_{jk} &= R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}, 
+		&\quad
+		\Phi_{jk} &= R_{jk}\begin{pmatrix} \phi_{1,jk} \\ \phi_{2,jk} \end{pmatrix},
+	\end{align*}
+	on each $I_{jk}$.
+	In the calculations that follow we demonstrate that this results in a system involving $U_{1,jk}$, $U_{2,jk}$ and $u_{3,jk}$ only.
+\end{convention}
+\begin{convention}[Interpretation of Derivative-Like Notation] \label{conv:DerivLikeNotation}
+	We use the notation $u_{3,jk}' = \widetilde{u}_{3,jk}' \circ r_{jk}^{-1}$, for the $\gradSob{\interval{I_{jk}}}{t}$-derivative $\widetilde{u}_{3,jk}'$ of $\widetilde{u}_{3,jk}$.
+	We also adopt the following interpretation for the expression
+	\begin{align*}
+		\diff{u_{3,jk}}{t}\bracs{x} &= u_{3,jk}'\bracs{x} = \bracs{\widetilde{u}_{3,jk}' \circ r_{jk}^{-1}}\bracs{x}, \quad x\in I_{jk}.
+	\end{align*}
+\end{convention} 
+
+We begin the process of deriving our equivalent quantum graph problem by recalling the form for the tangential $\kt$-curl given by theorem \ref{thm:ktTanCurlsGraphs}, and writing the integral in \eqref{eq:CurlCurlEquationDivFree} as a sum of integrals over the edges of $\graph$;
 \begin{align*}
 	\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\ddom}{\bracs{\ktcurl{\lambda_{jk}}u}\cdot\overline{\bracs{\ktcurl{}\phi}}}{\lambda_{jk}} 
 	&= \omega^2\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\ddom}{u\cdot\overline{\phi}}{\lambda_{jk}}.
@@ -963,45 +1039,44 @@ This would require
 	\integral{\ddom}{\bracs{\ktcurl{\lambda_{jk}}u}\cdot\overline{\bracs{\ktcurl{}\phi}}}{\lambda_{jk}} 
 	&= \omega^2\integral{\ddom}{u\cdot\overline{\phi}}{\lambda_{jk}},
 \end{align*}
-and given proposition \ref{prop:ktTangentialGradientSegment}, using our usual change of variables $r_{jk}$ we can conclude that
+and given proposition \ref{prop:ktTangentialGradientSegment}, using our usual change of variables $r_{jk}$ and rotation matrix $R_{jk}$ for the edge $I_{jk}$, we can conclude that
 \begin{align*}
-	\int_0^{\abs{I_{jk}}} \bracs{\widetilde{u}_{3,jk}' - i\wavenumber\widetilde{u}_{2,jk} + i\bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk} } \overline{\bracs{\widetilde{\phi}_3' - i\wavenumber\widetilde{\phi}_2 + i\bracs{R_{jk}\qm}_2\widetilde{\phi}_3 }} \ \md t \\
-	= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{u}_{1,jk}\overline{\widetilde{\phi}}_1 + \widetilde{u}_{2,jk}\overline{\widetilde{\phi}}_2 + \widetilde{u}_{3,jk}\overline{\widetilde{\phi}}_3 \ \md t. \labelthis\label{eq:LongReductionEquation}
+	\int_0^{\abs{I_{jk}}} \bracs{\widetilde{u}_{3,jk}' - i\wavenumber\widetilde{U}_{2,jk} + i\bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk} } \overline{\bracs{\widetilde{\phi}_3' - i\wavenumber\widetilde{\Phi}_2 + i\bracs{R_{jk}\qm}_2\widetilde{\phi}_3 }} \ \md t \\
+	= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{U}_{1,jk}\overline{\widetilde{\Phi}}_1 + \widetilde{U}_{2,jk}\overline{\widetilde{\Phi}}_2 + \widetilde{u}_{3,jk}\overline{\widetilde{\phi}}_3 \ \md t, \labelthis\label{eq:LongReductionEquation}
 \end{align*}
-Where we have used overhead tildes to denote compositions with $r_{jk}$, and $u_{l,jk}$ to denote the $l$\textsuperscript{th} component of $u$ along the edge $I_{jk}$, as before.
-Given that this equation holds when we take pairs of the components $\phi_1,\phi_2,\phi_3$ to be zero, we have that the following all hold;
+since $u\cdot\phi = R_{jk}u \cdot R_{jk}\phi$ on $I_{jk}$.
+Given that this equation holds when we take pairs of the components $\Phi_1,\Phi_2,\phi_3$ to be zero, we have that the following all hold for all smooth $\Phi_1, \Phi_2, \phi_3$;
 \begin{subequations} \label{eq:SplitVariationalEdgeEqns}
 	\begin{align}
-		0 &= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{u}_{1,jk}\overline{\widetilde{\phi}}_1 \ \md t, \\
-		\int_0^{\abs{I_{jk}}} \wavenumber\overline{\widetilde{\phi}}_2\bracs{i\widetilde{u}_{3,jk}' + \wavenumber\widetilde{u}_{2,jk} - \bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \ \md t
-		&= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{u}_{2,jk}\overline{\widetilde{\phi}}_2 \ \md t, \\
+		0 &= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{U}_{1,jk}\overline{\widetilde{\Phi}}_1 \ \md t, \\
+		\int_0^{\abs{I_{jk}}} \wavenumber\overline{\widetilde{\Phi}}_2\bracs{i\widetilde{u}_{3,jk}' + \wavenumber\widetilde{U}_{2,jk} - \bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \ \md t
+		&= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{U}_{2,jk}\overline{\widetilde{\Phi}}_2 \ \md t, \\
 		\begin{split}
-			\int_0^{\abs{I_{jk}}} -\bracs{R_{jk}\qm}_2\overline{\widetilde{\phi}}_3\bracs{i\widetilde{u}_{3,jk}' + \wavenumber\widetilde{u}_{2,jk} - \bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \quad & \\
-			+ \overline{\widetilde{\phi}}_3'\bracs{i\widetilde{u}_{3,jk}' - i\wavenumber\widetilde{u}_{2,jk} + i\bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \ \md t
+			\int_0^{\abs{I_{jk}}} -\bracs{R_{jk}\qm}_2\overline{\widetilde{\phi}}_3\bracs{i\widetilde{u}_{3,jk}' + \wavenumber\widetilde{U}_{2,jk} - \bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \quad & \\
+			+ \overline{\widetilde{\phi}}_3'\bracs{i\widetilde{u}_{3,jk}' - i\wavenumber\widetilde{U}_{2,jk} + i\bracs{R_{jk}\qm}_2\widetilde{u}_{3,jk}} \ \md t
 			&= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{u}_{3,jk}\overline{\widetilde{\phi}}_3 \ \md t.
 		\end{split}
 	\end{align}
 \end{subequations}
-Assuming sufficient regularity in $\widetilde{u}_3$ and $\widetilde{u}_2$, we can integrate by parts in the above expressions and (as $\phi$ is an arbitrary test function) obtain three equations;
+Assuming sufficient regularity in $\widetilde{u}_3$ and $\widetilde{U}_2$, we can integrate by parts in the above expressions and obtain three equations;
 \begin{align*}
-	\widetilde{u}_{1,jk} &= 0, \\
-	i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} + \wavenumber^2\widetilde{u}_{2,jk} &= \omega^2 \widetilde{u}_{2,jk}, \\
-	-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}^2\widetilde{u}_{3,jk} + i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{2,jk} &= \omega^2\widetilde{u}_{3,jk}.
+	\widetilde{U}_{1,jk} &= 0, \\
+	i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} + \wavenumber^2\widetilde{U}_{2,jk} &= \omega^2 \widetilde{U}_{2,jk}, \\
+	-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}^2\widetilde{u}_{3,jk} + i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{U}_{2,jk} &= \omega^2\widetilde{u}_{3,jk}.
 \end{align*}
-Whilst the equation for $\widetilde{u}_{1,jk}$ is trivial, this is expected because the rotation $R_{jk}$ transforms each edge $I_{jk}$ into a segment of equal length parallel to the $x_2$-axis.
-Indeed if one were to solve for $\widetilde{u}_{2,jk}$ and work backwards through the transformations $r_{jk}$ and $R_{jk}$, then a non-zero component $u_1$ would be obtained (except in the obvious geometries).
+Notice that the first such equation is simply one of the conditions that $u$ be divergence free (see theorem \ref{thm:DivFreeWholeGraph}).
 The other two equations provide us with a system of ODEs on intervals, and we have two such equations for each edge $I_{jk}$ .
 Alone these are not enough to determine eigenpairs $\bracs{\omega^2, u}$, however we can obtain more information from \eqref{eq:LongReductionEquation} by now considering the cases when our test functions $\phi$ have support containing at most one vertex, say the vertex $v_j$.
 In such a case we can return to \eqref{eq:LongReductionEquation} and integrate by parts, obtaining 
 \begin{align*}
-	0 &= \sum_{j\con k} \sqbracs{ \bracs{ \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} - i\wavenumber\widetilde{u}_{2,jk} }\overline{\widetilde{\phi}_3} }_0^{\abs{I_{jk}}}.
+	0 &= \sum_{j\con k} \sqbracs{ \bracs{ \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} - i\wavenumber\widetilde{U}_{2,jk} }\overline{\widetilde{\phi}_3} }_0^{\abs{I_{jk}}}.
 \end{align*}
-Note that after integrating by parts, the resulting integral term is identically zero due to \eqref{eq:SplitVariationalEdgeEqns}.
+This arises because after integrating by parts, the resulting integral term is identically zero due to \eqref{eq:SplitVariationalEdgeEqns}.
 As the support of $\phi$ (hence $\phi_3$) contains only the vertex $v_j$, and $\phi$ is smooth so continuous at $v_j$, we can write this equation as
 \begin{align*}
-	0 &= \sum_{j\con k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber u_{2,jk}\bracs{v_j}.
+	0 &= \sum_{j\con k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber U_{2,jk}\bracs{v_j}.
 \end{align*}
-That is, for each vertex $v_j$ we obtain a boundary condition forcing the sum of the values of $u_3$, $u_3'$, and $u_2$ at $v_j$ to be zero. \newline
+That is, for each vertex $v_j$ we obtain a boundary condition forcing the sum of the values of $u_3$, $u_3'$, and $U_2$ at $v_j$ to be zero. \newline
 
 From the variational formulation, we have obtained two differential equations and one vertex/boundary condition, per vertex.
 This is still not enough information to obtain eigenpairs $\bracs{\omega^2, u}$, so we require the additional information from the divergence-free condition and the structure of $\ktcurlSob{\ddom}{\ddmes}$.
@@ -1010,28 +1085,30 @@ The $\ktgrad$-divergence-free condition also provides us with a further differen
 Combining these, we arrive at the following system of equations on each interval $\interval{I_{jk}}$,
 \begin{subequations} \label{eq:CurlEdgeEquations}
 	\begin{align}
-		\widetilde{u}_{1,jk} &= 0, \\
-		i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} + \wavenumber^2\widetilde{u}_{2,jk} &= \omega^2 \widetilde{u}_{2,jk}, \label{eq:CurlEdgeEquations1} \\
-		-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}^2\widetilde{u}_{3,jk} + i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{2,jk} &= \omega^2\widetilde{u}_{3,jk}, \label{eq:CurlEdgeEquations2} \\
-		-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{2,jk} &= i\wavenumber\widetilde{u}_{3,jk}. \label{eq:CurlEdgeEquations3}
+		\widetilde{U}_{1,jk} &= 0, \\
+		i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{u}_{3,jk} + \wavenumber^2\widetilde{U}_{2,jk} &= \omega^2 \widetilde{U}_{2,jk}, \label{eq:CurlEdgeEquations1} \\
+		-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}^2\widetilde{u}_{3,jk} + i\wavenumber\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{U}_{2,jk} &= \omega^2\widetilde{u}_{3,jk}, \label{eq:CurlEdgeEquations2} \\
+		-\bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}\widetilde{U}_{2,jk} &= i\wavenumber\widetilde{u}_{3,jk}. \label{eq:CurlEdgeEquations3}
 	\end{align}
 \end{subequations}
 These are complimented by the boundary conditions
 \begin{subequations} \label{eq:CurlVertexConditions}
 	\begin{align}
 		u_3 &\text{ is continuous at each } v_j\in V, \label{eq:CurlVertexConditionsCty}\\
-		0 &= \sum_{j\con k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber u_{2,jk}\bracs{v_j}, \quad\forall v_j\in V \label{eq:CurlVertexConditionsSumDeriv}\\
-		0 &= \sum_{j\con k}u_{2,jk}\bracs{v_j}, \ \forall v_j\in V. \label{eq:CurlVertexConditionsSum2}
+		0 &= \sum_{j\con k} \bracs{\diff{}{t} + i\bracs{R_{jk}\qm}_2}u_{3,jk}\bracs{v_j} - i\wavenumber U_{2,jk}\bracs{v_j}, \quad\forall v_j\in V \label{eq:CurlVertexConditionsSumDeriv}\\
+		0 &= \sum_{j\con k}U_{2,jk}\bracs{v_j}, \ \forall v_j\in V. \label{eq:CurlVertexConditionsSum2}
 	\end{align}
 \end{subequations}
 Noting that any functions that satisfy two of \eqref{eq:CurlEdgeEquations1}-\eqref{eq:CurlEdgeEquations2} necessarily satisfy the remaining one, \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions} provide us with enough equations and boundary conditions to solve for the eigenpairs $\bracs{\omega^2, u}$.
-\tstk{either here or when we use it in ExampleSystems, we should note that we can effectively think of $U_2$ as being $u_2$ or something to this effect, basically how much do you want to rewrite? :L}
+Furthermore \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions} defines a quantum graph problem on the quantum graph associated with $\graph$, which is equivalent to our original variational problem.
+In chapter \ref{ch:ExampleSystems} we will explore these equations on different geometries (underlying graphs), attempting to determine the eigenvalues $\omega^2$ and determine whether band-gap structure is exhibited.
+To conclude this chapter, we provide a summary in section \ref{sec:CurlSummary}.
 
 \section{Chapter Summary} \label{sec:CurlSummary}
 The theory presented in this chapter serves as justification and motivation for the problems that we will be considering in subsequent chapters and work.
 We provide a construction of the Sobolev spaces $\curlSob{D}{\nu}$ for a domain $D$ and Borel measure $\nu$, which comes in much the same ilk as that in chapter \ref{ch:ScalarEqns}.
 Some examples of the implications of this construction are discussed in section \ref{sec:CurlExamples}, however we do not develop the general theory any further.
-Instead the focus of section \ref{sec:ktOperator} has been solely on the domains we will be using in our wave-propagation problems (section \ref{sec:OurPhysicalSetup}), and so we move onto the analysis of $\kt$-curls, -gradients, and $\ktgrad$-divergence free conditions on graphs. \newline
+Instead the focus of section \ref{sec:ktOperator} has been solely on the domains we will be using in our wave-propagation problems (section \ref{sec:OurPhysicalSetup}), and so we move onto the analysis of $\kt$-curls, $\kt$-gradients, and the $\kt$-divergence-free condition. \newline
 
 Construction and analysis of $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ enables us to make sense of variational problems such as \eqref{eq:CurlCurlEquationDivFree} and the analysis of section \ref{sec:ktOperator} provides us with a means to reformulate this problem as a more familiar and accessible system of differential equations.
 The operator $\ktgrad$ is our primary concern because it appears in our wave-propagation problems after taking a Fourier transform in the direction of wave-propagation (introducing the variable $\wavenumber$ and removing the $x_3$-dependence) and a Gelfand transform in the periodic cross-section.
@@ -1044,5 +1121,5 @@ Due to the fact that the $\ktgrad$-divergence free condition ties to $\ktgradSob
 These conditions together provide us with the tools to reformulate problems such as \eqref{eq:CurlCurlEquationDivFree} into quantum graph problems as in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}, which are more amiable to analytic (and numeric) than the variational formulations. \newline
 
 In chapter \ref{ch:ExampleSystems} we will tie together the work of this chapter and chapter \ref{ch:QuantumGraphs} and present some example wave-guidance problems, solved using the approaches described in those chapters.
-We will not be developing the theory of the spaces $\ktcurlSob{\ddom}{\ddmes}$, $\ktgradSob{\ddom}{\ddmes}$, or $\ktcurlSobDivFree{\ddom}{\ddmes}$ any further than what has been done in this chapter; because for our purposes we now have all the requirements we need to justify and solve the class of problems that we wish to consider.
+In this report we will not be developing the theory of the spaces $\ktcurlSob{\ddom}{\ddmes}$, $\ktgradSob{\ddom}{\ddmes}$, or $\ktcurlSobDivFree{\ddom}{\ddmes}$ any further; because for our purposes we now have all the requirements we need to justify and solve the class of problems that we wish to consider, however we have mentioned that there are some theoretical gaps that should be revisited in the future (section \ref{sec:ktcurlSobExtraProperties}).
 Section \ref{sec:VariationalProblemLitReview} directs the interested reader to a few further works, notably on homogenisation and norm-resolvent estimates for vector-valued variational problems.

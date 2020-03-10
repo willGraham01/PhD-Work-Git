@@ -7,7 +7,6 @@
 
 %theorems and lemma etc setup using amsthm
 \usepackage{amsthm}
-\newcommand{\tstk}[1]{\textbf{#1} \newline}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \theoremstyle{plain}
@@ -18,8 +17,13 @@
 \newtheorem{prop}[theorem]{Proposition}
 \theoremstyle{plain}
 \newtheorem{cory}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{convention}[theorem]{Convention}
 
 \allowdisplaybreaks %allows equations in the same align environment to split over multiple pages.
+
+%tstk always need be there
+\newcommand{\tstk}[1]{\textbf{#1} \newline}
 
 %this adds extra functionality to pmatrix, vmatrix, bmatrix etc by allowing you to pass an optional argument in [FACTOR] to multiply the default spacing between elements by FACTOR
 \makeatletter

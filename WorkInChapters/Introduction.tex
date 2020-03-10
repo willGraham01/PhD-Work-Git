@@ -52,7 +52,7 @@ Furthermore numerical schemes (particularly those based off finite elements) are
 In our work we will largely stay clear of these kinds of solvers, primarily because they will not be directly applicable to the problems that we are looking to consider (section \ref{sec:OurPhysicalSetup}) and the aforementioned lack of insight into the dependence of band-gap spectra on the underlying fibre geometry. \newline
 
 To avoid the need for complex numerical solvers, models that make simplifying approximations have been proposed.
-Works such as \tstk{citations, follow refs 9,10,\cite{laegsgaard2004gap} in \cite{birks2006approximate}} have seen some success in retaining the key features of band-gap plots; by considering the physical origins of band-gaps in fibres as arising from the resonant properties of the cores.
+There has been some success in using models that retain the key features of band-gap plots by considering the physical origins of band-gaps in fibres as arising from the resonant properties of the cores.
 In particular the spectral bands of a PCF are taken to correspond to modes that couple between the cores.
 As a result only information about the modes of a single core, plus the relative core spacing and size, are needed to build an approximate band-gap plot.
 These methods have made several insights into the origins of band-gap structures, but are limited by their approximations in the information they provide about the fibres themselves.
@@ -75,8 +75,12 @@ Then due to the refractive index contrast between the $Q_1$ and $Q_2$ the parame
 	\alpha &= \sqrt{\omega^2\mu_{P}\eps_{P} - \wavenumber^2}
 \end{align*}
 can be made small in $Q_1$ but finite in $Q_2$; provided we remain close to the lower ``light line", or formally sit on the line $\omega^2\mu_{P}\bracs{\eps_{Q_1}-\epsilon} = \wavenumber^2$ for some small $\epsilon>0$.
-This in turn causes any light waves incident on the structure with wavelength of the order $1$ to have this shrink to the order of $\epsilon^{-2}$ in the region $Q_1$, that is causing them to resonate with the inclusion.
-\tstk{now the reconciliation of resonance discussion that we need to sort out, IE scaling discussion RE David \cite{birks2004scaling}}
+This in turn causes any light waves incident on the structure with wavelength of the order $1$ to have this shrink to the order of $\epsilon^{-2}$ in the region $Q_1$, causing them to resonate with the inclusion.
+The term ``resonance" is commonly used by the community in this context, however there appears to be some conflict between the physical and mathematical communities over it's precise definition.
+There also comes a difficulty in reconciliation of this term; due to the different viewpoints of the two communities, with more physically-motivated works such as \cite{birks2004scaling} presenting results in terms of different quantities to those like \cite{cooper2014band}.
+Whilst these works are not contradictory there is no doubt that there is a need to determine which mathematical regimes are consistent with applications to PCFs, and specify that for the purposes of applications we are working in these.
+Having highlighted this issue, we remark that it is currently under our consideration; but it in itself does not prevent us from considering the mathematical problems that interest us that we shall come to in sections \ref{sec:OurPhysicalSetup} and \ref{sec:VariationalProblemLitReview}.
+However since we make a point that the problems we consider are motivated by applications to PCFs, it is something that should be addressed in the future.
 
 \section{Introduction to the Problems we shall Consider} \label{sec:OurPhysicalSetup}
 Having reviewed several existing models for PCFs in section \ref{sec:ExistingPCFModels}, we now set about introducing the problems that we will be analysing.
@@ -248,7 +252,7 @@ In chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} we will demonstrate how 
 
 \section{Overview of Research} \label{sec:ReportOverview}
 In this chapter we have provided some motivation for the singular-structure problems we will be considering later, whilst also touching on several of the advantages and nuances of taking this approach.
-How the topics discussed in this chapter fit together, including what we will be pursuing in this report, is illustrated in figure \ref{fig:Diagram_RelationBetweenMathematicalFields}.
+How the topics discussed in this chapter fit together and what we will be pursuing in this report is illustrated in figure \ref{fig:Diagram_RelationBetweenMathematicalFields}, and is the focus of this section.
 \begin{figure}[b!]
 	\centering
 	\includegraphics[scale=0.75]{Diagram_RelationBetweenMathematicalFields.pdf}
