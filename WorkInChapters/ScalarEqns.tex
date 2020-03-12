@@ -1,12 +1,12 @@
 \chapter{Scalar Equations} \label{ch:ScalarEqns}
-In this chapter we look at scalar-valued wave-equations in our singular-structure geometry, basing our approach largely off the work of Zhikov \cite{zhikov2000extension}, and consider variational problems with respect to a non-Lebesgue measure $\ddmes$.
-We will give a formal definition of said variational problems and the associated function spaces, before outlining some of the theoretical results we will make use of.
-Finally, we will consider a context that is specific to the singular-structure problems discussed in section \ref{sec:VariationalProblemLitReview} and will demonstrate how we can obtain an equivalent quantum graph problem from our original singular-structure problem.
+In this chapter we look at scalar-valued wave-equations in our singular-structure geometry, basing our approach largely off the work of Zhikov \cite{zhikov2000extension}, and consider variational problems with respect to a non-Lebesgue measure $\nu$.
+We shall give a formal definition of said variational problems and the associated function spaces, before outlining some of the theoretical results we will make use of.
+Then we shall consider a context that is specific to the singular-structure problems discussed in section \ref{sec:VariationalProblemLitReview} and will demonstrate how we can obtain an equivalent quantum graph problem from our original singular-structure problem.
 This will allow us to make use of the theory which was highlighted in chapter \ref{ch:QuantumGraphs}, and additionally will make our variational problems open to numerical solution.
-The overall goal of this chapter is to highlight the existing ideas and techniques that are available to us, so that we can adapt them for the more descriptive (or physical) vector systems we consider in chapter \ref{ch:VectorEqns}.
+The overall goal of this chapter is to highlight the existing ideas and techniques that are available to us, so that we can adapt them for the problems we want to examine (section \ref{sec:OurPhysicalSetup}) more descriptive (or physical), and in particular for the vector-valued systems we consider in chapter \ref{ch:VectorEqns}.
 
 \section{The Scalar Sobolev Spaces} \label{sec:ScalarSobSpaces}
-In this section we look to construct the function spaces that we shall be working with throughout the chapter, as well as discussing some of the consequences of this construction.
+In this section we look to construct the function spaces that are central to our variational problems, as well as discussing some of the consequences of this construction.
 What we present is a synopsis of the work of Zhikov presented in \cite{zhikov2000extension}, although with the arguments given in a more verbose form so that we can demonstrate the underlying ideas. 
 We also use a notation which coincides with that of chapter \ref{ch:QuantumGraphs} for self-consistency. \newline
 
@@ -78,16 +78,16 @@ In general, we use the following conventions for shorthand when dealing with var
 	\begin{align} \label{eq:GeneralScalarWeakForm}
 		\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \integral{D}{f\overline{\phi}}{\nu}, \quad \forall \phi\in\smooth{D}.
 	\end{align}
-	In the case when $A$ is the identity we shall write $\grad_\nu^2 u = \grad_nu\cdot\grad_nu u$.
+	In the case when $A$ is the identity we shall write $\grad_{\nu}^2 u = \grad_{\nu}\cdot\grad_{\nu} u$.
 \end{convention}
 Of course \eqref{eq:GeneralScalarStrongForm} is just notation and has no meaning without \eqref{eq:GeneralScalarWeakForm}; and the convention \ref{conv:ShorthandGradVariationalProblems} is made because it is nice to envisage \eqref{eq:GeneralScalarWeakForm} as somehow being the weak form of \eqref{eq:GeneralScalarStrongForm} for analogy with classical Sobolev spaces and variational problems, however there is no formal link in this context because of the lack of the ``integration by parts" technique.
-Existence and uniqueness of the solution pair $\bracs{u,\grad_\nu u}$ is guaranteed by appealing to the Riesz Representation theorem and the bilinear form defined by \eqref{eq:GeneralScalarWeakForm}.
-One can (see \cite{zhikov2000extension}) establish that the $\grad_\nu u$ in the solution pair coincides with the unique gradient of $u$ such that $A\grad_\nu u \perp \gradZero{D}{\nu}$; highlighting that understanding $\gradZero{D}{\nu}$ is crucial to determining solutions to \eqref{eq:GeneralScalarStrongForm}.
+Existence and uniqueness of the solution pair $\bracs{u,\grad_\nu u}$ is guaranteed though, by appealing to the Riesz Representation theorem and the bilinear form defined by \eqref{eq:GeneralScalarWeakForm}.
+One can (see \cite{zhikov2000extension}) establish that the $\grad_\nu u$ in the solution pair coincides with the unique gradient of $u$ such that $A\grad_\nu u \perp \gradZero{D}{\nu}$, highlighting that understanding $\gradZero{D}{\nu}$ is crucial to determining solutions to \eqref{eq:GeneralScalarStrongForm}.
 For completeness, we also note that the spectral problem (when $f$ is replaced by $\lambda u$ for some eigenvalue $\lambda\in\complex$) is written as
 \begin{align*}
 	-\grad_\nu \cdot \bracs{A(x)\grad_\nu u(x)} &= \lambda u(x), \quad x\in D
 \end{align*}
-to mean
+which is interpreted as 
 \begin{align*}
 	\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \lambda\integral{D}{u\overline{\phi}}{\nu} \quad \forall \phi\in\smooth{D}.
 \end{align*}
@@ -165,7 +165,7 @@ The second result that we present is essentially the equivalent of the product r
 \end{proof}
 
 \section{A Graph in a Plane} \label{sec:ScalarExample}
-To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example problem and some analysis of said problem.
+To compliment the theory outlined in section \ref{sec:ScalarSobSpaces}, and to highlight some of the considerations we shall be taking forward, we now provide an example singular-structure problem and some analysis of the spaces and objects involved with said problem.
 For the remainder of this chapter, let $\ddom\subset\reals^2$ be a bounded domain and $\graph = \bracs{V,E}$ be a finite graph embedded in $\ddom$, with $\ddmes$ the singular measure that supports the edges of $\graph$ (see section \ref{sec:GraphSingularMeasuresDef} for a reminder of these definitions).
 Also recall convention \ref{conv:StraightEdges}, that the curves (edges) $I_{jk}$ of our embedded graphs are assumed to be the line segments joining $v_j$ to $v_k$.
 We are interested in the (spectral) problem
@@ -174,7 +174,7 @@ We are interested in the (spectral) problem
 \end{align}
 for $u\in\gradSob{\ddom}{\ddmes}$ and eigenvalues $\omega^2>0$. \newline
 
-It is worthwhile highlighting how the setup just detailed relates to the wave propagation problems that we wish to consider in future, which is illustrated in figure \ref{fig:ScalarStrucDiagram}.
+It is worthwhile recapping how the setup just detailed relates to the wave propagation problems that we wish to consider in future (hinted at in section \ref{sec:OurPhysicalSetup}), which is illustrated in figure \ref{fig:ScalarStrucDiagram}.
 \begin{figure}[b!]
 	\centering
 	\includegraphics[scale=1.0]{Diagram_GraphInCrossSection.pdf}
@@ -192,17 +192,17 @@ The first result being a reminder of how gradients of smooth functions transform
 	Let $\grad_x$ and $\grad_y$ denote the gradient operator in the $x$ and $y$ co-ordinate systems accordingly.
 	Then
 	\begin{align*}
-		\grad_x u &= R \grad_y u, \\
-		\grad_y u &= R^{\top} \grad_x u.
+		\grad_x \phi &= R \grad_y \phi, \\
+		\grad_y \phi &= R^{\top} \grad_x \phi.
 	\end{align*}
 \end{lemma}
 \begin{proof}
 	We use index notation to save explicitly writing summation symbols;
 	\begin{align*}
-		\bracs{\grad_x u}_j = \pdiff{u}{x_j} 
-		= \pdiff{u}{y_k}\pdiff{y_k}{x_j}
-		= R_{jk}\pdiff{u}{y_k} 
-		= \bracs{\grad_y u}_j.
+		\bracs{\grad_x \phi}_j = \pdiff{\phi}{x_j} 
+		= \pdiff{\phi}{y_k}\pdiff{y_k}{x_j}
+		= R_{jk}\pdiff{\phi}{y_k} 
+		= \bracs{\grad_y \phi}_j.
 	\end{align*}
 \end{proof}
 
@@ -297,7 +297,7 @@ Again, we check the convergence of $\chi_I^\eps$ as $\eps\rightarrow\infty$.
 	\end{align*}
 	Thus we have the convergences we sought.
 \end{proof}
-Furthermore $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
+Furthermore, we remark that $\abs{\grad\chi_I^\eps}$ is bounded by a constant that depends on $\eps$ only.
 \begin{cory}[Bound on $\abs{\grad\chi_I^\eps}$] \label{cory:BoundChiGradient}
 	There exists a constant $c>0$ independent of $\eps$ such that
 	\begin{align*}
@@ -358,7 +358,7 @@ We begin by first considering what $\gradZero{\ddom}{\ddmes}$ looks like when $\
 	\end{align*}
 	We now perform a change of variables via the map $r:\interval{I}\rightarrow I$, via $r(t) = v_I + te_I$; where $v_I$ is one of the endpoints of $I$ and $e_I$ is the unit vector pointing away from this endpoint along the segment $I$.
 	In particular we note that as $I$ is parallel to the $x_1$-axis that $e_I=e_1$, the canonical unit vector in the $x_1$-direction.
-	Setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have by the chain rule $\diff{\tilde{\phi}_n}{t} = \partial_1\phi_n\bracs{r(t)}$, and so
+	Setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have by the chain rule $\diff{\tilde{\phi}_n}{t} = \widetilde{\bracs{\partial_1\phi_n}}$, and so
 	\begin{align*}
 		0 &\leftarrow \integral{I}{\abs{\partial_1\phi_n - f}^2}{\lambda_I} 
 		= \int_0^{\abs{I}}\abs{\diff{\tilde{\phi}_n}{t} - \tilde{f}}^2 \md t.
@@ -381,7 +381,8 @@ The smooth gradient $\grad$ (from which $\grad_{\lambda_I}$ is constructed) deta
 	\caption{\label{fig:GradZeroEdge} Illustration of how to interpret a ``gradient of zero" on an edge $I_{jk}$. As the singular measure $\lambda_{jk}$ on $I_{jk}$ only sees the component of the (smooth) gradient parallel to $I_{jk}$, anything perpendicular has no contribution.}
 \end{figure}
 The measure $\lambda_I$ however can only ``see" along (or alternatively ``only cares about what's going on along") the segment $I$, as this is it's entire support.
-As such $\lambda_I$ can only see the change along the segment $I$; hence we find that $\gradZero{\ddom}{\lambda_I}$ consists of all the gradients that are directed perpendicular to $I$, and will shortly show that any gradient orthogonal to $\gradZero{\ddom}{\lambda_I}$ is directed parallel to $I$.
+As such $\lambda_I$ can only see the change along the segment $I$, hence we find that $\gradZero{\ddom}{\lambda_I}$ consists of all the gradients that are directed perpendicular to $I$.
+We shall shortly show that any gradient orthogonal to $\gradZero{\ddom}{\lambda_I}$ is directed parallel to $I$, to compliment this interpretation.
 This interpretation is further reinforced by the following analysis, which characterises $\gradZero{\ddom}{\lambda_I}$ when the segment $I$ is not (necessarily) parallel to the $x_1$-axis. \newline
 
 \begin{prop}[Rotation of Edge Gradients of Zero] \label{prop:RotationOfEdgeGradients}
@@ -463,7 +464,7 @@ The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
 \begin{prop} \label{prop:Grad0IncB}
 	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E}$, we have
 	\begin{align*}
-		\gradZero{\ddom}{\ddmes} \subset B
+		\gradZero{\ddom}{\ddmes} \subset B.
 	\end{align*}
 \end{prop}
 \begin{proof}
@@ -476,7 +477,7 @@ The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
 	As every term in the sum is non-negative, each term must also be tending to 0.
 	Thus 
 	\begin{align*}
-		\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}0 \ \forall I_{jk}\in E.
+		\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}0, \quad \forall I_{jk}\in E.
 	\end{align*}
 	Similarly
 	\begin{align*}
@@ -485,7 +486,7 @@ The inclusion $\gradZero{\ddom}{\ddmes} \subset B$ follows quickly:
 	\end{align*}	
 	and hence 
 	\begin{align*}
-		\grad\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2} g \ \forall I_{jk}\in E.
+		\grad\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2} g, \quad \forall I_{jk}\in E.
 	\end{align*}
 	Hence $g\in B$.
 \end{proof}
@@ -584,8 +585,8 @@ Following that, we focus briefly on the inherent properties of the space $\gradS
 
 \section{Example in the Periodic $\bracs{x_1,x_2}$-plane} \label{sec:ScalarSystem}
 In this section we will analyse a problem posed on a singular-structure domain, for details on the domain and it's physical relevance to PCFs, see section \ref{sec:OurPhysicalSetup}.
-Due to the fact that we begin from an infinite, periodic singular structure and then apply the Gelfand transform to bring us onto a family of singular-structure problems on the unit cell of our domain, we are required to study slightly altered versions of the Sobolev spaces introduced in section \ref{sec:ScalarSobSpaces}.
-We will then demonstrate how analysis akin to that in section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a quantum graph problem, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
+Due to the fact that we begin from an infinite, periodic singular structure and then apply the Gelfand transform to bring us onto a family of singular-structure problems on the unit cell of our domain, in this section we shall study some slightly altered Sobolev spaces from those introduced in section \ref{sec:ScalarSobSpaces}.
+We shall then demonstrate how analysis akin to that in section \ref{sec:ScalarExample} is employed to reduce the resulting problems on the period cell to a quantum graph problem in section \ref{sec:ReduceToQMProblem}, which can then be analysed or solved using the methods detailed in chapter \ref{ch:QuantumGraphs}. \newline
 
 Let $\graph^*$ be a periodic embedded graph in $\reals^2$ and $\ddmes^*$ it's singular measure.
 Suppose that the period graph $\graph$ of $\graph^*$ is contained in $\ddom:=\sqbracs{0,1}^2$ and has singular measure $\ddmes$.
@@ -602,7 +603,7 @@ on the period graph $\graph$ in $\ddom$.
 There is some work to be done regarding the operator $\grad_\ddmes^\qm$, however as the Gelfand transform is unitary we can define $\grad^\qm$ for smooth functions by
 \begin{align*}
 	\grad^\qm &:= \grad + i\qm, \\
-	\text{so } \grad^\qm \phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix} \quad \forall\phi\in\smooth{\ddom}.
+	\text{so } \grad^\qm \phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}, \quad \forall\phi\in\smooth{\ddom}.
 \end{align*}
 The Gelfand transform has effectively ``perturbed" the gradient operator we were previously working with; introducing an effect due to the potential for solutions in the full-space, periodic problem to be mismatched at the boundaries of the period cells by factors of $e^{i\qm_j}, j\in\clbracs{1,2}$.
 We will still be able to utilise the theory of section \ref{sec:ScalarSobSpaces}, but we need to outline the construction of the Sobolev spaces here to highlight the effect of the quasi-momentum on the tangential gradient.
@@ -645,7 +646,7 @@ In the setting of section \ref{sec:ScalarExample} we were looking at the particu
 	by the Algebra of Limits in $\ltwo{\ddom}{\ddmes}^2$ and using the first convergence result.
 	Thus $\phi_n$ also gives rise to a sequence of smooth functions as in \eqref{eq:GradZeroSequenceDefinition}, and hence $z\in\gradZero{\ddom}{\ddmes}$.
 \end{proof}
-With the result of proposition \ref{prop:GradZeroInvarientUnderQM}, we obtain `for free" all the results concerning gradients of zero from section \ref{sec:ScalarExample}, and because of the invariance with respect to the quasi-momentum, can justify the lack of a $\qm$ parameter in the notation of definition \ref{def:qmGradSobs}.
+With the result of proposition \ref{prop:GradZeroInvarientUnderQM}, we obtain ``for free" all the results concerning gradients of zero from section \ref{sec:ScalarExample}, and because of the invariance with respect to the quasi-momentum, can justify the lack of a $\qm$ parameter in the notation of definition \ref{def:qmGradSobs}.
 It should be noted that we do not have invariance of these Sobolev spaces with respect to the quasi-momentum, as demonstrated by considering the case when $\graph$ consists of a single segment parallel to the $x_1$-axis.
 
 \begin{lemma}[Tangential $\qm$-Gradient on a Segment Parallel to the $x_1$-axis] \label{lem:TangentialQMGradientSegmentParallel}
@@ -695,7 +696,7 @@ It should be noted that we do not have invariance of these Sobolev spaces with r
 We see the tangential gradient is related to a gradient (in the sense of distributions) along the segment, with the $\qm_1$ term accounting for the mismatches that the measure $\lambda_I$ can ``see".
 Note that $u'$ itself is simply a convenient notation for the function that under the transformation $r$ returns the distributional derivative of $\widetilde{u}$, and does not itself have any clear ``derivative-like" properties.
 What is clear from this result at least is that whilst the set of gradients of zero is invariant under $\qm$, the tangential gradient is not - and this manifests itself in the family of problems that we now look to solve.
-That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMGradientSegmentParallel}, proposition \ref{prop:GradZeroInvarientUnderQM} and corollary \ref{cory:CharacterisationGradientsZero} the following result which provides us the form for the tangential $\qm$-gradient.
+That being said, a direct consequence of lemma \ref{lem:TangentialQMGradientSegmentParallel}, proposition \ref{prop:GradZeroInvarientUnderQM} and corollary \ref{cory:CharacterisationGradientsZero} is the following result which provides us the form for the tangential $\qm$-gradient.
 \begin{cory}[Tangential $\qm$-Gradient on Graphs] \label{cory:TangentialQMGradientGraphs}
 	Let $\graph=(V,E)$ be a graph embedded into $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$, and let $x=\bracs{x_1,x_2}$ be the axes co-ordinate system.
 	Equip each $I_{jk}\in E$ with a local orthogonal co-ordinate system $y=\bracs{y_1,y_2}$ with $y_1$ parallel to $I_{jk}$, such that $x = R_{jk}y$ for some $R_{jk}\in\mathrm{SO}(2)$.
@@ -712,10 +713,11 @@ That being said, we have as a direct consequence of lemma \ref{lem:TangentialQMG
 
 \section{More Properties of $\gradSobQM{\ddom}{\ddmes}$} \label{sec:VertexContinuity}
 Whilst the characterisation of $\gradZero{\ddom}{\ddmes}$ induces the expected edge-wise structure of tangential gradients, the Sobolev space $\gradSob{\ddom}{\ddmes}$ has some additional structure that is not obvious from the previous study.
-Of particular note is the behaviour of functions $u\in\gradSobQM{\ddom}{\ddmes}$ near the vertices $v_j\in V$, something that is not necessary to be considered when dealing with gradients of zero.
+Of particular note is the behaviour of functions $u\in\gradSobQM{\ddom}{\ddmes}$ near the vertices $v_j\in V$, something that is not necessary to be considered when dealing with the gradients of zero.
 It would not be unreasonable to think that something should be happening at the vertices of $\graph$ in order to tie the edge-wise functions together, and justification of this belief is the objective for this section.
 Throughout this section we work in the case when $\qm = 0$, but the arguments and results that follow hold when $\qm\neq0$, under suitable adjustment to account for the trailing $i\qm$ terms that are introduced.
-We aim to prove the following result, motivated by the work in \cite{zhikov2002homogenization}.
+We aim to provide a detailed proof of the following result, which can be found stated in \cite{zhikov2002homogenization}.
+We highlight that \cite{zhikov2002homogenization} provides a proof of this result, and what we present below is simply the same argument but expanded in detail so that we can draw ideas from it in later chapters.
 \begin{theorem}[Characterisation of $\gradSob{\ddom}{\ddmes}$] \label{thm:CharGradSob}
 	We have that
 	\begin{align*}
@@ -786,12 +788,12 @@ We do find that there is a relatively short argument to the ``right-directed" im
 \end{proof}
 
 Showing the reverse implication unsurprisingly follows a similar method to that employed when attempting to prove proposition \ref{prop:BIncGrad0}.
-Throughout these results, we will assume that
+Throughout these results, we will assume that the conditions
 \begin{align*}
 		&\text{(i)} \ u\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \text{ and}\\
 		&\text{(ii)} \ u \text{ is continuous at each } v_j\in V,
 \end{align*}
-hold, and we will be making use of the functions in definition \ref{def:ChiDef}.
+hold and we will be making use of the functions in definition \ref{def:ChiDef}.
 Our first result centres on being able to take an approximating sequence of functions whose support does not overlap with the entirety of one edge.
 \begin{lemma}[Selective Approximating Sequences] \label{lem:SelectiveApproximatingSequences}
 	Let $\eps>0$ and fix some $I=I_{jk}\in E$.
@@ -942,11 +944,11 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 		&= 2\sum_{v_j\in V}\sum_{j\conLeft k}\norm{\grad_{\lambda_{jk}}u}_{\ltwo{\ddom}{\lambda_{jk}}^2}^2 \\
 		&\quad + 2\sum_{v_j\in V}\sum_{j\conLeft k}\integral{\clbracs{0\leq\chi_{jk}^n\leq 1}}{\abs{u\grad_{\lambda_{jk}}\chi_{jk}^n}^2}{\lambda_{jk}}.
 	\end{align*}
-	The norms in the first sum existing because of the assumption (i), and the domain being smaller in the second integral because 
+	The norms in the first sum existing because of the assumption (i), and using
 	\begin{align*}
 		\clbracs{0\leq\chi_{jk}^n\leq 1} = \supp\bracs{\grad_{\lambda_{jk}}\chi_{jk}^n}.
 	\end{align*}
-	It remains to show that the second term is bounded independently of $n$, to show that $\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2$ is bounded. 
+	It remains to show that the second term is bounded independently of $n$, which in turn implies that $\norm{\grad_{\ddmes}u_n}_{\ltwo{\ddom}{\ddmes}^2}^2$ is bounded. 
 	We first exploit the fact that on each edge $I_{jk}$ we can use the change of variables $r_{jk}$ to obtain
 	\begin{align*}
 		\widetilde{u}\bracs{t} &= \widetilde{u}\bracs{v_j} + \int_0^t \abs{\diff{\tilde{u}^{(jk)}}{t}} \md t.
@@ -988,7 +990,7 @@ We are now ready to prove the ``left implication" of theorem \ref{thm:CharGradSo
 
 Propositions \ref{prop:CharGradSobRightImplies} and \ref{prop:CharGradSobLeftImplies}  conclude the proof of theorem \ref{thm:CharGradSob}.
 This solidifies our ability to break down a problem phrased with respect to $\ddmes$ into sets of smaller problems on the edges of $\graph$.
-Furthermore the condition (ii) is important because it ensures that we have enough boundary data when we transition from our problem with respect to measures to a quantum graph problem, which is the focus of the next section.
+Furthermore the condition (ii) is important because it ensures that we have enough boundary data when we transition from our variational problem to a quantum graph problem, which is the focus of the next section.
 
 \section{Reduction to a Quantum Graph Problem} \label{sec:ReduceToQMProblem}
 The analysis in sections \ref{sec:ScalarExample}, \ref{sec:ScalarSystem}, and \ref{sec:VertexContinuity} now allows us to reduce the problem
@@ -1001,20 +1003,21 @@ For illustrative purposes, and for comparison with the more complex vector-value
 Maintaining the notation as set out in corollary \ref{cory:TangentialQMGradientGraphs}, we begin from \eqref{eq:ScalarPeriodCellSystem} and perform some manipulations;
 \begin{align*}
 	\omega^2 \integral{\ddom}{u\overline{\phi}}{\ddmes} 
-	&= \integral{\ddom}{\grad_\ddmes^\qm u \cdot \overline{\grad^\qm \phi}}{\ddmes} \quad \forall \phi\in\smooth{\ddom}, \text{ implying that} \\
-	\omega^2 \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{u_{jk}\overline{\phi}}{\ddmes} 
-	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot \overline{\grad^\qm \phi}}{\lambda_{jk}} \\
-	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot R_{jk}\overline{\grad^\qm \phi}}{\lambda_{jk}} \\
-	&= \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}}}{\lambda_{jk}}. \labelthis\label{eq:EquationReductionSumExpression}
+	&= \integral{\ddom}{\grad_\ddmes^\qm u \cdot \overline{\grad^\qm \phi}}{\ddmes} \quad \forall \phi\in\smooth{\ddom},
+\end{align*}
+implying that
+\begin{align*}
+	\omega^2 &\sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{u_{jk}\overline{\phi}}{\ddmes} \\
+	&\quad = \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0 \end{pmatrix} \cdot R_{jk}^\top \overline{\begin{pmatrix} \phi_{jk}' + i\bracs{R_{jk}\qm}_1 \phi_{jk} \\ 0 \end{pmatrix}}}{\lambda_{jk}} \\
+	&\quad = \sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\bracs{\overline{\phi}_{jk}' + i\bracs{R_{jk}\qm}_1 \overline{\phi}_{jk}}}{\lambda_{jk}}. \labelthis\label{eq:EquationReductionSumExpression}
 \end{align*}
 At this point we note that this expression holds for all $\phi\in\smooth{\ddom}$, so in particular must hold when the support of $\phi$ intersects the (interior of the) edge $I_{jk}$ only, and so we have equality of matching terms in both sums.
 That is
 \begin{align*}
-	0 &= \integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}}{\lambda_{jk}}.
+	0 &= \integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\bracs{\overline{\phi}_{jk}' + i\bracs{R_{jk}\qm}_1 \overline{\phi}_{jk}} - \omega^2 u_{jk}\overline{\phi}}{\lambda_{jk}}.
 \end{align*}
 Next we perform a substitution via the map $r_{jk}$, and although we are composing the functions in the integrand with $r_{jk}$, we do not make this explicit in the following equations.
-However we do note that $\diff{}{t}\phi\bracs{r_{jk}(t)} = \bracs{R_{jk}\grad\phi\bracs{r_{jk}(t)}}_1$, and set $\qm_{jk} := \bracs{R_{jk}\qm}_1$.
-Thus we obtain
+We also set $\qm_{jk} := \bracs{R_{jk}\qm}_1$ and obtain
 \begin{align} \label{eq:EdgeEquationWeakForm}
 	0 &= \int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \md t,
 \end{align}
@@ -1025,14 +1028,14 @@ If we now make the assumption that $u'_{jk}$ has enough regularity to be differe
 \end{align}
 This means that under suitable regularity conditions we obtain a differential equation for $u_{jk}$ on each of the segments (or the interval that corresponds to them) $I_{jk}$.
 Of course, \eqref{eq:EdgeEquationStrongForm} does not provide a solution on it's own, as boundary conditions are required to close the system and remove any multiplicative constants that might arise.
-We have already found some of these boundary (or rather, ``vertex") conditions in section \ref{sec:VertexContinuity}, which are the conditions of continuity of $u$ at the vertices, thus providing the matching conditions
+We have already found some of these boundary (or rather, ``vertex") conditions in theorem \ref{thm:CharGradSob}, which are the conditions of continuity of $u$ at the vertices, thus providing the matching conditions
 \begin{align} \label{eq:EdgeEquationsMatchingConditons}
 	u \text{ is continuous at all } v_j\in V.
 \end{align}
-This still does not provide enough matching conditions for the whole system - to find the remaining conditions we return to \eqref{eq:EquationReductionSumExpression} and note that this equation also holds when the test functions $\phi$ have a support that contains one particular $v_j$ in it's interior (and not other vertices), for each $v_j\in V$.
-Hence we observe that
+This still does not provide enough matching conditions for the whole system - to find the remaining conditions we return to \eqref{eq:EquationReductionSumExpression} and note that this equation also holds when the test functions $\phi$ have a support that contains one particular $v_j$ in it's interior (and no other vertices), for each $v_j\in V$.
+In this case we observe that
 \begin{align*}
-	0 &= \sum_{j\con k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\overline{\bracs{\bracs{R_{jk}\grad\phi}_1 + i\bracs{R_{jk}\qm}_1 \phi}} - \omega^2 u_{jk}\overline{\phi}_{jk}}{\lambda_{jk}} \\
+	0 &= \sum_{j\con k}\integral{I_{jk}}{\bracs{u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk}}\bracs{\overline{\phi}_{jk}' + i\bracs{R_{jk}\qm}_1 \overline{\phi}_{jk}} - \omega^2 u_{jk}\overline{\phi}_{jk}}{\lambda_{jk}} \\
 	&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \bracs{ u'_{jk} + i\qm_{jk}u_{jk} } \overline{\bracs{ \phi' + i\qm_{jk}\phi }} - \omega^2 u_{jk}\overline{\phi} \ \md t
 \end{align*}
 holds for all $v_j\in V$.
@@ -1053,13 +1056,13 @@ Also note how the geometric information about the embedded graph $\graph$ appear
 
 \section{Chapter Summary}
 The content of this chapter demonstrates how we can construct Sobolev spaces with respect to arbitrary (Borel) measures $\nu$; provide a coherent notion of a gradient, and pose variational problems on such spaces.
-The tangential gradient fulfils the role that the classical gradient would otherwise, and is found characterising the set of gradients of zero, $\gradZero{D}{\nu}$ and then considering the elements orthogonal to this set. \newline
+The tangential gradient fulfils the role that the classical gradient would otherwise, and is found by characterising the set of gradients of zero, and then considering the elements orthogonal to this set. \newline
 
-Having introduced this general theory, sections \ref{sec:ScalarExample}-\ref{sec:ReduceToQMProblem} focus on singular-structure domains and the spaces that we will need to work on variational problems involving singular measures.
+Having introduced this general theory, sections \ref{sec:ScalarExample}-\ref{sec:ReduceToQMProblem} focus on singular-structure domains and the spaces that we will need for our work on variational problems involving singular measures.
 The results concerning $\gradZero{\ddom}{\ddmes}$ (corollary \ref{cory:CharacterisationGradientsZero}) and the properties of elements of $\gradSob{\ddom}{\ddmes}$ (theorem \ref{thm:CharGradSob}) provide us with an intuitive understanding of the objects we are dealing with, namely the breakdown from a graph-wide object to individual edge-wise components.
-These results on a bounded domain with a finite underlying graph $\graph$ allow us to move onto studying problems that are posed in a periodic space (with an underlying periodic, embedded graph), by means of the Gelfand transform.
+These results on a bounded domain with a finite underlying graph $\graph$ coincide with the situation we find ourselves in for our singular-structure problems after taking a Gelfand transform (section \ref{sec:OurPhysicalSetup}).
 This transform turns the whole-space, periodic problem into a family of problems parametrised by the quasi-momentum $\qm\in[-\pi,\pi)^2$ on a bounded domain, which we can then analyse using the methods and theory we developed prior.
-We account for the affects of the quasi-momentum parameter $\qm$, and see that we can still write tangential gradients edge-wise, but now these include terms involving $\qm$.
+Accounting for the $\qm$ still allows us to write tangential gradients edge-wise, but now these include terms involving $\qm$.
 This allows us (under certain regularity assumptions) to arrive at an equivalent quantum graph problem from our original problem, which can be approached in the manner detailed in chapter \ref{ch:QuantumGraphs}, and in general is more admissible to numerical and analytical solution than our original problem. \newline
 
 We will be looking to extend the concepts introduced here when we move towards considering systems of vector-valued functions in chapter \ref{ch:VectorEqns}, which are widely used in the description of physical systems.

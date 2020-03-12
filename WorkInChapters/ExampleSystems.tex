@@ -2,17 +2,17 @@
 In this chapter we illustrate how the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns} comes together, and how we can determine the spectrum of variational problems on singular structures.
 We also aim to illustrate some of the difficulties in this process, both numerically and analytically, and provide a brief discussion of these issues as they arise.
 Some potential avenues of exploration for bypassing these issues (particularly on the numerical side) are suggested, and will be revisited in chapter \ref{ch:Conclusion}.
-Throughout, it may be useful to the reader to recall the physical setup that our graphs in the plane represent (section \ref{sec:OurPhysicalSetup}).
+Throughout, it may be useful to the reader to recall the physical structure that our graphs are meant to approximate (sections \ref{sec:OurPhysicalSetup} and \ref{sec:GraphLitReview}).
 
 \section{Preliminaries} \label{sec:ExamplePrelims}
 Our focus in the examples of this chapter will be to determine the eigenvalues $\omega^2$ of the problem \eqref{eq:CurlCurlEquationDivFree}, which we recall below
 \begin{align*}
 	-\ktcurl{\ddmes}\bracs{\ktcurl{\ddmes}u} &= \omega^2 u, \quad u\in\ktcurlSobDivFree{\ddom}{\ddmes}.
 \end{align*}
-In the process we employ we will also determine the eigenfunctions $u$, however these are not the focus of our analysis.
-We shall change the underlying (period) graph $\graph$ between sections, but will make clear any changes prior to beginning any examples.
+In the process we shall also determine the eigenfunctions $u$, however these are not the focus of our analysis.
+We shall change the underlying (period) graph $\graph$ between examples of course, and shall clearly illustrate these changes prior to beginning any analysis.
 Using the work of section \ref{sec:CurlReductionToQG}; we know that we can determine the eigenvalues by solving the quantum graph problem given in \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}.
-To save on notational clutter we drop the overhead tilde notation for $\widetilde{u}_{2,jk},\widetilde{u}_{3,jk}$ that was used in section \ref{sec:CurlReductionToQG}.
+To save on notational clutter we drop the overhead tilde notation for $\widetilde{U}_{2,jk},\widetilde{u}_{3,jk}$ that was used in section \ref{sec:CurlReductionToQG}.
 In accordance with \eqref{eq:CurlEdgeEquations}-\eqref{eq:CurlVertexConditions}, we should also be using the quantities 
 \begin{align*}
 	U_{jk} = R_{jk}\begin{pmatrix} u_{1,jk} \\ u_{2,jk} \end{pmatrix}
@@ -28,8 +28,8 @@ rather than as
 u = u_{1,jk}\hat{x}_1 + u_{2,jk}\hat{x}_2 + u_{3,jk}\hat{x}_3.
 \end{align*}
 Namely we are working in the local reference frame of each $I_{jk}$, rather than the axis co-ordinate system $x$ throughout. 
-Given that we shall soon show that we can eliminate $u_{2,jk}$ from the system we consider, confusion caused by this convention will have minimal space to rear it's head.
-The final things we shall need are some convenient constants; for a given $\qm$ and $\wavenumber$,
+Given that we shall soon show that we can eliminate $u_{2,jk}$ from the system we consider, any confusion caused by this convention will have minimal space to rear it's head.
+The final things we shall need are some convenient constants; for a given $\qm$ and $\wavenumber$, we set
 \begin{align*}
 	\qm_{jk} &= \bracs{R_{jk}\qm}_2, \quad\forall I_{jk}\in E,\\
 	\effFreq &= \sqrt{\omega^2 - \wavenumber^2}.
@@ -54,7 +54,7 @@ with the vertex conditions
 \end{subequations}
 for the eigenpairs $\bracs{\omega^2, u_{3,jk}}$.
 We shall take the system \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} as our starting point for the examples in this section.
-In addition, we compute the general form for $u_{3,jk}$ as
+In addition we compute the general form for $u_{3,jk}$ as
 \begin{align} \label{eq:CurlEdgeEqnGenSol}
 	u_{3,jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\effFreq t} + C_{-}^{(jk)}e^{i\effFreq t} },
 \end{align}
@@ -110,27 +110,29 @@ Then given a column, each edge has to be solved on with the appropriate boundary
 Of course, there are prudent ways to reduce this cost by ignoring edges with 0 Dirichlet data at each end, for example.}
 then computing the values of the components of $\nmap u$ using the function values found by the numerical solver, and hence constructing the $M$-matrix.
 Proposition \ref{prop:M-MatrixEntries} essentially bypasses the problems associated with solving \eqref{eq:QGEquation} many times, allowing us to skip directly to building the $M$-matrix for given $\omega^2$ and $\kt$.
-With careful programming one can even make building the $M$-matrix a function call that is passed $\bracs{\omega^2, \wavenumber, \qm}$ and only relies on knowing the $\qm_{jk}$; and the lengths and adjacency matrix of $\graph$ to return the $M$-matrix.
+With careful programming one can even make building the $M$-matrix a function call that is passed $\bracs{\omega^2, \wavenumber, \qm}$ and only relies on knowing the $\qm_{jk}$, lengths $l_{jk}$, and adjacency matrix of $\graph$ to return the $M$-matrix.
 Whilst this is a very helpful consequence of proposition \ref{prop:M-MatrixEntries}, there are other things that a numerical approach must consider.
 \begin{itemize}
 	\item One of the foremost problems is that we are actually looking to solve each member of a family of generalised eigenvalue problems (parametrised by $\qm$) to determine the spectrum of our original variational problem.
-	Although there is always the naive approach of discretising the range of $\qm$ and solving $M_{\qm}\bracs{\effFreq}v=0$ for each discrete value, this raises further questions on how fine our discretisation needs to ensure we do not miss any features of the spectrum in our results, not to mention the increase in computational cost that comes with solving many generalised eigenvalue problems.
+	Although there is always the na\"ive approach of discretising the range of $\qm$ and solving $M_{\qm}\bracs{\effFreq}v=0$ for each discrete value, this raises further questions on how fine our discretisation needs to ensure we do not miss any features of the spectrum in our results, not to mention the increase in computational cost that comes with solving many generalised eigenvalue problems.
+	Some kind of stability (with respect to $\qm$) result for this family of eigenvalue problems would be useful in this regard, as it would allow previously determined eigenvalues to be used as reasonable starting guesses when solving the problem for ``nearby" values of $\qm$.
 	\item Although the $M$-matrix has several useful analytic properties (section \ref{sec:M-MatrixTheory}) these do not translate into nice properties of the solutions to the generalised eigenvalue problem.
-	In particular, for a given $\qm$ the $M$-matrix will in general have a (countably) infinite number of eigenvalues due to the fact that it is periodic in $\effFreq$ (this period is computable as the lowest common multiple of all the $l_{jk}$, or if there are loops in $\graph$ of all the $l_{jk}$ and $\qm_{jj}l_{jj}$).
-	If we are to solve numerically we need a method for dealing with this caveat, for example working out the period of the $M$-matrix and only search for eigenvalues in that range.
+	In particular, for a given $\qm$ the $M$-matrix will in general have a (countably) infinite number of eigenvalues due to the fact that it's entries are sums of trigonometric functions.
+	If we are to solve numerically we need a method for dealing with this caveat, for example working out the period of the $M$-matrix (although we shall see that it is not guaranteed to be periodic by any means) and only search for eigenvalues in that range.
 	But even then this requires our numerical scheme to be able to find all the distinct eigenvalues in over one period of the $M$-matrix, and in general there is no easy check that we can perform to validate that the output of our numerical scheme has done this.
 	\item Utilising symmetries in the quantum graph $\graph$ may help reduce the complexity of the process of building the $M$-matrix.
 	In particular if both $I_{jk}$ and $I_{kj}$ are edges with the same length and $\qm_{jk}=\qm_{kj}$, the $j\neq k, j\con k$ case of proposition \ref{prop:M-MatrixEntries} reduces to $-2\sum_{j\conLeft k}\effFreq\cos\bracs{\qm_{jk}l_{jk}}\csc\bracs{l_{jk}\effFreq}$ (equivalently we could use $j\conRight k$).
-	In this case the numerical scheme no longer has to deal with complex floats, and there are slightly fewer terms in $M$ to construct.
+	In this case the numerical scheme no longer has to deal with complex numbers, and there are slightly fewer terms in $M$ to construct.
 	If there is also a symmetry in $\qm$, then it is sufficient to fix the second component of $\qm$ as 0 and effectively ``halve" the size of the family of problems that need to be solved.
 \end{itemize}
 So whilst it is possible to conceive of a numerical method that begins from the equations or $M$-matrix and computes the spectrum of the original variational problem, in practice there are a number of complications that must be considered first.
-The paragraph below briefly discusses how in some cases proceeding analytically can help, but this is usually limited to small or somewhat specialised graphs. \newline
+The paragraph below briefly discusses how in some cases proceeding analytically can help, but this is usually limited to small or somewhat specialised graphs.
+We revisit these problems in section \ref{sec:ConcFuture}. \newline
 
-Progress can be made analytically on finding the spectrum if one is willing to plough through the long and complex expressions that can come out of proposition \ref{prop:M-MatrixEntries}.
+Progress can be made analytically on finding the spectrum if one is willing to plough through the complicated expressions that come out of proposition \ref{prop:M-MatrixEntries}.
 To this end, the starting point is often considering the equation $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$.
 For graphs with a lot of symmetries and a small number of vertices this approach becomes much more appealing as the size of $M$ is reduced, as is the complexity of it's components.
-And even if exact solution is impossible, one can often arrive at a simpler problem that can be tackled numerically, without as many problems as the generalised eigenvalue problem faces.
+And even if exact solution is impossible, one can often arrive at a simpler problem that can be tackled numerically, bypassing the issues that plague solving a generalised eigenvalue problem.
 This is the approach that we take in our examples, using proposition \ref{prop:M-MatrixEntries} to write out the $M$-matrix, then manipulating $\det\bracs{M_{\qm}\bracs{\effFreq}}=0$ to obtain an expression of the form $0 = \mathcal{F}\bracs{\effFreq, \qm}$, which we can then treat as the situation requires.
 
 \section{Cross in the Periodic Plane} \label{sec:ExampleCrossInPlane}
@@ -168,7 +170,7 @@ It's period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \re
 	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period graph that we are considering, corresponding to a waveguide with a cross-like pattern in the cross-section. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions}, retaining the lengths $l_{jk}$ and $\qm_{jk}$ from the edges of the original period cell.}
 \end{figure}
 It is possible of course to draw the period graph with 3 vertices wholly within $\sqbracs{0,1}^2$ and 4 hanging edges.
-After associating the edges of the period graph, we obtain it's associated quantum graph $\graph=\bracs{V,E}$ with $V=\clbracs{v_1,v_2,v_3}$, $E=\clbracs{I_{13},I_{23},I_{31},I_{32}}$ with lengths
+After associating the edges of the period graph, we obtain it's associated quantum graph $\graph=\bracs{V,E}$ with $V=\clbracs{v_1,v_2,v_3}$, $E=\clbracs{I_{13},I_{23},I_{31},I_{32}}$, and lengths
 \begin{align*}
 	l_{13} = l_{23} = l_{31} = l_{32} = \recip{2}.
 \end{align*}
@@ -202,7 +204,7 @@ Foremost is the ability to use the $M$-matrix to obtain a result like \eqref{eq:
 Without the use of the $M$-matrix; determining the eigenvalues would have to be done by imposing the boundary conditions \eqref{eq:QGVertexConditions} on the general solutions \eqref{eq:CurlEdgeEqnGenSol}, which would lead to a complex system of simultaneous equations in the constants $C_{\pm}^{jk}$ that would need to be solved (then repeated for each $\qm$ if done numerically).
 Another benefit that is made apparent is that simplifying the condition $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$, even if it yields an equation without a closed form, normally provides something that is easier to solve numerically.
 Enough progress analytically can replace the need to solve a generalised eigenvalue problem with a (comparatively simple) root-finding problem, or (as is the case here) provide the entire spectrum immediately.
-In sections \ref{sec:ExampleGeneralLengths} and \ref{sec:ExampleThickVertex} we will explore systems where we have to take this ``hybrid" mixture of working from $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$ to obtain an equation that we can then explore numerically.
+In sections \ref{sec:ExampleGeneralLengths} and \ref{sec:ExampleThickVertex} we will explore systems where we have to take a ``hybrid" approach of working from $\det\bracs{M_{\qm}\bracs{\effFreq}} = 0$ to obtain an equation that we can then explore numerically.
 
 \section{A 5-Vertex Graph with a Single Interior Vertex} \label{sec:ExampleGeneralLengths}
 We now turn to a more general example, and assume the period graph $\graph=\bracs{V,E}\subset\sqbracs{0,1}^2$ as shown in figure \ref{fig:Diagram_5VertexGraph}.
@@ -317,7 +319,9 @@ This means that we can determine values $\effFreq$ such that $-3\leq \Xi\bracs{\
 We can confirm that there exist values $\effFreq$, hence $\omega^2$ that do not correspond to eigenvalues and thus the spectrum of the problem is not the whole real line.
 However these are only confirmed numerically, and there is no guarantee that there will be infinitely many such gaps in the spectrum.
 Indeed $\Xi$ is not a periodic function of $\effFreq$ (note that the periods of the trigonometric functions are not rational multiples of each other) and so we cannot even plot $\Xi$ over one period in $\effFreq$ and deduce the whole spectrum as in section \ref{sec:ExampleCrossInPlane}.
-As such, although we can demonstrate there exist gaps in the spectrum, we cannot guarantee there are infinitely many of them.
+Thus although we can demonstrate there exist gaps in the spectrum, we cannot guarantee there are infinitely many of them. 
+But we can conclude from this example that the geometry alone can be manipulated to give rise to spectral band-gaps, even without the aid of adding coupling constants to our vertices, which is the subject of the example in section \ref{sec:ExampleThickVertex}. \newline
+
 Given the complex expression for $\Xi$; from a practical point of view it would be prudent to probe this system numerically starting from the M-matrix, and solving the generalised eigenvalue problem for eigenvalues over a predetermined range of interest (such as those $\effFreq$ that correspond to typical operating frequencies and wavelengths for fibres).
 We have speculated on such a scheme in section \ref{sec:NumericalMethodsDiscussion}; however given that there is no obvious path for analytic progress with this system, we will now turn our attention to another example.
 
@@ -387,13 +391,14 @@ Of course, of greater physical significance is the band-gap-plot that \eqref{eq:
 In this figure points $\bracs{\omega, \wavenumber}$ in yellow correspond to solutions to \eqref{eq:ExampleThickVertexDispExpr}, whilst those in blue do not.
 Here we see that there are distinct branches or regions of $\bracs{\omega, \wavenumber}$ in which we obtain solutions to \eqref{eq:QGEquation} with \eqref{eq:QGThickVertexConditions} as the boundary conditions.
 Importantly the shape of these regions is similar to experimental band-gap plots in a PCF setting, displaying bands that shrink in width as $\wavenumber$ increases in number.
-This should not be unexpected, but also should be interpreted cautiously, our singular-structure problem has recreated the basic shape of a band-gap plot, but lacks several features of experimental plots - notably the possibility of band-gaps merging as $\wavenumber$ increases or terminating (like a spike with it's tip) at some finite $\bracs{\omega, \wavenumber}$ values.
+This should not be unexpected, but also should be interpreted cautiously, our singular-structure problem has recreated the basic shape of a band-gap plot, but lacks several features of experimental plots - notably the possibility of band-gaps merging as $\wavenumber$ increases or terminating (like at the tip f a spike) at some finite $\bracs{\omega, \wavenumber}$ values.
 Recovery of these features may be outside the scope of the curl-of-the-curl equation \eqref{eq:CurlCurlEquationDivFree}, and we may require a more general system of starting equations to capture this behaviour (section \ref{sec:ConcFutureMaxwell}).
 
 \section{Chapter Summary} \label{sec:ExamplesSummary}
 The examples in this chapter demonstrate how we can determine the spectrum of singular-structure problems, bringing together the theory of chapters \ref{ch:QuantumGraphs} and \ref{ch:VectorEqns}, and also highlight several issues that need to be considered during the solution process.
 Of particular note is the central role that the M-matrix plays in our computations, and how it can be easily constructed by proposition \ref{prop:M-MatrixEntries}.
-Combined with the fact that determining the spectrum of our singular-structure problems amounts to solving a generalised eigenvalue problem, this provides us with a (albeit naive) numerical method for situations when analytic progress proves difficult.
+Of course, one still needs to find an analogue of proposition \ref{prop:M-MatrixEntries} for every quantum graph problem they want to solve in this manner.
+Combined with the fact that determining the spectrum of our singular-structure problems amounts to solving a generalised eigenvalue problem, this provides us with a (albeit na\"ive) numerical method for situations when analytic progress proves difficult.
 We have speculated on some of the issues such a numerical scheme would face in section \ref{sec:NumericalMethodsDiscussion}, and will revisit this idea of developing a suitable numerical scheme for handling these problems in chapter \ref{ch:Conclusion}. \newline
 
 The examples that we consider in sections \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleGeneralLengths} are chosen so as to demonstrate that analytic progress is possible for small graphs with simple geometries; but unless our system exhibits a great deal of symmetry we are often forced to resort to numerical techniques to investigate the spectrum.
@@ -402,14 +407,14 @@ It does provide a concrete example as to how we go about determining the spectru
 The example in section \ref{sec:ExampleGeneralLengths} illustrates how introducing slight complexities and breaking symmetries in the underlying geometry makes analytic progress difficult, but not impossible.
 Pursuing an analytic approach yields an expression for the spectrum that is difficult to treat, although some numerical investigations do confirm the existence of band-gaps in the spectrum.
 Whether there are infinitely many spectral bands however is still an open question, and would require a detailed analysis of \eqref{eq:5VertexGraphDispExpr} - at present all that has been carried out is an investigation into a single, rather simplified, case.
-Thinking from a practical viewpoint, a numerical scheme that begins from the M-matrix would be beneficial here because of the complexity of the resulting analytic expressions.
+From a fibre-design perspective, a numerical scheme that begins from the M-matrix would be beneficial here because of the complexity of the resulting analytic expressions.
 Such a scheme could be used to investigate the spectrum at specific ranges of interest (for example, near operating frequencies for fibres), which bypasses the need to determine the complete spectrum. \newline
 
 In section \ref{sec:ExampleThickVertex} we explored an example quantum graph problem with non-zero coupling constants at the central vertices.
 This quantum graph problem represents the limit of a family of thin-structure problems with the thickness of the structure scaling in a different way to the previous examples, as discussed in section \ref{sec:GraphLitReview}.
 Also provided was the singular-structure problem that we would begin from to obtain this quantum graph problem as an equivalent formulation, following much the same analysis as in chapter \ref{ch:VectorEqns} but with slightly altered measures in our variational formulation.
 This example used the same geometry as the example of section \ref{sec:ExampleCrossInPlane}, however due to the presence of a non-zero coupling constant at the central vertex we observe spectral band-gaps in $\omega$ at all values of $\wavenumber$.
-The dispersion plot that we can produce from our analysis also bears resemblance in it's shape to experimentally-determined dispersion plots for band-gap fibres.
+The dispersion plot that we can produce from our analysis also bears some base-level resemblance in it's shape to experimentally-determined dispersion plots for band-gap fibres.
 This would imply that a specific scaling between the vertex- and edge-areas results in ``easier" opening of band-gaps in PCFs, although formal investigation needs to be carried out to validate this hypothesis.
 Also worthy of note in this example is that the M-matrix remains the same as that in section \ref{sec:ExampleCrossInPlane}, the only difference being that we have a non-zero matrix of coupling constants to handle.
 Again coming from a numerical viewpoint; this means that investigating the same geometries but with different vertex conditions will only require construction of (a function that evaluates) the M-matrix once, but the coupling constants in the quantum graph problem can then be readily changed without a need to rebuild the M-matrix. \newline

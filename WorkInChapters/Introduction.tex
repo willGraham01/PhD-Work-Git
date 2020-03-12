@@ -192,8 +192,8 @@ For this we will need the theory of quantum graphs, which we briefly introduce a
 
 \section{Quantum Graphs, and their relation to Thin-Structure Problems} \label{sec:GraphLitReview}
 Quantum graphs have existed in some form (although not necessarily under that name) since the 1930s \cite{berkolaiko2013introduction} as surrogate models for various processes in chemistry, physics (including optical fibres) and mathematics.
-However there has only recently been a push to develop a standard basis for the theory in the past few decades, with works produced before this time tending to focus on specific examples relevant to the application being considered.
-At heart quantum graphs are graphs that are equipped with some concept of length or bulk; and quantum graph problems are simply a framework for (differential) operators on such graphs.
+However there has only recently been a push to develop a standard basis for the theory in the past few decades, with works produced before this time tending to focus on specific examples relevant to the application being considered and less on a general, underlying theory.
+At heart quantum graphs are simply graphs that are equipped with some concept of length or bulk; and quantum graph problems are simply a framework for (differential) operators on such graphs.
 This is a departure from combinatorial graphs, where the vertices of the graph are the significant features and the edges merely represent some connections or processes.
 Instead quantum graph problems focus largely on the lengths (and thus ``physical space") occupied by the edges, with the role of the vertices being reduced to that analogous to a boundary in more familiar differential equation settings.
 A comprehensive introduction to the field can be found in \cite{berkolaiko2013introduction}, in which the main concepts and techniques for quantum graphs are gathered.
@@ -201,19 +201,19 @@ Further advances include development of homogenisation techniques for quantum gr
 Demonstration of this behaviour may yet be relevant to applications in PCFs, if quantum graph problems can be used as an approximate model for such fibres - we will review some of the literature on the more general topic of using quantum graphs as a ``limit" model of thin-structures shortly.
 However there have been several advances surrounding analysis of spectral quantum graph problems, which we will need to review for our own research.  \newline
 
-There has been a relatively recent increase in the interest of the properties of non-self-adjoint operators, which in turn has lead to the development of the theory of boundary triples.
+Our interest in quantum graphs actually stems from a recent increase in the interest of the properties of non-self-adjoint operators, which in turn has lead to the development of the theory of boundary triples.
 Boundary triples have served many practical and analytical purposes when studying spectral problems (specifically, studying the spectra of operators).
 Works such as \cite{ryzhov2007functional} are at the heart of this abstract study of non-self-adjoint operators, whilst others such as \cite{ryzhov2009spectral} focus their attention on this study of spectral problems.
 On the more practical side; boundary triples, and in particular an associated object called the Weyl-Titchmarsh M-function, have been used as a tool to derive convergence estimates for differential problems.
 The work in \cite{cherednichenko2017norm} derives operator-norm estimates for non-uniformly elliptic, periodic problems with rapidly varying coefficients by using a boundary triple related to the resolvent operator of said problem.
 \cite{cherednichenko2018effective} follows up on this work, demonstrating how approaches using boundary triples and the M-function demonstrate that certain systems of PDEs give rise to time-dispersion and resonances. 
 In terms of spectral problems on quantum graphs, the M-function can be represented as a finite square matrix \cite{ershova2014isospectrality} (which we henceforth refer to as the M-matrix) which means that spectral problems on quantum graphs can be drastically reduced in complexity, or at least reframed in a manner more open to analysis (see works such as \cite{ershova2016isospectrality}).
-The fact that the M-function can be represented as a matrix is incredibly useful from a solution-based outlook; with enough information about the underlying graph and spectral problem at hand the task of determining the spectrum of a (differential) operator is reduced to that of finding the eigenvalues of the M-matrix.
+The fact that the M-function can be represented as a matrix is incredibly useful from a solution-focused outlook; as with enough information about the underlying graph and spectral problem at hand the task of determining the spectrum of a (differential) operator is reduced to that of finding the eigenvalues of the M-matrix.
 This last development is of particular importance to us; as it provides a tool that can take us to the solution of any (spectral) quantum graph problems that we come across, and opens us potential for numerical schemes should exact analysis prove difficult.
 We will highlight this idea again in section \ref{sec:M-MatrixTheory}, when we have presented some of the theory of quantum graphs, and discuss it in more detail in section \ref{sec:NumericalMethodsDiscussion}.
 At present, having provided some background on quantum graph problems we now look to highlight the link between them; singular-structure problems of section \ref{sec:VariationalProblemLitReview}, and how they retain relevance to models for PCFs. \newline
 
-Section \ref{sec:VariationalProblemLitReview} made it clear that the starting point for our models will be a singular-structure problem, and hinted at a link between these problems and thin-structure problems that are traditionally used to model wav-propagation.
+Section \ref{sec:VariationalProblemLitReview} made it clear that the starting point for our models will be a singular-structure problem, and hinted at a link between these problems and thin-structure problems that are traditionally used to model wave-propagation.
 We now look to address questions surrounding the nature of this link, in particular whether the singular-structure problems we consider are (or can be chosen so as to be) relevant to the original thin-structure problems for wave-guidance and hence PCFs.
 The exact nature of how one moves from a singular-structure problem to a quantum graph problem is covered in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}, so we do not elaborate further here.
 However, it is not hard to believe that there will be connection between quantum graph problems and the singular-structure problems that we are going to propose, given that quantum graphs provide a framework for working on graphs with ``physical presence", which is precisely what our singular-structures are.
@@ -221,7 +221,7 @@ We do review the existing literature that provides a link between quantum graph 
 These works are presented in a setting far more abstract than that which we require; in particular the setting of \cite{exner2005convergence} proves convergence results for graph-like manifolds, so we restrict ourselves to discussing the implications for work in our context.
 Being somewhat blas\'e; we can summarise the link by saying that properties of the solutions to thin-structure problems in the limit of the thickness of the structure tending to zero coincide (in some formal sense of limit) with those of a quantum graph problem.
 A more detailed explanation is as follows; suppose we have some domain $D$ (which may be periodic) such as that in figure \ref{fig:Diagram_ThinStructurePeriodCell}, and with two length scales $l$ and $r$ which capture the characteristic thickness/size of the struts (or ``tubes") and size of the junction regions (``tube connections") respectively.
-For each $l,r>0$ assume that we pose a system of differential equations on our domain $D$\footnote{For clarity, these being the \emph{same} system of equations for each $\bracs{l,r}$ pair, only the size of the domain is changing.}, and we are interested in computing the eigenvalues of this system.
+For each $l,r>0$ assume that we pose a system of differential equations\footnote{For clarity, these being the \emph{same} system of equations for each $\bracs{l,r}$ pair, only the size of the domain is changing.} on our domain $D$, and we are interested in computing the eigenvalues of this system.
 Denote this problem by $\mathcal{P}_{l,r}$, and the resulting spectrum by $\clbracs{\sigma}_{l,r}$.
 One can then ask the question of what happens to $\clbracs{\sigma}_{l,r}$ as $l,r\rightarrow0$; the answer being that $\clbracs{\sigma}_{l,r}$ converges\footnote{In an appropriate notion of convergence for sets.} to the spectrum of a quantum graph problem.
 We denote this quantum graph problem by $\mathcal{P}_0$ and it's spectrum by $\clbracs{\sigma}_0$.
@@ -229,8 +229,8 @@ Then we are able to argue that for a thin-structure problem with $l,r$ sufficien
 
 Interestingly the problem $\mathcal{P}_0$ and thus the spectrum $\clbracs{\sigma}_0$ depends on the relative scaling of $l$ and $r$ \cite{exner2005convergence}.
 As $l$ quantifies the size of the struts, which in the limit $l\rightarrow0$ become graph edges, we can determine how fast (as a power of $l$) the edges are shrinking.
-So for each $l>0$ we can define an ``edge area" $V_{\mathrm{edge}} \propto l^{\alpha}$ for some power $\alpha$, which decays to 0 as $l\rightarrow0$.
-There is a similar concept of ``vertex area" $V_{\mathrm{vert}} \propto r^{\beta}$ which $r$ provides.
+So for each $l>0$ we can define an ``edge area" $V_{\mathrm{edge}} \propto l^{\alpha}$ for some power $\alpha>0$, which decays to 0 as $l\rightarrow0$.
+There is a similar concept of ``vertex area" $V_{\mathrm{vert}} \propto r^{\beta}$ for some $\beta>0$, which $r$ provides.
 Then depending on the relative size\footnote{This is in fact not the complete picture, rather a consequence of the setting we are working in. The work in \cite{exner2013general} covers this more general setting and demonstrates the appropriate quantities to consider.} of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$ as $l,r\rightarrow0$ simultaneously; the problem $\mathcal{P}_0$, or rather the vertex conditions in this problem (see section \ref{sec:DEonQG}) are different.
 \begin{itemize}
 	\item In the case when $V_{\mathrm{edge}} \ll V_{\mathrm{vert}}$, the vertices dominate in the limit problem.
@@ -239,18 +239,18 @@ Then depending on the relative size\footnote{This is in fact not the complete pi
 	Intuitively we can think of this as saying that; with the edges decaying faster than the vertices, the vertices are large enough to prevent any interaction between any edges that share a common vertex.
 	\item In the case when $V_{\mathrm{edge}} \gg V_{\mathrm{vert}}$, the edges dominate in the limit problem.
 	This results in a quantum graph problem $\mathcal{P}_0$ where the boundary conditions at the vertices  are strict matching conditions.
-	That is; the functions we are solving for are required to be continuous across at each vertex, and derivatives of functions at the vertex are required to sum to zero (the coupling constant $\alpha=0$ in a Kirchoff condition).
+	That is; the functions we are solving for are required to be continuous across at each vertex, and derivatives of functions at the vertex are required to sum to zero (the coupling constant $\alpha=0$ in a Kirchoff condition, see section \ref{sec:DEonQG}).
 	Intuitively it can be thought that $V_{\mathrm{vert}}$ decaying faster than $V_{\mathrm{edge}}$ results in the vertices disappearing from the system, and with nothing to separate the edges, function values must match where there is overlap.
 	\item In the case when $V_{\mathrm{edge}} \approx V_{\mathrm{vert}}$, we arrive at a quantum graph problem that falls between the other two cases.
 	Namely the boundary conditions at the vertices still require continuity of the solution at the vertices, but conditions on the derivates are relaxed.
-	Instead one can obtain Kirchoff-like conditions at the vertices for the derivates; and the coupling constants that appear in these conditions are related to the ratio of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$.
+	Instead one can obtain Kirchoff-like conditions at the vertices for the derivates, and the coupling constants that appear in these conditions are related to the ratio of $V_{\mathrm{edge}}$ to $V_{\mathrm{vert}}$.
 	In this case we think of the vertices and edges shrinking at a rate which keeps them of comparable size, so the effect of decoupling the solutions (due to the vertex area) is balanced out by the need for consistency across the vertices (the effect of the edge area).
 \end{itemize}
 
 This neatly ties together the singular-structure problems introduced in section \ref{sec:VariationalProblemLitReview} that will be our starting point, quantum graph problems, and their relevance to thin-structure PCF models.
-We shall demonstrate that singular-structure problems provide us with equivalent quantum graph problems, the relevance to PCFs coming being that for physical systems with thin microstructure the thin-structure problem we would consider is approximated by such a quantum graph problem.
+We shall demonstrate that singular-structure problems provide us with equivalent quantum graph problems, the relevance to PCFs coming being that for physical systems with thin-structure the problems we would consider are approximated by some appropriate quantum graph problems.
 Chapter \ref{ch:QuantumGraphs} elaborates on the ideas that have been presented in our review of the existing theory for quantum graphs, providing the formal statement of any definitions and results that we require for our work.
-In chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} we will demonstrate how a variational problem on a singular structure is equivalent to a quantum graph problem that coincides with the $V_{\mathrm{edge}} \gg V_{\mathrm{vert}}$ case; whilst in chapter \ref{ch:ExampleSystems} we will briefly explain how to obtain a quantum graph problem that coincides with the $V_{\mathrm{edge}} \approx V_{\mathrm{vert}}$ case.
+In chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} we will demonstrate how a variational problem on a singular structure is equivalent to a quantum graph problem that coincides with the $V_{\mathrm{edge}} \gg V_{\mathrm{vert}}$ case, whilst in chapter \ref{ch:ExampleSystems} we will briefly explain how to obtain a quantum graph problem that coincides with the $V_{\mathrm{edge}} \approx V_{\mathrm{vert}}$ case.
 
 \section{Overview of Research} \label{sec:ReportOverview}
 In this chapter we have provided some motivation for the singular-structure problems we will be considering later, whilst also touching on several of the advantages and nuances of taking this approach.
@@ -281,4 +281,4 @@ The research objectives that we shall pursue are as follows:
 \end{enumerate}
 The starting point for our work will be singular-structure variational problems as outlined in section \ref{sec:OurPhysicalSetup}; however we will demonstrate in chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns} how we can derive an equivalent quantum graph problem from our singular-structure problems, which then links us back to PCFs via the use as an approximation to thin-structure problems.
 Since we are required to adopt a variational framework for our model that respects the lower-dimensional singular-structure (section \ref{sec:VariationalProblemLitReview}), we require some analysis of how we can interpret concepts like gradient, curl, and divergence, which is the subject of chapters \ref{ch:ScalarEqns} and \ref{ch:VectorEqns}.
-In chapter \ref{ch:ExampleSystems} will consider some examples that arise from problems in wave-guidance, addressing the final two points above, and finally in chapter \ref{ch:Conclusion} we provide a summary of the work presented and discusses further avenues that could be pursued.
+In chapter \ref{ch:ExampleSystems} will consider some examples that arise from problems in wave-guidance, addressing the final two points above, and finally in chapter \ref{ch:Conclusion} we provide a summary of the work presented and discuss further directions of research that could be pursued.

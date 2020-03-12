@@ -26,10 +26,10 @@ Of particular importance was the M-matrix and it's utility in solving spectral p
 We also use quantum graphs as the link between our singular-structure problems and thin-structure problems that describe PCFs.
 
 \section{Summary of Work and Examples} \label{sec:ConcWork}
-The work of chapter \ref{ch:VectorEqns} see us build on the existing work on variational problems by constructing the spaces $\ktgradSob{\ddom}{\ddmes}$, $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ and analysing the operator $\ktgrad$.
+The work of chapter \ref{ch:VectorEqns} saw us build on the existing work on variational problems by constructing the spaces $\ktgradSob{\ddom}{\ddmes}$, $\ktcurlSob{\ddom}{\ddmes}$ and $\ktcurlSobDivFree{\ddom}{\ddmes}$ and analysing the operator $\ktgrad$.
 We provide an interpretation for the $\ddmes$-curl of a vector field (section \ref{sec:CurlExamples}) and also prove various properties about the elements of the aforementioned spaces.
 In particular we deduce the form of the tangential $\kt$-curl and $\kt$-gradient, and characterise what it means to be divergence-free.
-We also prove that the space $\ktcurlSob{\ddom}{\ddmes}$ has some inherent structural properties that are not obvious from it's construction (section \ref{sec:ktcurlSobExtraProperties}).
+We also prove that the space $\ktcurlSob{\ddom}{\ddmes}$ has some inherent structural properties that are not obvious from it's construction (section \ref{sec:ktcurlSobExtraProperties}); and further conjecture that there are some additional features of this space which we have not yet uncovered.
 This analysis allows us to consider the singular-structure analogue of the ``curl-of-the-curl" equation, written in \eqref{eq:CurlCurlEquationDivFree} and determine the equivalent quantum graph problem in section \ref{sec:CurlReductionToQG}, forming the basis for our examples in chapter \ref{ch:ExampleSystems}.
 This theory is essential if we are to address the first of our research objectives, as without knowledge of the form of objects like $\ktcurl{\ddmes}u$, we have no hope of obtaining an equivalent quantum graph problem from our singular-structure problems.
 The fact that we can write problems like \eqref{eq:CurlCurlEquationDivFree} in the way they are presented is also satisfying in an intuitive sense; the ``equations" that we are studying have the same form as those which we would consider in the thin-structure setting, only now we have a different understanding of gradients (and curls, and divergences).
@@ -40,12 +40,12 @@ Our examples demonstrate how to construct the M-matrix, and how it can be used e
 We take a mixture of numerical and analytic approaches in these examples, however stop short of a fully-fledged numerical scheme that begins from the M-matrix itself.
 This is discussed in section \ref{sec:NumericalMethodsDiscussion} however, and will be revisited in section \ref{sec:ConcFuture}, which follows.
 The examples also illustrate how it is possible to use the geometry of the cross-sectional structure to open band-gaps in the spectrum (section \ref{sec:ExampleGeneralLengths}).
-However our investigation is limited to a single, simplified case and analytic progress proves hard, again highlighting that, at least for practical purposes, a numerical scheme that focuses on a physically relevant part of the spectrum may be more useful and applicable.
+However our investigation is limited to a single, simplified case and analytic progress proves hard, again highlighting that (at least for practical purposes) a numerical scheme that focuses on a physically relevant part of the spectrum may be more useful and applicable.
 We provide a final example in section \ref{sec:ExampleThickVertex} that retains the geometry of the example in section \ref{sec:ExampleCrossInPlane}, but with a non-zero coupling constant at the central vertex.
-The corresponding singular-structure problem corresponds to a different scaling limit (section \ref{sec:GraphLitReview}) than the previous examples, and in this case we demonstrate that band-gaps are opened simply by the presence of this coupling constant.
+The corresponding singular-structure problem corresponds to a different scaling limit (of thin-structure problems, section \ref{sec:GraphLitReview}) than the previous examples, and in this case we demonstrate that band-gaps are opened simply by the presence of this coupling constant.
 This in turn would suggest that thin-structures that adhere to this scaling between ``edge"- and ``vertex"-regions are more likely to give rise to band-gaps, however more work needs to be done beyond this example.
-We make this suggestion because these examples demonstrate that the addition of a non-zero coupling constant can lead to the opening of band-gaps, however this may again be an artefact of the geometry of the problem rather than a general principle.
-Another thing to be noted is that the M-matrix can be recycled from the first example, and the only difference in our solution method being that we consider a slightly different eigenvalue problem.
+We make this suggestion because the example demonstrates that the addition of a non-zero coupling constant can lead to the opening of band-gaps, however this may again be an artefact of the geometry of the problem rather than a general principle.
+Another thing to be noted is that the M-matrix can be recycled from the first example, and the only difference in our solution method being that we consider a slightly different generalised eigenvalue problem.
 This is potentially useful for any numerical schemes - we only need construct (a function that evaluates) the M-matrix once for a given geometry (and set of governing equations).
 If in addition we can produce results like proposition \ref{prop:M-MatrixEntries} for each quantum graph problem, there is the potential to further cut the complexity of such numerical constructions. \newline
 
@@ -63,7 +63,7 @@ In section \ref{sec:NumericalMethodsDiscussion} we discussed the possibility of 
 Here we review what was said and elaborate on how such an approach might be developed, tested and analysed.
 To make the discussion as general as possible; in this section we assume that we have some family of quantum graph problems $\mathcal{P}_{\qm}$, with spectral parameter $\lambda$ and spectra $\sigma\bracs{\mathcal{P}_{\qm}}$, each having an M-matrix $M_{\qm}\bracs{\lambda}$.
 This family $\mathcal{P}_{\qm}$ is the result of taking a Gelfand transform of a periodic quantum graph problem $\mathcal{P}$ (with spectrum $\sigma\bracs{\mathcal{P}}$), that is equivalent to some singular-structure problem that we are concerned with.
-Here we discuss a numerical scheme that is capable of being told the problems $\mathcal{P}_{\qm}$ and producing an approximation to the spectrum of $\mathcal{P}$, whose outline is along the lines of the following;
+Here we discuss a numerical scheme that is capable of being told the problems $\mathcal{P}_{\qm}$ and producing an approximation to $\sigma\bracs{\mathcal{P}}$, whose outline is along the lines of the following;
 \begin{enumerate}
 	\item Consider the spectral problem $\mathcal{P}_{\qm}$ as a generalised eigenvalue problem
 	\begin{align*}
@@ -71,17 +71,17 @@ Here we discuss a numerical scheme that is capable of being told the problems $\
 	\end{align*}
 	involving the M-matrix.
 	\item Determine a method for constructing $M_{\qm}\bracs{\lambda}$.
-	\item Solve the generalised eigenvalue problem $\mathcal{P}_{\qm}$ for $\sigma\bracs{\mathcal{P}_{\qm}}$, and hence construct an approximation to the spectrum of $\mathcal{P}$.
+	\item Solve the generalised eigenvalue problem $\mathcal{P}_{\qm}$ for $\sigma\bracs{\mathcal{P}_{\qm}}$, and hence construct an approximation to $\sigma\bracs{\mathcal{P}}$.
 \end{enumerate}
-Broadly speaking; the issues surround how to construct the M-matrix efficiently and quickly, and the optimal method of determining the spectrum of $\mathcal{P}_{\qm}$ and hence $\mathcal{P}$.
+Broadly speaking; the issues surround how to construct the M-matrix efficiently and quickly, and the optimal method of determining $\sigma\bracs{\mathcal{P}_{\qm}}$ and hence $\sigma\bracs{\mathcal{P}}$.
 We discuss each of these below, along with how they might be addressed. \newline
 
 \subsubsection{Construction of the M-Matrix} \label{sec:ConcFutureConstructM}
-Any numerical scheme will require a method for constructing the M-matrix, because the solver for the generalised eigenvalue problem will need this ability.
-Naively we can construct the M-matrix simply by following the constructive proof of proposition \ref{prop:M-MatrixEntries} numerically, for each value of $\lambda$ that we are required to evaluate $M_{\qm}$ at.
+Any numerical scheme will require a method for constructing the M-matrix, because the solver for the generalised eigenvalue problem will need the ability to evaluate the M-matrix.
+Na\"ively we can construct the M-matrix by following the constructive proof of proposition \ref{prop:M-MatrixEntries} numerically, for each value of $\lambda$ that we are required to evaluate $M_{\qm}$ at.
 This involves solving each edge-ODE in $\mathcal{P}_{\qm}$ numerically, and once for each column of the M-matrix (although this is a large overestimate and can be reduced - see section \ref{sec:NumericalMethodsDiscussion}), reading off the approximate Neumann data for the edge solution, and then summing the appropriate combination of derivatives at the vertices.
 Needless to say this will be an expensive process for a large (in the sense of number of edges) graph, given that it needs to be done each time the M-matrix needs to be evaluated.
-Having said this we should also note that this method is relatively simple to program, and provided there was sufficient care in solving the edge-ODEs of $\mathcal{P}_{\qm}$ would provide access to the M-matrix. \newline
+Having said this we should also note that this method is relatively simple to program and, provided there was sufficient care in solving the edge-ODEs of $\mathcal{P}_{\qm}$, would provide access to the M-matrix. \newline
 
 We can make constructing the M-matrix cheaper (in computational terms) by employing one of the tactics in chapter \ref{ch:ExampleSystems} - working analytically to a suitable point and then proceeding numerically when the expressions become too complex.
 The obvious candidate for a stopping point for each $\mathcal{P}_{\qm}$ would be the analogue of proposition \ref{prop:M-MatrixEntries}, as this bypasses the need to solve each edge-ODE every time the M-matrix needs to be evaluated (and even provides the M-matrix as a function of $\lambda=\omega^2$ and the quasi-momentum $\qm$).
@@ -96,16 +96,16 @@ Indeed it may not even be possible to obtain such a result, or the end-user of t
 Assuming we have such a result however, we can do some basic analysis on the computational cost of assembling the M-matrix using this approach and then compare this with the alternative approach.
 Although we expect the latter (analytic entries) approach to be more accurate and faster in all situations, the extent of these gains might be considered too small to warrant the derivation of an analogue of proposition \ref{prop:M-MatrixEntries}.
 
-\subsubsection{Determination of the Spectrum of $\mathcal{P}$} \label{sec:ConcFutureGetSpectrum}
+\subsubsection{Determination of $\sigma\bracs{\mathcal{P}}$} \label{sec:ConcFutureGetSpectrum}
 The other consideration for our numerical scheme are the nuances that come with solving the generalised eigenvalue problems, and how we construct an approximation to $\sigma\bracs{\mathcal{P}}$ from the values we get for $\sigma\bracs{\mathcal{P}_{\qm}}$.
-The foremost problems with the latter is that we cannot take the union of each of the spectra $\sigma\bracs{\mathcal{P}_{\qm}}$ over the $\qm$ as we did analytically - we will be forced to (at best) use a fine mesh of discrete $\qm$ values to build up an approximation to $\sigma\bracs{\mathcal{P}}$.
-As such one glaring issue is whether we can quantify how fine a mesh in $\qm$ is required, or whether there are certain values of $\qm$ that are of significance to the spectrum (values that correspond to eigenvalues found at the ends of band-gaps, for example).
+The foremost problems with the latter is that we cannot take the union of each of the spectra $\sigma\bracs{\mathcal{P}_{\qm}}$ over $\qm$ as we did analytically - we will be forced to (at best) use a fine mesh of discrete $\qm$ values to build up an approximation to $\sigma\bracs{\mathcal{P}}$.
+One glaring issue is whether we can quantify how fine a mesh in $\qm$ is required, or whether there are certain values of $\qm$ that are of significance to the spectrum (values that correspond to eigenvalues found at the ends of band-gaps, for example).
 There may also be symmetries that we can exploit on a problem-by-problem basis; like in the example in section \ref{sec:ExampleCrossInPlane} where there was symmetry in the components of $\qm$ and hence we could set $\qm_2=0$ to determine the spectrum.
 However if we expect some kind of stability of $\sigma\bracs{\mathcal{P}_{\qm}}$ with respect to $\qm$ (that is, we can show that small changes in $\qm$ correspond to some kind of small changes in $\sigma\bracs{\mathcal{P}_{\qm}}$) then the idea of meshing $\qm$ and solving a finite number of the $\mathcal{P}_{\qm}$ isn't a terrible one.
-Given the lack of immediate alternative suggestions, this kind of analysis is the way to go on this front. \newline
+Given the lack of immediate alternative suggestions, this kind of analysis is the direction to take for future work on this issue. \newline
 
 The former problem mentioned above, the nuances that come with solving the generalised eigenvalue problems, are another concern.
-In particular we have to deal with the complication that there may be (and in our case will almost always be) an infinite number of solutions $\bracs{\lambda,v}$ to $M_{\qm}\bracs{\lambda} v = 0$.
+In particular we have to deal with the complication that there may be (and in our case seems to always be) an infinite number of solutions $\bracs{\lambda,v}$ to $M_{\qm}\bracs{\lambda} v = 0$.
 Some knowledge of the form of the M-matrix (like proposition \ref{prop:M-MatrixEntries}) is helpful in this regard, for example we know that if the M-matrix is periodic in $\lambda$ then it is sufficient to determine all the unique eigenvalues over one period and from there can construct the remainder.
 However even if the M-matrix is periodic the presence of coupling constants on the vertices can make this potential advantage redundant, as can be seen for the M-matrix of section \ref{sec:ExampleThickVertex}.
 If a numerical scheme is being used solely from a fabrication/design perspective, then there is always the option to restrict the solver to finding eigenvalues $\lambda$ within a given range of interest, such as the operating frequencies of a PCF in the electromagnetic setting.
@@ -115,17 +115,17 @@ An examination of existing solver methods for generalised eigenvalue problems wo
 
 \subsection{Effect of Geometry on Spectra} \label{sec:ConcFutureGeometry}
 One of our objectives was to attempt to describe how the underlying geometry of the singular-structure affects the resulting spectrum and hand-gaps that the structure exhibits, and some progress has been made with this through the theory of chapter \ref{ch:VectorEqns}.
-Namely we see that the $\qm$ undergoes rotations dependant on the orientations of the underlying graph and the quantum graph problem that we obtain has solutions dependant on the lengths of the singular-structure edges.
-And although we have not provided the details; it is also known that the relative scaling of the vertex- and edge-regions in the thin-structures we are approximating gives rise to different quantum graph problems and hence different spectra, as we illustrated in the examples of section \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleThickVertex}.
-By affecting the coupling constants (through the scaling of the micro-structure), quasi-momentum and incorporating the edge-lengths, the spectrum and hence band-gaps of the structure are also changed.
+Namely we see that $\qm$ undergoes rotations dependant on the orientations of the underlying graph, and the quantum graph problem that we obtain has solutions dependant on the lengths of the singular-structure edges.
+And although we have not provided the details it is also known that the relative scaling of the vertex- and edge-regions in the thin-structures we are approximating gives rise to different quantum graph problems and hence different spectra, as we illustrated in the examples of section \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleThickVertex}.
+By affecting the coupling constants (through the scaling of the thin-structure), quasi-momentum and incorporating the edge-lengths, the spectrum and hence band-gaps of the singular-structure problem are also changed.
 This being said, we have not drawn any general insights into how these effects change the resulting spectra, only provided examples in chapter \ref{ch:ExampleSystems} to demonstrate that they do.
 We can make one conjecture on this topic though; that a graph with zero coupling constants and (geometric) symmetry in the periodic directions will not give rise to band-gaps.
-This idea is reinforced by the examples of section \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleGeneralLengths}, as well as other examples with geometric symmetries that we have looked at but didn't include in this report. \newline
+This idea is reinforced by the examples of section \ref{sec:ExampleCrossInPlane} and \ref{sec:ExampleGeneralLengths}, as well as other examples with geometric symmetries that we have examined but don't include in this report. \newline
 
 Another consideration that goes beyond what we have done in this report is looking at geometries whose peroid-cells are not rectangular in shape.
 This direction of future work is motivated more by the desire to produce a model that is relevant to physical PCFs and wave-guidance problems, rather than mathematical interest or completeness.
 In particular PCFs are typically fabricated with hexagonal lattice-structures, which for us would result in a hexagonal unit cell for our infinite, periodic singular-structure.
-The affect is largely felt by the Gelfand transform, as we no longer have a set of orthogonal vectors that describe the translation-invariance of the singular-structure.
+The affect is largely felt by the Gelfand transform as we no longer have a set of orthogonal vectors that describe the translation-invariance of the singular-structure, which affects how we deal with ``mismatches" of periodic solutions at the boundary of the period cell.
 We expect the analysis we have carried out in chapter \ref{ch:VectorEqns} to still be of relevance in this slightly altered case; in particular we have demonstrated that curls and gradients of zero are invariant with respect to the quasi-momentum, and so we expect that these objects will not change in these new period cell shapes.
 Regardless, there is the option to investigate any changes that the shape of the period cell itself induces in the problems that we obtain, and the work in chapter \ref{ch:VectorEqns} can be used as a basis for this research.
 
@@ -139,13 +139,13 @@ However the ``curl-of-the-curl" equation can only be derived if we assume a time
 Substituting this ansatz into the system of Maxwell equations \eqref{eq:MaxwellSystem} and taking the curl of either equation and substituting the result into the other then provides the curl of the curl equation.
 Whilst there is probably little harm in using the ``curl-of-the-curl" equation as our starting point for out singular-structure problems; for the purposes of providing a complete description of electromagnetic wave-guidance on singular-structures it would be good to derive an equivalent quantum graph problem for the system of Maxwell equations.
 One could then use the quantum graph problem derived in chapter \ref{ch:VectorEqns} as a check for consistency in the system that was obtained.
-No major obstacles are expected by from leaving the dependence on time in the system, however there will need to be some care in how to setup the various function spaces that we are working with.
-However because the time co-ordinate is essentially separate from the spatial co-ordinates, we should be able to recycle the work in chapter \ref{ch:VectorEqns} here. \newline
+No major obstacles are expected from leaving the time-dependence in the system, however there will need to be some care in how to setup the various function spaces that we are working with.
+However because the time co-ordinate is essentially separate from the spatial co-ordinates, we should again be able to recycle the work in chapter \ref{ch:VectorEqns} here. \newline
 
 Another possible generalisation that could be made to our systems concerns the ``empty space" (the cores if we adopt the language of PCFs) in our cross-sectional structure.
 Currently our singular-structure problems effectively ignore this part of our domain, which lends itself to the description that there is no field $u$ in that part of the domain (or we don't care what it is).
-In the context of electromagnetism this would likely mean that this ``empty space" was actually filled with a metallic material, and so we wouldn't expect a field in this region.
-In reality this may not be the case (although metallic mode confinement in PCFs has been demonstrated, see \cite{hou2008metallic}), fibres are typically fabricated using two dielectric materials (one of which may be vacuum for PCFs).
+In the context of electromagnetism this would likely mean that this ``empty space" was actually filled with a metallic material, and so we wouldn't expect an $\mathbf{E}$- or $\mathbf{H}$-field in this region.
+In reality this may not be the case (although metallic mode confinement in PCFs has been demonstrated, see \cite{hou2008metallic}) as fibres are typically fabricated using two dielectric materials (one of which may be vacuum for PCFs).
 As such we would need to consider the system of Maxwell equations \eqref{eq:MaxwellSystem} both on the singular-structure and in the remainder of the domain, and the electric permittivity $\eps_{P}$ and magnetic permeability $\mu_{P}$ would no longer be constant across the whole domain.
 This opens up several avenues for exploration - foremost being how to correctly formulate Maxwell's equations in this instance.
 We would be required to keep the variational approach we have adopted to deal with the singular-structure correctly, and so the natural avenue of investigation would be to adapt the measure that we pose our variational problem with respect to.
@@ -154,21 +154,21 @@ The foremost candidate being a ``Lebesgue plus singular graph" measure, namely a
 	\dddmes\bracs{B} &= \lambda_{2}\bracs{B} + \ddmes\bracs{B}, \quad B\in\mathcal{B}_{\ddom},
 \end{align*}
 where we now account for the singular structure using our singular measure on the underlying graph $\ddmes$ as before, but also add the standard 2D Lebesgue measure $\lambda_2$ so that we no longer discard the larger regions.
-Again using a variational problem posed with respect to $\dddmes$ will allow us to deal with the issue of boundary conditions between the singular structure and surrounding dielectric, but whether we can determine a method to solve such problems (as we did by borrowing theory from quantum graphs) remains open.
+Using a variational problem posed with respect to $\dddmes$ will allow us to deal with the issue of boundary conditions between the singular structure and surrounding dielectric, but whether we can determine a method to solve such problems (as we did by borrowing theory from quantum graphs) remains open.
 There would also be similar questions raised about whether such a variational problem could still be thought of as the limit of some thin-structure problem, like with the singular-structure problems we have considered through this report thus far.
 
 \section{Closing Remarks} \label{sec:ConcClosingRemarks}
 The work in this report has made progress towards addressing the research objectives that it set out to achieve, as laid out in chapter \ref{ch:Intro}.
 We look to consider singular-structure domains as setup in section \ref{sec:OurPhysicalSetup}, motivated by existing theory for variational problems (section \ref{sec:VariationalProblemLitReview}, chapter \ref{ch:ScalarEqns}) and seeking a consistent framework for our approximation to physical waveguides.
 We develop this theory of variational problems in the context of our singular-structure problems in chapter \ref{ch:VectorEqns}; describing what the concepts of gradient, curl and divergence-free mean and hence building appropriate function spaces for our problems.
-Furthermore, a link to quantum graph problems from our singular-structure problems is established (section \ref{sec:CurlReductionToQG}), meaning we can bring in existing theory from quantum graph problems (section \ref{sec:GraphLitReview}, chapter \ref{ch:QuantumGraphs}) to aid in the solution to our original singular-structure problems, and open up the potential for numerical approaches to be used (section \ref{sec:NumericalMethodsDiscussion}).
+A link to quantum graph problems from our singular-structure problems is established (section \ref{sec:CurlReductionToQG}), meaning we can bring in existing theory from quantum graph problems (section \ref{sec:GraphLitReview}, chapter \ref{ch:QuantumGraphs}) to aid in the solution to our original singular-structure problems, and open up the potential for numerical approaches to be used (section \ref{sec:NumericalMethodsDiscussion}).
 The link to quantum-graph problems also solidifies our singular-structure problems as formal limits of more familiar thin-structure models for waveguides (section \ref{sec:GraphLitReview}), addressing the first of the research objectives.
 The examples of chapter \ref{ch:ExampleSystems} serves the purpose of bringing together the theory of the previous chapters and highlighting important considerations for solving our singular-structure problems.
 We are able to demonstrate analytically that certain geometries (underlying graphs) give rise to band-gap spectra whilst others do not, and discuss how a numerical scheme that is designed to solve such problems might be employed (section \ref{sec:NumericalMethodsDiscussion}).
 These examples also go some way to addressing research objectives two and three, although as we highlight in section \ref{sec:ConcFuture} there are further considerations and questions that need answering.
 Section \ref{sec:ConcFutureMaxwell} also highlights that we have not yet fully addressed the first research objective, at least in the context of PCFs (electromagnetic wave-guidance) which is another direction we should pursue. \newline
 
-In summary, the work presented in this report serves as a basis for future work on the objectives in chapter \ref{ch:Intro}.
+In summary, the work presented in this report serves as a strong foundation for future work on the objectives in chapter \ref{ch:Intro}.
 The existing theory gathered, and that which has been developed, will allow further investigation into (limits of) more descriptive wave-guidance problems - addressing objective one.
 The examples that have been analysed provide some underlying intuition about what we should expect the answers to objective two should be, and highlight the issues that a numerical scheme sought by objective three will need to consider.
 We have discussed the direction of future work that will be taken with each of these objectives in mind throughout section \ref{sec:ConcFuture}, and will look to pursue these directions in the immediate future.
