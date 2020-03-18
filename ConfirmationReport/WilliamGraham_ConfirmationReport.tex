@@ -14,8 +14,7 @@
 \graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
 
 %\input imports all commands from the target files
-\input{PreambleMaths.tex} %maths commands, variables, and other packages
-\input{PreambleTikz.tex} %tikz things, including importing tikz itself
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
 
 %labelling hacks
 \newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
@@ -47,20 +46,20 @@
 %NB: Can use \include for speed, but then the directory fills up with useless .aux files.
 %To save time, comment out sections that aren't being edited. References may disappear but the file will still compile!
 
-\include{Introduction}
+\input{./WorkInChapters/Introduction}
 
-\include{QuantumGraphs}
+\input{./WorkInChapters/QuantumGraphs}
 
-\include{ScalarEqns}
+\input{./WorkInChapters/ScalarEqns}
 
-\include{VectorEqns}
+\input{./WorkInChapters/VectorEqns}
 
-\include{ExampleSystems}
+\input{./WorkInChapters/ExampleSystems}
 
-\include{Conclusion}
+\input{./WorkInChapters/Conclusion}
 
 \newpage %have a new page to start the bibliography
 \bibliographystyle{acm}
-\bibliography{../master_bib}
+\bibliography{ConfRepBib.bib}
 
 \end{document}
