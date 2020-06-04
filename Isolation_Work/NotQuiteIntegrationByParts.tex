@@ -1,0 +1,160 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Throughout, let $I\subset\ddom$ be the segment $I=\sqbracs{v_j,v_k}$.
+Let $\lambda_I$ be the singular measure supported on the edge $I$.
+Set $e_I := \frac{v_k-v_j}{\norm{v_k-v_j}}$ as the unit vector parallel to $I$, and $r:\interval{I}\rightarrow I$ as the change of variables $r(t) = v_j + te_I$.
+Let $n_I$ be the normal to the segment $I$ so $e_I, n_I$ are an orthonormal basis for $\reals^2$.
+Denote composition of functions with $r$ by use of an overhead tilde, so $\tilde{\phi}(t) := \phi\bracs{r(t)}$. \newline
+
+\begin{lemma}[Membership of $\gradSob{\ddom}{\lambda_I}$ implies membership of $\gradSob{\interval{I}}{t}$.] \label{lem:SingularSobSpaceImpliesIntervalSobSpace}
+	Suppose $\bracs{u,w}\in\gradSob{\ddom}{\lambda_I}$.
+	Then $\bracs{\tilde{u},\tilde{w}\cdot e_I}\in\gradSob{\interval{I}}{t}$.
+\end{lemma}
+\begin{proof}
+	As $\bracs{u,w}\in\gradSob{\ddom}{\lambda_I}$ there exist smooth functions $\phi_n\in\smooth{\ddom}$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_I}^2} w.
+	\end{align*}
+	Thus,
+	\begin{align*}
+		0 &\leftarrow \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_I}
+		= \integral{I}{\abs{\phi_n - u}^2}{\lambda_I} \\
+		&= \int_0^{\abs{I}}{\abs{\tilde{\phi}_n - \tilde{u}}^2} \ \md t, \\
+		0 &\leftarrow \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_I}
+		= \int_0^{\abs{I}}{\abs{\widetilde{\grad\phi_n} - \tilde{w}}^2} \ \md t \\
+		&= \int_0^{\abs{I}}{\abs{\widetilde{\grad\phi_n}_1 - \tilde{w}_1}^2} \ \md t + \int_0^{\abs{I}}{\abs{\widetilde{\grad\phi_n}_2 - \tilde{w}_2}^2} \ \md t.
+	\end{align*}
+	In particular,
+	\begin{align*}
+		\widetilde{\grad\phi_n}_1 \lconv{\ltwo{\interval{I}}{t}} \tilde{w}_1, 
+		&\quad \widetilde{\grad\phi_n}_2 \lconv{\ltwo{\interval{I}}{t}} \tilde{w}_2.
+	\end{align*}
+	Hence
+	\begin{align*}
+		\widetilde{\grad\phi_n}\cdot e_I \lconv{\ltwo{\interval{I}}{t}} \tilde{w}\cdot e_I.
+	\end{align*}
+	However
+	\begin{align*}
+		\diff{\tilde{\phi_n}}{t} &= \widetilde{\grad\phi_n}\cdot r'(t)
+		= \widetilde{\grad\phi_n}\cdot e_I,
+	\end{align*}
+	and thus we conclude that
+	\begin{align*}
+		\tilde{\phi}_n \lconv{\ltwo{\interval{I}}{t}} \tilde{u}, 
+		&\quad \diff{\tilde{\phi}}{t} \lconv{\ltwo{\interval{I}}{t}} \tilde{w}\cdot e_I.
+	\end{align*}
+	Hence we have that $\bracs{\tilde{u}, \tilde{w}\cdot e_I}\in\gradSob{\interval{I}}{t}$.
+\end{proof}
+
+\begin{cory} \label{cory:EdgeTangentialByParts}
+	If $\bracs{u,w}\in\gradSob{\ddom}{\lambda_I}$ and $\phi\in\smooth{\ddom}$ then we have that
+	\begin{align*}
+		\integral{\ddom}{u\grad\phi\cdot e_I}{\lambda_I} &= -\integral{\ddom}{\phi w\cdot e_I}{\lambda_I}.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	Performing manipulations and using the change of variables $r(t)$ yields
+	\begin{align*}
+		\integral{\ddom}{u\grad\phi\cdot e_I}{\lambda_I} &= \integral{I}{u\grad\phi\cdot e_I}{\lambda_I} \\
+		&= \int_0^{\abs{I}} \tilde{u}\widetilde{\grad\phi}\cdot e_I \ \md t \\
+		&= \int_0^{\abs{I}} \tilde{u}\diff{\tilde{\phi}}{t} \ \md t.
+	\end{align*}
+	Then by lemma \ref{lem:SingularSobSpaceImpliesIntervalSobSpace} and the ``$H=W$" theorem for $\gradSob{\interval{I}}{t}$, we conclude that
+	\begin{align*}
+		\integral{\ddom}{u\grad\phi\cdot e_I}{\lambda_I} &= \int_0^{\abs{I}} \tilde{u}\diff{\tilde{\phi}}{t} \ \md t 
+		= -\int_0^{\abs{I}} \tilde{\phi}\tilde{w}\cdot e_I \ \md t \\
+		&= -\integral{\ddom}{\phi w\cdot e_I}{\lambda_I}.
+	\end{align*}	
+\end{proof}
+
+Now let $\tlambda_I$ be the composite measure for the domain $\ddom$ with respect to the segment $I$, namely
+\begin{align*}
+	\tlambda_I &= \lambda_2 + \lambda_I,
+\end{align*}
+where $\lambda_2$ is the Lebesgue measure.
+
+\begin{lemma}[Membership of $\gradSob{\ddom}{\tlambda_I}$ implies membership of the individual spaces.] \label{lem:CompositeSobSpaceImpliesIndividualSobSpace}
+	If $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ then $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$ and $\bracs{u,v}\in\gradSob{\ddom}{\lambda_I}$.
+\end{lemma}
+\begin{proof}
+	We can find a sequence of smooth functions $\phi_n$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} w.
+	\end{align*}
+	However this means that
+	\begin{align*}
+		0 &\leftarrow \integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I}
+		= \underbrace{\integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2}}_{\rightarrow0} + \underbrace{\integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_I}}_{\rightarrow0}, \\
+		0 &\leftarrow \integral{\ddom}{\abs{\grad\phi_n - v}^2}{\tlambda_I}
+		= \underbrace{\integral{\ddom}{\abs{\grad\phi_n - v}^2}{\lambda_2}}_{\rightarrow0} + \underbrace{\integral{\ddom}{\abs{\grad\phi_n - v}^2}{\lambda_I}}_{\rightarrow0}.
+	\end{align*}
+	From which it follows that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} w, \\
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_I}^2} w,
+	\end{align*}
+	and hence $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$, $\bracs{u,v}\in\gradSob{\ddom}{\lambda_I}$.
+\end{proof}
+
+\begin{cory} \label{cory:CompositeLebesgueByParts}
+	If $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ and $\phi\in\smooth{\ddom}$ then we have that
+	\begin{align*}
+		\integral{\ddom}{u\grad\phi\cdot e_I}{\lambda_2} &= -\integral{\ddom}{\phi v\cdot e_I}{\lambda_2}, \\
+		\integral{\ddom}{u\grad\phi\cdot n_I}{\lambda_2} &= -\integral{\ddom}{\phi v\cdot n_I}{\lambda_2}.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	We know by lemma \ref{lem:CompositeSobSpaceImpliesIndividualSobSpace} that $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$, and so by the ``$H=W$" theorem we have that
+	\begin{align*}
+		\integral{\ddom}{u\partial_j\phi}{\lambda_2} &= -\integral{\ddom}{\phi v_j}{\lambda_2}
+	\end{align*}
+	for $j\in\clbracs{1,2}$.
+	The identities above then follow from considering suitable linear combinations of the $j=1$ and $j=2$ cases, above.
+\end{proof}
+
+\begin{theorem}
+	If $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ and $\phi\in\smooth{\ddom}$ then we have that
+	\begin{align*}
+		\integral{\ddom}{u\grad\phi\cdot e_I}{\tlambda_I} &= -\integral{\ddom}{\phi v\cdot e_I}{\tlambda_I}.
+	\end{align*}
+	In the event that $\supp\bracs{\phi}\cap I = \emptyset$, we have that
+	\begin{align*}
+		\integral{\ddom}{u\partial_j\phi}{\tlambda_I} &= -\integral{\ddom}{\phi v_j}{\tlambda_I},
+	\end{align*}
+	for $j\in\clbracs{1,2}$.
+\end{theorem}
+\begin{proof}
+	Given the definition of the composite measure $\tlambda_I$, this is just a combination of the results of lemma \ref{lem:CompositeSobSpaceImpliesIndividualSobSpace}, and then corollaries \ref{cory:EdgeTangentialByParts} and \ref{cory:CompositeLebesgueByParts}.
+	The case when $\supp\bracs{\phi}\cap I = \emptyset$ follows from this because in this case the contribution from the singular measure part of $\tlambda_I$ is zero.
+\end{proof}
+
+\end{document}

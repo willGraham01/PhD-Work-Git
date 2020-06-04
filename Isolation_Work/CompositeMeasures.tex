@@ -1,0 +1,417 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\chapter{Preliminary Results} \label{ch:PrelimResults}
+This first lemma is just a reality check by me, for when I want to manipulate integrals with respect to the composite measure in parts.
+For example, when I want to deduce that
+\begin{align*}
+	\integral{\ddom}{\abs{\phi_n}^2}{\dddmes} \rightarrow 0
+	&\implies
+	\begin{cases}
+		\integral{\ddom}{\abs{\phi_n}^2}{\ddmes} \rightarrow 0, \\
+		\integral{\ddom}{\abs{\phi_n}^2}{\lambda_2} \rightarrow 0.
+	\end{cases}
+\end{align*}
+using the fact that by definition
+\begin{align*}
+	\integral{\ddom}{\abs{\phi_n}^2}{\dddmes} &= \integral{\ddom}{\abs{\phi_n}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n}^2}{\ddmes}.
+\end{align*}
+\begin{lemma}
+Suppose $\bracs{a_n}_{n\in\naturals}$ and $\bracs{b_n}_{n\in\naturals}$ are non-negative real sequences such that the sequence
+\begin{align*}
+	c_n = a_n + b_n \rightarrow 0 \toInfty{n}.
+\end{align*} 
+Then $a_n\rightarrow0, b_n\rightarrow0 \toInfty{n}$.
+\end{lemma}
+\begin{proof}
+	Let $\eps>0$, then as $c_n\rightarrow0$ there exists some $N\in\naturals$ such that $\abs{c_n}<\eps$ for all $n\geq N$.
+	Thus $\abs{a_n+b_n}\leq\eps$ for every $n\geq N$, and since $a_n,b_n\geq0 \ \forall n\in\naturals$ this implies that
+	\begin{align*}
+		\abs{a_n}<\eps, \quad \abs{b_n}<\eps, \quad \forall n\geq N,
+	\end{align*}
+	and so $a_n\rightarrow0, b_n\rightarrow0 \toInfty{n}$.
+\end{proof}
+
+The next result is to do with manipulating integrals over measurable sets.
+\begin{lemma}
+	Let $\ddom\subset\reals^2$ be bounded and $\nu$ a Borel measure on $\ddom$.
+	Suppose that $f:\ddom\rightarrow\reals$ is measurable.
+	Then
+	\begin{enumerate}[(i)]
+		\item If $A,B\subset\ddom$ are disjoint and measurable, then
+		\begin{align*}
+			\integral{A\cup B}{f}{\nu} &= \integral{A}{f}{\nu} + \integral{B}{f}{\nu}.
+		\end{align*}
+		\item If $E\subset\ddom$ is such that $\nu\bracs{E}=0$, then $\int_E f \md\nu = 0$.
+		\item If $A,B\subset\ddom$ are measurable and $A\cap B = E$ where $E\subset\ddom$ is measurable with $\nu\bracs{E}=0$, then
+		\begin{align*}
+			\integral{A\cup B}{f}{\nu} &= \integral{A}{f}{\nu} + \integral{B}{f}{\nu}.
+		\end{align*}
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}[(i)]
+		\item This is just additivity of the integral; every function $f_n$ in an approximating sequence of simple functions for $f$ can be divided up between $A$ and $B$ (as they are disjoint), hence the separate integrals exist and their value is the same as the integral with the combined domain.
+		\item If $s$ is a simple function with
+		\begin{align*}
+			s(x) &= \alpha_j, \quad x\in A_j, \quad \bigcup_{j=1}^{N} A_j=\ddom, \quad \alpha_j\in\reals,
+		\end{align*}
+		then we have that
+		\begin{align*}
+			\integral{E}{s}{\nu} &= \integral{\ddom}{s\charFunc{E}}{\nu} = \sum_{j=1}^{N} \alpha_j \nu{E\cap A_j} \\
+			&= \sum_{j=1}^{N} \alpha_j\times0 = 0.
+		\end{align*}
+		Hence for an approximating sequence of simple functions $s_n\rightarrow f$,
+		\begin{align*}
+			\integral{E}{f}{\nu} &= \integral{\ddom}{f\charFunc{E}}{\nu} \\
+			&= \lim_{n\rightarrow\infty}\integral{\ddom}{s_n\charFunc{E}}{\nu} = \lim_{n\rightarrow\infty}0 \\
+			&= 0.
+		\end{align*}
+		\item This follows by the results of (i) and (ii); and as
+		\begin{align*}
+			A\cup B &= \bracs{A\setminus\bracs{A\cap B}} \cup \bracs{B\setminus\bracs{A\cap B}} \cup \bracs{A\cap B}, \\
+			&= \bracs{A\setminus E} \cup \bracs{B\setminus E} \cup E.
+		\end{align*}
+		Thus
+		\begin{align*}
+			\integral{A\cup B}{f}{\nu} &= \integral{A\setminus E}{f}{\nu} + \integral{B\setminus E}{f}{\nu} + \integral{E}{f}{\nu},
+		\end{align*}
+		and as $\nu\bracs{E}=0$,
+		\begin{align*}
+			\integral{A\setminus E}{f}{\nu} + \integral{B\setminus E}{f}{\nu} + \integral{E}{f}{\nu}
+			&= \integral{A\setminus E}{f}{\nu} + \integral{B\setminus E}{f}{\nu} + 2\integral{E}{f}{\nu} \\
+			&= \integral{A\setminus E}{f}{\nu} + \integral{E}{f}{\nu} + \integral{B\setminus E}{f}{\nu} + \integral{E}{f}{\nu} \\
+			&= \integral{A}{f}{\nu} + \integral{B}{f}{\nu}.
+		\end{align*}
+		Hence we are done.
+	\end{enumerate}
+\end{proof}
+
+Next we need to setup some specific smooth functions that will be utilised in our analysis of sets of gradients of zero.
+\begin{definition}[Smooth function $\xi$ with Gradient 1 at 0] \label{def:xiFuncDef}
+	Let $\xi(t)$ be the smooth function on $\reals$ with
+	\begin{align*}
+		-1 \leq \xi(t) \leq 1 &\quad \forall t\in\sqbracs{-1,1}, \\
+		\xi(t) = 0 &\quad \forall t\in\reals\setminus\sqbracs{-1,1}, \\
+		\xi(0) = 0, &\quad \xi'(0) = 1.
+	\end{align*}
+	It is important to note that $\abs{\xi'(t)}$ is bounded by some constant $c_{\xi}>0$.
+\end{definition}
+
+\begin{definition}[Width in the Direction $e_\ddom$]
+	Let $\ddom\subset\reals^2$ be bounded and let $\bracs{e_\ddom, n_\ddom}$ be a pair of orthonormal vectors in $\ddom$.
+	For each $\alpha\in\reals$, let
+	\begin{align*}
+		L_\alpha &= \clbracs{x\in\ddom \ \vert \ x=\alpha n_\ddom + \beta e_\ddom, \beta\in\reals}
+	\end{align*}
+	be the line in $\ddom$ parallel to $e_\ddom$, a ``signed distance" $\alpha$ away from the ``diagonal" line $L_0$ which contains $e_\ddom$.
+	Let $\lambda_\alpha$ be the singular measure supported on $L_\alpha$.
+	Then the width of $\ddom$ in the direction $e_\ddom$ is
+	\begin{align*}
+		\dirWidth{\ddom}{e_\ddom} &= \sup_{\alpha\in\reals} \lambda_\alpha\bracs{L_\alpha}.
+	\end{align*}
+\end{definition}
+
+Now we show that we can obtain convergence of the gradients of $\xi$ in definition \ref{def:xiFuncDef} in $\ltwo{\ddom}{\dddmes}$.
+\begin{lemma} \label{lem:SmoothFuncConvCharFuncCompositeMeasure}
+	Let $\ddom\subset\reals^2$ be bounded and $I\subset\ddom$ be a segment with unit vector $e_I$ and unit normal $n_I$.
+	Let $\lambda_I$ be the singular measure supported on $I$, $\lambda_2$ the Lebesgue measure on $\ddom$, and $\dddmes = \lambda_2 + \lambda_I$ be the composite measure of $I$ in $\ddom$.
+	Take $\charFunc{I}$ to be the characteristic function of $I$ and define
+	\begin{align*}
+		\phi_n(x) &= \recip{n}\xi\bracs{n x\cdot n_I},
+	\end{align*}
+	for each $n\in\naturals$ and $\xi$ as in definition \ref{def:xiFuncDef}.
+	Note that $\phi_n\in\smooth{\ddom}$.
+	Then
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} 0, &\quad
+		\grad\phi_n \lconv{\ltwo{\ddom}{\ddmes}^2} \charFunc{I}n_i.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	First we can compute
+	\begin{align*}
+		\grad\phi_n(x) &= n_I \xi'\bracs{n x\cdot n_I},
+	\end{align*}
+	and also should note that $x=\alpha e_I$ for some $\alpha\in\reals$ when $x\in I$, so
+	\begin{align*}
+		\xi\bracs{nx\cdot n_I} &= 0, \quad \xi'\bracs{nx\cdot n_I} = 1
+	\end{align*}
+	whenever $x\in I$.
+	The proof is now a case of estimating the various integrals we need to consider;
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_n}^2}{\lambda_I}
+		&= \recip{n^2}\integral{\ddom}{\abs{\xi\bracs{nx\cdot n_I}}^2}{\lambda_I} \\
+		&= \recip{n^2}\integral{I}{\abs{\xi\bracs{nx\cdot n_I}}^2}{\lambda_I} \\
+		&= \recip{n^2}\integral{I}{0}{\lambda_I} = 0, \\
+		\integral{\ddom}{\abs{\phi_n}^2}{\lambda_2}
+		&= \recip{n^2}\integral{\ddom}{\abs{\xi\bracs{nx\cdot n_I}}^2}{\lambda_2} \\
+		&\leq \recip{n^2}\integral{\ddom}{}{\lambda_2} \\
+		&= \recip{n^2}\lambda_2\bracs{\ddom} \rightarrow 0 \toInfty{n}.
+	\end{align*}
+	Thus,
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_n}^2}{\dddmes} &= \integral{\ddom}{\abs{\phi_n}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n}^2}{\lambda_I} \\
+		&\rightarrow 0 \toInfty{n},
+	\end{align*}
+	so $\phi_n\rightarrow0$ in $\ltwo{\ddom}{\dddmes}$.
+	Additionally,
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi_n - \charFunc{I}n_I}^2}{\lambda_I}
+		&= \integral{I}{\abs{\xi'\bracs{nx\cdot n_I}n_I - n_I}^2}{\lambda_I} \\
+		&= \integral{I}{\abs{\xi'\bracs{0} - 1}^2}{\lambda_I}
+		= \integral{I}{0}{\lambda_I} = 0, \\
+		\integral{\ddom}{\abs{\grad\phi_n - \charFunc{I}n_I}^2}{\lambda_2}
+		&= \integral{\ddom}{\abs{\xi'\bracs{nx\cdot n_I}}^2}{\lambda_2} &\quad(\charFunc{I}=0 \ \lambda_2-\text{a.e.}) \\
+		&= \integral{B_n}{\abs{\xi'\bracs{nx\cdot n_I}}^2}{\lambda_2},
+	\end{align*}
+	where
+	\begin{align*}
+		B_n &= \supp\bracs{\xi'\bracs{nx\cdot n_I}}
+		= \ddom \cap \bracs{\clbracs{\alpha e_I \ \vert \ \alpha\in\reals} \times \clbracs{\alpha n_I \ \vert \ \alpha\in\sqbracs{-\recip{n},\recip{n}}}}.
+	\end{align*}
+	Additionally,
+	\begin{align*}
+		\integral{B_n}{\abs{\xi'\bracs{nx\cdot n_I}}^2}{\lambda_2}
+		&\leq \integral{B_n}{c_{\xi}^2}{\lambda_2} \\
+		&= 2c_{\xi}^2\dirWidth{\ddom}{e_I}\times\recip{n} \\
+		&\rightarrow 0 \toInfty{n}.
+	\end{align*}
+	Thus we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi_n - \charFunc{I}n_I}^2}{\dddmes}
+		&= \integral{\ddom}{\abs{\grad\phi_n - \charFunc{I}n_I}^2}{\lambda_2} + \integral{\ddom}{\abs{\grad\phi_n - \charFunc{I}n_I}^2}{\lambda_I} \\
+		&\rightarrow0 \toInfty{n},
+	\end{align*}
+	so $\grad\phi_n\rightarrow \charFunc{I}n_I$ in $\ltwo{\ddom}{\dddmes}^2$ too, and we are done.
+\end{proof}
+
+Also we will need to use the function $\eta^n_j$ as defined in the ScalarEqns chapter of the confirmation report, and we will quickly prove this result:
+\begin{lemma} \label{lem:EtaConvCompositeMeasureCase}
+	Let $\ddom\subset\reals^2$ and $\graph=\bracs{V,E}$ be an embedded graph in $\ddom$.
+	Let $\ddmes$ be the singular measure supported on $\graph$ and $\dddmes$ the composite measure of $\graph$ in $\ddom$.
+	Take $\eta_j^n$ as in that definition from ScalarEqns.
+	Then
+	\begin{align*}
+		\eta_j^n \lconv{\ltwo{\ddom}{\dddmes}} 1.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We know that $\eta_j^n\rightarrow 1$ in $\ltwo{\ddom}{\ddmes}$ by the result in the confirmation report, so we just need to show that $\eta_j^n\rightarrow 1$ in $\ltwo{\ddom}{\lambda_2}$ too.
+	But we know that
+	\begin{align*}
+		\integral{\ddom}{\abs{\eta_j^n - 1}^2}{\lambda_2}
+		&\leq \integral{B_{2/n}\bracs{v_j}}{}{\lambda_2} = \frac{4\pi}{n^2} \\
+		&\rightarrow 0 \toInfty{n},
+	\end{align*}
+	because
+	\begin{align*}
+		\supp\abs{\eta_j^n - 1}^2 \subset B_{2/n}\bracs{v_j}, \quad\text{and } \max\abs{\eta_j^n - 1}^2 = 1.
+	\end{align*}
+\end{proof}
+
+\chapter{Gradients of Zero}
+
+This first result is colloquially summarised as ``being a gradient of zero with respect to the composite measure implies that you are also a gradient of zero with respect to each of the individual measures".
+\begin{lemma} \label{lem:GradZeroCompositeImpliesGradZeroOthers}
+	Let $\ddom\subset\reals^2$ and $\graph=\bracs{V,E}$ be an embedded graph in $\ddom$.
+	Let $\ddmes$ be the singular measure supported on $\graph$ and $\dddmes$ the composite measure of $\graph$ in $\ddom$.
+	Then we have that
+	\begin{align*}
+		g\in\gradZero{\ddom}{\dddmes} &\implies g\in\gradZero{\ddom}{\lambda_2}\cap\gradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	As $g\in\gradZero{\ddom}{\dddmes}$ there exists a sequence of smooth functions $\phi_n$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} 0, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\dddmes}^2} g.
+	\end{align*}
+	But then we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_n}^2}{\dddmes}
+		&= \integral{\ddom}{\abs{\phi_n}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n}^2}{\ddmes} \rightarrow 0, \\
+		\implies \integral{\ddom}{\abs{\phi_n}^2}{\lambda_2}\rightarrow0, &\quad \integral{\ddom}{\abs{\phi_n}^2}{\ddmes} \rightarrow 0.
+	\end{align*}
+	And similarly
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi_n-g}^2}{\dddmes}
+		&= \integral{\ddom}{\abs{\grad\phi_n-g}^2}{\lambda_2} + \integral{\ddom}{\abs{\grad\phi_n-g}^2}{\ddmes} \rightarrow 0, \\
+		\implies \integral{\ddom}{\abs{\grad\phi_n-g}^2}{\lambda_2}\rightarrow0, &\quad \integral{\ddom}{\abs{\grad\phi_n-g}^2}{\ddmes} \rightarrow 0.
+	\end{align*}
+	Which means that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} 0, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} g, \\
+		\phi_n \lconv{\ltwo{\ddom}{\ddmes}} 0, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\ddmes}^2} g,
+	\end{align*}
+	so $g\in\gradZero{\ddom}{\lambda_2}$ and $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
+Proving the reverse inclusion requires us to work in stages however, as we will need some method of ``stitching" together approximating sequences from $\gradZero{\ddom}{\lambda_2}$ and $\gradZero{\ddom}{\ddmes}$ to obtain an approximating sequence showing membership of $\gradZero{ddom}{\dddmes}$.
+
+\begin{convention}[Notation for Composite Measures] \label{conv:CompMeasNotation}
+	If $\nu$ is a singular measure supporting a graph $\graph$ (including a single-edge graph, or segment), embedded in $\ddom\subset\reals^2$, use an overhead tilde to denote the composite measure of $\graph$ in $\ddom$, so
+	\begin{align*}
+		\tilde{\nu}(B) &= \lambda_2(B) + \nu(B).
+	\end{align*}
+\end{convention}
+
+\begin{lemma}[Sufficient conditions for membership of $\gradZero{\ddom}{\tlambda_I}$] \label{lem:SuffCondForGradZeroSegmentCompositeMeasure}
+	Let $\ddom\subset\reals^2$ and $I$ be a segment in $\ddom$ with singular measure $\lambda_I$.
+	Suppose that $g$ satisfies
+	\begin{align*}
+		g\cdot e_I =0 &\quad\tlambda_I\text{-a.e.}, \\
+		\bracs{g\cdot n_I}\vert_I &\in\ltwo{\ddom}{\lambda_I}, \\
+		\bracs{g\cdot n_I}\vert_{\ddom\setminus I} =0 &\quad\lambda_2\text{-a.e.}
+	\end{align*}
+	Then
+	\begin{align*}
+		g\in\gradZero{\ddom}{\tlambda_I}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We assume first that $g\cdot n_I$ is smooth, as we can then apply a density argument to extend the result to all functions in $\ltwo{\ddom}{\lambda_I}$.
+	Set
+	\begin{align*}
+		\phi_n &= \recip{n}\xi\bracs{nx\cdot n_I}\bracs{g\cdot n_I}
+	\end{align*}
+	for $\xi$ as in definition \ref{def:xiFuncDef}, so $\phi_n\in\smooth{\ddom}$ for each $n\in\naturals$.
+	Then by lemma \ref{lem:SmoothFuncConvCharFuncCompositeMeasure} we know that
+	\begin{align*}
+		\phi_n &\lconv{\ltwo{\ddom}{\tlambda_I}} 0, \\
+		\grad\phi_n &= \underbrace{n_I\xi'\bracs{nx\cdot n_I}\bracs{g\cdot n_I}}_{\rightarrow \charFunc{I}n_I} + \underbrace{n^{-1}\xi\bracs{nx\cdot n_I}\grad\bracs{g\cdot n_I}}_{\rightarrow0} \\
+		&\rightarrow n_I\bracs{g\cdot n_I}\vert_I = g\vert_I &(\text{as } g\cdot e_I=0) \\
+		&= g &(\text{as } \bracs{g\cdot n_I}\vert_{\ddom\setminus I} =0 &\quad\lambda_2\text{-a.e.}).
+	\end{align*}
+	Hence we have that $g\in\gradZero{\ddom}{\tlambda_I}$.
+\end{proof}
+
+Now we have necessary and sufficient conditions for membership of $\gradZero{\ddom}{tlambda_I}$.
+\begin{prop}[Characterisation of $\gradZero{\ddom}{tlambda_I}$] \label{prop:CharGradZeroSegmentCompositeMeasure}
+	Let $\ddom\subset\reals^2$ be bounded, and $I\subset\ddom$ be a segment with unit vector $e_I$ and unit normal $n_I$.
+	Let $\lambda_I$ be the singular measure supported on $I$.
+	Then the following are all equivalent:
+	\begin{enumerate}[(i)]
+		\item $g\in\gradZero{\ddom}{\tlambda_I}$,
+		\item $g\in\gradZero{\ddom}{\lambda_2} \cap \gradZero{\ddom}{\lambda_I}$,
+		\item $g$ is such that
+		\begin{align*}
+			g\cdot e_I =0 &\quad\tlambda_I\text{-a.e.}, \\
+			\bracs{g\cdot n_I}\vert_I &\in\ltwo{\ddom}{\lambda_I}, \\
+			\bracs{g\cdot n_I}\vert_{\ddom\setminus I} =0 &\quad\lambda_2\text{-a.e.}
+		\end{align*}
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	(i) $\implies$ (ii) is a special case of lemma \ref{lem:GradZeroCompositeImpliesGradZeroOthers}. \newline
+	(ii) $\implies$ (iii) is a consequence of characterising $\gradZero{\ddom}{\lambda_I}$ as in ScalarEqns, combined with the fact that $g\in\gradZero{\ddom}{\lambda_2}$ implies $g=0 \ \lambda_2-$a.e. \newline
+	(iii) $\implies$ (i) is dealt with by lemma \ref{lem:SuffCondForGradZeroSegmentCompositeMeasure}.
+\end{proof}
+
+Now we need an extension lemma to bring gradients of zero with respect to $\tlambda_I$ into context as gradients of zero with respect to $\dddmes$.
+\begin{lemma}[Extension Lemma for $\gradZero{\ddom}{tlambda_I}$] \label{lem:ExtLemmaGradZeroCompositeMeasure}
+	Let $G=\bracs{V,E}$ be an embedded graph in $\ddom\subset\reals^2$, and suppose $g\in\gradZero{\ddom}{\tlambda_{jk}}$ is such that $g\cdot n_{jk}=0$ on $\graph\setminus I^n_{jk}$.
+	See ScalarEqns chapter of confirmation report for a reminder of $I^n_{jk}, \chi^n_{jk}$, etc.
+	Then
+	\begin{align*}
+		g\in\gradZero{\ddom}{\dddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We can find a smooth sequence $\phi_l$ such that
+	\begin{align*}
+		\phi_l \lconv{\ltwo{\ddom}{\tlambda_{jk}}} 0, \quad
+		\grad\phi_l \lconv{\ltwo{\ddom}{\tlambda_{jk}}^2} g.
+	\end{align*}
+	Set $\varphi_l = \chi^n_{jk}\phi_l$ for each $l\in\naturals$.
+	Then we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\varphi_l}^2}{\dddmes}
+		&= \integral{\ddom}{\abs{\varphi_l}^2}{\lambda_2} + \integral{\ddom}{\abs{\varphi_l}^2}{\ddmes} \\
+		&= \integral{\ddom}{\abs{\chi^n_{jk}\phi_l}^2}{\lambda_2} + \integral{I_{jk}}{\abs{\chi^n_{jk}\phi_l}^2}{\lambda_{jk}} \\
+		&\leq \integral{\ddom}{\abs{\phi_l}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_l}^2}{\lambda_{jk}} \\
+		&= \integral{\ddom}{\abs{\phi_l}^2}{\tlambda_{jk}} \rightarrow 0.
+	\end{align*}
+	Additionally,
+	\begin{align*}
+		\recip{2}\integral{\ddom}{\abs{\grad\varphi_l - g}^2}{\dddmes}
+		&= \recip{2}\integral{\ddom}{\abs{\chi^n_{jk}\grad\phi_l + \phi_l\grad\chi^n_{jk} - g}^2}{\dddmes} \\
+		&\leq \integral{\ddom}{\abs{\grad\phi_l - g}^2}{\tlambda_{jk}} + \sup\abs{\grad\chi^n_{jk}}^2\integral{\ddom}{\abs{\phi_l}^2}{\tlambda_{jk}} \\
+		&\rightarrow 0+0 = 0.
+	\end{align*}
+	[N.B: Full working on paper, dated 15/4/20].
+	Hence, we have found an appropriate approximating sequence $\varphi_l$, demonstrating that $g\in\gradZero{\ddom}{\dddmes}$.
+\end{proof}	
+
+And we also will want this corollary which follows immediately from the Extension lemma \ref{lem:ExtLemmaGradZeroCompositeMeasure}.
+\begin{cory}
+	Let $G=\bracs{V,E}$ be an embedded graph in $\ddom\subset\reals^2$, and suppose that for some edge $I_{jk}\in E$ the function $g$ satisfies
+	\begin{align*}
+		g\cdot e_{jk} =0 &\quad\tlambda_{jk}\text{-a.e.}, \\
+		\bracs{g\cdot n_{jk}}\vert_{I_{jk}} &\in\ltwo{\ddom}{\lambda_{jk}}, \\
+		\bracs{g\cdot n_{jk}}\vert_{\ddom\setminus I^n_{jk}} =0 &\quad\lambda_2\text{-a.e.}
+	\end{align*}
+	Then
+	\begin{align*}
+		g\in\gradZero{\ddom}{\dddmes}.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	These properties ensure that $g\in\gradZero{\ddom}{\tlambda_{jk}}$, and hence we can then apply lemma \ref{lem:ExtLemmaGradZeroCompositeMeasure}.
+\end{proof}
+
+We can now characterise the set $\gradZero{\ddom}{\dddmes}$.
+\begin{theorem}[Characterisation of $\gradZero{\ddom}{\dddmes}$] \label{thm:CharGradZeroGraphCompositeMeasure}
+	Let $G=\bracs{V,E}$ be an embedded graph in $\ddom\subset\reals^2$, with singular measure $\ddmes$.
+	Then the following are all equivalent:
+	\begin{enumerate}[(i)]
+		\item $g\in\gradZero{\ddom}{\dddmes}$,
+		\item $g\in\gradZero{\ddom}{\lambda_2}$, and $g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E$,
+		\item $g$ is such that
+		\begin{align*}
+			g\cdot e_{jk} = 0 &\quad \forall I_{jk}\in E, \\
+			\bracs{g\cdot n_{jk}}\vert_{I_{jk}} \in \ltwo{\ddom}{\lambda_{jk}} &\quad \forall I_{jk}\in E, \\
+			g\cdot n_{jk} = 0 \ \lambda_2\text{-a.e.} &\quad \forall I_{jk}\in E.
+		\end{align*}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	(i) $\implies$ (ii) is the result of lemma \ref{lem:GradZeroCompositeImpliesGradZeroOthers}, and characterisation of $\gradZero{\ddom}{\ddmes}$. \newline
+	(ii) $\implies$ (iii) is the result of characterisation of $\gradZero{\ddom}{\lambda_{jk}}$ combined with $g\in\gradZero{\ddom}{\lambda_2}$. \newline
+	(iii) $\implies$ (i): define, for each $n\in\naturals$,
+	\begin{align*}
+		g_n &= \sum_{v_j\in V}\sum_{j\conLeft k} \eta^n_j \eta^n_k g_{jk}.
+	\end{align*}
+	Each $\eta^n_j \eta^n_k g_{jk}$ satisfies the Extension lemma \ref{lem:ExtLemmaGradZeroCompositeMeasure}, and thus is an element of $\gradZero{\ddom}{\dddmes}$.
+	As $\gradZero{\ddom}{\dddmes}$ is a linear subspace of $\ltwo{\ddom}{\dddmes}^2$, we have that $g_n\in\gradZero{\ddom}{\dddmes}$ for each $n\in\naturals$.
+	Furthermore, as $\gradZero{\ddom}{\dddmes}$ is closed, $\lim_{n\rightarrow\infty}g_n\in\gradZero{\ddom}{\dddmes}$ if it exists at all.
+	But because $\eta^n_j \rightarrow 1$ in $\ltwo{\ddom}{\dddmes}$ (lemma \ref{lem:EtaConvCompositeMeasureCase}), we can conclude that $g_n\rightarrow g \toInfty{n}$, and so we are done.
+\end{proof}
+
+\end{document}

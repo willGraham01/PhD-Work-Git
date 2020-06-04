@@ -1,0 +1,207 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom\subset\reals^2$ be our domain and let $\graph=\bracs{V,E}$ be an embedded graph in $\ddom$.
+For each edge $I_{jk}=\bracs{v_j,v_k}\in E$ with $v_j,v_k\in V$ we write $\lambda_{jk}$ for the singular measure supported on the edge $I_{jk}$, and we use $\ddmes$ to denote the singular measure supported on the graph $\graph$, where
+\begin{align*}
+	\ddmes\bracs{B} &= \sum_{I_{jk}\in E}\lambda_{jk}\bracs{B}.
+\end{align*}
+The edge $I_{jk}$ is directed from $v_j$ to $v_k$, and we denote by $e_{jk}$ the unit vector parallel to $I_{jk}$ in this direction, and $n_{jk}$ the unit normal to $I_{jk}$.
+
+\begin{convention}[Notation for Composite Measures] \label{conv:CompMeasNotation}
+	If $\ddmes$ is a singular measure supporting a graph $\graph$ (including a single-edge graph, or segment), embedded in $\ddom\subset\reals^2$, use an overhead tilde to denote the composite measure of $\graph$ in $\ddom$, so
+	\begin{align*}
+		\dddmes(B) &= \lambda_2(B) + \ddmes(B).
+	\end{align*}
+\end{convention}
+
+\begin{theorem}[Characterisation of $\gradZero{\ddom}{\dddmes}$] \label{thm:CharGradZeroGraphCompositeMeasure}
+	Let $G=\bracs{V,E}$ be an embedded graph in $\ddom\subset\reals^2$, with singular measure $\ddmes$.
+	Then the following are all equivalent:
+	\begin{enumerate}[(i)]
+		\item $g\in\gradZero{\ddom}{\dddmes}$,
+		\item $g\in\gradZero{\ddom}{\lambda_2}$, and $g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E$,
+		\item $g$ is such that
+		\begin{align*}
+			g\cdot e_{jk} = 0 &\quad \forall I_{jk}\in E, \\
+			\bracs{g\cdot n_{jk}}\vert_{I_{jk}} \in \ltwo{\ddom}{\lambda_{jk}} &\quad \forall I_{jk}\in E, \\
+			g\cdot n_{jk} = 0 \ \lambda_2\text{-a.e.} &\quad \forall I_{jk}\in E.
+		\end{align*}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	There is a proof of this in the document CompositeMeasures.tex.
+\end{proof}
+Note that theorem \ref{thm:CharGradZeroGraphCompositeMeasure} essentially says that any gradient of zero is equal to the zero function away from the graph $\graph$, and on $\graph$ adheres to the same structure as the set $\gradZero{\ddom}{\ddmes}$.
+
+\begin{prop}[Membership of Sobolev spaces with smaller domains] \label{prop:MembershipSmallerDomains}
+	Let $D\subset\ddom$ be such that $D\cap\graph = \emptyset$.
+	Then if $u\in\gradSob{\ddom}{\dddmes}$ with gradient $\grad_{\dddmes}u$, we have that
+	\begin{align*}
+		u\in \gradSob{D}{\lambda_2} = \gradSob{D}{\dddmes},
+	\end{align*}
+	and the gradient of $u$ (in the $\gradSob{D}{\lambda_2}$-sense) is simply the restriction of $\grad_{\dddmes}u$ to the set $D$.
+\end{prop}
+\begin{proof}
+	Since $u\in\gradSob{\ddom}{\dddmes}$ we have that there exist smooth functions $\phi_n$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\dddmes}^2} \grad_{\dddmes}u. \\
+		\implies \integral{\ddom}{\abs{\phi_n-u}^2}{\dddmes} \rightarrow 0, 
+		&\quad \integral{\ddom}{\abs{\grad\phi_n - \grad_{\dddmes}u}^2}{\dddmes} \rightarrow 0 \toInfty{n}.
+	\end{align*}
+	But then clearly
+	\begin{align*}
+		\integral{D}{\abs{\phi_n - u}^2}{\lambda_2} 
+		&\leq \integral{\ddom}{\abs{\phi_n-u}^2}{\dddmes} \rightarrow 0, \\
+		\integral{D}{\abs{\grad\phi_n - \grad_{\dddmes}u}^2}{\lambda_2} 
+		&\leq \integral{\ddom}{\abs{\grad\phi_n - \grad_{\dddmes}u}^2}{\dddmes} \rightarrow 0.
+	\end{align*}
+	Thus,
+	\begin{align*}
+		\phi_n \lconv{\ltwo{D}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{D}{\lambda_2}^2} \grad_{\dddmes}u,
+	\end{align*}
+	and so we have that $u\in\gradSob{D}{\lambda_2}$.
+\end{proof}
+
+\begin{convention}[] \label{conv:ConsistencyOfConstructionH1}
+Our construction of $\gradSob{D}{\lambda_2}$ uses approximating sequences to define (classes of) functions and their gradients, which is akin to the ``$W^{1,2}$" construction of classical Sobolev spaces.
+When the measure is Lebesgue, what we denote by $\gradSob{D}{\lambda_2}$ coincides with $W^{1,2}\bracs{D}$.
+This is because of the ``$H^1 = W^{1,2}$" theorem from Sobolev space theory, showing that we have $\gradSob{D}{\lambda_2}$ coinciding with the classical $H^1\bracs{D}$, where derivatives are defined as those functions which satisfy an ``integration-by-parts" style result when integrated against each member of a suitable class of test functions. \newline
+
+However we can also show that if $\bracs{u,\grad_{\dddmes} u}\in\gradSob{\ddom}{\ddmes}$, then we also have $\bracs{u,\grad_{\dddmes} u}\in\gradSob{\ddom}{\lambda_2}$.
+However given the result of theorem \ref{thm:CharGradZeroGraphCompositeMeasure}, we know that $\grad_{\dddmes} u$ is \emph{almost everywhere} equal to $\grad_{\lambda_2}u = \grad u$ with respect to the $\lambda_2$-measure, and thus $\grad_{\dddmes} u$ is a representative of $\grad u$.
+\end{convention}
+
+\chapter*{Continuity Result}
+Suppose that the graph $\graph$ consists of one edge $I=I_{jk}$.
+In this section we replace the usual subscript $jk$ notation on $e_{jk}, n_{jk}$ and $\lambda_{jk}$ with a subscript $I$, and note that $\ddmes = \lambda_I$.
+Suppose further (for ease) that this edge lies parallel to the $x_1$-axis (although rotating the edge has minimal impact on the following result and proof).
+We aim to prove that a function $u\in\gradSob{\ddom}{\tlambda_I}$ ``is continuous across the edge $I$", by which we mean to show that the function $u$ has a representative that is continuous when approaching $I$ in the directions $n_I$ and $-n_I$.
+
+\begin{theorem}
+	Let $u\in\gradSob{\ddom}{\tlambda_I}$.
+	Then $u$ has a representative that is continuous across the edge $I$ in the direction $\pm n_I$.
+\end{theorem}
+\begin{proof}
+	Take an approximating sequence
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} \grad_{\tlambda_I}u.
+	\end{align*}
+	Let $\psi$ be a smooth function with support $D\subset\ddom$, where $D$ is connected and $D\setminus I$ is disconnected, but has precisely two connected components (essentially $I$ splits the support of $D$ in two).
+	As $I$ is assumed parallel to the $x_1$ axis, denote the parts of $D$ that lie ``above" and ``below" $I$ by
+	\begin{align*}
+		D^+ &:= \clbracs{x=\bracs{x_1,x_2}\in D \ \vert \ x_2>y_2 \ \forall y=\bracs{y_1,y_2}\in I }, \\
+		D^- &:= \clbracs{x=\bracs{x_1,x_2}\in D \ \vert \ x_2<y_2 \ \forall y=\bracs{y_1,y_2}\in I }.
+	\end{align*}
+	This is illustrated in figure \ref{fig:Diagram_CompositeMeasureEdgeContinuity} for clarity.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=1.0]{Diagram_CompositeMeasureEdgeContinuity.pdf}
+		\caption{\label{fig:Diagram_CompositeMeasureEdgeContinuity}}
+	\end{figure}
+	By proposition \ref{prop:MembershipSmallerDomains}, we know that $u\in\gradSob{D^+}{\lambda_2}$ and $u\in\gradSob{D^-}{\lambda_2}$.
+	As these are Sobolev spaces with respect to the Lebesgue measure (``classical Sobolev spaces") we know that
+	\begin{align*}
+		\partial_j\phi_n \rightarrow \partial_j u &\quad\text{in } \ltwo{D^+}{\lambda_2} \text{ and } \ltwo{D^-}{\lambda_2},
+	\end{align*}
+	for each $j\in\clbracs{1,2}$.
+	Let us consider
+	\begin{align*}
+		\integral{\ddom}{\psi\partial_j\phi_n}{\lambda_2}
+		&= \integral{D^+}{\psi\partial_j\phi_n}{\lambda_2} + \integral{D^-}{\psi\partial_j\phi_n}{\lambda_2} \\
+		&= -\integral{D^+}{\phi_n\partial_j\psi}{\lambda_2} -\integral{D^-}{\phi_n\partial_j\psi}{\lambda_2} + \integral{\partial D^+}{\phi_n\psi n^+}{s} + \integral{\partial D^-}{\phi_n\psi n^-}{s},
+	\end{align*}
+	where $n_j^+$ and $n_j^-$ are the $j^{\text{th}}$ components of the outward-facing normals to the boundaries of $D^+$ and $D^-$, respectively.
+	We can perform this integration by parts due to $u$'s membership of $\gradSob{D^+}{\lambda_2}$ and $\gradSob{D^-}{\lambda_2}$, and convention \ref{conv:ConsistencyOfConstructionH1}.
+	We can also note that the support of $\psi$ causes the integrand of the boundary integrals to be zero except on the portion of the boundary that intersects the segment $I$, and thus
+	\begin{align*}
+		\integral{\ddom}{\psi\partial_j\phi_n}{\lambda_2}
+		&= -\integral{D^+}{\phi_n\partial_j\psi}{\lambda_2} -\integral{D^-}{\phi_n\partial_j\psi}{\lambda_2} + \integral{D \cap I}{\phi_n\psi n^+}{s} + \integral{D \cap I}{\phi_n\psi n^-}{s}.
+	\end{align*}
+	If we now pass to the limit $n\rightarrow\infty$ in the above equation, and use the compactness of the embeddings
+	\begin{align*}
+		\gradSob{D^+}{\lambda_2}\hookrightarrow\ltwo{\partial D^+}{s}, &\quad \gradSob{D^-}{\lambda_2}\hookrightarrow\ltwo{\partial D^-}{s},
+	\end{align*}
+	we obtain
+	\begin{align*}
+		\integral{\ddom}{\psi\partial_j u}{\lambda_2}
+		&= -\integral{D^+}{u\partial_j\psi}{\lambda_2} -\integral{D^-}{u\partial_j\psi}{\lambda_2} + \integral{D \cap I}{u^{+}\psi n^+}{s} + \integral{D \cap I}{u^{-}\psi n^-}{s},
+	\end{align*}
+	where $u^+$ (respectively $u^-$) is the trace of $u\vert_{D^+}$ (respectively $u\vert_{D^-}$) onto it's boundary.
+	It will be more useful to us to write
+	\begin{align*}
+		\integral{\ddom}{\psi\partial_j u}{\lambda_2}
+		&= \integral{D^+}{\psi\partial_j u}{\lambda_2} + \integral{D^-}{\psi\partial_j u}{\lambda_2},
+	\end{align*}
+	so that we have
+	\begin{align*}
+		\integral{D^+}{\psi\partial_j u}{\lambda_2} + \integral{D^-}{\psi\partial_j u}{\lambda_2}
+		&= -\integral{D^+}{u\partial_j\psi}{\lambda_2} -\integral{D^-}{u\partial_j\psi}{\lambda_2} \\
+		&\quad + \integral{D \cap I}{u^{+}\psi n^+}{s} + \integral{D \cap I}{u^{-}\psi n^-}{s} \\
+		&= -\integral{D^+}{u\partial_j\psi}{\lambda_2} -\integral{D^-}{u\partial_j\psi}{\lambda_2} \\
+		&\quad + \integral{D \cap I}{\psi n^+\bracs{u^{+} - u^{-}}}{s}
+	\end{align*}
+	Here we would like to invoke the fact that $u$ is an element of $\gradSob{D^+}{\lambda_2}$ and $\gradSob{D^-}{\lambda_2}$, then use convention \ref{conv:ConsistencyOfConstructionH1} to deduce that
+	\begin{align*}
+		\integral{D^+}{\psi\partial_j u}{\lambda_2} &= -\integral{D^+}{u\partial_j\psi}{\lambda_2}, \\
+		\integral{D^+}{\psi\partial_j u}{\lambda_2} &= -\integral{D^+}{u\partial_j\psi}{\lambda_2}
+	\end{align*}
+	however the function $\psi$ is of the wrong class (it has support $D$ which includes the a portion of the segment $I$, which in turn is part of the boundary of $D^+$ and $D^-$).
+	\tstk{Can we find functions that do this and still ensure the validity of our argument in the limit?}
+	To this end, we would be required to find a suitable sequence of (smooth) functions $\psi_l$ that have support (contained in) $D^+ \cup D^-$ such that $\psi_l\rightarrow\psi$.
+	Then we would repeat the above steps, but beginning from
+	\begin{align*}
+		\integral{\ddom}{\psi_l\partial_j\phi_n}{\lambda_2}
+	\end{align*}
+	and reaching the conclusion that
+	\begin{align} \label{eq:TempLabel1}
+		\integral{D^+}{\psi_l\partial_j u}{\lambda_2} + \integral{D^-}{\psi_l\partial_j u}{\lambda_2}
+		&= -\integral{D^+}{u\partial_j\psi_l}{\lambda_2} -\integral{D^-}{u\partial_j\psi_l}{\lambda_2} \\
+		&\quad + \integral{D \cap I}{\psi_l n^+\bracs{u^{+} - u^{-}}}{s}.
+	\end{align}
+	Then
+	\begin{align*}
+		\integral{D^+}{\psi_l\partial_j u}{\lambda_2} &= -\integral{D^+}{u\partial_j\psi_l}{\lambda_2}, \\
+		\integral{D^+}{\psi_l\partial_j u}{\lambda_2} &= -\integral{D^+}{u\partial_j\psi_l}{\lambda_2},
+	\end{align*}
+	would hold for each $l\in\naturals$, and thus passing to the limit $l\rightarrow\infty$ would let us conclude from \eqref{eq:TempLabel1} that
+	\begin{align*}
+		0 = \integral{D \cap I}{\psi n^+\bracs{u^{+} - u^{-}}}{s}.
+	\end{align*}
+	This would then hold for each smooth $\psi$ such that $\supp\bracs{\psi}\subset\ddom$, and thus we could conclude by (a version of) the fundamental lemma of calculus of variations that $u^{+} - u^{-}=0$, and thus $u^+ = u^-$.
+	Hence, $u$ would have a representative that is continuous across the edge $I$ when approaching in the directions $\pm n_I$.
+\end{proof}
+
+Presenting this proof in this way means that this method also suffices as a proof when the segment $I$ is rotated (it just means that defining $D^+$ and $D^-$ involves a bit more notation).
+As for when $\graph$ consists of multiple edges, I guess we can just repeat the above argument for each edge (as we can always ensure that the support of our function $\psi$ only intersects precisely one edge for finite graphs).
+
+
+\end{document}

@@ -1,0 +1,27 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+
+\input{../Preamble/PreambleMaths.tex}
+	
+\begin{document}
+
+\begin{tikzpicture}
+	
+	%domain outline
+	\draw (0,0) rectangle (5,5);
+	\node[anchor=north west] at (0,5) {$\ddom$};
+	%edge I
+	\draw[thick] (1,2.5) -- (4,2.5);
+	\node[anchor=north west] at (4,2.5) {$I$};
+	%support of phi
+	\draw[blue, dashed] (1.5,1.5) rectangle (3.5,3.5);
+	\node[blue, anchor=north] at (2.5,1.5) {$\mathrm{supp}\bracs{\psi}$};
+	%split domains D+, D-
+	\node[blue, anchor=south] at (2.5, 2.75) {$D^+$};
+	\node[blue, anchor=south] at (2.5, 1.75) {$D^-$};
+\end{tikzpicture}
+
+\end{document}
