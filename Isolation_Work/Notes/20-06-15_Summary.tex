@@ -1,0 +1,155 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+\usepackage{tikz}
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newtheorem{conj}[theorem]{Conjecture}
+\theoremstyle{plain}
+
+\newcommand{\tlambda}{\tilde{\lambda}}
+\newcommand{\C}[1]{\mathrm{C}^1\bracs{#1}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\section*{Regarding Regularity}
+
+We discussed in the Monday meeting that there is a result for classical Sobolev spaces as follows:
+\begin{theorem} \label{thm:MeetingThm}
+	Using the setup in Figure \ref{fig:MeetingSituation}, suppose $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\lambda_2}
+	\end{align*}
+\end{theorem}
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (3,3);
+		\draw[thick, red] (0,1.5) -- (3,1.5);
+		\node[anchor=east] at (0,3) {$\ddom = \overline{\ddom_1} \cup \overline{\ddom_2}$};
+		\node[align=center] at (1.5,0.75) {$\ddom_1$};
+		\node[align=center] at (1.5,2.25) {$\ddom_2$};
+		\node[red, anchor=west] at (3,1.5) {$I = \partial\ddom_1 \cap \partial\ddom_2$};
+	\end{tikzpicture}
+	\caption{\label{fig:MeetingSituation}}
+\end{figure}
+And we then wondered whether something similar to this would hold for our composite measure Sobolev spaces, again to attempt to address where (if anywhere) continuity of our functions $u$ across the segment $I$ should come from.
+That started, the obvious place to look was at trying to prove the following:
+\begin{conj} \label{conj:CompMeasRegularity}
+	Using the setup in Figure \ref{fig:MeetingSituation}, suppose $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Let $\tlambda_I = \lambda_2 + \lambda_I$ be the composite measure.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\tlambda_I}
+	\end{align*}
+\end{conj}
+
+\subsection*{Proof of the Right-Directed implication of conjecture \ref{conj:CompMeasRegularity}}
+The right-directed implication holds fairly easily; for explicitness we work with the pair $\bracs{u,v}$ in these Sobolev spaces.
+Given $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ there exists a sequence of smooth functions $\phi_n$ such that
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} v.
+\end{align*}
+In particular,
+\begin{align*}
+	\integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}, \\
+	\integral{\ddom}{\abs{\grad\phi_n - v}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\grad\phi_n - v}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}.
+\end{align*}
+Thus,
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} v,
+\end{align*}
+and so $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$.
+Thus, by theorem \ref{thm:MeetingThm} we ave that $u\in\mathrm{C}\bracs{\overline{\ddom}}$. \newline
+
+This proof of the right-directed implication makes me rather uneasy though - at no point do I need to consider what is happening along the segment $I$ (which is additional information that we are provided by $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ that we haven't used).
+It also bypasses another point - to prove theorem \ref{thm:MeetingThm} we use the relevant integral identities for distributional derivatives (or show that they hold for the reverse implication).
+Here, I begin with a convergent sequence, show that it belongs to a more familiar space, and then am essentially swapping to using the integral identities to complete the proof.
+This means that, when attempting to prove the converse implication, we need to find a way to go from an integral identity to finding a sequence that converges in the right norm.
+
+\subsection*{Attempt to prove the Left-Directed implication of conjecture \ref{conj:CompMeasRegularity}}
+
+Since we are starting with $u\in\mathrm{C}\bracs{\overline{\ddom}}$ as well as $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$, we can use theorem \ref{thm:MeetingThm} to deduce that $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$.
+We know that $v = \grad u$ $\lambda_2$-almost everywhere as well (as we deduce this in the proof of theorem \ref{thm:MeetingThm}).
+Now we can transition to a sequence argument - as $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$ we can use ``$H=W$" to deduce that there is a smooth sequence of functions $\phi_n$ such that
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} v.
+\end{align*}
+The question now is how do we obtain a sequence of functions that converges in $\ltwo{\ddom}{\tlambda_I}$?
+Our candidates $\phi_n$ can always misbehave on $I$ so we can't naively assume that $\phi_n$ will do.
+We also can't use the trick of extracting a subsequence $\phi_{n_k}$ that converges pointwise $\lambda_2$-almost-everywhere, because $I$ is a set of zero $\lambda_2$-measure.
+As such, if we want to show that $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$ for some $w$, we need to come up with a candidate for both of $w$ on $\ddom\setminus I$, and $w\vert_I$.
+The obvious candidate is to take $w=v$ on $\ddom\setminus I$, given the sequence that we obtain above and so that $w=v$ $\lambda_2$-almost everywhere.
+Thinking up what $w\vert_I$ should be is a lot trickier, mostly because we need to decide what to assign when we have a function that looks like the one illustrated in figure \ref{fig:ContButNonDiff}.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-3,0) -- (3,0);
+		\draw[->] (0,0) -- (0,3);
+		\node[anchor=north] at (0,0) {$I$};
+		\node[anchor=north] at (-2.5,0) {$\ddom_1$};
+		\node[anchor=north] at (2.5,0) {$\ddom_2$};
+		\node[anchor=south] at (0,3) {$u$};
+		\draw (-3,2) -- (0,1) -- (3,3);
+	\end{tikzpicture}
+	\caption{\label{fig:ContButNonDiff}}
+\end{figure}
+These aren't a problem for theorem \ref{thm:MeetingThm}, because our distributional derivative that we look to define can be arbitrary on the segment $I$; but in this case we \textit{have to} care about the value of our ``gradient" $w$ on $I$.
+At this point, I have a couple of things that might be worth investigating regarding this matter:
+\begin{itemize}
+	\item Let $v^{(1)}$ and $v^{(2)}$ be the traces of $\grad u$ onto $I$ from $\ddom_1$ and $\ddom_2$ respectively.
+	Is $v^{(1)} - v^{(2)}$ a gradient of zero in the $\lambda_I$ sense?
+	The idea being that if it is, then the traces $v^{(1)}$ and $v^{(2)}$ might still be consistent along the segment $I$, and hence can still provide a gradient here (in the $\lambda_I$ sense).
+	If it is, is the function
+	\begin{align*}
+		z &= \begin{cases} v^{(1)} - v^{(2)} & x\in I, \\ 0 & x\in\ddom\setminus I \end{cases}
+	\end{align*}
+	a gradient of zero in the $\tlambda_I$ sense?
+	If it is, then our candidate for $w$ is now $w = v - z$.
+	We already have the $\phi_n$ that relate to $v$, and as $z\in\gradZero{\ddom}{\tlambda_I}$ we can find another sequence of functions $\varphi_n$ with the usual convergence properties.
+	Then we expect the sequence $\psi_n = \phi_n - \varphi_n$ to be the approximating sequence we need, to show that $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$.
+	There is still is issue of showing that $\phi_n-\varphi_n$ is behaving as we expect on $I$ though.
+	\item The second question I have is more general - can we say anything at all about the sequence $\phi_n$ or $\grad\phi_n$ on $I$, or about what it does in the $\ltwo{\ddom}{\lambda_I}$ norm?
+	For example, if we could show it was Cauchy we would know it had a limit in this norm, which would be our candidate for $w\vert_{I}$.
+	Alternatively, if it was a bounded sequence in the appropriate $\mathrm{L}^2$-norm, then it might have a convergent subsequence, which we could use instead to make the same conclusion.
+	However these approaches are both hindered by the fact that all we have to work with regarding the $\phi_n$ are that they are smooth and converge in $\ltwo{\ddom}{\lambda_2}$, so no ``nice" behaviour is guaranteed on $I$ (or if it is, I'm missing why).
+\end{itemize}
+
+\section*{More general investigations into $\gradSob{\ddom}{\tlambda_I}$}
+The idea at the end of the last section also ties into the more general investigation about $\gradSob{\ddom}{\tlambda_I}$.
+We know that $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ implies that $\bracs{u,v}\in\gradSob{\ddom}{\lambda_I}$ and $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$, however I've been unsuccessful in proving the converse.
+Indeed, for the converse to hold I have come to the conclusion that we would require the existence of a sequence of smooth functions $\theta_n$ such that
+\begin{align*}
+	\theta_n \rightarrow \charFunc{I} &\text{ in } \ltwo{\ddom}{\tlambda_I}, \\
+	\grad\theta_n \rightarrow 0 &\text{ in } \ltwo{\ddom}{\tlambda_I}^2.
+\end{align*}
+With $\charFunc{I}$ being the characteristic function of the segement $I$,
+\begin{align*}
+	\charFunc{I} &= \begin{cases} 1 & x\in I, \\ 0 & x\not\in I. \end{cases}
+\end{align*}
+The reason being we can then take the approximating sequences we get from $\bracs{u,v}\in\gradSob{\ddom}{\lambda_I}$ and $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$ and then add them together, weighted by the $\theta_n$.
+However I am also unconvinced as to whether such a sequence of functions can ever exist; convergence to $\charFunc{I}$ necessitates a steep jump in the gradients of $\theta_n$, so how can they ever converge to 0?
+But maybe that's because we need the additional information that we (may or may not have!) in the above case; if we know that $\bracs{u,v}\in\gradSob{\ddom}{\lambda_I}$ and $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$, \textit{and} that $v^{(1)}-v^{(2)}$ is a gradient of zero, we can counteract this?
+
+\end{document}

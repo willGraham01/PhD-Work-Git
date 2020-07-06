@@ -1,0 +1,275 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+\usepackage{tikz}
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newtheorem{conj}[theorem]{Conjecture}
+\theoremstyle{plain}
+
+\newcommand{\tlambda}{\tilde{\lambda}}
+\newcommand{\C}[1]{\mathrm{C}^1\bracs{#1}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\section*{Setup}
+Throughout, we will make a few assumptions on the geometry of our domain (although the arguments we present should easily generalise).
+Let $\ddom$ be a domain in $\reals^2$; such that the open sets $\ddom_1$ and $\ddom_2$ partition $\ddom$ in the sense that $\ddom_1\cap\ddom_2=\emptyset$, and $\overline{\ddom} = \overline{\ddom}_1\cup\overline{\ddom}_2$.
+We take
+\begin{align*}
+	\ddom = \bracs{0,1}^2, &\quad \ddom_1 = \bracs{0,1}\times\bracs{0,\recip{2}},
+	\quad \ddom_2 = \bracs{0,1}\times\bracs{\recip{2},1}, \\
+	\implies &I = \sqbracs{0,1}\times\clbracs{\recip{2}}.	
+\end{align*}
+So we have the setup that is sketched in figure \ref{fig:MeetingSituation}, and we also define $\lambda_I$ as the singular measure supported on $I$, and $\lambda_2$ is the 2D-Lebesgue measure on $\ddom$.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (3,3);
+		\draw[thick, red] (0,1.5) -- (3,1.5);
+		\node[anchor=east] at (0,3) {$\ddom = \overline{\ddom}_1 \cup \overline{\ddom}_2$};
+		\node[align=center] at (1.5,0.75) {$\ddom_1$};
+		\node[align=center] at (1.5,2.25) {$\ddom_2$};
+		\node[red, anchor=east] at (0,1.5) {$I = \sqbracs{0,1}\times\clbracs{\recip{2}}$};
+		\draw[->] (5,0.5) -- (5,2.5) node[anchor=south] {$x_2$};
+		\draw[->] (5,0.5) -- (7,0.5) node[anchor=west] {$x_1$};
+	\end{tikzpicture}
+	\caption{\label{fig:MeetingSituation}}
+\end{figure}
+The composite measure on $\ddom$ is then $\tlambda_I = \lambda_2 + \lambda_I$. \newline
+
+The following theorem is given a placeholder reference; it is a result that is known for ``classical" Sobolev spaces that we may need later, and will serve as motivation for what we are trying to prove.
+\begin{theorem} \label{thm:MeetingThm}
+	Under the standing assumptions on $\ddom$, suppose that $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\lambda_2}
+	\end{align*}
+\end{theorem}
+
+We now look at the following conjecture for our composite Sobolev spaces, motivated by theorem \ref{thm:MeetingThm}.
+\begin{conj} \label{conj:CompMeasRegularity}
+	Under our standing assumptions on $\ddom$, suppose $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\tlambda_I}
+	\end{align*}
+\end{conj}
+
+We will also require the following lemma for the proof that follows.
+\begin{lemma} \label{lem:ConvolutionConvergence}
+	Take the standing assumptions on $\ddom$, and suppose that $u_n\in\C{\overline{\ddom}}$ is such that
+	\begin{align*}
+		u_n = u_n\bracs{x_1,\recip{2}}, &\quad \mathrm{dist}\bracs{x,I}\leq\recip{n}.
+	\end{align*}	 
+	Then there exists a sequence of smooth functions $\psi_l^n\in\smooth{\overline{\ddom}}$ such that
+	\begin{align*} \labelthis\label{eq:WantedConvoConvergences}
+		\psi_l^n \lconv{\ltwo{\ddom}{\tlambda_I}} u_n, 
+		\quad \grad\psi_l^n \lconv{\ltwo{\ddom}{\tlambda_I}^2} \grad u_n,
+		\quad \toInfty{l}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $\delta_l^n$ be a non-negative smooth function such that
+	\begin{align*}
+		\supp\bracs{\delta_l^n} = \mathrm{B}_{\recip{2l}}\bracs{0},
+		&\quad \integral{\ddom}{\delta_l^n}{\lambda_2} = 1.
+	\end{align*}
+	Define
+	\begin{align*}
+		\psi_l^n &= \integral{\ddom}{\delta_l^n\bracs{x-y}u_n\bracs{y}}{\lambda_2\bracs{y}}.
+	\end{align*}
+	for each $l\in\naturals$. 
+	Note that $\psi_l^n$ is smooth as it is the result of a convolution with a smooth function $\delta_l^n$.
+	It remains for us to demonstrate that \eqref{eq:WantedConvoConvergences} holds, to which end we need to demonstrate the necessary convergences in both $\ltwo{\ddom}{\lambda_2}$ and $\ltwo{\ddom}{\lambda_I}$ (and similarly for the sequences of gradients $\grad\psi_l^n$).
+	We note however that the $\ltwo{\ddom}{\lambda_2}$ convergences are simply standard results for smoothing sequences using convolutions, and so it remains to consider the $\ltwo{\ddom}{\lambda_I}$ convergences.
+	To this end, let $g\bracs{x_1}=\grad u_n\bracs{x_1,\recip{2}}$, and note that
+	\begin{align*}
+		\grad u_n\bracs{x} = g\bracs{x_1} &\quad \mathrm{dist}\bracs{x,I}\leq\recip{n}.
+	\end{align*}
+	Then for $x=\bracs{x_1,\recip{2}}\in I$ (and $l$ suitably small to allow $0\leq x_1\pm\recip{2l}\leq1$),
+	\begin{align*}
+		\psi_l^n\bracs{x} &= \integral{\ddom}{\delta_l^n\bracs{x_1-y_1,\recip{2}-y_2}u_n\bracs{y_1,y_2}}{\lambda_2\bracs{y}} \\
+		&= \integral{\mathrm{B}_{\recip{2l}}\bracs{x}}{\delta_l^n\bracs{x_1-y_1,\recip{2}-y_2}u_n\bracs{y_1,y_2}}{\lambda_2\bracs{y}} \\
+		&= \integral{\mathrm{B}_{\recip{2l}}\bracs{x}}{\delta_l^n\bracs{x_1-y_1,\recip{2}-y_2}u_n\bracs{y_1,\recip{2}}}{\lambda_2\bracs{y}} &\quad(\text{for } l\geq n) \\
+		&= \int_{x_1-\recip{2l}}^{x_1+\recip{2l}} \bracs{\int_{\recip{2}-R\bracs{y_1}}^{\recip{2}+R\bracs{y_1}} \delta_l^n\bracs{x_1-y_1,\recip{2}-y_2} \ \md\lambda_1\bracs{y_2} } u_n\bracs{y_1,\recip{2}} \ \md \lambda_1\bracs{y_1} \\
+		&= \int_{x_1-\recip{2l}}^{x_1+\recip{2l}} \bracs{\int_{-R\bracs{y_1}}^{R\bracs{y_1}} \delta_l^n\bracs{x_1-y_1,y_2} \ \md\lambda_1\bracs{y_2} } u_n\bracs{y_1,\recip{2}} \ \md \lambda_1\bracs{y_1}
+	\end{align*}
+	where $R\bracs{y_1} = \sqrt{\recip{4l^2}-y_1^2}$.
+	The function
+	\begin{align*}
+		\gamma_l^n\bracs{t} &= \int_{-R\bracs{t}}^{R\bracs{t}} \delta_l^n\bracs{x_1-t,y_2} \ \md\lambda_1\bracs{y_2},
+	\end{align*}
+	is smooth with compact support $\supp\bracs{\gamma_l^n} = \sqbracs{x_1-\recip{2l}, x_1+\recip{2l}}$, so we also observe that
+	\begin{align*}
+		\psi_l^n\bracs{x_1,\recip{2}} &= \int_0^{\abs{I}} \gamma_l^n\bracs{x_1-t}u_n\bracs{t,\recip{2}} \ \md t.
+	\end{align*}
+	Namely $\psi_l^n = \gamma_l^n \star u_n$ on $I$, and thus
+	\begin{align*}
+		\psi_l^n \lconv{\ltwo{\interval{I}}{t}} u_n &\quad \toInfty{l}
+	\end{align*}
+	as this is a smoothing technique in one dimension.
+	However 
+	\begin{align*}
+		\psi_l^n \lconv{\ltwo{\interval{I}}{t}} u_n &\implies \psi_l^n \lconv{\ltwo{\ddom}{\lambda_I}} u_n,
+	\end{align*}
+	and thus we have the required convergence for the functions $\psi_l^n$.
+	For the sequence of gradients we can follow a similar argumentative technique to deduce that $\psi_l^n = \gamma_l^n \star g$ on $I$, and thus
+	\begin{align*}
+		\grad\psi_l^n \lconv{\ltwo{\interval{I}}{t}^2} g &\quad \toInfty{l}, \\
+		\implies \grad\psi_l^n \lconv{\ltwo{\ddom}{\lambda_I}^2} g &\quad \toInfty{l},
+	\end{align*}
+	which completes the proof.
+\end{proof}
+
+\subsection*{Proof of the Left-Directed ($\Leftarrow$) implication of conjecture \ref{conj:CompMeasRegularity}}
+The right-directed implication holds fairly easily; for explicitness we work with the pair $\bracs{u,v}$ in these Sobolev spaces.
+Given $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ there exists a sequence of smooth functions $\phi_n$ such that
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} v.
+\end{align*}
+In particular,
+\begin{align*}
+	\integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}, \\
+	\integral{\ddom}{\abs{\grad\phi_n - v}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\grad\phi_n - v}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}.
+\end{align*}
+Thus,
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} v,
+\end{align*}
+and so $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$.
+Thus, by theorem \ref{thm:MeetingThm} we ave that $u\in\mathrm{C}\bracs{\overline{\ddom}}$. \newline
+
+\subsection*{Proof of the Right-Directed ($\Rightarrow$) implication of conjecture \ref{conj:CompMeasRegularity}}
+Our approach to this direction of the implication is as follows;
+\begin{enumerate}
+	\item Demonstrate that the difference in the values of $\grad u$ from $\ddom_1$ and $\ddom_2$ on $I$ are consistent in the direction parallel to $I$.
+	Hence this difference is also a gradient of zero in the $\lambda_I$-sense, and additionally in the $\tlambda_I$-sense.
+	\item Present the candidate pair $\bracs{u,w}$, and show that we can construct an appropriate approximating sequence to demonstrate it is an element of $\gradSob{\ddom}{\tlambda_I}$.
+\end{enumerate}
+
+As such, we also present the proof in stages:
+\begin{enumerate}
+	\item The central observation here is that because $u\in\mathrm{C}\bracs{\overline{\ddom}}$, $u$ must have a consistent gradient along $I$ from both $\ddom_1$ and $\ddom_2$, as they describe the same function along the common boundary $I$.
+	To this end, let $v^{(1)}$ and $v^{(2)}$ be the restrictions of $\grad u$ to $I$, from $\ddom_1$ and $\ddom_2$ respectively.
+	Notice that we can write
+	\begin{align*}
+		u\bracs{x_1,x_2} &= \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t,
+		\quad \forall x_1\in\bracs{0,1}, \forall x_2\in\bracs{0,1}\setminus\clbracs{\recip{2}}.
+	\end{align*}
+	As $u$ is continuous on $\ddom$ and so in particular is continuous on approach to $I$,
+	\begin{align*}
+		u\bracs{x_1,\recip{2}} &= \lim_{x_2\rightarrow \recip{2}} u\bracs{x_1,x_2}, \\
+		&= \lim_{x_2\rightarrow\recip{2}} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t.
+	\end{align*}
+	In particular, the limits ``from the left" and ``from the right" must coincide, so
+	\begin{align*}
+		\lim_{x_2\rightarrow\recip{2}-} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t 
+		&= \lim_{x_2\rightarrow\recip{2}+} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t,
+	\end{align*}
+	again for every $x_1\in\bracs{0,1}$.
+	Then by definition of $v^{(1)}$ and $v^{(2)}$,
+	\begin{align*}
+		\lim_{x_2\rightarrow\recip{2}-} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t
+		&= \int_0^{x_1} \lim_{x_2\rightarrow\recip{2}+}\partial_1 u\bracs{t,x_2} \ \md t \\
+		&= \int_0^{x_1} v^{(1)}_1\bracs{t,\recip{2}} \ \md t, \\
+		\lim_{x_2\rightarrow\recip{2}+} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t
+		&= \int_0^{x_1} \lim_{x_2\rightarrow\recip{2}+}\partial_1 u\bracs{t,x_2} \ \md t \\
+		&= \int_0^{x_1} v^{(2)}_1\bracs{t,\recip{2}} \ \md t.	
+	\end{align*}
+	Thus,
+	\begin{align*} \labelthis\label{eq:TraceIntegrals}
+		0 &= \int_0^{x_1} \bracs{v^{(1)}_1\bracs{t,\recip{2}} - v^{(2)}_1\bracs{t,\recip{2}}} \ \md t,
+		\quad \forall x_1\in\bracs{0,1}.
+	\end{align*}
+	We can conclude from \eqref{eq:TraceIntegrals} that $v^{(1)}_1 = v^{(2)}_1$ everywhere on $\bracs{0,1}\times\clbracs{\recip{2}}$, and hence (by continuity arguments) on $\sqbracs{0,1}\times\clbracs{\recip{2}}$.
+	This means that on $I$,
+	\begin{align*}
+		v^{(1)} - v^{(2)} &= \begin{pmatrix} 0 \\ v^{(1)}_1 - v^{(2)}_2 \end{pmatrix},
+	\end{align*}
+	and thus $z\in\gradZero{\ddom}{\lambda_I}$ by the characterisation result for this set, where
+	\begin{align*}
+		z &= \begin{cases}
+		\begin{pmatrix} 0 \\ v^{(1)}_2 - v^{(2)}_2 \end{pmatrix} & x\in I, \\
+		0 & x\in\ddom\setminus I.
+		\end{cases}
+	\end{align*}
+	Given that $z\in\gradZero{\ddom}{\lambda_I}$, we can use our characterisation of $\gradZero{\ddom}{\tlambda_I}$ to deduce that $z\in\gradZero{\ddom}{\tlambda_I}$ too.
+	\item The idea for this part of the proof is to construct a $\C{\overline{\ddom}}$ approximating sequence of functions for our candidate pair $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$, then use a smoothing technique to obtain the sequence of $\smooth{\overline{\ddom}}$ functions that we require.
+	Let
+	\begin{align*}
+		g(x_1) &= 
+		\begin{pmatrix}
+			v^{(1)}_1\bracs{x_1,\recip{2}} \\
+			0
+		\end{pmatrix}.
+	\end{align*}
+	Define the function $w\in\ltwo{\ddom}{\tlambda_I}^2$ by
+	\begin{align*}
+		w &= \begin{cases} \grad u & x\in\ddom_1 \cup \ddom_2, \\ g & x\in I. \end{cases}
+	\end{align*}
+	We claim that $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$.
+	To this end, take functions $\phi_n$ such that
+	\begin{subequations} \label{eq:SpecificReqs}
+		\begin{align}
+			\phi_n(x) = u(x), &\quad \mathrm{dist}(x,I)\geq\recip{n}, \\
+			\abs{\phi_n(x) - u(x)} \leq \recip{n}, &\quad \recip{2n}<\mathrm{dist}(x,I)<\recip{n}, \\
+			\abs{\grad\phi_n(x) - \grad u(x)} \leq c, &\quad \recip{2n}<\mathrm{dist}(x,I)<\recip{n}, \\
+			\phi_n(x) = u(x), &\quad \mathrm{dist}(x,I)<\recip{2n}, \\
+			\grad\phi_n(x) = g(x_1), &\quad \mathrm{dist}(x,I)<\recip{n},
+		\end{align}
+	\end{subequations}
+	where $c>0$ is a constant independent of $n$.
+	Clearly $\phi_n\in\C{\overline{\ddom}}$ for each $n\in\naturals$.
+	Notice that
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I}
+		&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_I} \\
+		&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{I}{\abs{\phi_n - u}^2}{\lambda_I} \\
+		&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + 0 \\
+		&\rightarrow 0 \toInfty{n}.
+	\end{align*}
+	Additionally,
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\phi_n - w}^2}{\tlambda_I}
+		&= \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_2} + \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_I} \\
+		&= \integral{\ddom}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} + \integral{I}{\abs{\grad\phi_n - g}^2}{\lambda_I} \\
+		&= \integral{\ddom}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} + 0 \\
+		&\rightarrow 0 \toInfty{n}.
+	\end{align*}
+	Hence
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, \quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} w.
+	\end{align*}
+	Our only task now is to smooth this sequence $\phi_n$, however given the result of lemma \ref{lem:ConvolutionConvergence}, we can indeed find a sequence of smooth functions $\psi_l^n\in\smooth{\overline{\ddom}}$ such that
+	\begin{align*}
+		\psi_l^n \lconv{\ltwo{\ddom}{\tlambda_I}} \phi_n, \quad \grad\psi_l^n \lconv{\ltwo{\ddom}{\tlambda_I}^2} \grad\phi_n, \quad \toInfty{l}.
+	\end{align*}
+	Hence by a diagonal argument, we can conclude that there is some sequence $\psi_{l_n}^n\in\smooth{\overline{\ddom}}$ such that
+	\begin{align*}
+		\psi_{l_n}^n \lconv{\ltwo{\ddom}{\tlambda_I}} u, \quad \grad\psi_{l_n}^n \lconv{\ltwo{\ddom}{\tlambda_I}^2} w, \quad \toInfty{n}.
+	\end{align*}
+	This completes the proof of the right-directed implication.
+\end{enumerate}
+
+\end{document}

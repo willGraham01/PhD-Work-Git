@@ -1,0 +1,3 @@
+Errors/ inaccuracies in the confirmation report that should be noted for future:
+
+- QG chapter, when discussing the M-matrix. The operator mathcal{A} is used as a general diff' op on a QG but then the deduction that det(M- \lambda A) gives the e'vals is only in the case when mathcal{A} has a specific form. Also, it shouldn't be \lambda A, just A - this is me jumping the gun to the "thick vertex" cases, where we have A non-zero and the coupling constants happen to depend on the eigenvalues.

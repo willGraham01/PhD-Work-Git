@@ -1,0 +1,254 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+\usepackage{tikz}
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newtheorem{conj}[theorem]{Conjecture}
+\theoremstyle{plain}
+
+\newcommand{\tlambda}{\tilde{\lambda}}
+\newcommand{\C}[1]{\mathrm{C}^1\bracs{#1}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\section*{Setup}
+The following theorem is given a placeholder reference; it is a result that is known for ``classical" Sobolev spaces that we may need later, and will serve as motivation for what we are trying to prove.
+\begin{theorem} \label{thm:MeetingThm}
+	Let $\ddom = \overline{\ddom}_1 \cup \overline{\ddom}_2$ be a domain in $\reals^2$, with $I = \partial\ddom_1 \cap \partial\ddom_2$ (sketched in figure \ref{fig:MeetingSituation}).
+	Suppose $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\lambda_2}
+	\end{align*}
+\end{theorem}
+
+Throughout, we will make a few assumptions on the geometry of our domain (although the arguments we present should easily generalise).
+We take 
+\begin{align*}
+	\ddom = \sqbracs{0,1}^2, &\quad \ddom_1 = \sqbracs{0,1}\times\sqbracs{0,\recip{2}},
+	\quad \ddom_2 = \sqbracs{0,1}\times\sqbracs{\recip{2},1}, \\
+	\implies &I = \sqbracs{0,1}\times\clbracs{\recip{2}}.	
+\end{align*}
+So we have the setup that is sketched in figure \ref{fig:MeetingSituation}, and we also define $\lambda_I$ as the singular measure supported on $I$, and $\lambda_2$ is the 2D-Lebesgue measure on $\ddom$.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (3,3);
+		\draw[thick, red] (0,1.5) -- (3,1.5);
+		\node[anchor=east] at (0,3) {$\ddom = \overline{\ddom}_1 \cup \overline{\ddom}_2$};
+		\node[align=center] at (1.5,0.75) {$\ddom_1$};
+		\node[align=center] at (1.5,2.25) {$\ddom_2$};
+		\node[red, anchor=east] at (0,1.5) {$I = \sqbracs{0,1}\times\clbracs{\recip{2}}$};
+		\draw[->] (5,0.5) -- (5,2.5) node[anchor=south] {$x_2$};
+		\draw[->] (5,0.5) -- (7,0.5) node[anchor=west] {$x_1$};
+	\end{tikzpicture}
+	\caption{\label{fig:MeetingSituation}}
+\end{figure}
+The composite measure on $\ddom$ is then $\tlambda_I = \lambda_2 + \lambda_I$. \newline
+
+We now look at the following conjecture for our composite Sobolev spaces, motivated by theorem \ref{thm:MeetingThm}.
+\begin{conj} \label{conj:CompMeasRegularity}
+	Under our standing assumptions on $\ddom$, suppose $u\in \C{\overline{\ddom_1}}\cap \C{\overline{\ddom_2}}$.
+	Then
+	\begin{align*}
+		u\in\mathrm{C}\bracs{\overline{\ddom}} \quad\Leftrightarrow\quad & u\in\gradSob{\ddom}{\tlambda_I}
+	\end{align*}
+\end{conj}
+
+\subsection*{Proof of the Left-Directed ($\Leftarrow$) implication of conjecture \ref{conj:CompMeasRegularity}}
+The right-directed implication holds fairly easily; for explicitness we work with the pair $\bracs{u,v}$ in these Sobolev spaces.
+Given $\bracs{u,v}\in\gradSob{\ddom}{\tlambda_I}$ there exists a sequence of smooth functions $\phi_n$ such that
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} v.
+\end{align*}
+In particular,
+\begin{align*}
+	\integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}, \\
+	\integral{\ddom}{\abs{\grad\phi_n - v}^2}{\lambda_2} &\leq \integral{\ddom}{\abs{\grad\phi_n - v}^2}{\tlambda_I} \rightarrow 0 \toInfty{n}.
+\end{align*}
+Thus,
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, &\quad \grad\phi_n \lconv{\ltwo{\ddom}{\lambda_2}^2} v,
+\end{align*}
+and so $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$.
+Thus, by theorem \ref{thm:MeetingThm} we ave that $u\in\mathrm{C}\bracs{\overline{\ddom}}$. \newline
+
+\subsection*{Proof of the Right-Directed ($\Rightarrow$) implication of conjecture \ref{conj:CompMeasRegularity}}
+Our approach to this direction of the implication is as follows;
+\begin{enumerate}
+	\item Demonstrate that the difference in the uniform extensions/traces of $\grad u$ from $\ddom_1$ and $\ddom_2$ to $I$ are consistent in the direction parallel to $I$.
+	Hence this difference is also a gradient of zero in the $\lambda_I$-sense, and additionally in the $\tlambda_I$-sense.
+	\item Use theorem \ref{thm:MeetingThm} to obtain an approximating sequence for the weak derivative of $u$ in the $\gradSob{\ddom}{\lambda_2}$-sense.
+	We will impose further specifications on this approximating sequence, in order to later obtain an approximating sequence converging to $u$ in the $\ltwo{\ddom}{\tlambda_I}$-sense, whose gradients also converge in $\ltwo{\ddom}{\tlambda_I}^2$.
+	\item We will present the candidate pair $\bracs{u,w}$, and show that the approximating sequence we constructed is sufficient to demonstrate it is an element of $\gradSob{\ddom}{\tlambda_I}$.
+\end{enumerate}
+
+As such, we also present the proof in stages:
+\begin{enumerate}
+	\item Here our idea is that $u\in\mathrm{C}\bracs{\overline{\ddom}}$ means that $u$ still have a consistent gradient along $I$ from both $\ddom_1$ and $\ddom_2$, otherwise we could use the Fundamental Theorem of Calculus and a limit-to-the-boundary argument to deduce that $u$ takes different values on $I$ according to each extension.
+	To this end, let $v^{(1)}$ and $v^{(2)}$ be the uniform extensions/traces of $\grad u$ to $I$, from $\ddom_1$ and $\ddom_2$ respectively.
+	Notice that we can write
+	\begin{align}
+		u\bracs{x_1,x_2} &= \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t,
+		\quad \forall x_1\in\bracs{0,1}, \forall x_2\in\bracs{0,1}\setminus\clbracs{\recip{2}}.
+	\end{align}
+	As $u$ is continuous on $\ddom$ and so in particular is continuous on approach to $I$,
+	\begin{align}
+		u\bracs{x_1,\recip{2}} &= \lim_{x_2\rightarrow \recip{2}} u\bracs{x_1,x_2}, \\
+		&= \lim_{x_2\rightarrow\recip{2}} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t.
+	\end{align}
+	In particular, the limits ``from the left" and ``from the right" must coincide, so
+	\begin{align}
+		\lim_{x_2\rightarrow\recip{2}-} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t 
+		&= \lim_{x_2\rightarrow\recip{2}+} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t,
+	\end{align}
+	again for every $x_1\in\bracs{0,1}$.
+	Then as $v^{(1)}$ and $v^{(2)}$ are the uniform extensions of $\grad u$ to the boundary from each side,
+	\begin{align}
+		\lim_{x_2\rightarrow\recip{2}-} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t
+		&= \int_0^{x_1} \lim_{x_2\rightarrow\recip{2}+}\partial_1 u\bracs{t,x_2} \ \md t \\
+		&= \int_0^{x_1} v^{(1)}_1\bracs{t,\recip{2}} \ \md t, \\
+		\lim_{x_2\rightarrow\recip{2}+} \int_0^{x_1} \partial_1 u\bracs{t,x_2} \ \md t
+		&= \int_0^{x_1} \lim_{x_2\rightarrow\recip{2}+}\partial_1 u\bracs{t,x_2} \ \md t \\
+		&= \int_0^{x_1} v^{(2)}_1\bracs{t,\recip{2}} \ \md t.	
+	\end{align}
+	Thus,
+	\begin{align} \label{eq:TraceIntegrals}
+		0 &= \int_0^{x_1} v^{(1)}_1\bracs{t,\recip{2}} - v^{(2)}_1\bracs{t,\recip{2}} \ \md t,
+		\quad \forall x_1\in\bracs{0,1}.
+	\end{align}
+	As $v^{(1)}$ and $v^{(2)}$ are continuous, we can conclude from \eqref{eq:TraceIntegrals} that $v^{(1)}_1 = v^{(2)}_1$ everywhere on $\bracs{0,1}\times\clbracs{\recip{2}}$, and hence (by continuity arguments) on $\sqbracs{0,1}\times\clbracs{\recip{2}}$.
+	This means that on $I$,
+	\begin{align}
+		v^{(1)} - v^{(2)} &= \begin{pmatrix} 0 \\ v^{(1)}_1 - v^{(2)}_2 \end{pmatrix},
+	\end{align}
+	and thus $z\in\gradZero{\ddom}{\lambda_I}$ by the characterisation result for this set, where
+	\begin{align}
+		z &= \begin{cases}
+		\begin{pmatrix} 0 \\ v^{(1)}_2 - v^{(2)}_2 \end{pmatrix} & x\in I, \\
+		0 & x\in\ddom\setminus I.
+		\end{cases}
+	\end{align}
+	Given that $z\in\gradZero{\ddom}{\lambda_I}$, we can use our characterisation of $\gradZero{\ddom}{\tlambda_I}$ to deduce that $z\in\gradZero{\ddom}{\tlambda_I}$ too.
+	\item Using theorem \ref{thm:MeetingThm}, we have that the pair $\bracs{u,v}\in\gradSob{\ddom}{\lambda_2}$ where $v$ is the weak derivative of $u$ that coincides with $\grad u$ on $\ddom_1$ and $\ddom_2$.
+	By the ``H=W" theorem, this means that there exists a sequence of smooth functions $\phi_n\in\smooth{\ddom}$ such that
+	\begin{align}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_2}} u, \quad \grad\phi_n\lconv{\ltwo{\ddom}{\lambda_2}^2}v.
+	\end{align}
+	Let
+	\begin{align}
+		g(x_1) &= 
+		\begin{pmatrix}
+			v^{(1)}_1\bracs{x_1,\recip{2}} \\
+			0
+		\end{pmatrix}.
+	\end{align}
+	In particular we can choose $\phi_n$ such that
+	\begin{align} \label{eq:ApproxSeqRequirements}
+		\phi_n = u, \quad \grad\phi_n = g, \quad x\in I.
+	\end{align}
+	\item Define the function $w\in\ltwo{\ddom}{\tlambda_I}^2$ by
+	\begin{align}
+		w &= \begin{cases} \grad u & x\in\ddom_1 \cup \ddom_2, \\ g & x\in I. \end{cases}
+	\end{align}
+	We claim that $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$.
+	To this end, we take our approximating sequence as in equation \eqref{eq:ApproxSeqRequirements}, and notice that
+	\begin{subequations}
+		\begin{align}
+			\integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I}
+			&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{I}{\abs{\phi_n - u}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + 0 \\
+			&\rightarrow 0 \toInfty{n}.
+		\end{align}
+	\end{subequations}
+	Additionally,
+	\begin{subequations}
+		\begin{align}
+			\integral{\ddom}{\abs{\grad\phi_n - w}^2}{\tlambda_I}
+			&= \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_2} + \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} + \integral{I}{\abs{\grad\phi_n - g}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} + 0 \\
+			&\rightarrow 0 \toInfty{n}.
+		\end{align}
+	\end{subequations}
+	Hence
+	\begin{align}
+		\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}} u, \quad \grad\phi_n \lconv{\ltwo{\ddom}{\tlambda_I}^2} w,
+	\end{align}
+	and so $\bracs{u,w}\in\gradSob{\ddom}{\tlambda_I}$.
+\end{enumerate}
+
+\subsection*{On the choice of functions in \eqref{eq:ApproxSeqRequirements}}
+	One of my slight qualms about this proof is that I am just saying ``I can pick the $\phi_n$ as in \eqref{eq:ApproxSeqRequirements}", however I want to be explicitly clear how I can - I can draw these functions but would like to better understand how one could actually construct them.	
+	For example, one such choice of the $\phi_n$, which I can sketch, is below:
+	\begin{subequations} \label{eq:SpecificReqs}
+		\begin{align}
+			\phi_n(x) = u(x), &\quad \mathrm{dist}(x,I)\geq\recip{n}, \\
+			\abs{\phi_n(x) - u(x)} \leq \recip{n}, &\quad 0<\mathrm{dist}(x,I)<\recip{n}, \\
+			\abs{\grad\phi_n(x) - \grad u(x)} \leq c, &\quad 0<\mathrm{dist}(x,I)<\recip{n}, \\
+			\phi_n(x) = u(x), &\quad x\in I, \\
+			\grad\phi_n(x) = g(x_1), &\quad x\in I,
+		\end{align}
+	\end{subequations}
+	where $c>0$ is a constant independent of $n$.
+	To this end, we take our approximating sequence and notice that
+	\begin{subequations}
+		\begin{align}
+			\integral{\ddom}{\abs{\phi_n - u}^2}{\tlambda_I}
+			&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\phi_n - u}^2}{\lambda_2} + \integral{I}{\abs{\phi_n - u}^2}{\lambda_I} \\
+			&= \integral{\sqbracs{0,1}\times\sqbracs{\recip{2}-\recip{n},\recip{2}+\recip{n}}}{\abs{\phi_n - u}^2}{\lambda_2} \\
+			&\leq \recip{n^2}\integral{\sqbracs{0,1}\times\sqbracs{\recip{2}-\recip{n},\recip{2}+\recip{n}}}{}{\lambda_2} = \frac{2}{n^3} \\
+			&\rightarrow 0 \toInfty{n}.
+		\end{align}
+	\end{subequations}
+	Additionally,
+	\begin{subequations}
+		\begin{align}
+			\integral{\ddom}{\abs{\grad\phi_n - w}^2}{\tlambda_I}
+			&= \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_2} + \integral{\ddom}{\abs{\grad\phi_n - w}^2}{\lambda_I} \\
+			&= \integral{\ddom}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} + \integral{I}{\abs{\grad\phi_n - g}^2}{\lambda_I} \\
+			&= \integral{\sqbracs{0,1}\times\sqbracs{\recip{2}-\recip{n},\recip{2}+\recip{n}}}{\abs{\grad\phi_n - \grad u}^2}{\lambda_2} \\
+			&\leq c^2\integral{\sqbracs{0,1}\times\sqbracs{\recip{2}-\recip{n},\recip{2}+\recip{n}}}{}{\lambda_2} = \frac{2c^2}{n} \\
+			&\rightarrow 0 \toInfty{n}.
+		\end{align}
+	\end{subequations}
+	
+	However, $u$ is only $\mathrm{C}^1$ on $\ddom_1$ and $\ddom_2$, which means that these $\phi_n$'s are also not smooth functions on all of $\ddom$ (as they are equal to $u$ outside a small neighbourhood of $I$).
+	We could get around this by instead asking for
+	\begin{subequations} \label{eq:MoreSpecificReqs}
+		\begin{align}
+			\abs{\phi_n(x) - u(x)} \leq \recip{n^2}, &\quad \mathrm{dist}(x,I)\geq\recip{n}, \\
+			\abs{\grad\phi_n(x) - u(x)} \leq \recip{n}, &\quad \mathrm{dist}(x,I)\geq\recip{n}, \\
+			\abs{\phi_n(x) - u(x)} \leq \recip{n}, &\quad 0<\mathrm{dist}(x,I)<\recip{n}, \\
+			\abs{\grad\phi_n(x) - \grad u(x)} \leq c, &\quad 0<\mathrm{dist}(x,I)<\recip{n}, \\
+			\phi_n(x) = u(x), &\quad x\in I, \\
+			\grad\phi_n(x) = g(x_1), &\quad x\in I.
+		\end{align}
+	\end{subequations}
+	Again, I can sketch a function like this, but how would it actually be constructed for use?
+	I'm familiar with constructing smooth ``bump" functions (like those we used in the singular-measure only situation) however have not seen a method for constructing smooth functions like those in \eqref{eq:SpecificReqs} and \eqref{eq:MoreSpecificReqs} where we are asking a lot about not only the functions, but their gradients too.
+	
+\end{document}
