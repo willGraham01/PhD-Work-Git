@@ -17,6 +17,7 @@ Rough table of contents:
 	- RealToComp
 	- PolyEval
 	- NLII
+	- EvalCheck
 """
 
 from warnings import warn
@@ -186,7 +187,7 @@ def PolyEval(x, cList):
 	
 	return pVal
 
-def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False):
+def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False):
 	#do we need u... can't we just pick a random vector and hope or is this not OK? :L
 	'''
 	Solves the nonlinear eigenvalue problem f(w)v = 0 where (w,v) is an eigenpair in CxC^n, using the Nonlinear Inverse Iteration method (Guttel & Tisseur, 2017).
@@ -199,10 +200,12 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False):
 		maxItt: 	(optional) int - default 100, maximum number of iterations to perform before giving up the search
 		tol: 	(optional) float - default 1e-8, tolerance of solver
 		conLog: 	(optional) bool - default False, if True then conIss is returned as a non-empty list containing log messages concerning failures of the solver
+		retNItt: (optional) bool - default False, if True then the number of iterations that were performed is returned as a 4th output argument
 	OUTPUTS:
 		wStar: 	complex float, the eigenvalue that was found
 		vStar: 	(n,) complex numpy array, the eigenvector that was found
-		conIss: 	list, empty if conLog is False. Otherwise conIss contains debugger information on cases when the solver failed (write more details Will).
+		conIss: 	list, empty if conLog is False. Otherwise conIss contains debugger information on cases when the solver failed (write more details Will)
+		currItt: (optional) int, if retNItt is True then this is the number of iterations that the solver performed.
 	METHOD:
 		Choose an initial pair (w_0, v_0) with ||v_0||=1 and non-zero vector u that will be used to check normality of the solution.
 		Then until convergence or escape do:
@@ -284,7 +287,34 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False):
 		conIss.append(vStore)
 		conIss.append(errStore)
 	#otherwise, we just return the "answer"
-	return wStore[currItt-1], vStore[:,currItt-1], conIss
+	
+	if retNItt:
+		return wStore[currItt-1], vStore[:,currItt-1], conIss, currItt-1
+	else:
+		return wStore[currItt-1], vStore[:,currItt-1], conIss
+
+def EvalCheck(M, w, v, theta=np.zeros((2), dtype=float)):
+	'''
+	Given the M-matrix, the eigenvalue, and eigenvector v, determine the norm of M(w)v.
+	This should be 0 if (w,v) is a solution pair to the generalised eigenvalue problem.
+	INPUTS:
+		M: 	lambda function, matrix-valued function of one argument, returning an (n,n) shape numpy array corresponding to M(w,theta).
+		w: 	float, generalised eigenvalue to be checked
+		v: 	(n) complex float, generalised eigenvector to be checked
+		theta: 	(optional) (2,) float numpy array - default [0,0], quasimomentum value at which the eigenpair was found
+	OUTPUTS:
+		tf: 	bool, if True then the pair (w,v) is an eigenpair at the input value of theta
+		RHSVec: 	(n,) complex numpy array, the result of M(w,theta)v
+	'''
+	
+	RHSVec = np.matmul(M(w, theta),v) #this should be the zero vector if NLII converged
+	if norm(RHSVec) <= 1e-8:
+		tf = True
+	else:
+		tf = False
+		warn('Tested pair does not produce zero vector upon product with matrix')
+	
+	return tf, RHSVec
 
 #delete this Will when you are done with testing the solver
 if __name__=='__main__':
