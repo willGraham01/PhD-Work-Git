@@ -10,6 +10,7 @@ Various test functions for the Quantum graph solvers that I have written. Includ
 """
 
 import numpy as np
+from numpy import sin, cos
 
 from AuxMethods import cot, csc, AbsLess
 
@@ -17,7 +18,7 @@ from VertexClass import Vertex
 from EdgeClass import Edge
 from GraphClass import Graph
 
-def M_TFR_Exact(w, theta=np.zeros((2))):
+def M_TFR_Exact(w, theta=np.zeros((2,))):
 	'''
 	Exact M-matrix for the TFR problem
 	INPUTS:
@@ -36,6 +37,44 @@ def M_TFR_Exact(w, theta=np.zeros((2))):
 	mat[1,2] = -2*w*np.cos(theta[0]/2)*csc(w/2)
 	mat[2,1] = -2*w*np.cos(theta[0]/2)*csc(w/2)
 	
+	return mat
+
+def AltM_TFR_Exact(w, theta=np.zeros((2,))):
+	'''
+	Exact AltM-matrix for the TFR problem. We have M = w/sin(w/2) * AltM.
+	INPUTS:
+		w 	: float, value of w
+		theta 	: (optional) (2,) numpy array, value of the quasimomentum parameters
+	OUTPUTS:
+		mat 	: M-matrix for the TFR problem, evaluated at (w,theta)
+	'''	
+
+	mat = np.zeros((3,3), dtype=complex)
+	mat[0,0] = 2*cos(w/2)
+	mat[1,1] = 2*cos(w/2)
+	mat[2,2] = 4*cos(w/2)
+	mat[0,2] = -2*cos(theta[1]/2)
+	mat[2,0] = -2*cos(theta[1]/2)
+	mat[1,2] = -2*cos(theta[0]/2)
+	mat[2,1] = -2*cos(theta[0]/2)
+	
+	return mat
+
+def dAltM_TFR_Exact(w, theta=np.zeros((2,))):
+	'''
+	Exact d/dw (AltM ) for the TFR problem.
+	INPUTS:
+		w 	: float, value of w
+		theta 	: (optional) (2,) numpy array, value of the quasimomentum parameters
+	OUTPUTS:
+		mat 	: dM-matrix for the TFR problem, evaluated at (w,theta)
+	'''	
+
+	mat = np.zeros((3,3), dtype=complex)
+	mat[0,0] = -sin(w/2)
+	mat[1,1] = -sin(w/2)
+	mat[2,2] = -2*sin(w/2)
+
 	return mat
 
 def TFR_Setup(alpha=0.):
@@ -106,3 +145,24 @@ def CompareOverRange(f1, f2, xRange='auto', tol=1e-8):
 	xLog = np.asarray(xBad)
 	
 	return nFail, xLog
+
+def CompareOverTheta(f1, f2, tPts=1000):
+	'''
+
+	'''
+
+	t1Range = np.linspace(-np.pi, np.pi, num=tPts)
+	t2Range = np.linspace(-np.pi, np.pi, num=tPts)
+	issueDict = {}
+	for i in range(tPts):
+		print('%d, ' % (i), end='')
+		if i%25==0:
+			print('\n', end='')
+		for j in range(tPts):
+			qm = np.asarray([t1Range[i], t2Range[j]])
+			g1 = lambda x: f1(x, theta=qm)
+			g2 = lambda x: f2(x, theta=qm)
+			nFail, wLog = CompareOverRange(g1, g2)
+			if nFail!=0:
+				issueDict[i,j] = [qm, nFail, wLog]
+	return issueDict

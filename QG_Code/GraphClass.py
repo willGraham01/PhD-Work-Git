@@ -14,7 +14,7 @@ Presently we are still assuming we have -d^2/dx^2 on each vertex still (subject 
 """
 
 import numpy as np
-from numpy import cos
+from numpy import cos, sin
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as pts #for arrows
@@ -44,6 +44,7 @@ class Graph:
 		CConts: 	returns either a vector or diagonal matrix of the coupling constants for G
 		Draw: 	draws the graph as a matplotlib figure
 		ConstructM: 	constructs the Weyl-Tischmarsh function M for the graph G, returning a function handle
+		ConstructAltM: 	constructs the M-matrix with a prefactor removed, in an attempt to handle a computationally nicer function
 	'''
 	
 	def __init__(self, V, E):
@@ -341,7 +342,7 @@ class Graph:
 							#there are also edges going in the opposite direction, so we need this contribution too
 							l_ki = connectionDict[k,i][0]
 							qm_ki = np.sum( connectionDict[k,i][1] * theta[:, np.newaxis], 0 )
-							sum_ki = omega * np.sum( np.exp( 1.j * qm_ki * l_ki ) * csc( l_ki * omega ) )
+							sum_ki = omega * np.sum( np.exp( -1.j * qm_ki * l_ki ) * csc( l_ki * omega ) )
 						else:
 							sum_ki = 0. + 0.j
 						M[i,k] = -sum_ik - sum_ki
@@ -469,3 +470,327 @@ class Graph:
 			return MMatrix
 		#shouldn't get to here, if we do something has gone wrong
 		return
+	
+	def ConstructAltM(self, derivToo=True, denomToo=True):
+		'''
+		Constructs the M-matrix for this graph, but having pulled outside the matrix a factor of omega/prod(sin(lengths)). That is, all entries of the matrix no longer have reciprocal trig functions in them (as these are taken to the outside of the matrix) but in their place have products of sin functions.
+		INPUTS:
+			derivToo: 	(optional) bool - default True, if True then we will also construct and return the function AltM'(w). Default False
+			denomToo: 	(optional) bool - default True, if True then we will also return a function that evaluates the prefactor omega/prod(sin(lengths)). 
+		OUTPUTS:
+			AltM: 	lambda function, AltM(w,theta) is the value of the alternative form of the M-matrix function at the value w and for the quasimomentum theta provided
+			dAltM: 	(optional) lambda function, dAltM(w,theta) is the value of the function AltM'(w, theta). Returned if derivToo is True.
+			Mdenom: 	(optional) lambda function, Mdenom(w) is the value of prod(sin(lengths))/omega. Note that 1/ this function is the prefactor that was pulled out of the M-matrix. The value at 0 is set as the limit value 0 to avoid division errors.
+		'''
+		#the plan is as follows:
+		# - create an array of all the unique lengths of edges in the graph, uniqueLengths
+		# - create a dictionary for all the connections, with keys (j,k) for edge j-->k in the graph.
+		## Each entry in the connection dictionary will be a list of two elements,
+		## the first being a numpy array of indices for uniqeLengths. Each index is that of the length in uniqueLengths that is to be ignored when adding the contribution of the edge e_jk to the element M[j,k]
+		## the second being a numpy array of qm coefficients for each edge e_jk
+		## both arrays are stacked horizontally, so that indices and qms match by column index
+		uniqueLengths = []
+		for key, edgeList in self._eDict.items():
+			for edge in edgeList:
+				uniqueLengths.append(edge.length)
+		uniqueLengths = np.unique(np.asarray(uniqueLengths))
+		
+		connectionDict = {}
+		for key, edgeList in self._eDict.items():
+			nEdges = len(edgeList)
+			ignoreIndex = np.zeros((nEdges,), dtype=int)
+			qms = np.zeros((2,nEdges), dtype=float)
+			for i, edge in enumerate(edgeList):
+				qms[:,i] = edge.qm
+				ignoreIndex[i] = np.where(uniqueLengths==edge.length)[0][0] #this is the index of the corresponding length in uniqueLengths
+			connectionDict[key] = [ignoreIndex, qms]
+		#this means that when we need to compute an entry (j,k) of M, we just lookup the keys to get the information we need about this entry
+		
+		#now we actually need to construct the M-matrix
+		edgeKeys = self._eDict.keys()
+		
+		def AltM(omega, theta):
+			'''
+			Evaluates the result of pulling a factor of omega/prod(sin(lengths)) out of the M-matrix of the graph G at (omega, theta) for spectral parameter omega and quasi-momentum theta.
+			INPUTS:
+				omega: 	float, spectral parameter to evaluate M at
+				theta: 	(2,) float numpy array, value of the quasi-momentum to evaluate M at
+			OUTPUTS:
+				M: 	(_nVert, _nVert) complex numpy array, the value of the M matrix at the input values
+			'''
+			
+			M = np.zeros((self._nVert, self._nVert), dtype=complex)
+			#NB j is the imaginary unit in python, so we loop over i
+			for i in range(self._nVert):
+				for k in range(self._nVert):
+					if ((i,k) in edgeKeys) and (i != k):
+						#this is a non-zero entry of the M-matrix, and i \neq k case
+						#first obtain the contribution from i-->k
+						#get the lengths
+						l_ik = uniqueLengths[connectionDict[i,k][0]]
+						#now construct the qms
+						qm_ik = np.sum( connectionDict[i,k][1] * theta[:, np.newaxis], 0 ) #multiply the column vector theta by the qm coefficients provided for each edge, then sum the components to get the value theta_jk on each edge.
+						#this makes qm_ik a 1D numpy array, with qm_ik[j] being theta_ik for the jth edge connecting i-->k
+						#now we need to evaluate the product of sin(l*omega) for all lengths excluding the one for the edges!
+						prods_ik = np.zeros_like(l_ik, dtype=complex)
+						for j in range(np.shape(prods_ik)[0]):
+							otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,k][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+							prods_ik[j] = np.prod( sin( otherLengths * omega ) )#product of sin(lengths * omega) for all edge lengths barring e_ik's
+						sum_ik = np.sum( np.exp( 1.j * qm_ik * l_ik ) * prods_ik ) #sum contribution for i-->k
+						#now if there are edges going in the opposite direction, account for those too
+						if (k,i) in edgeKeys:
+							#there are also edges going in the opposite direction, so we need this contribution too
+							l_ki = uniqueLengths[connectionDict[k,i][0]]
+							qm_ki = np.sum( connectionDict[k,i][1] * theta[:, np.newaxis], 0 )
+							prods_ki = np.zeros_like(l_ki, dtype=complex)
+							for j in range(np.shape(prods_ki)[0]):
+								otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[k,i][0][j]]
+								prods_ki[j] = np.prod( sin( otherLengths * omega ) )
+							sum_ki = np.sum( np.exp( -1.j * qm_ki * l_ki ) * prods_ki )
+						else:
+							sum_ki = 0. + 0.j
+						M[i,k] = -sum_ik - sum_ki
+					elif ((i,k) in edgeKeys) and (i == k):
+						#this is a non-zero entry of the M-matrix, and i == k case, AND there are loops
+						#first gather the contributions from loops, if there are any
+						l_ii = uniqueLengths[connectionDict[i,i][0]]
+						qm_ii = np.sum( connectionDict[i,i][1] * theta[:, np.newaxis], 0 )
+						prods_ii = np.zeros_like(l_ii, dtype=complex)
+						for j in range(np.shape(prods_ii)[0]):
+							otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,i][0][j]]
+							prods_ii[j] = np.prod( sin( otherLengths * omega ) )
+						sum_ii = 2 * np.sum( prods_ii * cos(l_ii*omega) - cos(qm_ii*l_ii) * prods_ii )
+						#now gather contributions from the other edges that connect to i
+						sum_il = 0. + 0.j
+						sum_li = 0. + 0.j
+						for l in range(self._nVert):
+							if i==l: #don't need this one again!
+								continue
+							if ((i,l) in edgeKeys):
+								#i --> l is an edge, gather the contribution from this connection
+								l_il = uniqueLengths[connectionDict[i,l][0]]
+								prods_il = np.zeros_like(l_il, dtype=complex)
+								for j in range(np.shape(prods_il)[0]):
+									otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,l][0][j]]
+									prods_il[j] = np.prod( sin( otherLengths * omega ) )
+								sum_il += prods_il * cos(l_il * omega)
+							if ((l,i) in edgeKeys):
+								#l --> i is an edge, gather the contribution from this connection
+								l_li = uniqueLengths[connectionDict[l,i][0]]
+								prods_li = np.zeros_like(l_li, dtype=complex)
+								for j in range(np.shape(prods_li)[0]):
+									otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[l,i][0][j]]
+									prods_li[j] = np.prod( sin( otherLengths * omega ) )
+								sum_li += prods_li * cos(l_li * omega)
+						#now the element M[i,k]=M[k,k]=M[i,i] can be constructed :)
+						M[i,i] = sum_ii + sum_il + sum_li
+					elif i==k:
+						#even if there aren't any loops, this could still be a non-zero entry in the M-matrix
+						sum_il = 0. + 0.j
+						sum_li = 0. + 0.j
+						for l in range(self._nVert):
+							if i==l: #don't need this one again!
+								continue
+							if ((i,l) in edgeKeys):
+								#i --> l is an edge, gather the contribution from this connection
+								l_il = uniqueLengths[connectionDict[i,l][0]]
+								prods_il = np.zeros_like(l_il, dtype=complex)
+								for j in range(np.shape(prods_il)[0]):
+									otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,l][0][j]]
+									prods_il[j] = np.prod( sin( otherLengths * omega ) )
+								sum_il += prods_il * cos(l_il * omega)
+							if ((l,i) in edgeKeys):
+								#l --> i is an edge, gather the contribution from this connection
+								l_li = uniqueLengths[connectionDict[l,i][0]]
+								prods_li = np.zeros_like(l_li, dtype=complex)
+								for j in range(np.shape(prods_li)[0]):
+									otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[l,i][0][j]]
+									prods_li[j] = np.prod( sin( otherLengths * omega ) )
+								sum_li += prods_li * cos(l_li * omega)
+						M[i,i] = sum_li + sum_il
+			return M
+		#this completes the function that constructs the M-matrix, we can now return AltM as the output, unless we also require the derivative or denominator
+		if derivToo:
+			def dAltM(omega, theta):
+				'''
+				Evaluates the element-wise derivative (wrt omega) of the AltM function of the graph G at (omega, theta) for spectral parameter omega and quasi-momentum theta.
+			INPUTS:
+				omega: 	float, spectral parameter to evaluate dAltM at
+				theta: 	(2,) float numpy array, value of the quasi-momentum to evaluate M at
+			OUTPUTS:
+				dM: 	(_nVert, _nVert) complex numpy array, the value of the element-wise derivative (wrt omega) of the AltM function at the input values	
+				'''
+				dM = np.zeros((self._nVert, self._nVert), dtype=complex)
+				#NB j is the imaginary unit in python, so we loop over i
+				for i in range(self._nVert):
+					for k in range(self._nVert):
+						if ((i,k) in edgeKeys) and (i != k):
+							#this is a non-zero entry of the dM-matrix, and i \neq k case
+							#first obtain the contribution from i-->k
+							#get the lengths
+							l_ik = uniqueLengths[connectionDict[i,k][0]]
+							#now construct the qms
+							qm_ik = np.sum( connectionDict[i,k][1] * theta[:, np.newaxis], 0 ) #multiply the column vector theta by the qm coefficients provided for each edge, then sum the components to get the value theta_jk on each edge.
+							#this makes qm_ik a 1D numpy array, with qm_ik[j] being theta_ik for the jth edge connecting i-->k
+							#now we need to evaluate the sum of l_lm cos(l_lm)*prod(sin(l*omega)) for all lengths excluding the one for the edge e_ik, which is the derivative of this term in the M-matrix wrt omega
+							sumProds_ik = np.zeros_like(l_ik, dtype=complex)
+							for j in range(np.shape(sumProds_ik)[0]):
+								otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,k][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+								nLengths = np.shape(otherLengths)[0]
+								#now we have removed l_ik[j] from the lengths array, but need to evaluate the sum * product that arises from taking the derivative... the plan for this is to stack copies of otherLengths as rows of a square matrix. Then take sin() of all the off-diagonal terms and l_lm*cos() of the diagonal terms, then take a row-wise product. The product of each row is then l_lm*cos()*prod(sin()), which we can then sum to get the sum over l_lm of all these terms
+								termsMatrix = np.tile(otherLengths * omega, (nLengths, 1)) #creates a square matrix with otherLengths*omega repeated along the rows
+								termsMatrix[range(nLengths), range(nLengths)] = 0. #set diagonal terms to zero so can take sin() of whole matrix w/o changing the diagonal
+								termsMatrix = sin(termsMatrix) #take sin of all terms - we added omega into our construction, so termsMatrix is already lengths*omega
+								termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) ) #add diagonal terms
+								sumProds_ik[j] = np.sum( np.prod( termsMatrix, 1 ) ) #get product of the rows of termsMatrix, then sum them
+							sum_ik = np.sum( np.exp( 1.j * qm_ik * l_ik ) * sumProds_ik ) #sum contribution for i-->k
+							#now if there are edges going in the opposite direction, account for those too
+							if (k,i) in edgeKeys:
+								#there are also edges going in the opposite direction, so we need this contribution too
+								l_ki = uniqueLengths[connectionDict[k,i][0]]
+								qm_ki = np.sum( connectionDict[k,i][1] * theta[:, np.newaxis], 0 )
+								sumProds_ki = np.zeros_like(l_ki, dtype=complex)
+								for j in range(np.shape(sumProds_ki)[0]):
+									otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[k,i][0][j]]
+									nLengths = np.shape(otherLengths)[0]
+									termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+									termsMatrix[range(nLengths), range(nLengths)] = 0.
+									termsMatrix = sin(termsMatrix)
+									termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+									sumProds_ki[j] = np.sum( np.prod( termsMatrix, 1 ) )
+								sum_ki = np.sum( np.exp( -1.j * qm_ki * l_ki ) * sumProds_ki )
+							else:
+								sum_ki = 0. + 0.j
+							dM[i,k] = -sum_ik - sum_ki
+						elif ((i,k) in edgeKeys) and (i == k):
+							#this is a non-zero entry of the M-matrix, and i == k case, AND there are loops
+							#first gather the contributions from loops, if there are any			
+#note: formula for this term!
+## \sum_{j\sim l}\cos(l_{jl}\omega)*\diff{}{\omega}\bracs{\Pi_{not j\sim l}\sin(l_{mn}\omega)}
+## - \sum_{j\sim l}l_{jl} \Pi_{all m,n}\sin(l_{mn}\omega)
+## + 2\sum_{j\rCon j}\cos(l_{jj}\omega)\diff{}{\omega}\bracs{\Pi_{not j\rCon j}\sin(l_{mn}\omega)}
+## - 2\sum_{j\rCon j}l_{jj} \Pi_{all m,n}\sin(l_{mn}\omega)
+## - 2\sum_{j\rCon j}cos(\qm_{jj}l_{jj}) \Pi_{not j\rCon j}\sin(l_{mn}\omega)					
+							l_ii = uniqueLengths[connectionDict[i,i][0]]
+							qm_ii = np.sum( connectionDict[i,i][1] * theta[:, np.newaxis], 0 )
+							#sumProds assembles \diff{}{\omega}\bracs{\Pi_{not j\rCon j}\sin(l_{mn}\omega)}
+							sumProds_ii = np.zeros_like(l_ii, dtype=complex)
+							#sinProds assembles \Pi_{all m,n}\sin(l_{mn}\omega), this is the same for both loop and non-loop connection contributions
+							sinProd =  np.prod( sin(uniqueLengths * omega) )
+							for j in range(np.shape(sumProds_ii)[0]):
+								otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,i][0][j]]
+								nLengths = np.shape(otherLengths)[0]
+								termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+								termsMatrix[range(nLengths), range(nLengths)] = 0.
+								termsMatrix = sin(termsMatrix)
+								termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+								sumProds_ii[j] = np.sum( np.prod( termsMatrix, 1 ) )
+							sum_ii = 2 * np.sum( cos(l_ii * omega) * sumProds_ii )
+							sum_ii += -2 * np.sum( l_ii * sinProd )
+							sum_ii += -2 * np.sum( cos(qm_ii * l_ii) * sumProds_ii )
+							#now gather contributions from the other edges that connect to i
+							sum_il = 0. + 0.j
+							sum_li = 0. + 0.j
+							for l in range(self._nVert):
+								if i==l: #don't need this one again!
+									continue
+								if ((i,l) in edgeKeys):
+									#i --> l is an edge, gather the contribution from this connection
+									l_il = uniqueLengths[connectionDict[i,l][0]]
+									sumProds_il = np.zeros_like(l_il, dtype=complex)
+									for j in range(np.shape(sumProds_il)[0]):
+										otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,l][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+										nLengths = np.shape(otherLengths)[0]
+										termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+										termsMatrix[range(nLengths), range(nLengths)] = 0. 
+										termsMatrix = sin(termsMatrix) 
+										termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+										sumProds_il[j] = np.sum( np.prod( termsMatrix, 1 ) )
+									sum_il += cos(l_il * omega) * sumProds_il
+									sum_il += -1. * np.sum( l_il * sinProd )
+								if ((l,i) in edgeKeys):
+									#l --> i is an edge, gather the contribution from this connection
+									l_li = uniqueLengths[connectionDict[l,i][0]]
+									sumProds_li = np.zeros_like(l_li, dtype=complex)
+									for j in range(np.shape(sumProds_li)[0]):
+										otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[l,i][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+										nLengths = np.shape(otherLengths)[0]
+										termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+										termsMatrix[range(nLengths), range(nLengths)] = 0. 
+										termsMatrix = sin(termsMatrix) 
+										termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+										sumProds_li[j] = np.sum( np.prod( termsMatrix, 1 ) )
+									sum_li += cos(l_li * omega) * sumProds_li
+									sum_li += -1. * np.sum( l_li * sinProd )
+							dM[i,i] = sum_ii + sum_il + sum_li
+						elif i==k:
+							#even if there aren't any loops, this could still be a non-zero entry in the M-matrix
+							sinProd =  np.prod( sin(uniqueLengths * omega) )
+							sum_il = 0. + 0.j
+							sum_li = 0. + 0.j
+							for l in range(self._nVert):
+								if i==l: #don't need this one again!
+									continue
+								if ((i,l) in edgeKeys):
+									#i --> l is an edge, gather the contribution from this connection
+									l_il = uniqueLengths[connectionDict[i,l][0]]
+									sumProds_il = np.zeros_like(l_il, dtype=complex)
+									for j in range(np.shape(sumProds_il)[0]):
+										otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[i,l][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+										nLengths = np.shape(otherLengths)[0]
+										termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+										termsMatrix[range(nLengths), range(nLengths)] = 0. 
+										termsMatrix = sin(termsMatrix) 
+										termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+										sumProds_il[j] = np.sum( np.prod( termsMatrix, 1 ) )
+									sum_il += cos(l_il * omega) * sumProds_il
+									sum_il += -1. * np.sum( l_il * sinProd )
+								if ((l,i) in edgeKeys):
+									#l --> i is an edge, gather the contribution from this connection
+									l_li = uniqueLengths[connectionDict[l,i][0]]
+									sumProds_li = np.zeros_like(l_li, dtype=complex)
+									for j in range(np.shape(sumProds_li)[0]):
+										otherLengths = uniqueLengths[np.arange(len(uniqueLengths))!=connectionDict[l,i][0][j]] #array of all lengths barring the length of (the jth edge corresponding to the connection) e_ik
+										nLengths = np.shape(otherLengths)[0]
+										termsMatrix = np.tile(otherLengths * omega, (nLengths, 1))
+										termsMatrix[range(nLengths), range(nLengths)] = 0. 
+										termsMatrix = sin(termsMatrix) 
+										termsMatrix += np.diag( otherLengths * cos(otherLengths*omega) )
+										sumProds_li[j] = np.sum( np.prod( termsMatrix, 1 ) )
+									sum_li += cos(l_li * omega) * sumProds_li
+									sum_li += -1. * np.sum( l_li * sinProd )
+							dM[i,i] = sum_li + sum_il
+				return dM
+		#if wanted, construct the prefactor function too
+		if denomToo:
+			def Mdenom(omega):
+				'''
+				Evaluates 1/ the prefactor that was pulled out of the M-matrix to construct AltM.
+				That is, this function returns
+					product( sin(l_jk*omega) ) / omega,
+				with the product taken over all unique edge lengths l_jk.
+				The function is vectorised, so can handle multiple omega.
+				INPUTS:
+					omega: 	(n,) float numpy array, values of omega to evaluate the function at
+				OUTPUTS:
+					val: 	(n,) float numpy array, values of the factor as described. If an entry in omega is zero, returns the limiting value of 0.
+				'''
+				
+				#note: if the length of uniqueLengths is only 1, then the limit at zero is the sole length in uniqueLengths, otherwise it is zero
+				if np.shape(uniqueLengths)[0]==1:
+					val = np.prod( np.sin( np.outer(uniqueLengths, omega) ), axis=0 ) / omega
+					val[omega==0] = uniqueLengths[0]
+				else:				
+					val = np.prod( np.sin( np.outer(uniqueLengths, omega) ), axis=0 ) / omega
+					val[omega==0] = 0. #set as limit value for omega=0
+				return val
+		
+		#check which ones we were told to construct
+		if derivToo and denomToo:
+			return AltM, dAltM, Mdenom
+		elif derivToo:
+			return AltM, dAltM
+		elif denomToo:
+			return AltM, Mdenom
+		#if none of the above, then we only needed AltM
+		return AltM

@@ -10,6 +10,7 @@ This file contains various functions that I may wish to employ across multiple f
 Rough table of contents:
 	- csc
 	- cot
+	- Spiral
 	- AbsLess
 	- RemoveDuplicates
 	- UnitVector
@@ -26,7 +27,7 @@ import numpy as np
 from numpy import sin, tan
 from numpy.linalg import norm
 
-from scipy.optimize import fsolve
+from scipy.linalg import solve, lstsq, LinAlgError
 
 def csc(x):
 	'''
@@ -47,6 +48,52 @@ def cot(x):
 		cotx: 	numpy array, cotangent of each value in x
 	'''
 	return 1/ tan(x)
+
+def Spiral(n, npArray=True):
+	'''
+	Give a number n in N_0, provides the co-ordinate in Z^2 corresponding to the n^th co-ordinate in the spiral bijection from N --> Z^2. See https://math.stackexchange.com/questions/163080/on-a-two-dimensional-grid-is-there-a-formula-i-can-use-to-spiral-coordinates-in for details on where the formula was obtained.
+	INPUTS:
+		n: 	int, natural number or 0 to be mapped to co-ordinate
+		npArray: 	(optional) bool - default True, if True then co-ordinate will be returned as a numpy array, otherwise as a list
+	OUTPUTS:
+		spiralCoord: 	(2,) int numpy array or list, co-ordinate in Z^2 this element is mapped to
+	'''
+	
+	m = np.floor(np.sqrt(n))
+	if m%2==1: #if m odd
+		k = (m - 1) / 2
+	elif n >= m*(m + 1): #if m even and n>= m(m+1)
+		k = m/2
+	else:
+		k = m/2 - 1
+	
+	if 2*k*(2*k + 1) <= n and n <= (2*k + 1)*(2*k + 1):
+		spiralCoord = [n - 4*k*k - 3*k, k]
+	elif (2*k + 1)*(2*k + 1) < n and n <= 2*(k + 1)*(2*k + 1):
+		spiralCoord = [k + 1, 4*k*k + 5*k + 1 - n]
+	elif 2*(k + 1)*(2*k + 1) < n and n <= 4*(k + 1)*(k + 1):
+		spiralCoord = [4*k*k + 7*k + 3 - n, -k - 1]
+	elif 4*(k + 1)*(k + 1) < n and n <= 2*(k + 1)*(2*k + 3):
+		spiralCoord = [-k - 1, n - 4*k*k - 9*k - 5]
+	else:
+		raise ValueError('No spiral co-ordinate found for n=%d: m=%d (sqrt(n)=%.2f), k=%d \n' % (n, m, np.sqrt(n), k))
+	
+	if npArray:
+		return np.asarray(spiralCoord, dtype=int)
+	else:
+		return spiralCoord
+
+def RemoveListDuplicates(l):
+	'''
+	Given a list, return a list that contains only the unique entries in the list
+	INPUTS:
+		l: 	list, list to have duplicates removed
+	OUTPUTS:
+		unique: 	list, lst of unique items
+	'''
+
+	unique = list(dict.fromkeys(l))
+	return unique
 
 def AbsLess(x, a, b=np.NaN, strict=False):
 	'''
@@ -162,7 +209,7 @@ def RealToComp(x):
 	'''
 
 	if np.shape(x)[0] % 2 !=0:
-		raise ValueError('Cannot convert array of non-even length (%.1f) to complex array' % np.shape(x)[0])
+		raise ValueError('Cannot convert array of non-even length (%d) to complex array' % np.shape(x)[0])
 	else:
 		n = int(np.shape(x)[0]/2) #safe to use int() after the previous check
 		z = np.zeros((n,), dtype=complex)
@@ -187,8 +234,7 @@ def PolyEval(x, cList):
 	
 	return pVal
 
-def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False):
-	#do we need u... can't we just pick a random vector and hope or is this not OK? :L
+def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False, talkative=False):
 	'''
 	Solves the nonlinear eigenvalue problem f(w)v = 0 where (w,v) is an eigenpair in CxC^n, using the Nonlinear Inverse Iteration method (Guttel & Tisseur, 2017).
 	INPUTS:
@@ -201,6 +247,7 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False):
 		tol: 	(optional) float - default 1e-8, tolerance of solver
 		conLog: 	(optional) bool - default False, if True then conIss is returned as a non-empty list containing log messages concerning failures of the solver
 		retNItt: (optional) bool - default False, if True then the number of iterations that were performed is returned as a 4th output argument
+		talkative: 	(optional) bool - defaul False, if True then the solver will provide updates to the console concerning the latest eigenvalue and eigenvector estimates, on each iteration
 	OUTPUTS:
 		wStar: 	complex float, the eigenvalue that was found
 		vStar: 	(n,) complex numpy array, the eigenvector that was found
@@ -216,52 +263,49 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False):
 	
 	#determine the dimension of the vectors that we are using
 	n = np.shape(v0)[0]
-
 	#storage for iteration outputs
 	wStore = np.zeros((maxItt+1), dtype=complex); wStore[0] = w0
 	vStore = np.zeros((n,maxItt+1), dtype=complex); vStore[:,0] = v0	
 	errStore = np.zeros((maxItt+1), dtype=float); errStore[0] = tol + 1 #auto-fail to start 1st iteration!
 	#iteration counter
 	currItt = 1
-	
-	#Scipy cannot solve systems of equations with complex values, so we need a wrapper for this function which outputs real arrays. As such, the following function outputs a (2n,) vector of real values corresponding to the real and imaginary parts of the equation.
-
-	def fRealFn(z,w,v):
-		'''
-		z should be a (2n,) numpy array which we convert to a complex-valued (n,) array, pass into fsolveFn, then cast the result back to a (2n,) real valued array.
-		For internal use only, not to be seen externally.
-		'''
-
-		x = RealToComp(z) #cast back to complex
-		fComplexValue = np.matmul(f(w),x) - np.matmul(df(w),v) #evaluate
-		realOut = CompToReal(fComplexValue) #cast back to real array...
-		
-		return realOut
-	
-	#now we start the iteration
-	while currItt<=maxItt and errStore[currItt-1]>tol:
-		#whilst we have no exceeded the maximum number of iterations and the current tolerance in the solution is too high
-		
-		#solve f(w_k)x = df(w_k)v_k for x; but we need to use z=real,imag (x) because SciPy
-		func = lambda z: fRealFn(z,wStore[currItt-1],vStore[:,currItt-1])
-		#for want of a better guess, use the current "eigenvector" as a guess of the solution...
-		z = fsolve(func, CompToReal(vStore[:,currItt-1]))
-		x = RealToComp(z) #cast back to complex array to save variables
-		
-		#set eigenvalue; w_{k+1} = w_k - u*v_k/u*x
-		wStore[currItt] = wStore[currItt-1] - np.vdot(u,vStore[:,currItt-1])/np.vdot(u,x)
-		
-		#normalise eigenvalue
-		vStore[:,currItt] = x/norm(x)
-		
-		#compute error, ||f(w_k+1)v_k+1||_2 should be small
-		errStore[currItt] = norm(np.matmul(f(wStore[currItt]),vStore[:,currItt]))
-		
-		#incriment counter
-		currItt += 1	
-
 	#dump values for manual investigation
 	conIss = []
+	#now we start the iteration
+	if talkative:
+		print('Initial data: eigenvalue: %.5e + %.5e i' %(np.real(w0), np.imag(w0)))
+		print('Eigenvector starting guess:')
+		print(v0)
+	while currItt<=maxItt and errStore[currItt-1]>tol:
+		#whilst we have not exceeded the maximum number of iterations and the current error in the solution is too high
+		#solve f(w_k)x = df(w_k)v_k for x
+		RHS = np.matmul( df(wStore[currItt-1]), vStore[:,currItt-1])
+		LHSMat = f(wStore[currItt-1])
+		#We might have a singular or near-singular LHSMat, the Pythonic way to handle this is to assume it's not singular and then beg forgiveness if it is
+		try:
+			#use scipy.linalg's solve function to solve the linear system, but this will fail for singular matrices!
+			x = solve(LHSMat, RHS)
+		except LinAlgError:
+			#if we get this error, LHSMat is singular. Try a least squares fit instead
+			x, _, _, _ = lstsq(LHSMat, RHS)
+			#if sucessful, then place this issue in conIss either way!
+			if 'lstsqReq' not in conIss:
+				conIss.append('lstsqReq')
+			if talkative:
+				print('Least squares regression required')
+		#set eigenvalue; w_{k+1} = w_k - u*v_k/u*x
+		wStore[currItt] = wStore[currItt-1] - np.vdot(vStore[:,currItt-1],u)/np.vdot(x,u)
+		#normalise eigenvalue
+		vStore[:,currItt] = x/norm(x)
+		#compute error, ||f(w_k+1)v_k+1||_2 should be small
+		errStore[currItt] = norm(np.matmul(f(wStore[currItt]),vStore[:,currItt]))
+		if talkative:
+			#print info to screen
+			print('Interation %d, eigenvalue: %.5e + %.5e i' %(currItt, np.real(wStore[currItt]), np.imag(wStore[currItt])))
+			print('Eigenvector approximation:')
+			print(vStore[:,currItt])
+		#incriment counter
+		currItt += 1
 	#warnings that we might encounter
 	#max iteration limit
 	if currItt>=maxItt:
@@ -292,7 +336,7 @@ def NLII(f, df, v0, u, w0, maxItt=100, tol=1e-8, conLog=False, retNItt=False):
 		return wStore[currItt-1], vStore[:,currItt-1], conIss, currItt-1
 	else:
 		return wStore[currItt-1], vStore[:,currItt-1], conIss
-
+	
 def EvalCheck(M, w, v, theta=np.zeros((2), dtype=float)):
 	'''
 	Given the M-matrix, the eigenvalue, and eigenvector v, determine the norm of M(w)v.
