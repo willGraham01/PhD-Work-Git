@@ -17,6 +17,7 @@ In this file we look to address this issue.
 import numpy as np
 from numpy.linalg import norm
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 from mpl_toolkits.mplot3d import Axes3D
 
 from warnings import warn
@@ -93,9 +94,9 @@ def SolveStepSolve(M, dM, vInit, u, wInit, t1End = np.pi, t2End = np.pi, tPts = 
 			- list of flagged convergence issues
 			The initial solve has 0 in the place of the "run number of starting guess"
 		fileName.csv: 	(optional) .csv file - default not produced. If a fileName is provided, the .csv file is structured so that each row number corresponds to the run number, with the first row being run 0 (initial solve). The remainder of the row is as follows;
-			- run number of initial guess, 
 			- qm1, 
 			- qm2, 
+			- run number of initial guess, 
 			- e'val found, 
 			- e'vec components,
 			- bool 0/1, if 1 then there were convergence issues flagged during solve
@@ -143,7 +144,7 @@ def SolveStepSolve(M, dM, vInit, u, wInit, t1End = np.pi, t2End = np.pi, tPts = 
 	wFirst, vFirst, conIss, nItts = NLII(f(t0), df(t0), vInit, u, wInit, conLog=True, retNItt=True, **kwargs)
 
 	#check for a failed solve because that would be bad
-	if not conIss: #empty list is implicitly false in python
+	if conIss: #empty list is implicitly false in python
 		#warnings in first solve
 		warn('Warnings given in first solve, consider alternative start point/ abortion of testing')
 	#assign initial data to dictionary
@@ -269,7 +270,8 @@ def SurfFromFile(fileName, plotName=None, **kwargs):
 	#now we can create the surface plot
 	fig = plt.figure()
 	ax = fig.gca(projection='3d')
-	ax.plot_trisurf(qm1, qm2, omegaVals, linewidth=0.2, antialiased=True)
+	ax.plot_trisurf(qm1[omegaVals<=4], qm2[omegaVals<=4], omegaVals[omegaVals<=4], linewidth=0.2, antialiased=True, **kwargs)
+	#ax.plot_trisurf(qm1, qm2, omegaVals, linewidth=0.2, antialiased=True, **kwargs)
 	ax.set_xlabel(r'$\theta_1$')
 	ax.set_ylabel(r'$\theta_2$')
 	ax.set_zlabel(r'$\omega$')
@@ -279,6 +281,64 @@ def SurfFromFile(fileName, plotName=None, **kwargs):
 	plt.ion()
 	
 	return fig, ax
+
+def DataFromFile(fileName):
+	'''
+	Read the (QM, omega) data from the given file and return arrays containing the data.
+	INPUTS:
+		fileName: 	path to file, the .csv file which the (QM, omega) data is saved, in the format of the output of SolveStepSolve
+	OUTPUTS:
+		qm: 	(2,n) float numpy arrays, each column is a value of the quasi-momentum parameter used in a the run indexed at runNo[j]
+		runNos: 	(n,) int numpy arrays, run number of each solve
+		eVals: 	(2,n) float numpy array, the eigenvalue found during runNo[j]. Will error if complex eigenvalues were found
+		eVecs: 	(3,n) complex numpy array, the eigenvectors found during runNo[j] - stored column-wise
+		conIss: (n,) bool numpy array, if runNo[j] flaged convergence issues 
+	'''
+
+	runNos, eVals, conIss = np.loadtxt(fileName, dtype='complex, complex, complex', delimiter=',', usecols=(2,3,7), unpack=True)
+	#check imports have sensible values
+	if norm(np.imag(runNos))>1e-8:
+		#run numbers are complex - something is bad!
+		raise ValueError('Run numbers are complex')
+	else:
+		runNos = np.real(runNos)
+		runNos = runNos.astype(int) #should be safe to convert
+		nRuns = len(runNos)
+	if norm(np.imag(conIss))>1e-8:
+		#conIss is complex - something is very bad!
+		raise ValueError('Convergence issues flagged as imaginary values')
+	else:
+		conIss = np.real(conIss).astype(bool)
+	if norm(np.imag(eVals))>1e-8:
+		#bad values - qm1 has imaginary components for some reason!
+		raise ValueError('eVals has imaginary entries - review file input.')
+	else:
+		#safe to discard imaginary parts and cast to real
+		eVals = np.real(eVals)
+	
+	#preallocate multi-dimensional arrays
+	qm = np.zeros((2,nRuns), dtype=complex)
+	eVecs = np.zeros((3,nRuns), dtype=complex)
+	
+	#import qms and eigenvectors
+	qm[0,:], qm[1,:], eVecs[0,:], eVecs[1,:], eVecs[2,:] = np.loadtxt(fileName, dtype='complex, complex, complex, complex, complex', delimiter=',', usecols=(0,1,4,5,6), unpack=True)
+	
+	#we should only have real QM values
+	if not ( norm(np.imag(qm[0,:]))>1e-8 and norm(np.imag(qm[1,:]))>1e-8 ):
+		#all is good, can discard imaginary parts and use a float array instead
+		qm = np.real(qm)
+	elif norm(np.imag(qm[0,:]))>1e-8:		
+		#bad values - qm[0,:] has imaginary components for some reason!
+		raise ValueError('qm[0,:] has imaginary entries - review file input.')
+	elif norm(np.imag(qm[1,:]))>1e-8:
+		#bad values - qm[1,:] has imaginary components for some reason!
+		raise ValueError('qm[1,:] has imaginary entries - review file input.')
+	else:
+		#just in case we somehow get here without triggering the other catches
+		raise ValueError('qm has imaginary values, but could not pinpoint bad component')
+
+	
+	return qm, runNos, eVals, eVecs, conIss
 
 if __name__=='__main__':
 	
