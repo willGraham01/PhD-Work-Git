@@ -11,9 +11,9 @@ CHAP_ABS := $(addprefix $(CHAPDIR)/, $(CHAPNAMES))
 # append .pdf extension to chapter names for targets
 CHAP_TEX := $(CHAP_ABS:=.tex)
 # location of bibliography files
-BIB_FILES := Paper_2020.bib
+BIB_FILES := Paper_Scalar2020.bib
 # name of report file to make
-NAME := Paper_2020
+NAME := Paper_Scalar2020
 
 # directory containing tikz .tex files
 TIKZDIR := ../Diagrams
@@ -52,6 +52,12 @@ $(TIKZ_PDFS): %.pdf: %.tex
 
 # make all tikz pictures and place into output folder
 tikz: $(TIKZ_PDFS)
+
+# make the file without re-rendering the tikz images (only for use when diagrams haven't been changed)
+no_tikz: $(NAME).tex $(BIB_FILES) $(CHAP_TEX)
+	$(PRINT)
+	$(MKLATEX) $(NAME).tex
+	$(SOFT_CLEAN) $(NAME).tex
 
 # redirect
 .PHONY: clean
