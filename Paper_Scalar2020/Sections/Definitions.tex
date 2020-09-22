@@ -1,14 +1,11 @@
-\section{Definitions and Theory} \label{sec:Heuristics}
-
-In this section we will (lightly) review the definitions and theory that we will need to obtain our effective equations on a graph.
-We need to be prudent in terms of length - don't include all the lengthy proofs and technical details, nor every definition.
-We'll also need to talk about both quantum/metric graphs and the Sob-spaces stuff here, as we don't intend to introduce anything new in the next section (only to recall theory here and explain how our equations are derived).
+\section{Definitions and Key Concepts} \label{sec:Definitions}
+Before we present a derivation of the system \tstk{ode system ref} from the measure-theoretic problem \tstk{ref}, we first need to formally introduce the objects involved in each.
+To this end, in section \ref{ssec:QuantumGraphs} we cover the theory we need to borrow from the field of Quantum Graphs, and also setup our notation for graphs throughout this work.
+We also define the concept of an embedded graph (section \ref{sssec:EmbeddedGraphs}) and a ``singular measure" (section \ref{sssec:SingularMeasures}) as they will be used in this work, which will be our link between the two problems \tstk{ode system ref} and \tstk{var formulation ref}.
+Finally, the definition of the function spaces we plan to use in our variational problem \tstk{ref!} is given in section \ref{ssec:MeasureTheory}.
 
 \subsection{Quantum/Metric Graphs} \label{ssec:QuantumGraphs}
-This section will need a brief overview of the theory we are borrowing from Quantum Graphs, and previous works on them.
-Mainly this is just how to associate each interval to an edge, the notation that we are going to use, and how to setup a quantum graph problem so that when we reach one in the later sections, we can say ``ta-da"!
-
-We begin by briefly outlining the concept of a quantum graph, introducing the function spaces associated with them, and defining differential operators on them.
+In this section we outline the concept of a quantum graph, as well as introduce the function spaces associated with them, and defining differential operators on them.
 Let $\graph=\bracs{V,E}$ be a directed graph with vertices $v_j\in V$ and edges $I_{jk}=\bracs{v_j, v_k}\in E$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
 Strictly we should use the notation $I_{jk}^l$ for the edges, as in general there may be $l$ such connections from $v_j$ to $v_k$, however this fine detail will not play a significant role in our analysis and so we drop this additional superscript to avoid notational clutter.
 Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and interval $\sqbracs{0,l_{jk}}$, this interval we also denote by $I_{jk}$ (for reasons that will become apparent shortly).
@@ -53,9 +50,18 @@ Formally we have
 We can then utilise this notation as shorthand in summations involving edges or vertices in the following manner; for a fixed $v_j\in V$
 \begin{align*}
 	\sum_{j\conLeft k} = \sum_{\substack{k \\ I_{jk}\in E}}, \quad
-	\sum_{j\conLeft k} = \sum_{\substack{k \\ I_{kj}\in E}}, \quad
-	\sum_{j\con k} = \sum_{j\conLeft k} + \sum_{j\conRight k}.
+	\sum_{j\conRight k} = \sum_{\substack{k \\ I_{kj}\in E}}.
 \end{align*}
+The use of $j\con k$ as a summation index requires more careful treatment, as there may only be edges directed one-way between vertices $v_j$ and $v_k$, and the order of our indices needs to be reversed when the sum involves $u_{jk}$ and the like.
+Formally we have
+\begin{align*}
+	\sum_{j\con k} = \sum_{j\conLeft k} + \sum_{j\conRight k},
+\end{align*}
+which we will use in context as below:
+\begin{align*}
+	\sum_{j\con k}u_{jk}\bracs{v_j} &= \sum_{j\conLeft k}u_{jk}\bracs{v_j} + \sum_{j\conRight }u_{kj}\bracs{v_j}.
+\end{align*}
+Essentially any $jk$ index (referencing an edge) appearing on the left hand side is reversed as appropriate in the sums on the right hand side, but indices referencing vertices (like the $v_j$) remain the same in all sums. \newline
 
 Differential operators (or differential equations) on quantum graphs can then be defined by specifying their domains and their action on each edge of the graph $\graph$.
 To obtain a well-posed problem (strictly speaking, a self-adjoint operator \tstk{refs!}) on a graph however will require specification of boundary conditions at the vertices, which are essentially the boundaries of our edges $I_{jk}$.
@@ -95,7 +101,36 @@ As the spaces in \eqref{eq:GraphFuncSpaces} break down into edge-wise components
 	\end{cases}
 \end{align*}
 
-\subsection{Embedded Graphs and Singular Measures} \label{ssec:EmbeddedGraphs}
+\subsubsection{The $M$-Matrix} \label{sssec:MMatrix}
+When solving spectral problems on quantum graphs, recent developments involving an object known as the $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in \tstk{section reference}.
+The $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples (more information can be found \tstk{refs}), and what we present here is simply the framework that we require without any of the generality of this theory.
+Let $\mathcal{A}$ be the operator in equations \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef}, and define the maps
+\begin{align*}
+	\dmap, \nmap: \mathrm{dom}\mathcal{A} \rightarrow \complex^{\abs{V}};
+\end{align*}
+where for a function $u\in\mathrm{dom}\mathcal{A}$, $\dmap$ sends $u$ to it's Dirichlet data at each of the vertices $v_j$ represented in a column vector in $\complex^{\abs{V}}$, and $\nmap$ sends $u$ to it's Neumann data at each of the vertices $v_j$ (again represented as a column vector).
+Assuming we are using the labels $v_j, j\in\clbracs{1,...,\abs{V}}$ for the vertices of $\graph$, the $j$\textsuperscript{th} entry of the vectors $\dmap u$ and $\nmap u$ when considering $\mathcal{A}$ as in \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef} are given by
+\begin{align*}
+	\bracs{\dmap u}_j &= u\bracs{v_j}, \\
+	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}.
+\end{align*}
+The $M$-matrix is then the unique map
+\begin{align*}
+	M\bracs{\lambda}:\complex^{\abs{V}} &\rightarrow \complex^{\abs{V}},
+\end{align*}
+such that whenever $u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}$,
+\begin{align*}
+	M\bracs{\lambda}\dmap u &= \nmap u.
+\end{align*}
+Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur at those $\lambda$ such that 
+\begin{align*}
+	\mathrm{det}\bracs{M\bracs{\lambda} - A}= 0,
+\end{align*}
+where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{V}}}$ is the diagonal matrix of the vertex coupling constants.
+One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
+We will exploit this fact in section \tstk{ref!}.
+
+\subsubsection{Embedded Graphs and Singular Measures} \label{sssec:EmbeddedGraphs}
 Quantum graphs and differential equations on them will be what we aim to translate our abstract, measure-theoretic problems into (\tstk{section reference}), but the quantum graphs themselves will arise from embedded graphs in $\reals^2$.
 We say a (directed) graph $\graph = \bracs{V,E}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point which we also label $v_j\in\reals^2$; and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with (arc-)length $l_{jk}$, such that there is a continuous map
 \begin{align*}
@@ -106,8 +141,8 @@ It is clear from this definition how an embedded graph gives rise to a correspon
 The choice of $\reals^2$ is simply to cover the situations we will be considering in this work, there are more general definitions depending on the choice of space to ``embed" the graph into.
 For a unit vector $x\in\reals^2$, an embedded graphs is said to be $T$-periodic in the direction $x$ if it is invariant under the translation $Tx$ applied to it's vertices and edges.
 By convention, $T$ refers to the minimal such scalar $T>0$ for which this happens.
-If $\graph$ is periodic in the axial directions $e_1, e_2$ (with scalars $T_1, T_2$ respectively), then we can define the ``period cell" or ``unit cell" of $\graph$ in the obvious manner.
-Take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbracs{0,T_1}\times\sqbracs{0,T_2}$ and match the left boundary to the right, and top boundary to the bottom - essentially view the graph in the region $\mathcal{P}$ as living on the torus, as in figure \ref{fig:PeriodCellIllustration}.
+If $\graph$ is periodic in the axial directions $e_1, e_2$ (with scalars $T_1, T_2$ respectively), then we can define the ``period cell" or ``unit cell" $\mathcal{P}$ of $\graph$ in the obvious manner: take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbracs{0,T_1}\times\sqbracs{0,T_2}$ and match the left boundary to the right, and top boundary to the bottom.
+That is, view the graph in the region $\mathcal{P}$ as living on the torus, as in figure \ref{fig:PeriodCellIllustration}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -129,7 +164,8 @@ Take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbr
 	\end{subfigure}
 	\caption{\label{fig:PeriodCellIllustration} Illustrating a periodic cell of a periodic embedded graph.}
 \end{figure} 
-Obviously the period cell of an embedded periodic graph is itself an embedded graph. \newline
+Obviously the graph $\graph_{\mathcal{P}}$ contained in the period cell $\mathcal{P}$ of an embedded periodic graph $\graph$ is itself an embedded graph (after association of the boundaries of the period cell). 
+We will refer to $\graph_{\mathcal{P}}$ as the ``period graph" or ``unit graph" of $\graph$, and write $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as shorthand. \newline
 
 In the work that follows we restrict ourselves to considering straight-edges between vertices, so the curves $\gamma_{jk} = \sqbracs{v_j, v_k}$ are simply the line segments joining the vertices at either end, with lengths $l_{jk} = \norm{v_j-v_k}_2$.
 As such, for each edge $I_{jk}$ in our embedded graphs, we can use the parametrisation
@@ -145,7 +181,7 @@ Whilst discussing embedded graphs we should introduce the object which will link
 For an embedded graph $\graph = \bracs{V,E}$ and for each $I_{jk}\in E$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$.
 So for each Borel set $B$ we have that 
 \begin{align*}
-	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap \sqbracs{0,l_{jk}}}}
+	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}}
 \end{align*}
 where $\lambda_1$ is the 1D-Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:EdgeParameterisation}).
 Then set $\ddmes$ to be the (Borel) measure defined by
@@ -153,7 +189,7 @@ Then set $\ddmes$ to be the (Borel) measure defined by
 	\ddmes\bracs{B} = \sum_{v_j\in V}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
 \end{align*}
 Then $\ddmes$ is the ``singular measure that supports $\graph$"; or alternatively the ``singular measure on $\graph$", or the ``(singular) measure that supports the edges of $\graph$".
-For a graph embedded into a 2D domain, the singular measure is illustrated in figure \ref{fig:Diagram_SingularMeasures2D}.
+For a graph embedded into a 2D domain, the singular measure is illustrated in figure \ref{fig:Diagram_SingularMeasure2D}.
 \begin{figure}[t!]
 	\centering
 	\includegraphics[scale=0.85]{Diagram_SingularMeasure2D.pdf}
@@ -163,14 +199,44 @@ For a graph embedded into a 2D domain, the singular measure is illustrated in fi
 
 The singular measure of a graph will be the key component in our measure-theoretic formulations, which enables us to establish ideas of derivatives whilst working on a domain which has no ``area" in the Lebesgue-sense.
 
-\subsection{Operator of Interest} \label{ssec:ktCurls}
-In this section we should introduce our kt-curl operator (or kt-nabla to be more specific) and explain why it is the object of interest to us.
-This may require us to go through the motion of explaining how we transition from a problem in $\reals^3$ to a problem on $[0,1]^2$ via Gelfand and Fourier transforms, if we did not mention this in the introductory chapter.
+\subsection{Measure Theoretic Concepts} \label{ssec:MeasureTheory}
+In this section we address the question of how one can pose ``differential equations" on singular structures, by outlining the appropriate differential operators and function spaces that are required.
+As touched on in section \tstk{sec ref}, attempting to pose some kind of differential system on a singular-structure by drawing analogy to the ``ingredients" of a differential equation on a thin-structure runs into problems, due to the singular-structure lacking a domain interior.
+With no interior, imposing any kind of boundary data would be imposing a condition on the entire domain.
+One could ``bypass" explicitly writing boundary conditions by using a weak/variational formulation rather than a strong formulation, but since the Lebesgue measure of the singular-structure is zero this results in a formulation involving integrals which are identically zero.
+The solution to these problems is not to abandon what we believe are the ingredients of a differential system, but rather rework our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular-structure itself, despite the fact that the structure lives in a higher-dimensional set. \tstk{zhikov mention?}
 
-This should then transition nicely into our light overview of the theory we developed concerning this operator, and the quirks of the spaces of functions that we want to work with.
+Let $\graph=\bracs{V,E}$ be a finite graph embedded into the region $\ddom=\sqbracs{0,T_1}\times\sqbracs{0,T_2}\subset\reals^2$, which will serve as our singular structure.
+For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)$ define the shifted gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
+\begin{align*}
+	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}.
+\end{align*}
+In sections \tstk{section ref} we will consider $\graph$ as the period cell of some periodic, embedded graph in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform to aid us in solving differential equations posed on such a graph.
+As such one can think of the parameter $\qm$ as the quasi-momentum, however in this section it has little effect beyond being a scalar-shift to our derivatives.
+Let $\ddmes$ be the singular measure supported on $\graph$, and for each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supporting the edge $I_{jk}$, as in section \ref{sssec:SingularMeasures}.
+Then one can construct the sets $W^{\qm}_\graph$ as the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\ddmes}\times\ltwo{\ddom}{\ddmes}^2$ norm, and $W^{\qm}_{jk}$ similarly as the closure of set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\lambda_{jk}}\times\ltwo{\ddom}{\lambda_{jk}}^2$ norm.
+The idea here being to construct an analogy of a ``Sobolev space" for functions defined on our singular-structure, and hence obtain a concept of ``(weak) derivative".
+With this in mind, for a pair $\bracs{u,g}\in W^{\qm}_\graph$ it is tempting to call $g$ the ``gradient" of $u$ in this new sense; however this implies that $u$ has only one gradient in this sense, and this is not the case.
+Indeed if $\bracs{u,g_1},\bracs{0,g_2}\in W^{\qm}_\graph$ then clearly $\bracs{u, g_1+g_2}\in W^{\qm}_\graph$ too.
+This means that $W^{\qm}_\graph$ isn't quite the set of functions we want when it comes to singular-structure problems, however we can obtain a usable set of functions from $W^{\qm}_\graph$. \newline
 
-\subsection{Function Spaces} \label{ssec:FunctionSpaces}
-This is the natural follow on from introducing the $\ktgrad$ operator in the previous subsection.
-We outline the definitions that we are working with and will then explore the main results of our theory concerning gradients (and tangential gradients), curls, divergence-free functions and the like.
-By the end of this subsection we should at least have included results that illustrate what each of the ``tangential" gradients/curls look like, and what properties divergence-free functions have.
+We define the ``set of $\ddmes$-gradients of zero" as
+\begin{align*}
+	\gradZero{\ddom}{\ddmes} &= \clbracs{ g \ \vert \ \bracs{0,g}\in W^{\qm}_\graph },
+\end{align*}
+which is a closed, linear subspace of $\ltwo{\ddom}{\ddmes}^2$.
+It can be shown that $\gradZero{\ddom}{\ddmes}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol.
+As such, one has the orthogonal decomposition
+\begin{align*}
+	\ltwo{\ddom}{\ddmes}^2 &= \gradZero{\ddom}{\ddmes}^{\perp} \oplus \gradZero{\ddom}{\ddmes}.
+\end{align*}
+So for each $u\in\ltwo{\ddom}{\ddmes}$ there exists a $\grad_\ddmes u\in\gradZero{\ddom}{\ddmes}^{\perp}$ such that any pair $\bracs{u,z}\in W^{\qm}_\graph$ can be written as $\bracs{u,\grad_\ddmes u + g}$ where $g\in\gradZero{\ddom}{\ddmes}$.
+We call $\grad_\ddmes u$ the ``tangential derivative" of $u$ and it is unique in this sense; which allows us to construct the ``Sobolev space"
+\begin{align*}
+	\gradSobQM{\ddom}{\ddmes} &= \clbracs{ \bracs{u, \grad_\ddmes u}\in W^{\qm}_\graph \ \vert \ \grad_\ddmes u \in \gradZero{\ddom}{\ddmes}^{\perp} }.
+\end{align*}
+Since $\grad_\ddmes u$ is unique, we will use the shorthand $u\in\gradSobQM{\ddom}{\ddmes}$ to refer to the pair $\bracs{u, \grad_\ddmes u}$. \tstk{worth a note about how tang gradient isn't always the gradient we want when solving equations with non-identity elliptic $A$}
+We can follow a similar process to define the sets $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradSobQM{\ddom}{\lambda_{jk}}$. \newline
 
+This construction gives us a concept of ``derivative" to work with; however there is still work to be done towards understanding the nature of these tangential derivatives, which will be key to the derivation of our system \tstk{system reference} from \tstk{m theory system}.
+We explore this in section \tstk{section ref!}.

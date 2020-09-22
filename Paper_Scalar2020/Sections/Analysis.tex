@@ -1,9 +1,27 @@
-\section{Effective System and Analysis} \label{sec:SystemAndAnalysis}
+\section{Analysis and Derivation of System} \label{sec:SystemAndAnalysis}
 
 Here the intention is to explain how we arrive at the system of equations for a singular structure problem from our measure theoretic formulation.
-We recall theory from the previous sections of the paper to do this, and then proceed to discuss our numerical schemes and demonstrate band-gap structures and other conjectures we have made.
+We recall theory from the previous sections of the paper to do this, and then proceed to discuss our numerical schemes and demonstrate band-gap structures and other conjectures we have made. \newline
 
-\tstk{this needs to be moved to the right place in the text, in particular after the QG problem is derived}
+Having provided definitions for the ``Sobolev spaces" we wish to use in section \ref{sec:Definitions}, we now provide an overview of the arguments that one employs to derive the quantum graph problem \tstk{qg problem we get reference} from the measure-theoretic \ref{MT system we start from}.
+Provided in this chapter are the crucial results that the derivation leans heavily on, and commentary describing the direction of the arguments involved in proving each result.
+Because the proofs themselves are quite verbose, we present these in an appendix \tstk{appendix ref} in the interest of readability. \newline
+
+For the remainder of this section we assume the following convention:
+\begin{convention} \label{conv:MeasTheoryProblemSetup}
+	Let $\graph=\bracs{V,E}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
+	We restrict ourselves to considering straight-edges between vertices, so each $I_{jk}\in E$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \norm{v_j-v_k}_2$.
+	Let $r_{jk}$ and $e_{jk}$ be as given in \eqref{eq:EdgeParameterisation}, and let $n_{jk}$ be the unit normal to $I_{jk}$ such that $y_{jk} = \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$.
+\end{convention}
+We begin with a more complete description of the functions belonging to $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradZero{\ddom}{\ddmes}$, which in turn will help us understand the form of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ through an understanding of their tangential gradient.
+
+\subsection{On $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradZero{\ddom}{\ddmes}$} \label{ssec:GradsOfZeroTheory}
+
+\subsection{On $\gradSobQM{\ddom}{\ddmes}$} \label{ssec:SobSpacesTheory}
+
+\subsection{Derivation and Formulation of Quantum Graph Problem} \label{ssec:Derivation}
+
+\tstk{this needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
 	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.
