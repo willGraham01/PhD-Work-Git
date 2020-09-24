@@ -16,12 +16,97 @@ For the remainder of this section we assume the following convention:
 We begin with a more complete description of the functions belonging to $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradZero{\ddom}{\ddmes}$, which in turn will help us understand the form of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ through an understanding of their tangential gradient.
 
 \subsection{On $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradZero{\ddom}{\ddmes}$} \label{ssec:GradsOfZeroTheory}
+Crucial to our understanding of the functions (and their gradients) in $\gradSobQM{\ddom}{\ddmes}$ will be understanding the corresponding ``gradients of zero".
+\tstk{argument is based of Zhikov's stuff, and is in appendix in full}
+We work towards obtaining this understanding progressively; first we look to understand the set $\gradZero{\ddom}{\lambda_{jk}}$ when the edge $I_{jk}$ is assumed to be parallel to the $x_1$-axis, then employ a rotation argument to understand $\gradZero{\ddom}{\lambda_{jk}}$ for a general edge that is at an angle to the $x_1$-axis.
+Given that the singular measure $\ddmes$ is just the sum of the individual singular measures supporting each edge, we can then prove that elements of $\gradZero{\ddom}{\ddmes}$ display the same behaviour as elements of $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
+This argument also provides us with a clear geometric interpretation for what a ``gradient of zero" is, and the edge-wise characterisation we obtain for elements of $\gradZero{\ddom}{\ddmes}$ will carry through into how we describe functions in $\gradSobQM{\ddom}{\ddmes}$.
+\tstk{should include here some of the key properties of gradients of zero sets, like being a closed linear subspace and density of smooth functions...? Unless I did this in the definitions chapter?}
+
+We begin by describing $\gradZero{\ddom}{\lambda_{jk}}$ for when the edge $I_{jk}$ is parallel to the $x_1$-axis.
+\begin{prop}[Gradients of Zero on a Segment Parallel to the $x_1$-axis] \label{prop:GradZeroParallelZhikov}
+	Let $I$ be a segment in the $\bracs{x_1,x_2}$-plane parallel to the $x_1$-axis, and let $\lambda_I$ be the singular measure supported on $I$.
+	Then 
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} &= 
+		\clbracs{
+			\begin{pmatrix} 0 \\ f	\end{pmatrix}
+			\ \vert \ f\in\ltwo{\ddom}{\lambda_I}
+		}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	By combining proposition \ref{prop:GradZeroInvarientUnderQM} with a result in \cite{zhikov2000extension} \tstk{precise lemma/page citation}, this result follows, however we present a brief summary of the argument.
+	Without loss of generality we assume $x_2=0$ on $I$.
+	Additionally it suffices to show that the set on the right hand side includes all functions of the specified form when $f$ is smooth, as we can then apply a density argument. \newline
+	
+	So take some $f\in\smooth{\ddom}$, then the ``constant sequence" $\phi_n = \phi = x_2 f$ is such that
+	\begin{align*}
+		\phi_n\lconv{\ltwo{\ddom}{\lambda_I}}0, 
+		&\quad \grad\phi_n\lconv{\ltwo{\ddom}{\lambda_I}^2} \begin{pmatrix} 0 \\ f \end{pmatrix}
+		&\quad \toInfty{n}
+	\end{align*}	 
+	and so $\bracs{0,f}^\top\in\gradZero{\ddom}{\lambda_I}$. \newline
+	
+	We now prove that if $\bracs{f,0}^\top\in\gradZero{\ddom}{\lambda_I}$ then $f=0$.
+	So suppose $\bracs{f,0}\in\gradZero{\ddom}{\lambda_I}$ and take an approximating sequence $\phi_n$ as in \eqref{eq:GradZeroDef}.
+	Performing a change of variables via the map $r:\interval{I}\rightarrow I$ (as described for an edge $I_{jk}$ in convention \ref{conv:MeasTheoryProblemSetup}), and setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have
+	\begin{align*}
+		\tilde{\phi}_n\lconv{\ltwo{\interval{I}}{t}} 0, 
+		&\quad \diff{\tilde{\phi}_n}{t}\lconv{\ltwo{\interval{I}}{t}} \tilde{f}
+		&\quad \toInfty{n}.
+	\end{align*}
+	Hence $\tilde{f}$ is the distributional derivative (in the $\gradSob{\interval{I}}{t}$ sense) of the zero function, so we can conclude that $\tilde{f} = 0$, and thus $f = 0$, as we sought.
+\end{proof}
+
+Proposition \ref{prop:GradZeroParallelZhikov} provides the following interpretation for ``gradients of zero".
+The measure $\lambda_I$ however can only ``see" along the segment $I$, as this is it's entire support.
+As such $\lambda_I$ can only see the change in a function in the direction along the segment $I$, hence we find that $\gradZero{\ddom}{\lambda_I}$ consists of all the components of gradients that are directed perpendicular to $I$.
+The following proposition reinforces this interpretation, although the argument is simply to invoke the result of proposition \ref{prop:GradZeroParallelZhikov} after applying the obvious rotation.
+\begin{prop}[Rotation of Edge Gradients of Zero] \label{prop:RotationOfEdgeGradients}
+	Consider the case when $\graph$ consists of a single edge (or segment) $I\subset\ddom$ with orthogonal co-ordinate system $y=\bracs{y_1,y_2}$, with $y_1$ parallel to $I$.
+	Let $R$ be the orthogonal change of co-ordinates $x=Ry$ with $x=\bracs{x_1,x_2}$ the orthogonal co-ordinate system along the axes.
+	Then
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} 
+		&= \clbracs{ R^{\top} \begin{pmatrix} 0 \\ f_2 \end{pmatrix} \ \vert \ f_2\in\ltwo{\ddom}{\lambda_I} }.
+	\end{align*}
+\end{prop}
+With these two results, there is the following corollary which further reinforces the interpretation of $\gradZero{\ddom}{\lambda_I}$ given earlier.
+\begin{cory} \label{cory:Grad0SingleEdge}
+	Assume the hypothesis of proposition \ref{prop:RotationOfEdgeGradients}, and denote by $e_I$ the unit vector parallel to the segment $I$.
+	Then
+	\begin{align*}
+		\gradZero{\ddom}{\lambda_I} &= \clbracs{z\in\ltwo{\ddom}{\lambda_I} \ \vert \ z\vert_{I}\cdot e_I = 0}.
+	\end{align*}
+\end{cory}
+
+Using our understanding of gradients of zero on single segments, we can build up an understanding of gradients of zero on embedded graphs consisting of multiple edges.
+This turns out to be the following characterisation; where each function in $\gradZero{\ddom}{\ddmes}$ behaves as a function in $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
+\begin{prop} \label{prop:GradZeroGraph}
+	Given convention \ref{conv:MeasTheoryProblemSetup}, we have that
+	\begin{align*}
+		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
+		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E}. \labelthis\label{eq:GradZeroSetRHS}
+	\end{align*}
+\end{prop}
+\begin{proof}
+	For the full proof, see appendix \tstk{appendix reference}.
+	Showing that elements of $\gradZero{\ddom}{\ddmes}$ are contained in the set on the right-hand-side of \eqref{eq:GradZeroSetRHS} is straightforward due to the definition of $\ddmes$ and the fact that
+	\begin{align*}
+		\norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 = \sum_{j\con k}\norm{\cdot}_{\ltwo{\ddom}{\lambda_{jk}}}^2,
+	\end{align*}
+	so if one has convergence in the $\ltwo{\ddom}{\ddmes}$-norm then we have convergence in each $\ltwo{\ddom}{\lambda_{jk}}$-norm.
+	The opposite set inclusion involves a number of technical steps, and the full argument is given in the appendix.
+	The gist of the argument involves showing that if $g$ is a member of the set on the right-had-side of \eqref{eq:GradZeroSetRHS}, then we can demonstrate that $g_{jk}\in\gradZero{\ddom}{\ddmes}$ (recall $g_{jk}$ is $g$ restricted to $I_{jk}$ then extended by zero to $\ddom$) given that $g_{jk}\in\gradZero{\ddom}{\lambda_{jk}}$.
+	Then we can use the idea that $g = \sum_{j\con k} g_{jk}$ and that $\gradZero{\ddom}{\ddmes}$ is a closed, linear subspace to obtain membership of $g$ in $\gradZero{\ddom}{\ddmes}$; although in practice the expression for the sum is made more complex by the need to ensure good behaviour near the vertices of the graph.
+\end{proof}
 
 \subsection{On $\gradSobQM{\ddom}{\ddmes}$} \label{ssec:SobSpacesTheory}
 
 \subsection{Derivation and Formulation of Quantum Graph Problem} \label{ssec:Derivation}
 
-\tstk{this needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
+\tstk{prop \ref{prop:M-MatrixEntries} needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
 	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_2$ and $l_{jk} = \abs{I_{jk}}$.

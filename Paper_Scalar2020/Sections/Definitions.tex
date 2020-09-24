@@ -221,12 +221,34 @@ Indeed if $\bracs{u,g_1},\bracs{0,g_2}\in W^{\qm}_\graph$ then clearly $\bracs{u
 This means that $W^{\qm}_\graph$ isn't quite the set of functions we want when it comes to singular-structure problems, however we can obtain a usable set of functions from $W^{\qm}_\graph$. \newline
 
 We define the ``set of $\ddmes$-gradients of zero" as
-\begin{align*}
-	\gradZero{\ddom}{\ddmes} &= \clbracs{ g \ \vert \ \bracs{0,g}\in W^{\qm}_\graph },
-\end{align*}
+\begin{align} \label{eq:GradZeroDef}
+	\gradZero{\ddom}{\ddmes} &= \clbracs{ g \ \vert \ \bracs{0,g}\in W^{\qm}_\graph }, \\
+	&= \clbracs{ g \ \vert \ \exists\phi_n\in\smooth{\ddom} \text{ s.t. } \phi_n\lconv{\ltwo{\ddom}{\ddmes}}0, \tgrad\phi_n\lconv{\ltwo{\ddom}{\ddmes}^2}g }
+\end{align}
 which is a closed, linear subspace of $\ltwo{\ddom}{\ddmes}^2$.
-It can be shown that $\gradZero{\ddom}{\ddmes}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol.
-As such, one has the orthogonal decomposition
+It can be shown that $\gradZero{\ddom}{\ddmes}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol:
+\begin{prop}[Gradients of Zero are Invariant Under Quasi-Momentum] \label{prop:GradZeroInvarientUnderQM}
+	For any fixed $\qm\in[-\pi,\pi)^2$, let 
+	\begin{align*}
+		\mathcal{G}^0_{\ddom, \md \ddmes} &= \clbracs{ g \ \vert \ \bracs{0,g}\in W^0_\graph}, \\
+		\mathcal{G}^{\qm}_{\ddom, \md \ddmes} &= \clbracs{ g \ \vert \ bracs{0,g}\in W^{\qm}_\graph }.
+	\end{align*}
+	Then $\mathcal{G}^0_{\ddom, \md \ddmes} = \mathcal{G}^{\qm}_{\ddom, \md \ddmes}$.
+\end{prop}
+\begin{proof}
+	Given that $\tgrad\phi = \grad\phi + i\qm\phi$ for smooth $\phi$, if $g\in\mathcal{G}^0_{\ddom, \md \ddmes}$ there exists a sequence of smooth functions $\phi_n$ such that 
+	\begin{align*}
+		\phi_n\lconv{\ltwo{\ddom}{\ddmes}}0, &\grad\phi_n\lconv{\ltwo{\ddom}{\ddmes}^2}g.
+	\end{align*}
+	But then clearly
+	\begin{align*}
+		\phi_n\lconv{\ltwo{\ddom}{\ddmes}}0, &\tgrad\phi_n = \grad\phi_n + i\qm\phi_n \lconv{\ltwo{\ddom}{\ddmes}^2} g + 0 = g,
+	\end{align*}
+	so $g\in\mathcal{G}^\qm_{\ddom, \md \ddmes}$.
+	The reverse direction is similar.
+\end{proof}
+
+With $\gradZero{\ddom}{\ddmes}$ being a closed, linear subspace of $\ltwo{\ddom}{\ddmes}^2$, one has the orthogonal decomposition
 \begin{align*}
 	\ltwo{\ddom}{\ddmes}^2 &= \gradZero{\ddom}{\ddmes}^{\perp} \oplus \gradZero{\ddom}{\ddmes}.
 \end{align*}
