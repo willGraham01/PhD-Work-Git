@@ -6,21 +6,22 @@ Finally, the definition of the function spaces we plan to use in our variational
 
 \subsection{Quantum/Metric Graphs} \label{ssec:QuantumGraphs}
 In this section we outline the concept of a quantum graph, as well as introduce the function spaces associated with them, and defining differential operators on them.
-Let $\graph=\bracs{V,E}$ be a directed graph with vertices $v_j\in V$ and edges $I_{jk}=\bracs{v_j, v_k}\in E$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
-Strictly we should use the notation $I_{jk}^l$ for the edges, as in general there may be $l$ such connections from $v_j$ to $v_k$, however this fine detail will not play a significant role in our analysis and so we drop this additional superscript to avoid notational clutter.
-Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and interval $\sqbracs{0,l_{jk}}$, this interval we also denote by $I_{jk}$ (for reasons that will become apparent shortly).
-We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\reals$ \tstk{should only be $<0$ I think, due to our normal derivative choice}.
-Then the graph $\graph$ is called a quantum graph. \newline
+Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
+Strictly we should use the notation $I_{jk}^l$ for the edges; with $l$ being a script which runs from $1$ to the number of edges with left endpoint $v_j$ and right endpoint $v_k$, as in general there may be multiple such connections from $v_j$ to $v_k$.
+However we drop this superscript to avoid notational clutter, and because it's inclusion is not necessary to understand the concepts we introduce here.
+Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and interval $\sqbracs{0,l_{jk}}$, which we also denote by $I_{jk}$ (for reasons that will become apparent shortly).
+We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j\in\reals$).
+A graph $\graph$ with the metric structure described above is called a \emph{quantum graph}, or \emph{metric graph}. \tstk{cite Kuchment by page/chapter, also check Kuchment book whether we need to include the operator in the definition too!}
 
-By providing each edge with a length and hence interval, we can construct functions on quantum graphs by describing their behaviour on each edge of the graph, and hence can produce function spaces such as
+By providing each edge with a length and hence associating it with an interval, we can construct functions on quantum graphs by describing their behaviour on the edges, and hence can produce the function spaces
 \begin{subequations} \label{eq:GraphFuncSpaces}
 	\begin{align}
-		L^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} \ltwo{I_{jk}}{t},
-		&\quad H^1\bracs{\graph} := \bigoplus_{I_{jk}\in E} \gradSob{I_{jk}}{t}, \\
-		H^2\bracs{\graph} := \bigoplus_{I_{jk}\in E} H^2_\mathrm{grad}\bracs{I_{jk}, \md t}. &
+		L^2\bracs{\graph} := \bigoplus_{I_{jk}\in \edgeSet} \ltwo{I_{jk}}{t},
+		&\quad H^1\bracs{\graph} := \bigoplus_{I_{jk}\in \edgeSet} \gradSob{I_{jk}}{t}, \\
+		H^2\bracs{\graph} := \bigoplus_{I_{jk}\in \edgeSet} H^2_\mathrm{grad}\bracs{I_{jk}, \md t}. &
 	\end{align}
 \end{subequations}
-Because we will mainly be working on the edges of our graphs, we define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of a function $u$ defined on $\graph$ to the edge $I_{jk}$, extended by zero.
+We define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of a function $u$ defined on $\graph$ to the edge $I_{jk}$, extended by zero.
 As the directed edge $I_{jk}$ is associated to the interval $\sqbracs{0,l_{jk}}$, we will also use the shorthand
 \begin{align*}
 	u_{jk}\bracs{v_j} &= u_{jk}\bracs{0}, &\quad
@@ -30,38 +31,38 @@ As the directed edge $I_{jk}$ is associated to the interval $\sqbracs{0,l_{jk}}$
 \end{align*}
 If $u$ is continuous at a vertex $v_j$, we will use the notation $u\bracs{v_j}$ for this value.
 This will be convenient later, when we work with quantum graphs that have been obtained from graphs embedded in $\reals^2$.
-We also require a notion of ``normal derivative" for our functions when we approach the endpoints of an edge in the graph $\graph$.
+We also require a notion of ``signed derivative" (which is analogous to the ``normal derivative" for PDE problems) for our functions when we approach the endpoints of an edge in the graph $\graph$.
 To this end, we adopt the following convention;
-\begin{align*}
-	\diff{}{t}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
-	\diff{}{t}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
-\end{align*}
+\begin{subequations} \label{eq:SignedDerivConvention}
+	\begin{align}
+		\diff{}{t}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
+		\diff{}{t}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
+	\end{align}
+\end{subequations}
 for suitably differentiable functions $u$ on $\graph$. 
-In effect, we are using an ``exterior facing" normal derivative for our edges. 
-Before we discuss differential operators on quantum graphs we introduce a small amount of notation to make the equations we present more readable.
-We use the notation $j\conLeft k$ to mean ``the vertex $v_j$ connects to $v_k$ with $v_j$ on the left", and $j\conRight k$ to mean ``the vertex $v_j$ connects to $v_k$ with $v_j$ on the right".
-Lastly, we use $j\con k$ to mean ``the vertex $v_j$ connects to $v_k$" in cases where we don't care about the direction of the connection.
+In effect the formulae \eqref{eq:SignedDerivConvention} define an ``exterior facing" derivative at each endpoint. \newline
+ 
+Before we discuss differential operators on quantum graphs we introduce some notation to make the equations more readable: $j\conLeft k$ stands for ``an edge with endpoints $v_j$ and $v_k$, with $v_j$ on the left", and $j\con k$ is used to mean ``an edge with endpoints $v_j$ and $v_k$", for use in cases where we do not care about the direction of the connection.
+We also use $j \conRight k$ which can be read as meaning $k\conLeft j$, that is ``an edge with endpoints $v_j$ and $v_k$, with $v_j$ on the right".
 Formally we have
 \begin{align*}
-	j\conLeft k &\Leftrightarrow I_{jk}\in E, \quad
-	j\conRight k \Leftrightarrow I_{kj}\in E, \\
-	j\con k &\Leftrightarrow I_{jk}\in E \text{ or } I_{kj}\in E.
+	j\conLeft k &\Leftrightarrow I_{jk}\in \edgeSet, \\
+	j\con k &\Leftrightarrow I_{jk}\in \edgeSet \text{ or } I_{kj}\in \edgeSet.
 \end{align*}
-We can then utilise this notation as shorthand in summations involving edges or vertices in the following manner; for a fixed $v_j\in V$
+We can then utilise this notation as shorthand in summations involving edges or vertices in the following manner; for a fixed $j$
 \begin{align*}
-	\sum_{j\conLeft k} = \sum_{\substack{k \\ I_{jk}\in E}}, \quad
-	\sum_{j\conRight k} = \sum_{\substack{k \\ I_{kj}\in E}}.
+	\sum_{j\conLeft k} = \sum_{\substack{k \\ I_{jk}\in \edgeSet}}, \quad
+	\sum_{j\conRight k} = \sum_{\substack{k \\ I_{kj}\in \edgeSet}}.
 \end{align*}
-The use of $j\con k$ as a summation index requires more careful treatment, as there may only be edges directed one-way between vertices $v_j$ and $v_k$, and the order of our indices needs to be reversed when the sum involves $u_{jk}$ and the like.
-Formally we have
+Furthermore, for a fixed $j$ we use the notation
 \begin{align*}
 	\sum_{j\con k} = \sum_{j\conLeft k} + \sum_{j\conRight k},
 \end{align*}
-which we will use in context as below:
+so for example
 \begin{align*}
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \sum_{j\conLeft k}u_{jk}\bracs{v_j} + \sum_{j\conRight }u_{kj}\bracs{v_j}.
 \end{align*}
-Essentially any $jk$ index (referencing an edge) appearing on the left hand side is reversed as appropriate in the sums on the right hand side, but indices referencing vertices (like the $v_j$) remain the same in all sums. \newline
+For consistency with the possibility of having multiple edges $I_{jk}^l$ connecting two vertices, then these sums should be interpreted as being over all such edges (that is, running over $k$ and the appropriate range of $l$). \newline
 
 Differential operators (or differential equations) on quantum graphs can then be defined by specifying their domains and their action on each edge of the graph $\graph$.
 To obtain a well-posed problem (strictly speaking, a self-adjoint operator \tstk{refs!}) on a graph however will require specification of boundary conditions at the vertices, which are essentially the boundaries of our edges $I_{jk}$.
@@ -70,13 +71,13 @@ Whilst there are several choices one can make for the vertex conditions, we will
 By way of example, let us demonstrate how we define the operator $-\ddiff{}{t}$ on $\graph$.
 The domain of $\mathcal{A}$ shall be
 \begin{align} \label{eq:ExampleOppDomainDef}
-	\mathrm{dom}\mathcal{A} &= \clbracs{ u\in H^2\bracs{\graph} \ \vert \ \text{At each } v_j\in V, \ u \text{ is continuous and } \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} },
+	\mathrm{dom}\mathcal{A} &= \clbracs{ u\in H^2\bracs{\graph} \ \vert \ \text{At each } v_j\in \vertSet, \ u \text{ is continuous and } \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} },
 \end{align}
 whilst it's action on each edge is
 \begin{align} \label{eq:ExampleOppEdgeDef}
-	\mathcal{A} &= -\ddiff{}{t} \quad\text{on each } I_{jk}\in E.
+	\mathcal{A} &= -\ddiff{}{t} \quad\text{on each } I_{jk}\in \edgeSet.
 \end{align}
-Of course, by ``on each $I_{jk}\in E$" we mean ``on the interval $\sqbracs{0,l_{jk}}$ that we associate to $I_{jk}\in E$".
+Of course, by ``on each $I_{jk}\in \edgeSet$" we mean ``on the interval $\sqbracs{0,l_{jk}}$ that we associate to $I_{jk}\in \edgeSet$".
 Then for a function $f\in L^2\bracs{\graph}$ we can pose the resolvent problem of finding $u\in\mathrm{dom}\mathcal{A}$ such that
 \begin{align*}
 	\mathcal{A}u &= f;
@@ -90,14 +91,14 @@ As the spaces in \eqref{eq:GraphFuncSpaces} break down into edge-wise components
 	\mathcal{A}u = f \quad\Leftrightarrow\quad &
 	\begin{cases}
 		-\ddiff{u_{jk}}{t} = f_{jk} \ \text{on } I_{jk}, \\
-		u \text{ is continuous at each } v_j\in V, \\
-		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in V
+		u \text{ is continuous at each } v_j\in \vertSet, \\
+		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in \vertSet
 	\end{cases} \\
 	\mathcal{A}u = \lambda u \quad\Leftrightarrow\quad &
 	\begin{cases}
 		-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \text{on } I_{jk}, \\
-		u \text{ is continuous at each } v_j\in V, \\
-		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in V.
+		u \text{ is continuous at each } v_j\in \vertSet, \\
+		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in \vertSet.
 	\end{cases}
 \end{align*}
 
@@ -106,17 +107,17 @@ When solving spectral problems on quantum graphs, recent developments involving 
 The $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples (more information can be found \tstk{refs}), and what we present here is simply the framework that we require without any of the generality of this theory.
 Let $\mathcal{A}$ be the operator in equations \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef}, and define the maps
 \begin{align*}
-	\dmap, \nmap: \mathrm{dom}\mathcal{A} \rightarrow \complex^{\abs{V}};
+	\dmap, \nmap: \mathrm{dom}\mathcal{A} \rightarrow \complex^{\abs{\vertSet}};
 \end{align*}
-where for a function $u\in\mathrm{dom}\mathcal{A}$, $\dmap$ sends $u$ to it's Dirichlet data at each of the vertices $v_j$ represented in a column vector in $\complex^{\abs{V}}$, and $\nmap$ sends $u$ to it's Neumann data at each of the vertices $v_j$ (again represented as a column vector).
-Assuming we are using the labels $v_j, j\in\clbracs{1,...,\abs{V}}$ for the vertices of $\graph$, the $j$\textsuperscript{th} entry of the vectors $\dmap u$ and $\nmap u$ when considering $\mathcal{A}$ as in \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef} are given by
+where for a function $u\in\mathrm{dom}\mathcal{A}$, $\dmap$ sends $u$ to it's Dirichlet data at each of the vertices $v_j$ represented in a column vector in $\complex^{\abs{\vertSet}}$, and $\nmap$ sends $u$ to it's Neumann data at each of the vertices $v_j$ (again represented as a column vector).
+Assuming we are using the labels $v_j, j\in\clbracs{1,...,\abs{\vertSet}}$ for the vertices of $\graph$, the $j$\textsuperscript{th} entry of the vectors $\dmap u$ and $\nmap u$ when considering $\mathcal{A}$ as in \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef} are given by
 \begin{align*}
 	\bracs{\dmap u}_j &= u\bracs{v_j}, \\
 	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}.
 \end{align*}
 The $M$-matrix is then the unique map
 \begin{align*}
-	M\bracs{\lambda}:\complex^{\abs{V}} &\rightarrow \complex^{\abs{V}},
+	M\bracs{\lambda}:\complex^{\abs{\vertSet}} &\rightarrow \complex^{\abs{\vertSet}},
 \end{align*}
 such that whenever $u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}$,
 \begin{align*}
@@ -126,13 +127,13 @@ Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur a
 \begin{align*}
 	\mathrm{det}\bracs{M\bracs{\lambda} - A}= 0,
 \end{align*}
-where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{V}}}$ is the diagonal matrix of the vertex coupling constants.
+where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
 We will exploit this fact in section \tstk{ref!}.
 
 \subsubsection{Embedded Graphs and Singular Measures} \label{sssec:EmbeddedGraphs}
 Quantum graphs and differential equations on them will be what we aim to translate our abstract, measure-theoretic problems into (\tstk{section reference}), but the quantum graphs themselves will arise from embedded graphs in $\reals^2$.
-We say a (directed) graph $\graph = \bracs{V,E}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point which we also label $v_j\in\reals^2$; and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with (arc-)length $l_{jk}$, such that there is a continuous map
+We say a (directed) graph $\graph = \bracs{\vertSet,\edgeSet}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point which we also label $v_j\in\reals^2$; and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with (arc-)length $l_{jk}$, such that there is a continuous map
 \begin{align*}
 	r: \sqbracs{0,l_{jk}} \rightarrow \gamma_{jk}, \quad r(0) = v_j, \quad r\bracs{l_{jk}} = v_k.
 \end{align*}
@@ -178,7 +179,7 @@ Note that we also have $r_{jk}'(t) = e_{jk}$.
 
 \subsubsection{Singular Measures} \label{sssec:SingularMeasures}
 Whilst discussing embedded graphs we should introduce the object which will link quantum graph problems (as in section \ref{ssec:QuantumGraphs}) and the measure-theoretic problems that we will take as our start point \tstk{ref when it exists}.
-For an embedded graph $\graph = \bracs{V,E}$ and for each $I_{jk}\in E$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$.
+For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$.
 So for each Borel set $B$ we have that 
 \begin{align*}
 	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}}
@@ -186,7 +187,7 @@ So for each Borel set $B$ we have that
 where $\lambda_1$ is the 1D-Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:EdgeParameterisation}).
 Then set $\ddmes$ to be the (Borel) measure defined by
 \begin{align*}
-	\ddmes\bracs{B} = \sum_{v_j\in V}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
+	\ddmes\bracs{B} = \sum_{v_j\in \vertSet}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
 \end{align*}
 Then $\ddmes$ is the ``singular measure that supports $\graph$"; or alternatively the ``singular measure on $\graph$", or the ``(singular) measure that supports the edges of $\graph$". \tstk{didn't include the mass-on-the-vertices (coupling constant / vertex order) here, which will be needed for when we consider the scaled-vertex example.}
 For a graph embedded into a 2D domain, the singular measure is illustrated in figure \ref{fig:Diagram_SingularMeasure2D}.
@@ -206,14 +207,14 @@ With no interior, imposing any kind of boundary data would be imposing a conditi
 One could ``bypass" explicitly writing boundary conditions by using a weak/variational formulation rather than a strong formulation, but since the Lebesgue measure of the singular-structure is zero this results in a formulation involving integrals which are identically zero.
 The solution to these problems is not to abandon what we believe are the ingredients of a differential system, but rather rework our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular-structure itself, despite the fact that the structure lives in a higher-dimensional set. \tstk{zhikov mention?}
 
-Let $\graph=\bracs{V,E}$ be a finite graph embedded into the region $\ddom=\sqbracs{0,T_1}\times\sqbracs{0,T_2}\subset\reals^2$, which will serve as our singular structure.
+Let $\graph=\bracs{\vertSet,\edgeSet}$ be a finite graph embedded into the region $\ddom=\sqbracs{0,T_1}\times\sqbracs{0,T_2}\subset\reals^2$, which will serve as our singular structure.
 For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)$ define the shifted gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
 \begin{align*}
 	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}.
 \end{align*}
 In sections \tstk{section ref} we will consider $\graph$ as the period cell of some periodic, embedded graph in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform to aid us in solving differential equations posed on such a graph.
 As such one can think of the parameter $\qm$ as the quasi-momentum, however in this section it has little effect beyond being a scalar-shift to our derivatives.
-Let $\ddmes$ be the singular measure supported on $\graph$, and for each $I_{jk}\in E$ let $\lambda_{jk}$ be the singular measure supporting the edge $I_{jk}$, as in section \ref{sssec:SingularMeasures}.
+Let $\ddmes$ be the singular measure supported on $\graph$, and for each $I_{jk}\in \edgeSet$ let $\lambda_{jk}$ be the singular measure supporting the edge $I_{jk}$, as in section \ref{sssec:SingularMeasures}.
 Then one can construct the sets $W^{\qm}_\graph$ as the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\ddmes}\times\ltwo{\ddom}{\ddmes}^2$ norm, and $W^{\qm}_{jk}$ similarly as the closure of set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\lambda_{jk}}\times\ltwo{\ddom}{\lambda_{jk}}^2$ norm.
 The idea here being to construct an analogy of a ``Sobolev space" for functions defined on our singular-structure, and hence obtain a concept of ``(weak) derivative".
 With this in mind, for a pair $\bracs{u,g}\in W^{\qm}_\graph$ it is tempting to call $g$ the ``gradient" of $u$ in this new sense; however this implies that $u$ has only one gradient in this sense, and this is not the case.

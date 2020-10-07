@@ -9,8 +9,8 @@ Because the proofs themselves are quite verbose, we present these in an appendix
 
 For the remainder of this section we assume the following convention:
 \begin{convention} \label{conv:MeasTheoryProblemSetup}
-	Let $\graph=\bracs{V,E}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
-	We restrict ourselves to considering straight-edges between vertices, so each $I_{jk}\in E$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}_2$.
+	Let $\graph=\bracs{\vertSet,\edgeSet}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
+	We restrict ourselves to considering straight-edges between vertices, so each $I_{jk}\in \edgeSet$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}_2$.
 	Let $r_{jk}$ and $e_{jk}$ be as given in \eqref{eq:EdgeParameterisation}, and let $n_{jk}$ be the unit normal to $I_{jk}$ such that $y_{jk} = \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$.
 \end{convention}
 We begin with a more complete description of the functions belonging to $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradZero{\ddom}{\ddmes}$, which in turn will help us understand the form of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ through an understanding of their tangential gradient.
@@ -86,8 +86,8 @@ This turns out to be the following characterisation; where each function in $\gr
 \begin{prop} \label{prop:GradZeroGraph}
 	Given convention \ref{conv:MeasTheoryProblemSetup}, we have that
 	\begin{align*}
-		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E} \\
-		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E}. \labelthis\label{eq:GradZeroSetRHS}
+		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in \edgeSet} \\
+		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet}. \labelthis\label{eq:GradZeroSetRHS}
 	\end{align*}
 \end{prop}
 \begin{proof}
@@ -107,8 +107,8 @@ Establishing an understanding of $\gradZero{\ddom}{\ddmes}$ is what then allows 
 Given that we know that $\tgrad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$, and we have an edge-wise characterisation of $\gradZero{\ddom}{\ddmes}$, it will not be surprising to learn that we also obtain an edge-wise ``form" for the tangential gradient, as given in the following proposition.
 \begin{prop} \label{prop:GraphTangGrad}
 	Assume convention \ref{conv:MeasTheoryProblemSetup}.
-	For each $I_{jk}\in E$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
-	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in E$, and that
+	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
+	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in \edgeSet$, and that
 	\begin{align*}
 		\bracs{ \tgrad_\ddmes u }_{jk} 
 		&= R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0	\end{pmatrix}
@@ -139,14 +139,14 @@ Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of
 Whilst proposition \ref{prop:GraphTangGrad} arrives at an expected conclusion (given proposition \ref{prop:GradZeroGraph}) for the form of the tangential gradient, $\gradSobQM{\ddom}{\ddmes}$ has some additional structure that is not obvious from this study.
 In particular the behaviour of functions near the vertices of $\graph$ has been ignored up until this point, due to the fact that it does not warrant investigation when dealing with gradients of zero and hence the tangential gradients.
 It is also not unreasonable to expect some special behaviour of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ at the vertices, otherwise there will be no resemblance of the connectivity of $\graph$ in our function space.
-We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in V$ of $\graph$ (for any $\qm$), as is proven in \tstk{zhikov ref, with page/thm number} for when $\qm=0$:
+We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$), as is proven in \tstk{zhikov ref, with page/thm number} for when $\qm=0$:
 \begin{theorem} \label{thm:CharOfGradSob}
 	Assume convention \ref{conv:MeasTheoryProblemSetup}.
 	Then we have that
 	\begin{align*}
 		u\in\gradSobQM{\ddom}{\ddmes} \quad\Leftrightarrow\quad 
-		& (i) u\in\gradSobQM{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in E, \\
-		& (ii) u \text{ is continuous at each } v_j\in V.
+		& (i) u\in\gradSobQM{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet, \\
+		& (ii) u \text{ is continuous at each } v_j\in \vertSet.
 	\end{align*}
 \end{theorem}
 For consistency with this work, we give a full proof in the appendix so that the interested reader has all the arguments associated with this work in one place.
@@ -176,7 +176,7 @@ Our starting point is the problem of finding $u\in\gradSobQM{\ddom}{\ddmes}$ suc
 	\integral{\ddom}{\tgrad_\ddmes u \cdot \overline{\tgrad\phi} - \omega^2 u\overline{\phi}}{\ddmes} &= 0
 	&\quad\forall \phi\in\smooth{\ddom}.
 \end{align}
-We first note that since we require this expression to hold for all smooth functions $\phi$, then for each $I_{jk}\in E$ it must in hold for those smooth functions $\psi$ whose support intersects the interior of the edge $I_{jk}$ and no other parts of $\graph$.
+We first note that since we require this expression to hold for all smooth functions $\phi$, then for each $I_{jk}\in \edgeSet$ it must in hold for those smooth functions $\psi$ whose support intersects the interior of the edge $I_{jk}$ and no other parts of $\graph$.
 Combined with the fact that $\mu$ is just a sum of the edge measures (and point masses at the vertices), in this case we can reduce \eqref{eq:WeakFormVariationalProblem} to
 \begin{align*}
 	0 &= \integral{\ddom}{\tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi}}{\ddmes} \\
@@ -195,7 +195,7 @@ Under the assumption that $\tilde{u}_{jk}$ has enough regularity to be different
 Since we can repeat this process for each $I_{jk}$, we essentially have an ODE that must be satisfied on each edge of the graph $\graph$. \newline
 
 Now we turn our attention to the vertices to derive the vertex conditions we will need to complete our ODEs on the edges. \tstk{if coupling constants are non-zero this part changes!!!!}
-Fix a specific $v_j\in V$, and consider functions $\psi\in\smooth{\ddom}$ whose support only intersects $\graph$ in some neighbourhood of $v_j$ that only contains edges which connect to $v_j$ (imagine the support as a ball centred on $v_j$, for example).
+Fix a specific $v_j\in \vertSet$, and consider functions $\psi\in\smooth{\ddom}$ whose support only intersects $\graph$ in some neighbourhood of $v_j$ that only contains edges which connect to $v_j$ (imagine the support as a ball centred on $v_j$, for example).
 Then we can work from \eqref{eq:WeakFormVariationalProblem} to obtain
 \begin{align*}
 	0 &= \sum_{j\con k} \integral{I_{jk}}{ \tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi} }{\lambda_{jk}} \\
@@ -208,16 +208,16 @@ Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, we can i
 	+ \sum_{j\con k}\overline{\varphi}\bracs{v_j}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} \\
 	&= \overline{\varphi}\bracs{v_j}\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}.
 \end{align*}
-Given that this holds for every smooth $\varphi$, and we can repeat the argument for each $v_j\in V$, we arrive at the condition that \tstk{coupling constant on LHS general case!!!!}
+Given that this holds for every smooth $\varphi$, and we can repeat the argument for each $v_j\in \vertSet$, we arrive at the condition that \tstk{coupling constant on LHS general case!!!!}
 \begin{align*}
-	0 &= \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in V.
+	0 &= \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in \vertSet.
 \end{align*}
 This is a Kirchoff-like condition on the derivatives of the edge-wise components of $u$, similar to those introduced in section \ref{ssec:QuantumGraphs}.
 Given the result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\ddmes}$ are also continuous at each vertex $v_j$, then we have thus derived the following problem:
 \begin{align*}
-	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in E, \\
-	u \text{ is continuous across each } &v_j \in V, \\
-	0 = \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, &\quad \forall v_j \in V.
+	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \\
+	u \text{ is continuous across each } &v_j \in \vertSet, \\
+	0 = \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, &\quad \forall v_j \in \vertSet.
 \end{align*}
 \tstk{this is the set of QG equations... probably needs a label}
 This is a quantum graph problem, as described in section \ref{ssec:QuantumGraphs} - solving for the eigenvalues $\omega^2$ will net us the eigenvalues of our original problem \tstk{var prob ref}.
@@ -225,8 +225,8 @@ As we shall discuss and demonstrate in the following sections, the quantum graph
 
 \tstk{prop \ref{prop:M-MatrixEntries} needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
-	Let $\graph=\bracs{V,E}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
-	For each $I_{jk}\in E$ let $\qm_{jk} = \bracs{R_{jk}\qm}_1$ and $l_{jk} = \abs{I_{jk}}$.
+	Let $\graph=\bracs{\vertSet,\edgeSet}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
+	For each $I_{jk}\in \edgeSet$ let $\qm_{jk} = \bracs{R_{jk}\qm}_1$ and $l_{jk} = \abs{I_{jk}}$.
 	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\reals^{\abs{V}}$.
 	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by
 	\begin{align*}
