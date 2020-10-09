@@ -151,8 +151,8 @@ def DispersionPlot(alpha, wPts=1000, kPts=1000, saveFig=False, saveStr='.pdf'):
 if __name__=='__main__':
 
 	#some parameter values to set
-	wavenumber = pi
-	alpha = -1
+	wavenumber = 0#pi
+	alpha = 4.
 	wPts = 1000
 	kPts = 1000
 	saveStr = input('Save figure as (.pdf appended automatically): ') + '.pdf'

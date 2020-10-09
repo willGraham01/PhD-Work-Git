@@ -56,7 +56,10 @@ def GenTitStr(wavenumber, alpha):
 		titStr: 	string, generated title in latex syntax
 	'''
 	
-	titStr = r'$\frac{\kappa}{\pi}=' + r"{:.2f}".format(wavenumber/pi) + r'$, $\alpha=' + r"{:.2f}".format(alpha) + r'$'
+	if wavenumber!=0:
+		titStr = r'$\frac{\kappa}{\pi}=' + r"{:.2f}".format(wavenumber/pi) + r'$, $\alpha=' + r"{:.2f}".format(alpha) + r'$'
+	else:
+		titStr = r'$\alpha=' + r"{:.2f}".format(alpha) + r'$'
 	return titStr
 
 def PlotContour(x, y, z):

@@ -103,7 +103,7 @@ As the spaces in \eqref{eq:GraphFuncSpaces} break down into edge-wise components
 \end{align*}
 
 \subsubsection{The $M$-Matrix} \label{sssec:MMatrix}
-When solving spectral problems on quantum graphs, recent developments involving an object known as the $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in \tstk{section reference}.
+When solving spectral problems on quantum graphs, recent developments involving an object known as the $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in section \ref{ssec:ssec:Derivation}.
 The $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples (more information can be found \tstk{refs}), and what we present here is simply the framework that we require without any of the generality of this theory.
 Let $\mathcal{A}$ be the operator in equations \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef}, and define the maps
 \begin{align*}
@@ -212,7 +212,7 @@ For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\tim
 \begin{align*}
 	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}.
 \end{align*}
-In sections \tstk{section ref} we will consider $\graph$ as the period cell of some periodic, embedded graph in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform to aid us in solving differential equations posed on such a graph.
+In sections \tstk{examples, maybe also discussion} we will consider $\graph$ as the period cell of some periodic, embedded graph in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform to aid us in solving differential equations posed on such a graph.
 As such one can think of the parameter $\qm$ as the quasi-momentum, however in this section it has little effect beyond being a scalar-shift to our derivatives.
 Let $\ddmes$ be the singular measure supported on $\graph$, and for each $I_{jk}\in \edgeSet$ let $\lambda_{jk}$ be the singular measure supporting the edge $I_{jk}$, as in section \ref{sssec:SingularMeasures}.
 Then one can construct the sets $W^{\qm}_\graph$ as the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\ddmes}\times\ltwo{\ddom}{\ddmes}^2$ norm, and $W^{\qm}_{jk}$ similarly as the closure of set of pairs $\bracs{\phi, \tgrad\phi}$ in the $\ltwo{\ddom}{\lambda_{jk}}\times\ltwo{\ddom}{\lambda_{jk}}^2$ norm.
@@ -260,6 +260,8 @@ We call $\grad_\ddmes u$ the ``tangential derivative" of $u$ and it is unique in
 \end{align*}
 Since $\grad_\ddmes u$ is unique, we will use the shorthand $u\in\gradSobQM{\ddom}{\ddmes}$ to refer to the pair $\bracs{u, \grad_\ddmes u}$. \tstk{worth a note about how tang gradient isn't always the gradient we want when solving equations with non-identity elliptic $A$}
 We can follow a similar process to define the sets $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradSobQM{\ddom}{\lambda_{jk}}$. \newline
+
+Next, \tstk{posing equations in these spaces, just introduce notation and shorthand so that it appears before we type it.}
 
 This construction gives us a concept of ``derivative" to work with; however there is still work to be done towards understanding the nature of these tangential derivatives, which will be key to the derivation of our system \tstk{system reference} from \tstk{m theory system}.
 We explore this in section \tstk{section ref!}.
