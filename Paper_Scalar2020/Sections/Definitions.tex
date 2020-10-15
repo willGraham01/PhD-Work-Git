@@ -64,20 +64,17 @@ so for example
 \end{align*}
 For consistency with the possibility of having multiple edges $I_{jk}^l$ connecting two vertices, then these sums should be interpreted as being over all such edges (that is, running over $k$ and the appropriate range of $l$). \newline
 
-Differential operators (or differential equations) on quantum graphs can then be defined by specifying their domains and their action on each edge of the graph $\graph$.
-To obtain a well-posed problem (strictly speaking, a self-adjoint operator \tstk{refs!}) on a graph however will require specification of boundary conditions at the vertices, which are essentially the boundaries of our edges $I_{jk}$.
-Specifying these ``boundary conditions" or ``vertex conditions" also imbues the problem with an appreciation for the connectivity of the graph (which the function spaces in \ref{eq:GraphFuncSpaces} do not convey on their own).
-Whilst there are several choices one can make for the vertex conditions, we will only be interested in imposing continuity of the solution at each vertex, and a Kirchoff-like condition on the derivatives of the solution.
-By way of example, let us demonstrate how we define the operator $-\ddiff{}{t}$ on $\graph$.
-The domain of $\mathcal{A}$ shall be
-\begin{align} \label{eq:ExampleOppDomainDef}
-	\mathrm{dom}\mathcal{A} &= \clbracs{ u\in H^2\bracs{\graph} \ \vert \ \text{At each } v_j\in \vertSet, \ u \text{ is continuous and } \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} },
-\end{align}
-whilst it's action on each edge is
-\begin{align} \label{eq:ExampleOppEdgeDef}
-	\mathcal{A} &= -\ddiff{}{t} \quad\text{on each } I_{jk}\in \edgeSet.
-\end{align}
-Of course, by ``on each $I_{jk}\in \edgeSet$" we mean ``on the interval $\sqbracs{0,l_{jk}}$ that we associate to $I_{jk}\in \edgeSet$".
+Differential operators on quantum graphs can then be defined by specifying their domains and their action on each edge of the graph $\graph$.
+A well-posed problem on a graph requires specifying boundary conditions at the vertices, which are identified with the end-points of the corresponding edges $I_{jk}$.
+Specifying these ``boundary conditions" or ``vertex conditions" also reflects the connectivity of the graph (which the function spaces \eqref{eq:GraphFuncSpaces} do not convey on their own).
+There are a variety of choices one can make for the vertex conditions, and we will be interested in imposing continuity of the solution at each vertex, and a Robin-like condition on the derivatives of the solution.
+Such conditions are also referred to as ``$\delta-$type " conditions \tstk{refs to Abelviero et al (exactly solvable) and Berkolainko-Kuchment}.
+By way of example, let us demonstrate how we define the graph Laplacian $\mathcal{A}$.
+The domain of $\mathcal{A}$ is defined as
+\begin{align*}
+	\mathrm{dom}\mathcal{A} &= \clbracs{ u\in H^2\bracs{\graph} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} },
+\end{align*}
+and the differential expression on each edge is $-\ddiff{}{t}$.
 Then for a function $f\in L^2\bracs{\graph}$ we can pose the resolvent problem of finding $u\in\mathrm{dom}\mathcal{A}$ such that
 \begin{align*}
 	\mathcal{A}u &= f;
@@ -86,64 +83,61 @@ or alternatively can consider the spectral problem of finding eigenpairs $\bracs
 \begin{align*}
 	\mathcal{A}u &= \lambda u.
 \end{align*}
-As the spaces in \eqref{eq:GraphFuncSpaces} break down into edge-wise components which are acted on individually by $\mathcal{A}$, and only linked through the vertex conditions, we can rewrite both of these problems as a set of ODEs on intervals coupled through vertex conditions;
+Each of these problems can be rewritten as a system of ODEs on the edge intervals coupled through the vertex conditions;
 \begin{align*}
 	\mathcal{A}u = f \quad\Leftrightarrow\quad &
 	\begin{cases}
-		-\ddiff{u_{jk}}{t} = f_{jk} \ \text{on } I_{jk}, \\
-		u \text{ is continuous at each } v_j\in \vertSet, \\
-		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in \vertSet
+		-\ddiff{u_{jk}}{t} = f_{jk} \ \forall j\conLeft k, \\
+		\forall j, \ u \text{ is continuous at } v_j, \\
+		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases} \\
 	\mathcal{A}u = \lambda u \quad\Leftrightarrow\quad &
 	\begin{cases}
-		-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \text{on } I_{jk}, \\
-		u \text{ is continuous at each } v_j\in \vertSet, \\
-		\sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} \ \forall v_j\in \vertSet.
+		-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \forall j\conLeft k, \\
+		\forall j, \ u \text{ is continuous at } v_j, \\
+		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases}
 \end{align*}
 
 \subsubsection{The $M$-Matrix} \label{sssec:MMatrix}
 When solving spectral problems on quantum graphs, recent developments involving an object known as the $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in section \ref{ssec:ssec:Derivation}.
-The $M$-matrix is in fact one particular case of the more general (Weyl-Titchmarsh) $M$-operator as it appears in the theory of boundary triples (more information can be found \tstk{refs}), and what we present here is simply the framework that we require without any of the generality of this theory.
-Let $\mathcal{A}$ be the operator in equations \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef}, and define the maps
+The $M$-matrix is in fact a generalisation of the classical Weyl-Titchmarsh $m$-function as it appears in the theory of boundary triples (more information can be found \tstk{refs to Kochuben, Gorbachuk \& Gorbachuk, Brown Marletta Naboko Wood, Kirill Sasha Luis}), however here we restrict ourselves to a short review the specific theory that will be relevant to this work.
+Let $\mathcal{A}$ be the graph Laplacian, and define the maps
 \begin{align*}
 	\dmap, \nmap: \mathrm{dom}\mathcal{A} \rightarrow \complex^{\abs{\vertSet}};
 \end{align*}
-where for a function $u\in\mathrm{dom}\mathcal{A}$, $\dmap$ sends $u$ to it's Dirichlet data at each of the vertices $v_j$ represented in a column vector in $\complex^{\abs{\vertSet}}$, and $\nmap$ sends $u$ to it's Neumann data at each of the vertices $v_j$ (again represented as a column vector).
-Assuming we are using the labels $v_j, j\in\clbracs{1,...,\abs{\vertSet}}$ for the vertices of $\graph$, the $j$\textsuperscript{th} entry of the vectors $\dmap u$ and $\nmap u$ when considering $\mathcal{A}$ as in \eqref{eq:ExampleOppDomainDef}-\eqref{eq:ExampleOppEdgeDef} are given by
+which send a function $u\in\mathrm{dom}\mathcal{A}$, to its Dirichlet and Neumann data at each of the vertices respectively;
 \begin{align*}
-	\bracs{\dmap u}_j &= u\bracs{v_j}, \\
-	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}.
+	\bracs{\dmap u}_j &= u\bracs{v_j}, \quad &j=1,...,\abs{\vertSet} \\
+	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
 \end{align*}
-The $M$-matrix is then the unique map
+The $M$-matrix is then defined by
 \begin{align*}
-	M\bracs{\lambda}:\complex^{\abs{\vertSet}} &\rightarrow \complex^{\abs{\vertSet}},
+	\complex^{\abs{\vertSet}} \ni M\bracs{\lambda}\dmap u &= \nmap u \in \complex^{\abs{\vertSet}},
+	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}.
 \end{align*}
-such that whenever $u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}$,
-\begin{align*}
-	M\bracs{\lambda}\dmap u &= \nmap u.
-\end{align*}
-Of particular relevance to our work is that eigenvalues of $\mathcal{A}$ occur at those $\lambda$ such that 
+It can be shown that $\lambda$ is an eigenvalue of $\mathcal{A}$ if and only if
 \begin{align*}
 	\mathrm{det}\bracs{M\bracs{\lambda} - A}= 0,
 \end{align*}
 where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
+\tstk{A more general statement can be found in Derkach, Malomund.}
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
 We will exploit this fact in section \tstk{ref!}.
 
 \subsubsection{Embedded Graphs and Singular Measures} \label{sssec:EmbeddedGraphs}
-Quantum graphs and differential equations on them will be what we aim to translate our abstract, measure-theoretic problems into (\tstk{section reference}), but the quantum graphs themselves will arise from embedded graphs in $\reals^2$.
+We now introduce the concepts that will link the quantum graph problems we study to the measure-theoretic formulation introduced in \tstk{ref to equation. This will be made clearer in the introduction when we first introduce our problem in the measure-theoretic way, and explain how we will go about solving it.}
 We say a (directed) graph $\graph = \bracs{\vertSet,\edgeSet}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point which we also label $v_j\in\reals^2$; and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with (arc-)length $l_{jk}$, such that there is a continuous map
 \begin{align*}
 	r: \sqbracs{0,l_{jk}} \rightarrow \gamma_{jk}, \quad r(0) = v_j, \quad r\bracs{l_{jk}} = v_k.
 \end{align*}
 Again, we will drop the distinction between $I_{jk}$ and $\gamma_{jk}$, simply using $I_{jk}$ for both.
-It is clear from this definition how an embedded graph gives rise to a corresponding quantum graph, or how a quantum graph could be used to construct an embedded graph.
+Clearly, an embedded graph gives rise to a quantum graph, and a quantum graph can be used to construct embedded graphs.
 The choice of $\reals^2$ is simply to cover the situations we will be considering in this work, there are more general definitions depending on the choice of space to ``embed" the graph into.
-For a unit vector $x\in\reals^2$, an embedded graphs is said to be $T$-periodic in the direction $x$ if it is invariant under the translation $Tx$ applied to it's vertices and edges.
-By convention, $T$ refers to the minimal such scalar $T>0$ for which this happens.
-If $\graph$ is periodic in the axial directions $e_1, e_2$ (with scalars $T_1, T_2$ respectively), then we can define the ``period cell" or ``unit cell" $\mathcal{P}$ of $\graph$ in the obvious manner: take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbracs{0,T_1}\times\sqbracs{0,T_2}$ and match the left boundary to the right, and top boundary to the bottom.
-That is, view the graph in the region $\mathcal{P}$ as living on the torus, as in figure \ref{fig:PeriodCellIllustration}.
+For a unit vector $x\in\reals^2$, an embedded graph is said to be $T$-periodic in the direction $x$ if it is invariant under the translation $Tx$ applied to its vertices and edges.
+In what follows, we always refer to the minimal such $T>0$ (``period") with this property for a given $x\in\reals^2$.
+If $\graph$ is periodic in the (orthogonal) axial directions $e_1, e_2$ (with periods $T_1, T_2$ respectively), then we can define the ``period cell" or ``unit cell" $\mathcal{P}$ of $\graph$ in the obvious manner: take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbracs{0,T_1}\times\sqbracs{0,T_2}$ and match the left boundary to the right, and top boundary to the bottom.
+That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in the region $\mathcal{P}$ as a set on a torus, see \ref{fig:PeriodCellIllustration}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -155,36 +149,34 @@ That is, view the graph in the region $\mathcal{P}$ as living on the torus, as i
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{Diagram_PeriodCellEdgeAssociation.pdf}
-		\caption{\label{fig:Diagram_PeriodCellEdgeAssociation} The period cell of the graph in \ref{fig:Diagram_PeriodCellFullLattice}, illustrating how the edges of the period cell are associated.}
+		\caption{\label{fig:Diagram_PeriodCellEdgeAssociation} The period cell of the graph in \ref{fig:Diagram_PeriodCellFullLattice}, notice how the edges of the period cell are associated.}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[b]{0.75\textwidth}
 		\centering
 		\includegraphics[scale=	1.0]{Diagram_PeriodCellOnTorus.pdf}
-		\caption{\label{fig:Diagram_PeriodCellOnTorus} An illustration of the period cell being situated on a torus.}
+		\caption{\label{fig:Diagram_PeriodCellOnTorus} An illustration of the period cell as a subset of a torus.}
 	\end{subfigure}
 	\caption{\label{fig:PeriodCellIllustration} Illustrating a periodic cell of a periodic embedded graph.}
 \end{figure} 
-Obviously the graph $\graph_{\mathcal{P}}$ contained in the period cell $\mathcal{P}$ of an embedded periodic graph $\graph$ is itself an embedded graph (after association of the boundaries of the period cell). 
-We will refer to $\graph_{\mathcal{P}}$ as the ``period graph" or ``unit graph" of $\graph$, and write $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as shorthand. \newline
+We will refer to $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as the ``period graph", or ``unit graph" of $\graph$. \newline
 
-In the work that follows we restrict ourselves to considering straight-edges between vertices, so the curves $\gamma_{jk} = \sqbracs{v_j, v_k}$ are simply the line segments joining the vertices at either end, with lengths $l_{jk} = \norm{v_j-v_k}_2$.
-As such, for each edge $I_{jk}$ in our embedded graphs, we can use the parametrisation
+In what follows we consider straight edges between vertices, so the $\gamma_{jk}$ are simply the line segments joining the vertices at either end, with lengths $l_{jk} = \norm{v_j-v_k}_2$. \tstk{suggested just using $\abs{\cdot}$?}
+For each edge $I_{jk}$ we will use the parametrisation
 \begin{align} \label{eq:EdgeParameterisation}
-	r_{jk}:\sqbracs{0, l_{jk}} \rightarrow I_{jk},
-	&\quad r_{jk}\bracs{t} = v_j + te_{jk},
+	r_{jk}:\sqbracs{0, l_{jk}} \ni t \mapsto v_j + te_{jk} \in I_{jk},
 \end{align}
 where $e_{jk}$ is the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$ (consistent with the direction of the edge $I_{jk}$ itself).
 Note that we also have $r_{jk}'(t) = e_{jk}$.
 
 \subsubsection{Singular Measures} \label{sssec:SingularMeasures}
-Whilst discussing embedded graphs we should introduce the object which will link quantum graph problems (as in section \ref{ssec:QuantumGraphs}) and the measure-theoretic problems that we will take as our start point \tstk{ref when it exists}.
-For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports 1D Lebesgue measure on the edge $I_{jk}$.
-So for each Borel set $B$ we have that 
+Whilst discussing embedded graphs, we should introduce the measure which links quantum graph problems to the measure-theoretic problems we first introduced \tstk{reference to introduction. Once written, this sentence can be redone}.
+For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports the one-dimensional Lebesgue measure on the edge $I_{jk}$.
+So for each Borel set $B$ we have
 \begin{align*}
 	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}}
 \end{align*}
-where $\lambda_1$ is the 1D-Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:EdgeParameterisation}).
+where $\lambda_1$ is the Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:EdgeParameterisation}).
 Then set $\ddmes$ to be the (Borel) measure defined by
 \begin{align*}
 	\ddmes\bracs{B} = \sum_{v_j\in \vertSet}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
