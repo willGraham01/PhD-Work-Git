@@ -1,0 +1,27 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{arrows} 
+
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+
+\begin{tikzpicture}%[->,>=stealth',auto,node distance=3cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+	\begin{scope}[decoration={markings, mark=at position 0.525 with {\arrow{>}}}]
+		\draw[postaction={decorate}] (0,0) to[in=90, out=90] (1,0);
+		\draw[postaction={decorate}] (1,0) to[in=-90, out=-90] (0,0);
+	\end{scope}	
+	
+	\filldraw[black] (0,0) circle (1pt) node[anchor=east] {$v_1$};
+	\filldraw[black] (1,0) circle (1pt) node[anchor=west] {$v_2$};
+	
+	\node[anchor=west, red, align=center] at (0,0) {$\alpha$};
+
+\end{tikzpicture}
+
+\end{document}

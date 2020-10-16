@@ -1,0 +1,29 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{arrows} 
+
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+	%original graph, just a 1D line
+	\filldraw[black] (-0.5,0) circle (1pt);
+	\filldraw[black] (0.5,0) circle (1pt);
+	\filldraw[black] (0,0) circle (1pt);
+	\begin{scope}[decoration={markings, mark=at position 0.55 with {\arrow{>}}}]
+		\draw[postaction={decorate}] (-1,0) to (-0.5,0);
+		\draw[postaction={decorate}] (-0.5,0) to (0,0);
+		\draw[postaction={decorate}] (0,0) to (0.5,0);
+		\draw[postaction={decorate}] (0.5,0) to (1,0);
+	\end{scope}	
+	\draw[dashed, red] (-0.5,-0.5) rectangle (0.5,0.5); 
+
+\end{tikzpicture}
+
+\end{document}

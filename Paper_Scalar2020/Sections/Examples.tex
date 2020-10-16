@@ -11,7 +11,68 @@ Throughout this section, we are concerned with determining the spectrum of the p
 	-\grad_{\ddmes} u &= \omega^2 u, \quad\text{on } \ddom.
 \end{align*}
 
-\subsection{Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
+\subsection{Example: One-Dimensional ``Decorated" Loop} \label{ssec:Example1DLoop}
+\tstk{brief intro for context}
+Consider the graph $\graph$ periodic in one direction (WLOG parallel to the $x_1$-axis with $x_2=0$) in $\reals^2$, with vertices $v_j = \bracs{j + \recip{2}, 0}^\top$ and edges $I_{j\bracs{j+1}}$ for $j\in\integers$.
+Assume the coupling constants at each vertex are identical, taking the value $\alpha\in\reals$.
+Then the quantum graph which corresponds to the period graph of $\graph$ is simply a single vertex $v$ with a looping edge $I$ of length 1, with quasi-momentum $\qm$ on $I$ and coupling constant $\alpha$ at $v$. 
+One can apply proposition \ref{prop:MMatrixEntries} at this point to compute the (one-dimensional) ``$M$-matrix", however for illustrative purposes (and consistency with the examples that follow) we elect to introduce a dummy vertex to break the loop $I$ into two edges, producing a new quantum graph $\graph_{\mathcal{P}}=\mathcal{\vertSet, \edgeSet}$ with
+\begin{align*}
+	\vertSet = \clbracs{ v_1 , v_2 }, \quad &\edgeSet = \clbracs{ I_{12}, I_{21} }, \\
+	\abs{I_{12}} = \abs{I_{21}} = \recip{2}, \quad &\qm_{12} = \qm_{21} = \qm, \\
+	\alpha_1 = \alpha, \quad &\alpha_2 = 0.
+\end{align*}
+We illustrate the process of moving from $\graph$ to $\graph_{\mathcal{P}}$ in figure \ref{fig:Diagram_1DExample}.
+Note that the dummy vertex having coupling constant equal to zero ensures that the incoming edge solutions and their derivatives match at $v_2$, ensuring that the introduction of $v_2$ does not alter the behaviour of solutions along the ``cut loop".
+Studying the $M$-matrix of $\graph_{\mathcal{P}}$ to determine the eigenvalues $\omega^2$ is now equivalent to studying that of the original quantum graph we obtained.
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\includegraphics[scale=2]{Diagram_1DLineGraph.pdf}
+		\caption{\label{fig:Diagram_1DLineGraph} The graph $\graph$, periodic in one dimension, consisting of integer-spaced vertices.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\includegraphics[scale=2]{Diagram_1DLineQuantumGraph.pdf}
+		\caption{\label{fig:Diagram_1DLineQuantumGraph} The corresponding quantum graph of the period cell of $\graph$, containing one (looping) edge of length 1}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\includegraphics[scale=2]{Diagram_1DLineComputationGraph.pdf}	
+		\caption{\label{fig:Diagram_1DLineComputationGraph} The equivalent graph $\graph_{\mathcal{P}}$ that we study. Note that the dummy vertex $v_2$ has coupling constant 0.}
+	\end{subfigure}
+	\caption{\label{fig:Diagram_1DExample} The graphs $\graph$ and $\graph_{\mathcal{P}}$.}
+\end{figure} \newline
+
+One can construct the $M$-matrix for $\graph_{\mathcal{P}}$ using proposition \ref{prop:MMatrixEntries}, obtaining
+\begin{align*}
+	M_{\qm}\bracs{\omega} &= 
+	\begin{pmatrix} 
+		2\omega\cot\frac{\omega}{2} & -2\omega\csc\frac{\omega}{2}\cos\frac{\qm}{2} \\
+		-2\omega\csc\frac{\omega}{2}\cos\frac{\qm}{2} & 2\omega\cot\frac{\omega}{2}
+	\end{pmatrix}.
+\end{align*}
+Since the matrix of coupling constants $A = \mathrm{diag}\bracs{\alpha\omega^2, 0}$, we are required to work with the matrix
+\begin{align*}
+	\tilde{M}_\qm &= 
+	\begin{pmatrix}
+		2\omega\cot\frac{\omega}{2} - \alpha\omega^2 & -2\omega\csc\frac{\omega}{2}\cos\frac{\qm}{2} \\
+		-2\omega\csc\frac{\omega}{2}\cos\frac{\qm}{2} & 2\omega\cot\frac{\omega}{2}		
+	\end{pmatrix},
+\end{align*}
+and solve either $\tilde{M}_\qm\bracs{\omega} w = 0$, or $\det\tilde{M}_\qm \bracs{\omega} = 0$ for the eigenvalues $\omega^2$.
+In this case, taking the latter approach is feasible analytically, and one can obtain the following equation for $\omega$ for a given $\qm$:
+\begin{align*}
+	\cos\qm &= \cos\omega - \frac{\alpha\omega}{2}\sin\omega.
+\end{align*}
+We would then need to determine the set of solutions for each $\qm\in\left[-\pi, \pi\right)$, and then taking the union would provide us with the spectrum of our original problem.
+This procedure is similar to that in example \ref{ssec:ExampleCrossInPlane}, which we will study in greater depth, and so we forgo further analysis here.
+However the methodology of example \ref{ssec:ExampleCrossInPlane} is applicable here, and as one might expect produces a spectrum of similar structure.
+
+\subsection{Example: Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
 \tstk{intro sentence that provides relevance once we decide on the order to present the examples in}
 Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
 \begin{align*}
@@ -46,7 +107,7 @@ It's period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \re
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{Diagram_TFRQuantumGraph.pdf}
-		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:CrossInPlane}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
+		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:ExampleCrossInPlane}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
 	\end{subfigure}
 	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period cell of the graph $\graph^*$. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \tstk{qg eqn ref}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
 \end{figure}
@@ -72,7 +133,7 @@ Furthermore we can use proposition \ref{prop:M-MatrixEntries} to write down the 
 At this point we have the option of solving for the spectrum numerically or analytically, however because we have such a small and symmetric problem we proceed analytically by solving $\mathrm{det}\bracs{ M_{\qm}\bracs{\omega} - A }=0$. \tstk{note: we might have $A$ depending on $\omega$ when $\alpha$ is non-zero, so maybe add this dependence in explicitly? Also, has $A$'s form been given at this point, if not define!?}
 After some calculation,
 \begin{align*}
-	\det\bracs{\bracs{M_{\qm}\bracs{\omega^2} - \omega^2 A}} &= 0 \\
+	\det\bracs{\bracs{M_{\qm}\bracs{\omega} - \omega^2 A}} &= 0 \\
 	\Leftrightarrow \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} &= \cos\omega - \frac{\alpha\omega}{4}\sin\omega. \labelthis\label{eq:ExampleThickVertexSolution}
 \end{align*}
 For ease, we define
