@@ -3,3 +3,27 @@
 This section includes our literature review and motivation.
 The purpose of the paper is to present the equations that were derived for the curl-curl system as what can be interpreted as an "effective" or "limit" problem for a fine/thin-structure material.
 This is subject to future advances in the field that draw parallel to the scalar-case developments, of course.
+
+\subsection{Our System} \label{ssec:OurSystem}
+\tstk{review section title}
+We shall now outline the problem that we are interested in solving in this work, the reader should see section \ref{sec:Definitions} and the appendix \tstk{refs throughout} for a precise description of the objects that follow.
+Let $\graph$ be an embedded, periodic graph in $\reals^2$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and let $\ddmes$ be the singular measure that supports $\graph$.
+We are interested in determining the spectrum of the operator $-\grad_{\ddmes}^2$ on the singular structure described by $\graph$, that is determining eigenvalues $\omega^2>0$ and eigenfunctions $u$ such that
+\begin{align} \label{eq:FullSpaceStrongForm}
+	- \bracs{ \grad_{\ddmes} }^2 u &= \omega^2 u, \quad \text{in } \reals^2.
+\end{align}
+As detailed in the appendix (\tstk{ref}), \eqref{eq:FullSpaceStrongForm} is interpreted in the variational (or weak) sense, but we write it this form here for shorthand and convenience.
+For our approach it is convenient for to apply a Gelfand transform to \eqref{eq:FullSpaceStrongForm}, in order to obtain a family of (spectral) problems on the period cell $\ddom$ parametrised by the quasi-momentum $\qm$ that lives in the dual cell of $\ddom$, \tstk{I think dual cell is the right word, also we should point to the appendix here, OR give a recall of the Gelfand transform of a function here.}
+\begin{align} \label{eq:PeriodCellStrongForm}
+	- \bracs{ \tgrad_{\ddmes} }^2 u &= \omega^2 u, \quad \text{in } \ddom.
+\end{align}
+Each of the problems \eqref{eq:PeriodCellStrongForm} has a discrete spectrum $\sigma_{\qm}$, and we can then recover the spectrum of our original problem by taking the union of the $\sigma_{\qm}$ over $\qm$.
+Study of \eqref{eq:PeriodCellStrongForm} will bring us to consider a family of quantum graph problems;
+\begin{subequations} \label{eq:QGFullSystem}
+	\begin{align}
+		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
+		u \text{ is continuous across each } &v_j \in \vertSet, \label{eq:QGVertCty }\\
+		0 = \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, &\quad \forall v_j \in \vertSet, \label{eq:QGDerivCondition}
+	\end{align}
+\end{subequations}
+the determination of the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem} being the central interest of this work.
