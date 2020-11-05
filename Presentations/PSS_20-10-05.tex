@@ -1,0 +1,467 @@
+\documentclass{beamer}
+ 
+%presentation pre-amble
+\input{./Presentation_MathsPreamble}
+\input{./Presentation_StylePreamble}
+
+\usepackage{soul} %strikethrough text via \st
+\usepackage{graphicx}
+\graphicspath{{./PSS_Diagrams/}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sM}{\mathcal{M}}
+\newcommand{\borel}{\mathcal{B}}
+\newcommand{\closedInts}{\mathcal{H}}
+\newcommand{\openInts}{\mathcal{I}}
+
+%Information to be included in the title page
+\title{What is Measure Theory, and How does it Affect Me?}
+\author{William Graham}
+\institute{Postgraduate Seminar Series}
+\date{\today}
+ 
+\begin{document}
+ 
+\frame{\titlepage}
+ 
+%insert a contents or overview slide at the end
+\begin{frame}
+	\frametitle{Talk overview}
+	
+	\begin{columns}
+		\begin{column}{0.45\textwidth}
+			\begin{enumerate}
+				\item Motivation and Objectives
+				\item A New Area
+				\item What we can't Measure
+				\item New Area, New Integral
+				\item Why was this Useful?
+				\item Conclusion and Freedom
+			\end{enumerate}
+			\visible<2>{
+			\alert{Minimal technical detail is promised.}
+			}
+		\end{column}
+		\begin{column}{0.45\textwidth}
+			\visible<2>{
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.2]{PSS_Disclaimer-GondorGate.pdf}
+			\end{figure}
+			}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+%Motivation and Objectives
+\begin{frame}
+	\frametitle{Motivation and Objectives}
+	
+	\begin{block}{Motiviation}
+		\begin{itemize}
+			\visible<1->{\item Have you ever wondered why PDFs are such a big deal when working in probability?}
+			\visible<2->{\item Have you ever used FEM or Fourier transforms to solve a problem?}
+			\visible<3->{\item Have you ever tried to break up a chocolate bar, and then reassemble the pieces into two chocolate bars of equal size to the first????}
+		\end{itemize}
+	\end{block}
+	
+	\visible<4->{This talk aims to address all these questions, whilst guiding you through the \st{nightmare hellscape} pleasant field of measure theory.}
+	
+\end{frame} 
+
+%Introductory concepts 1
+\begin{frame}
+	\frametitle{New Beginnings}
+	
+	Measure Theory aims to solidify our understanding of bulk, size, or volume.
+	First though, we need to decide on what we are going to measure...
+	\visible<2->{
+	\begin{block}{Starting Concepts}
+		Let $X$ be a set.
+		Let $\sM$ be a collection of subsets of $X$.
+		Then $\sM$ is a $\sigma$-algebra in $X$ if,
+		\begin{itemize}
+			\item $\emptyset\in\sM$
+			\item $\sM$ is closed under compliments and (countable!) unions.
+		\end{itemize}
+	\end{block}
+	\alert{$\sM$ is the collection of sets we want to be able to say ``have a size"}.	
+	}
+	\visible<3->{
+	\begin{block}{Generated $\sigma$-algebras, $\sigma\bracs{M}$}
+		For a collection $M$ of subsets of $X$, we define $\sigma\bracs{M}$ to be the smallest $\sigma$-algebra that contains all the sets in $M$.
+	\end{block}
+	}
+\end{frame}
+
+%Introductory concepts 2
+\begin{frame}
+	\frametitle{Borel}
+	
+	The most important $\sigma$-algebra is the Borel $\sigma$-algebra in $\overline{\reals}$, $\borel$.
+	\begin{block}{$\borel$}
+		Let $\closedInts$ be the set of all the closed sets in $\overline{\reals}$, then
+		\begin{align*}
+			\borel &:= \sigma\bracs{\closedInts}.
+		\end{align*}
+		In particular, $\borel$ contains all the closed sets, and all the open sets.
+		This means we can measure (or find the ``length" of) these sets!
+	\end{block}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[scale=1]{ObtainingBorelSets.pdf}
+	\end{figure}
+\end{frame}
+
+%Introduce measures
+\begin{frame}
+	\frametitle{Measures}
+
+	\only<1-3>{
+	\begin{block}{Measure}
+		A measure is a function $\mu:\sM\rightarrow\overline{\reals}$ that sends a set to a number. \newline
+		That number is effectively the ``volume" of that set. 
+		\only<1>{ \newline
+		Properties of $\sM$ translate into $\mu$:
+		\begin{align*}
+			\mu\bracs{\emptyset} &= 0, \\
+			\mu\bracs{A \cup B} &= \mu\bracs{A} + \mu\bracs{B} - \mu\bracs{A\cap B}, \\
+			\mu\bracs{X\setminus A} &= \mu\bracs{X} - \mu\bracs{A}.
+		\end{align*}
+		}
+	\end{block}
+	\visible<2-3>{
+	If $\sM$ is generated, then we can get away with only defining our measure on the generating set.
+	This is how the Lebesgue measure is constructed:
+	}
+	}
+	\only<3-4>{
+	\visible<3->{
+	\begin{block}{Lebesgue Measure}
+		Let $\lambda^*:\closedInts\rightarrow\overline{\reals}$ assigns length to the closed sets by
+		\begin{align*}
+			\lambda^*\bracs{\sqbracs{a,b}} &= b-a.
+		\end{align*}
+		$\lambda^*$ can then be \emph{uniquely extended} to $\borel=\sigma\bracs{\closedInts}$, forming the Lebesgue measure $\lambda:\borel\rightarrow\overline{\reals}$, with
+		\begin{align*}
+			\lambda\bracs{\sqbracs{a,b}} &= \lambda^*\bracs{\sqbracs{a,b}}, \quad \forall \sqbracs{a,b}\in\closedInts.
+		\end{align*}
+	\end{block}
+	}
+	}
+	\visible<4-5>{
+	\begin{itemize}
+		\item $\closedInts$ is what we know how to measure (with $\lambda^*$),
+		\item $\borel$ is the collection of things we can measure by combining sets in $\closedInts$,
+		\item $\lambda$ is the resulting ``method of measuring" sets!
+	\end{itemize}
+	}
+	\only<5->{
+	\alert{This is even constructive:}
+	\begin{align*}
+		\lambda\bracs{\bracs{a,b}} &= \lambda\bracs{\sqbracs{a,b}\setminus\bracs{\clbracs{a} \cup \clbracs{b}}} \\
+		&= \lambda\bracs{\sqbracs{a,b}} - \bracs{ \lambda\bracs{\clbracs{a}} - \lambda\bracs{\clbracs{b}}} \\
+		&= b - a - \bracs{ \lambda\bracs{\sqbracs{a,a}} + \lambda\bracs{\sqbracs{b,b}} } \\
+		&= b - a - \bracs{ (a-a) + (b-b)} \\
+		&= b - a.
+	\end{align*}
+	It's actually very hard to construct something we \emph{can't} Lebesgue-measure, but there is a famous example...
+	}
+\end{frame}
+
+
+%B-T paradox, non-Lebesgue measurable is ``not physically viable"
+\begin{frame}
+	\frametitle{Banach-Tarski}
+	
+	\begin{block}{Banach-Tarski Paradox, 1924}
+		A sphere can be broken into finitely many pieces, which can then be reassembled into two identical copies of the original sphere.
+	\end{block}
+	
+	\only<1>{
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.25]{BT-Meme.pdf}
+	\end{figure}
+	}
+	\only<2>{
+	So why can't I create infinite chocolate from one chocolate bar?
+	\begin{itemize}
+		\item The ``pieces" are not in (the 3D) $\borel$
+		\item $\borel$ contains all the sets that are physically measurable
+		\item $\implies$ The notion of volume doesn't make sense for these ``pieces".
+	\end{itemize}
+	\alert{The pieces are ``non-Lebesgue measurable", you couldn't ever assemble them in real life (which sadly means no infinite chocolate :( ).}
+	}
+	
+\end{frame}
+
+%Measure 0 and a.e.
+\begin{frame}
+	\frametitle{Sets of Measure 0}
+	
+	\only<1-2>{
+	We saw that the Lebesgue measure of a single point is 0, $\lambda\bracs{\clbracs{a}}=0$.
+	\begin{block}{Zero Measure}
+		For a measure $\mu$ and set $E\in\sM$, if $\mu\bracs{E} = 0$ then $E$ is a ``set of $\mu$-measure 0".
+	\end{block}
+	Sets of 0 measure are effectively inconsequential when considering volumes.
+	}
+	\visible<2->{
+	\begin{block}{Almost everywhere}
+		We say something happens ``($\mu$)-almost everywhere" (a.e.) if it happens everywhere except on a set of zero $\mu$-measure. 
+		\only<2>{\newline\alert{If you are a probabilist, you say ``almost surely" (a.s.).}}
+	\end{block}
+	}
+	\only<3-4>{
+	Examples include: \newline
+	}
+	\only<3>{
+	The Heaviside-function 
+	\begin{align*}
+		H:\reals\rightarrow\sqbracs{0,1}, &\quad H(x) = \begin{cases} 0 & x< 0 \\ 1 & x\geq 1 \end{cases}
+	\end{align*}
+	is continuous at all $x\in\reals\setminus\clbracs{0}$.
+	$\clbracs{0}$ is a set of zero Lebesgue measure, so $H$ is ``$\lambda$-almost-everywhere continuous".
+	}
+	\only<4>{
+	The Dirichlet function
+	\begin{align*}
+		d:\reals\rightarrow\sqbracs{0,1}, &\quad d(x)  = \begin{cases} 0 & x\in\rationals \\ 1 & x\in\reals\setminus\rationals \end{cases}
+	\end{align*}
+	is ``$\lambda$-almost everywhere equal to $1$".
+	This is because we can write 
+	\begin{align*}
+		\rationals &= \bigcup_{q\in\rationals}\clbracs{q} &\quad\text{(a countable union of single points)},
+	\end{align*}
+	so
+	\begin{align*}
+		\lambda\bracs{\rationals} &= \sum_{q\in\rationals}\lambda\bracs{\clbracs{q}} = \sum_{q\in\rationals} 0 = 0.
+	\end{align*}
+	}
+	
+\end{frame}
+
+%Measurable and simple functions
+\begin{frame}
+	\frametitle{Some Functionality}
+	
+	\only<1>{
+	We have redefined ``volume", so naturally we now need to rework integration (``volume under a curve"). \newline
+	Our measures let us integrate a wider class of functions:
+	\begin{block}{Measurable functions}
+		$f:X\rightarrow Y$ is a measurable function between $X$ and $Y$ if the preimage of any measurable set in $Y$ is a measurable set in $X$.
+	\end{block}
+	First, we try to define integration for some simple (literally) functions...
+	}
+	\only<2->{
+	\begin{block}{Simple Functions}
+		$f:X\rightarrow\reals$ is a simple function if $f(X)$ is a finite set.
+		We can write $f$ as
+		\begin{align*}
+			f = \sum_i \alpha_i \charFunc{E_i},
+		\end{align*}
+		for $\clbracs{E_i}_i$ a partition of $X$, $\alpha_i\in\reals$, and $\charFunc{E_i}$ being the characteristic function of $E_i$.
+	\end{block}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.5]{SimpleFunctionPartition.pdf}
+	\end{figure}
+	}
+\end{frame}
+
+%integration
+\begin{frame}
+	\frametitle{Int-it-grate?}
+	
+	\only<1>{
+	\begin{block}{Integral of Simple Functions}
+		For a simple function $f = \sum_i \alpha_i \charFunc{E_i}$, the integral of $f$ over $X$ wrt $\mu$ is
+		\begin{align*}
+			\integral{X}{f}{\mu} &= \sum_{i} \alpha_{i}\mu\bracs{E_i},
+		\end{align*}
+		or over a measurable subset $E\in\sM$ of $X$ is
+		\begin{align*}
+			\integral{E}{f}{\mu} &= \integral{X}{f\charFunc{E}}{\mu}.
+		\end{align*}
+	\end{block}
+	}
+	\only<2>{
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.85]{SimpleFunctionIntegral.pdf}
+	\end{figure}
+	}
+	
+	\only<3>{
+	Idea: integrating simple functions is easy, so why don't we recycle this for measurable functions?
+	\begin{block}{Simple functions approximate Measurable functions}
+		For any measurable function $f$ we can find a sequence of simple functions $f_n$ such that
+		\begin{align*}
+			f_n \rightarrow f, &\quad n\rightarrow\infty.
+		\end{align*}
+		We say ``Simple functions are dense in Measurable functions". \newline
+		So we can define:
+		\begin{align*}
+			\integral{E}{f}{\mu} &= \lim_{n\rightarrow\infty}\integral{E}{f_n}{\mu}
+		\end{align*}
+	\end{block}
+	}
+
+\end{frame}
+
+%riemann vs lebesgue
+\begin{frame}
+	\frametitle{Riemann vs Lebesgue}
+
+	\begin{columns}
+		\begin{column}{0.45\textwidth}
+			\only<1>{
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.65]{RiemannIntegration.pdf}
+				\caption{Riemann Integration}
+			\end{figure}		
+			}
+			\only<2>{
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.175]{IntegrationGalaxyBrain.pdf}
+			\end{figure}
+			}
+		\end{column}
+		\begin{column}{0.45\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.65]{MeasureTheoryIntegration.pdf}
+				\caption{Lebesgue Integration}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+%what was the point (fourier, fem, sobolev spaces)
+\begin{frame}
+	\frametitle{Why did we bother with that?}
+
+	\only<1-3>{
+	This notion of integration lets us integrate a wider range of functions, and define some very useful function spaces.
+	\begin{block}{$L^p$ spaces}
+		Let $\sim$ be the equivalence relation
+		\begin{align*}
+			f \sim g \quad\Leftrightarrow\quad f = g \ \mu\text{-a.e.}
+		\end{align*}
+		\visible<2-3>{
+		Let $L^p\sqbracs{\mu}$ be the set of equivalence classes for $\sim$. \newline
+		}
+		\visible<3>{
+		Then for $p\in\left[1,\infty\right)$, the set $L^p\sqbracs{\mu}$ equipped with the norm
+		\begin{align*}
+			\norm{f}_p &= \bracs{ \integral{X}{f^p}{\mu} }^{\recip{p}}
+		\end{align*}		
+		is called $L^p\bracs{X,\md\mu}$.
+		}
+	\end{block}
+	}
+	\only<4>{
+	You have probably all met $L^2$ before - ``the space of square-integrable functions". \newline
+	Well not quite, it's the space of equivalence classes of \emph{almost-identical} square-integrable functions.
+	\begin{itemize}
+		\item Measure theory tells us that functions which are the same a.e. will have the same integral
+		\item $L^p$ is a Banach space
+		\item $L^2$ is a Hilbert space (these spaces are pretty damn nice)
+	\end{itemize}
+	Without this equivalence class treatment, we can't obtain a Hilbert space for our functions.
+	}
+	\only<5>{
+	This means that some of your favourite things wouldn't be usable:
+	\begin{itemize}
+		\item The Fourier transform is only invertible on ``functions" in $\ltwo{\reals}{\lambda}$, so solving PDEs via Fourier transform would be hard if you couldn't undo it at the end!
+		\item Convergence of Finite Element Methods requires orthonormal decompositions of function spaces, which we can only be guaranteed to be able to do in a Hilbert space.
+		\item Most results on existence, uniqueness and regularity of PDEs require Sobolev spaces, which are built on $L^p$ spaces.
+	\end{itemize}
+	But let's get to the crux of why we bothered with all that...
+	}
+\end{frame}
+
+%abs. continuity, and pdfs
+\begin{frame}
+	\frametitle{Absolute Continuity and Probability}
+		
+	\only<1-2>{
+	Measures, if nice enough, can ``be translated into each other".
+	\begin{block}{Absolute continuity}
+		$\mu$ is absolutely continuous w.r.t. $\lambda$ (written $\mu \ll \lambda$) if there is some measurable function $F:X\rightarrow\overline{\reals}$ such that
+		\begin{align*}
+			\mu\bracs{E} &= \integral{E}{F}{\lambda}, \quad\forall \mu\text{-measurable sets }E\in\sM.
+		\end{align*}
+	\end{block}
+	}
+	\only<1>{
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.2]{AbsCont-Meme.pdf}
+	\end{figure}
+	}
+	\only<2>{
+	This function $F$ allows us to translate unintuitive descriptions of size into something that is familiar to us - the Lebesgue measure!
+	}
+	
+	\only<3-4>{
+	\begin{block}{Probability}
+		A probability space $\bracs{\Omega, \mathcal{F}, \mathbb{P}}$ is a set of all possible outcomes $\Omega$, possible events $\mathcal{F}$, and a mysterious function $\mathbb{P}$. \newline
+		\visible<4->{$\mathbb{P}$ is assigning events in $\mathcal{F}$ a numerical value - it is a measure in disguise!}
+	\end{block}
+	}
+	\only<5-7>{
+	We obtain quantities like the expectation and variance of a random variable $T$ via integrals involving it's probability density function $F_{T}$:
+	\begin{align*}
+		\mathbb{E}\sqbracs{T} &= \integral{\reals}{t F_{T}(t)}{t}.
+	\end{align*}
+	\visible<6-7>{
+	But if $\mathbb{P}\ll\lambda$, then we can write
+	\begin{align*}
+		\mathbb{P}\bracs{T} &= \integral{T}{F_{T}}{\lambda},
+	\end{align*}
+	}
+	\visible<7>{
+	so the expectation is actually us performing
+	\begin{align*}
+		\mathbb{E}\sqbracs{T} &= \integral{T}{t}{\mathbb{P}}.
+	\end{align*}
+	}
+	}
+	\only<8->{
+	\alert{We are just translating the idea of probabilistic ``size" into ``physical" size, in order to be able to do our calculations!} \newline
+	
+	This would bring us nicely towards the realm of Stochastic Calculus, but I figured that here was a good place to stop before I inflict too much suffering on everyone today.
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion}
+	
+	\only<1>{
+	\begin{block}{In summary}
+		\begin{itemize}
+			\item $X$ is our whole space, $\sM$ is what we want to measure
+			\item The Lebesgue measure is our intuitive, real-world sense of size
+			\item Integration is still done by counting squares, but we can do it on a wider range of functions
+			\item The ``function spaces" $L^p$ are Banach/Hilbert spaces, allowing us to define tools for solving PDEs
+			\item Probability spaces are just measure spaces, and PDFs translate ``probability size" into ``physical size" for us to work with. 
+		\end{itemize}
+	\end{block}
+	}
+	
+	\only<2>{
+	Thank-you all for listening and not running away... Any questions?
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.35]{FrodoOverDone-Meme.jpg}
+	\end{figure}
+	}
+\end{frame}
+
+\end{document}

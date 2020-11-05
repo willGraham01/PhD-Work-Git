@@ -10,8 +10,9 @@
 \begin{tikzpicture}
 
 	\begin{scope}[scale=0.8]
-		\draw[->] (-0.3,0) -- (10,0) node[anchor=west] {$\nu$};
-		\draw[->] (0,-0.3) -- (0,7.5) node[anchor=south] {$f(x)$};
+		\draw[->] (-0.3,0) -- (10,0) node[anchor=west] {$\mu$};
+		\draw[->] (0,-0.3) -- (0,7.5);
+		\node[anchor=south, color=blue] at (0,7.5) {$f(x)$};
 		\draw[scale=1.0,domain={0:8.89897},smooth,variable=\x,blue, thick] plot ({\x}, {(-(0.5*\x-2)*(0.5*\x-2)+6});
 		
 		%division of the range
@@ -25,10 +26,10 @@
 		%box labels
 		\draw[->, red] (4-0.5,0.5) -- (0,0.5); 
 		\draw[->, red] (4+0.5,0.5) -- (8.4721,0.5);
-		\node[align=center, red] at (4,0.5) {$I_1$};
+		\node[align=center, red] at (4,0.5) {$E_1$};
 		\draw[->, red] (4-0.5,1.5) -- (0,1.5); 
 		\draw[->, red] (4+0.5,1.5) -- (8,1.5);
-		\node[align=center, red] at (4,1.5) {$I_2$};
+		\node[align=center, red] at (4,1.5) {$E_2$};
 		\draw[->, red] (4-0.5,2.5) -- (0.5359,2.5); 
 		\draw[->, red] (4+0.5,2.5) -- (7.4641,2.5);
 		\node[align=center, red] at (4,2.6) {$\cdot$};
@@ -41,10 +42,10 @@
 		\node[align=center, red] at (4,3.4) {$\cdot$};
 		\draw[->, red] (4-0.5,4.5) -- (2,4.5); 
 		\draw[->, red] (4+0.5,4.5) -- (6,4.5);
-		\node[align=center, red] at (4,4.5) {$I_{N-1}$};
+		\node[align=center, red] at (4,4.5) {$E_{N-1}$};
 		\draw[->, red] (4-0.5,5.45) -- (3.36754,5.45); 
 		\draw[->, red] (4+0.5,5.45) -- (4.63246,5.45);
-		\node[align=center, red] at (4,5.45) {$I_{N}$};
+		\node[align=center, red] at (4,5.45) {$E_{N}$};
 	\end{scope}
 
 \end{tikzpicture}

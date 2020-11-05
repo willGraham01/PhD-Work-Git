@@ -1,11 +1,9 @@
-\section{Definitions and Key Concepts} \label{sec:Definitions}
-Before we present a derivation of the system \tstk{ode system ref} from the measure-theoretic problem \tstk{ref}, we first need to formally introduce the objects involved in each.
-To this end, in section \ref{ssec:QuantumGraphs} we cover the theory we need to borrow from the field of Quantum Graphs, and also setup our notation for graphs throughout this work.
-We also define the concept of an embedded graph (section \ref{sssec:EmbeddedGraphs}) and a ``singular measure" (section \ref{sssec:SingularMeasures}) as they will be used in this work, which will be our link between the two problems \tstk{ode system ref} and \tstk{var formulation ref}.
-Finally, the definition of the function spaces we plan to use in our variational problem \tstk{ref!} is given in section \ref{ssec:MeasureTheory}.
+\section{Concepts from the Study of Quantum/Metric Graphs} \label{sec:QuantumGraphs}
+Before we present a derivation of the system \eqref{eq:QGFullSystem} from the measure-theoretic problem \eqref{eq:PeriodCellLaplaceStrongForm}, we first need to formally introduce the objects involved in each.
+To this end, in this section we cover the theory we need to borrow from the field of Quantum Graphs, and also setup our notation for graphs throughout this work.
+Although the concept of an an embedded graph and a singular measure is needed to link \eqref{eq:PeriodCellLaplaceStrongForm} and \eqref{eq:QGFullSystem} (see section \ref{ssec:OurSystem}), these details are left to the appendix \tstk{app ref?} as the focus of this work is analysis and determination of the spectrum of \eqref{eq:QGFullSystem} rather than it's derivation. \newline
 
-\subsection{Quantum/Metric Graphs} \label{ssec:QuantumGraphs}
-In this section we outline the concept of a quantum graph, as well as introduce the function spaces associated with them, and defining differential operators on them.
+We begin with the definition of a quantum (or more generally, metric) graph.
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
 Strictly we should use the notation $I_{jk}^l$ for the edges; with $l$ being a script which runs from $1$ to the number of edges with left endpoint $v_j$ and right endpoint $v_k$, as in general there may be multiple such connections from $v_j$ to $v_k$.
 However we drop this superscript to avoid notational clutter, and because it's inclusion is not necessary to understand the concepts we introduce here.
@@ -13,6 +11,22 @@ Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and interval $\sqbracs{0,l_{j
 We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j\in\reals$).
 A graph $\graph$ with the metric structure described above is called a \emph{quantum graph}, or \emph{metric graph}. \tstk{cite Kuchment by page/chapter, also check Kuchment book whether we need to include the operator in the definition too!}
 
+Throughout this work, we also adopt the following convention:
+\begin{convention} \label{conv:MeasTheoryProblemSetup}
+	Let $\graph=\bracs{\vertSet,\edgeSet}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
+	We restrict ourselves to considering straight-edges between vertices, so each $I_{jk}\in \edgeSet$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}_2$.
+	Let $e_{jk}$ be the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$.
+	Set
+	\begin{align} \label{eq:EdgeParameterisation}
+	r_{jk}:\sqbracs{0, l_{jk}} \ni t \mapsto v_j + te_{jk} \in I_{jk},
+	\end{align}
+	and let $n_{jk}$ be the unit normal to $I_{jk}$ such that $y_{jk} = \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$.
+\end{convention}
+Whilst we do not have to make this assumption on our edges, we restrict ourselves to graphs of this class.
+The analysis in the appendix (\tstk{ref}) does consider the possibility of including curved edges in the graph, which gives rise to a system of similar form to \eqref{eq:QGFullSystem} only with the parameters $\qm_{jk}$ being $t$-dependant (so non-constant).
+\tstk{paper on ``dipole ops" mention here, and essentially conclude that this would require a different treatment to what we are covering in this paper. That said, we still did it, and it's in the back if anyone WANTS to read it!}
+
+\subsection{Function Spaces} \label{ssec:FunctionSpaces}
 By providing each edge with a length and hence associating it with an interval, we can construct functions on quantum graphs by describing their behaviour on the edges, and hence can produce the function spaces
 \begin{subequations} \label{eq:GraphFuncSpaces}
 	\begin{align}
@@ -99,7 +113,7 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 	\end{cases}
 \end{align*}
 
-\subsubsection{The $M$-Matrix} \label{sssec:MMatrix}
+\subsection{The $M$-Matrix} \label{ssec:MMatrix}
 When solving spectral problems on quantum graphs, recent developments involving an object known as the $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in section \ref{ssec:ssec:Derivation}.
 The $M$-matrix is in fact a generalisation of the classical Weyl-Titchmarsh $m$-function as it appears in the theory of boundary triples (more information can be found \tstk{refs to Kochuben, Gorbachuk \& Gorbachuk, Brown Marletta Naboko Wood, Kirill Sasha Luis}), however here we restrict ourselves to a short review the specific theory that will be relevant to this work.
 Let $\mathcal{A}$ be the graph Laplacian, and define the maps
@@ -124,6 +138,8 @@ where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}
 \tstk{A more general statement can be found in Derkach, Malomund.}
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
 We will exploit this fact in section \tstk{ref!}.
+
+\tstk{the remainder of this content is to be moved to the appendix!}
 
 \subsubsection{Embedded Graphs and Singular Measures} \label{sssec:EmbeddedGraphs}
 We now introduce the concepts that will link the quantum graph problems we study to the measure-theoretic formulation introduced in \tstk{ref to equation. This will be made clearer in the introduction when we first introduce our problem in the measure-theoretic way, and explain how we will go about solving it.}
@@ -163,11 +179,7 @@ That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in
 We will refer to $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as the ``period graph", or ``unit graph" of $\graph$. \newline
 
 In what follows we consider straight edges between vertices, so the $\gamma_{jk}$ are simply the line segments joining the vertices at either end, with lengths $l_{jk} = \norm{v_j-v_k}_2$. \tstk{suggested just using $\abs{\cdot}$?}
-For each edge $I_{jk}$ we will use the parametrisation
-\begin{align} \label{eq:EdgeParameterisation}
-	r_{jk}:\sqbracs{0, l_{jk}} \ni t \mapsto v_j + te_{jk} \in I_{jk},
-\end{align}
-where $e_{jk}$ is the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$ (consistent with the direction of the edge $I_{jk}$ itself).
+For each edge $I_{jk}$ we will use the parametrisation in \eqref{eq:EdgeParameterisation} where $e_{jk}$ is the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$ (consistent with the direction of the edge $I_{jk}$ itself).
 Note that we also have $r_{jk}'(t) = e_{jk}$.
 
 \subsubsection{Singular Measures} \label{sssec:SingularMeasures}

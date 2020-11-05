@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 %\usepackage{mathtools}
+\usepackage{dsfont}
 
 %begin the macros via newcommand. Try to group them up reasonably!
 
@@ -64,3 +65,6 @@
 %\newcommand{\lconv}[1]{\xrightarrow{#1}}							%convergence with #1 above the rightarrow - requires mathtools
 \newcommand{\lconv}[1]{\overset{#1}{\longrightarrow}}				%convergence with #1 above the rightarrow
 \newcommand{\toInfty}[1]{ \ \text{as} \ #1 \rightarrow\infty}		%writes out "as #1 tends to infty"
+
+%characteristic function and other notation
+\newcommand{\charFunc}[1]{\mathds{1}_{#1}}

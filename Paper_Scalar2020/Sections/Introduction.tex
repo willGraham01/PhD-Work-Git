@@ -1,24 +1,39 @@
 \section{Introduction} \label{sec:Intro}
 
 This section includes our literature review and motivation.
-The purpose of the paper is to present the equations that were derived for the curl-curl system as what can be interpreted as an "effective" or "limit" problem for a fine/thin-structure material.
+The purpose of the paper is to present the equations that were derived for the TFR/curl-curl system as what can be interpreted as an "effective" or "limit" problem for a fine/thin-structure material.
 This is subject to future advances in the field that draw parallel to the scalar-case developments, of course.
 
+\subsection{Lit Review} \label{ssec:LitReview}
+
 \subsection{Our System} \label{ssec:OurSystem}
-\tstk{review section title}
-We shall now outline the problem that we are interested in solving in this work, the reader should see section \ref{sec:Definitions} and the appendix \tstk{refs throughout} for a precise description of the objects that follow.
-Let $\graph$ be an embedded, periodic graph in $\reals^2$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and let $\ddmes$ be the singular measure that supports $\graph$.
-We are interested in determining the spectrum of the operator $-\grad_{\ddmes}^2$ on the singular structure described by $\graph$, that is determining eigenvalues $\omega^2>0$ and eigenfunctions $u$ such that
-\begin{align} \label{eq:FullSpaceStrongForm}
-	- \bracs{ \grad_{\ddmes} }^2 u &= \omega^2 u, \quad \text{in } \reals^2.
+\tstk{review section title, this is the setup/dump section for all our references.}
+
+We shall now contextualise and outline the problem that we are interested in solving in this work.
+The reader should see section \ref{sec:Definitions} and the appendix \tstk{refs} for a precise description of the objects that are mentioned in the following discussion. \newline
+
+The problem we consider in this work is motivated by the desire to study wave propagation on a periodic, singular structure in $\reals^2$, for applications in studying how the structure of a photonic crystal (or other appropriate waveguide material in non-electromagnetic contexts) impacts the waves that can propagate through the material (see section \ref{ssec:LitReview}).
+We represent this singular structure by an embedded, periodic graph $\graph$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and also construct a corresponding singular measure $\mu$ that supports $\graph$ in $\reals^2$ (see \tstk{section ref}) for use later.
+Since $\graph$ has no interior from the perspective of the space into which it is embedded, it is necessary for us to formulate ``boundary value problems" and ``spectral problems" in variational form, involving integrals with respect to singular measures.
+Doing so also requires the construction and analysis of appropriate function spaces for the differential operators we wish to consider, and the details of this process are included in the appendix \tstk{ref!} for the interested reader.
+The main consequences of this analysis are that we can precisely define the Laplacian operator on our singular structure, $-\grad^2_{\mu}$, and gain some important information about the functions it acts on.
+This then allows us to consider the ``spectral problem" of $-\grad^2_{\mu}$ on $\graph$ in $\reals^2$;
+\begin{align} \label{eq:WholeSpaceLaplaceEqn}
+	-\grad^2_{\mu} u &= \omega^2 u.
 \end{align}
-As detailed in the appendix (\tstk{ref}), \eqref{eq:FullSpaceStrongForm} is interpreted in the variational (or weak) sense, but we write it this form here for shorthand and convenience.
-For our approach it is convenient for to apply a Gelfand transform to \eqref{eq:FullSpaceStrongForm}, in order to obtain a family of (spectral) problems on the period cell $\ddom$ parametrised by the quasi-momentum $\qm$ that lives in the dual cell of $\ddom$, \tstk{I think dual cell is the right word, also we should point to the appendix here, OR give a recall of the Gelfand transform of a function here.}
-\begin{align} \label{eq:PeriodCellStrongForm}
-	- \bracs{ \tgrad_{\ddmes} }^2 u &= \omega^2 u, \quad \text{in } \ddom.
+The reader may notice the lack of ``boundary data" in \eqref{eq:WholeSpaceLaplaceEqn}, however as explained in the appendix \tstk{ref} this is because \eqref{eq:WholeSpaceLaplaceEqn} must be interpreted in the variational (or weak) sense.
+We wish to determine eigenvalues $\omega^2$ of \eqref{eq:WholeSpaceLaplaceEqn}, however the operator $-\grad^2_{\mu}$ has \tstk{non-compact resolvent so non-discrete spectrum?}.
+This results in us taking a Gelfand transform of the problem \eqref{eq:WholeSpaceLaplaceEqn}, 
+\begin{align*}
+	\hat{u}\bracs{x} &= \sum_{n\in\integers^2}u\bracs{x+n}e^{-i\qm\bracs{x+n}},
+\end{align*}
+and introducing the quasi-momentum parameter $\qm$ which lives in the dual-cell of $\ddom$.
+This transform provides us with a family of problems involving ``shifted-gradient" operators $\tgrad_{\mu}$,
+\begin{align} \label{eq:PeriodCellLaplaceStrongForm}
+	-\bracs{\tgrad_{\mu}}^2 u &= \omega^2 u, \quad\text{in } \ddom,
 \end{align}
-Each of the problems \eqref{eq:PeriodCellStrongForm} has a discrete spectrum $\sigma_{\qm}$, and we can then recover the spectrum of our original problem by taking the union of the $\sigma_{\qm}$ over $\qm$.
-Study of \eqref{eq:PeriodCellStrongForm} will bring us to consider a family of quantum graph problems;
+where each problem has a discrete spectrum, and the union of the spectra over the quasi-momentum $\qm$ providing the spectrum of our original operator $-\grad_{\mu}^2$.
+After some futher analysis of the operator $\tgrad_{\mu}$ (see appendix \tstk{ref}), \eqref{eq:PeriodCellLaplaceStrongForm} can be shown to reduce to a family of quantum graph problems;
 \begin{subequations} \label{eq:QGFullSystem}
 	\begin{align}
 		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
@@ -27,3 +42,4 @@ Study of \eqref{eq:PeriodCellStrongForm} will bring us to consider a family of q
 	\end{align}
 \end{subequations}
 the determination of the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem} being the central interest of this work.
+\tstk{here we mention that we can derive the equations for curved edges which gives $\qm_{jk}$ some $t$-dependence, but choose not to consider this case, that would open a whole other can of worms that would require a different treatment.}

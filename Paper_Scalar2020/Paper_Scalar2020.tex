@@ -48,9 +48,9 @@
 
 \input{./Sections/Introduction}
 
-\input{./Sections/Definitions}
+\input{./Sections/QuantumGraphs}
 
-\input{./Sections/Analysis}
+\input{./Sections/DerivationAndAnalysis}
 
 \input{./Sections/Discussion}
 
@@ -61,5 +61,8 @@
 \newpage %have a new page to start the bibliography
 \bibliographystyle{acm}
 \bibliography{Paper_Scalar2020.bib}
+\newpage %new page to clear space between bibliography and the appendix, as \section doesn't call \newpage
+
+\input{./Sections/Appendix}
 
 \end{document}
