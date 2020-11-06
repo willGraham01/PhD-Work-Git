@@ -12,7 +12,7 @@ We should touch on:
 
 \tstk{prop \ref{prop:M-MatrixEntries} needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
-	Let $\graph=\bracs{\vertSet,\edgeSet}$ be an embedded graph on which the problem \eqref{eq:QGEquation}-\eqref{eq:QGVertexConditions} is posed.
+	Let $\graph=\bracs{\vertSet,\edgeSet}$ be an embedded graph on which the problem \eqref{eq:QGFullSystem} is posed.
 	For each $I_{jk}\in \edgeSet$ let $\qm_{jk} = \bracs{R_{jk}\qm}_1$ and $l_{jk} = \abs{I_{jk}}$.
 	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\reals^{\abs{V}}$.
 	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by
@@ -44,8 +44,8 @@ We should touch on:
 \begin{proof}
 	\tstk{the proof needs contextualising too}
 	The proof is an explicit computation, and follows the same idea as in \cite{ershova2014isospectrality} with adjustments for the fact that there are $\qm$ terms floating around.
-	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate the constants $C^{(jk)}_{\pm}$ in \eqref{eq:CurlEdgeEqnGenSol}.
-	This in turn enables us to explicitly write the solutions $u_{3,jk}$, differentiate them, and read off their values at any relevant vertices - hence if one wishes, the form of the eigenfunctions can also be recovered via this method.
+	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate determine the form of the edge solution $u_{jk}$.
+	This in turn enables us to explicitly differentiate $u_{jk}$, and read off the values of $u_{jk}$ and $u_{jk}'$ at any relevant vertices - hence if one wishes, the form of the eigenfunctions can also be recovered via this method.
 	This then provides us with the value of each term in the sum in $\bracs{\nmap u}_j$, for each $j$.
 \end{proof}
 Importantly this result demonstrates that the $M$-matrix can be thought of as a function of $\omega$ parametrised by $\qm$, hence will denote it by $M_{\qm}\bracs{\omega}$.

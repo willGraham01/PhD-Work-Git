@@ -16,7 +16,7 @@ Throughout this section, we are concerned with determining the spectrum of the p
 Consider the graph $\graph$ periodic in one direction (WLOG parallel to the $x_1$-axis with $x_2=0$) in $\reals^2$, with vertices $v_j = \bracs{j + \recip{2}, 0}^\top$ and edges $I_{j\bracs{j+1}}$ for $j\in\integers$.
 Assume the coupling constants at each vertex are identical, taking the value $\alpha\in\reals$.
 Then the quantum graph which corresponds to the period graph of $\graph$ is simply a single vertex $v$ with a looping edge $I$ of length 1, with quasi-momentum $\qm$ on $I$ and coupling constant $\alpha$ at $v$. 
-One can apply proposition \ref{prop:MMatrixEntries} at this point to compute the (one-dimensional) ``$M$-matrix", however for illustrative purposes (and consistency with the examples that follow) we elect to introduce a dummy vertex to break the loop $I$ into two edges, producing a new quantum graph $\graph_{\mathcal{P}}=\mathcal{\vertSet, \edgeSet}$ with
+One can apply proposition \ref{prop:M-MatrixEntries} at this point to compute the (one-dimensional) ``$M$-matrix", however for illustrative purposes (and consistency with the examples that follow) we elect to introduce a dummy vertex to break the loop $I$ into two edges, producing a new quantum graph $\graph_{\mathcal{P}}=\mathcal{\vertSet, \edgeSet}$ with
 \begin{align*}
 	\vertSet = \clbracs{ v_1 , v_2 }, \quad &\edgeSet = \clbracs{ I_{12}, I_{21} }, \\
 	\abs{I_{12}} = \abs{I_{21}} = \recip{2}, \quad &\qm_{12} = \qm_{21} = \qm, \\
@@ -47,7 +47,7 @@ Studying the $M$-matrix of $\graph_{\mathcal{P}}$ to determine the eigenvalues $
 	\caption{\label{fig:Diagram_1DExample} The graphs $\graph$ and $\graph_{\mathcal{P}}$.}
 \end{figure} \newline
 
-One can construct the $M$-matrix for $\graph_{\mathcal{P}}$ using proposition \ref{prop:MMatrixEntries}, obtaining
+One can construct the $M$-matrix for $\graph_{\mathcal{P}}$ using proposition \ref{prop:M-MatrixEntries}, obtaining
 \begin{align*}
 	M_{\qm}\bracs{\omega} &= 
 	\begin{pmatrix} 
@@ -109,7 +109,7 @@ It's period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \re
 		\includegraphics[height=4.5cm]{Diagram_TFRQuantumGraph.pdf}
 		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:ExampleCrossInPlane}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
 	\end{subfigure}
-	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period cell of the graph $\graph^*$. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \tstk{qg eqn ref}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
+	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period cell of the graph $\graph^*$. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGFullSystem}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
 \end{figure}
 After associating the edges of the period graph, we obtain it's associated quantum graph $\graph=\bracs{\vertSet,\edgeSet}$ with $\vertSet=\clbracs{v_1,v_2,v_3}$, $\edgeSet=\clbracs{I_{13},I_{23},I_{31},I_{32}}$, and lengths
 \begin{align*}
@@ -120,8 +120,7 @@ Given that all the edges of $\graph^*$ are parallel to the co-ordinate axes, it 
 	\qm_{13} = \qm_{31} = -\qm_2, &\quad \qm_{23} = \qm_{32} = -\qm_1.
 \end{align*}
 
-We now look to determine the spectrum of the problem \tstk{var problem eqn ref}, which by the analysis of section \ref{sec:Analysis} we can do by determining the eigenvalues $\omega^2$ of the system \tstk{QG equation system}.
-Furthermore we can use proposition \ref{prop:M-MatrixEntries} to write down the $M$-matrix as
+We now look to determine the spectrum of the problem \eqref{eq:QGFullSystem}, to this end we use proposition \ref{prop:M-MatrixEntries} to write down the $M$-matrix:
 \begin{align*}
 	M_{\qm}\bracs{\omega} &=
 	\begin{pmatrix}

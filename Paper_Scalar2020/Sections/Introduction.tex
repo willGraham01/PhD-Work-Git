@@ -10,18 +10,18 @@ This is subject to future advances in the field that draw parallel to the scalar
 \tstk{review section title, this is the setup/dump section for all our references.}
 
 We shall now contextualise and outline the problem that we are interested in solving in this work.
-The reader should see section \ref{sec:Definitions} and the appendix \tstk{refs} for a precise description of the objects that are mentioned in the following discussion. \newline
+The reader should see section \ref{sec:QuantumGraphs} and the appendix (sections \ref{ssec:MeasureTheory} through \ref{ssec:SobSpacesTheory}) for a precise description of the objects that are mentioned in the following discussion. \newline
 
 The problem we consider in this work is motivated by the desire to study wave propagation on a periodic, singular structure in $\reals^2$, for applications in studying how the structure of a photonic crystal (or other appropriate waveguide material in non-electromagnetic contexts) impacts the waves that can propagate through the material (see section \ref{ssec:LitReview}).
-We represent this singular structure by an embedded, periodic graph $\graph$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and also construct a corresponding singular measure $\mu$ that supports $\graph$ in $\reals^2$ (see \tstk{section ref}) for use later.
+We represent this singular structure by an embedded, periodic graph $\graph$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and also construct a corresponding singular measure $\mu$ that supports $\graph$ in $\reals^2$ (section \ref{ssec:SingularMeasures}) for use later.
 Since $\graph$ has no interior from the perspective of the space into which it is embedded, it is necessary for us to formulate ``boundary value problems" and ``spectral problems" in variational form, involving integrals with respect to singular measures.
-Doing so also requires the construction and analysis of appropriate function spaces for the differential operators we wish to consider, and the details of this process are included in the appendix \tstk{ref!} for the interested reader.
+Doing so also requires the construction and analysis of appropriate function spaces for the differential operators we wish to consider, and the details of this process are included in the appendix (section  \ref{ssec:MeasureTheory}) for the interested reader.
 The main consequences of this analysis are that we can precisely define the Laplacian operator on our singular structure, $-\grad^2_{\mu}$, and gain some important information about the functions it acts on.
 This then allows us to consider the ``spectral problem" of $-\grad^2_{\mu}$ on $\graph$ in $\reals^2$;
 \begin{align} \label{eq:WholeSpaceLaplaceEqn}
 	-\grad^2_{\mu} u &= \omega^2 u.
 \end{align}
-The reader may notice the lack of ``boundary data" in \eqref{eq:WholeSpaceLaplaceEqn}, however as explained in the appendix \tstk{ref} this is because \eqref{eq:WholeSpaceLaplaceEqn} must be interpreted in the variational (or weak) sense.
+The reader may notice the lack of ``boundary data" in \eqref{eq:WholeSpaceLaplaceEqn}, however as explained in the appendix (section \ref{ssec:MeasureTheory}) this is because \eqref{eq:WholeSpaceLaplaceEqn} \emph{is} interpreted in the variational (or weak) sense.
 We wish to determine eigenvalues $\omega^2$ of \eqref{eq:WholeSpaceLaplaceEqn}, however the operator $-\grad^2_{\mu}$ has \tstk{non-compact resolvent so non-discrete spectrum?}.
 This results in us taking a Gelfand transform of the problem \eqref{eq:WholeSpaceLaplaceEqn}, 
 \begin{align*}
@@ -33,7 +33,7 @@ This transform provides us with a family of problems involving ``shifted-gradien
 	-\bracs{\tgrad_{\mu}}^2 u &= \omega^2 u, \quad\text{in } \ddom,
 \end{align}
 where each problem has a discrete spectrum, and the union of the spectra over the quasi-momentum $\qm$ providing the spectrum of our original operator $-\grad_{\mu}^2$.
-After some futher analysis of the operator $\tgrad_{\mu}$ (see appendix \tstk{ref}), \eqref{eq:PeriodCellLaplaceStrongForm} can be shown to reduce to a family of quantum graph problems;
+After some futher analysis of the operator $\tgrad_{\mu}$ (see appendix \tstk{ref}), \eqref{eq:PeriodCellLaplaceStrongForm} can be shown to reduce to a family of quantum graph problems; \tstk{include vertex constants $\alpha$ in here, as this is the general form of these equations!}
 \begin{subequations} \label{eq:QGFullSystem}
 	\begin{align}
 		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
