@@ -1,8 +1,8 @@
-\section{Discussion} \label{sec:Discussion}
+\section{General formula for the $M$-Matrix of a finite period graph} \label{sec:Discussion}
 In this section we want to discuss some of the important applications of our work.
 We should touch on:
 \begin{itemize}
-	\item ``decorators" - adding a graph to a periodic 1D structure by attaching at a vertex (or better: taking a graph, breaking an edge in two and identifying either sides of the ``break" as the edge of the period cell).
+	\item ``decorations" - adding a graph to a periodic 1D structure by attaching at a vertex (or better: taking a graph, breaking an edge in two and identifying either sides of the ``break" as the edge of the period cell).
 	This ties into the setups of EG \cite{cherednichenko2019time} (might be wrong Kirill paper, all the bibTex refs have similar names, check the PDFs and ensure citation points to the right work)
 	\item M-matrix work to reduce the QG problem into a nicer, more accessible state.
 	Potentially mention we have code to solve this, or do not depending on data plans!
@@ -10,11 +10,10 @@ We should touch on:
 	\item Also might want to discuss our thoughts about graph symmetry affecting the M-matrix properties (real), stability results, etc, which we can formulate into (at least) conjectures.
 \end{itemize}
 
-\tstk{prop \ref{prop:M-MatrixEntries} needs to be moved to the right place in the text, in particular after the QG problem is derived - maybe even into the examples section?}
+\tstk{prop \ref{prop:M-MatrixEntries} needs contextual text around it}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{\vertSet,\edgeSet}$ be an embedded graph on which the problem \eqref{eq:QGFullSystem} is posed.
-	For each $I_{jk}\in \edgeSet$ let $\qm_{jk} = \bracs{R_{jk}\qm}_1$ and $l_{jk} = \abs{I_{jk}}$.
-	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\reals^{\abs{V}}$.
+	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\complex^{\abs{\vertSet}}$.
 	Then the $j$\textsuperscript{th} entry of $\nmap u$, and hence the $jk$\textsuperscript{th} entry in the $M$-matrix, is given by
 	\begin{align*}
 		\bracs{\nmap u}_j &= 
@@ -42,10 +41,49 @@ We should touch on:
 	\end{align*}
 \end{prop}
 \begin{proof}
-	\tstk{the proof needs contextualising too}
-	The proof is an explicit computation, and follows the same idea as in \cite{ershova2014isospectrality} with adjustments for the fact that there are $\qm$ terms floating around.
-	For each $k$, setting $\dmap u = e_k$ provides us with sufficient Dirichlet data at each vertex to eliminate determine the form of the edge solution $u_{jk}$.
-	This in turn enables us to explicitly differentiate $u_{jk}$, and read off the values of $u_{jk}$ and $u_{jk}'$ at any relevant vertices - hence if one wishes, the form of the eigenfunctions can also be recovered via this method.
-	This then provides us with the value of each term in the sum in $\bracs{\nmap u}_j$, for each $j$.
+	The proof is an explicit computation, and follows the same idea as in \cite{ershova2014isospectrality} with adjustments for the fact that there are $\qm$ terms floating around. \newline
+	
+	We first determine the form of the edge solution $u_{jk}$ via solution of \eqref{eq:QGEdgeODEs} up to two complex constants per edge,
+	\begin{align} \label{eq:EdgeEqnGeneralSolution}
+		u_{jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\omega t} + C_{-}^{(jk)}e^{i\omega t} }.
+	\end{align}
+	Since the $M$-matrix maps $\complex^{\abs{\vertSet}}\rightarrow\complex^{\abs{\vertSet}}$, it is sufficient to determine the $M$-matrix's action on the canonical basis of $\complex^{\abs{\vertSet}}$.
+	So for each fixed $k\in\clbracs{1,...,\abs{\vertSet}}$ we set $\dmap u = e_k$.
+	This provides us with sufficient Dirichlet data to solve \eqref{eq:QGEdgeODEs} on each edge and eliminate the constants $C_{+}^{(jk)}$, $C_{-}^{(jk)}$ in \eqref{eq:EdgeEqnGeneralSolution}, obtaining
+	\begin{align*}
+		j\not\con k &\implies
+		\begin{cases}
+			u_{jk}(t) = 0, \\
+			u_{kj}(t) = 0,
+		\end{cases} \\
+		j\neq k, \ j\con k &\implies
+		\begin{cases}
+			u_{jk}(t) = e^{-i\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
+			u_{kj}(t) = -e^{-i\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
+		\end{cases} \\
+		j = k &\implies 
+		\begin{cases}
+			u_{jj}(t) = e^{-i\qm_{jj}t} \bracs{ e^{-i\omega t} + \sqbracs{e^{-i\qm_{jj}l_{jj}}-e^{-i\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
+		\end{cases}
+	\end{align*}
+	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}$ at the vertices.
+	In the case $j\not\con k$, we obviously get zero contribution from the edges $I_{jk}$ and $I_{kj}$.
+	The case $j\neq k, \ j\con k$, yields contributions from the edges $I_{jk}$ and $I_{kj}$ as follows:
+	\begin{align*}
+		\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}\bracs{v_j} &= -\omega e^{-i\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, \\
+		\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}\bracs{v_k} &= \omega\cot\bracs{\omega l_{jk}}, \\
+		\bracs{\diff{}{t}+i\qm_{kj}}u_{kj}\bracs{v_j} &= -\omega e^{-i\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, \\
+		\bracs{\diff{}{t}+i\qm_{kj}}u_{kj}\bracs{v_k} &= \omega\cot\bracs{\omega l_{kj}}.
+	\end{align*}
+	And finally, when considering the case $j=k$ the contribution to $\bracs{\nmap u}_j$ from loops $I_{jj}$ in the graph also requires us to compute
+	\begin{align*}
+		\lim_{t\rightarrow0}-\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t) + \lim_{t\rightarrow l_{jj}}\bracs{u_{jj}'+i\qm_{jj}u_{jj}} & (t) \\
+		&= 2\omega\bracs{ \cot\bracs{\omega l_{jj}} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{\omega l_{jj}}}.	
+	\end{align*}
+	We then use the formula
+	\begin{align*}
+		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\diff{}{t}+i\qm_{jl}}u_{jl}\bracs{v_j},
+	\end{align*}
+	and our previous computations to compute each entry $\bracs{\nmap u}_j$, and obtain the desired result.
 \end{proof}
 Importantly this result demonstrates that the $M$-matrix can be thought of as a function of $\omega$ parametrised by $\qm$, hence will denote it by $M_{\qm}\bracs{\omega}$.

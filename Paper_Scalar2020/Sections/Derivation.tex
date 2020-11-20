@@ -1,14 +1,8 @@
-\section{Derivation and Analysis of System} \label{sec:SystemAndAnalysis}
+\section{Derivation and Formulation of Quantum Graph Problem} \label{sec:SystemDerivation}
 
-In this section we provide an overview of how we obtain the system \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellLaplaceStrongForm}, and then proceed with a discussion revolving around the methods that can be employed for solving \eqref{eq:QGFullSystem}.
-Precise definition and analysis of the ``Sobolev spaces" used here can be found in the appendix (section \ref{ssec:SobSpacesTheory}), but the beginning of section \ref{ssec:Derivation} gives an intuitive overview of this theory, prior to beginning the derivation.
-Also, just to reiterate what was said in section \ref{sec:QuantumGraphs}, convention \ref{conv:MeasTheoryProblemSetup} is assumed throughout this section and the rest of this work.
-
-\subsection{Derivation and Formulation of Quantum Graph Problem} \label{ssec:Derivation}
-The interested reader can find the definitions and analysis of the Sobolev space $\gradSobQM{\ddom}{\ddmes}$ in the appendix (sections \ref{ssec:MeasureTheory} through \ref{ssec:SobSpacesTheory}), as well as the complete analysis of the ``gradients" $\tgrad_{\ddmes}u$. 
-\tstk{We promised an intuitive overview here!}
-In this section we give an overview of how we are now able to derive \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellLaplaceStrongForm}.
-Throughout this section we assume convention \ref{conv:MeasTheoryProblemSetup}, and set $\qm_{jk} := \bracs{R_{jk}\qm}_1$. \newline
+In this section we provide an overview of how we obtain the system \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellLaplaceStrongForm}, which will setup our discussion revolving around the methods that can be employed for solving \eqref{eq:QGFullSystem} in section \ref{sec:Discussion}.
+Precise definition and analysis of the ``Sobolev spaces" used here can be found in the appendix (section \ref{ssec:SobSpacesTheory}). \tstk{We should maybe give an intuitive overview here, just in case? (maybe a short subsection?}
+Also, just to reiterate what was said in section \ref{sec:QuantumGraphs}, assumption \ref{ass:MeasTheoryProblemSetup} is adopted throughout this section and the rest of this work. \newline
 
 A function $u\in\gradSobQM{\ddom}{\ddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if
 \begin{align} \label{eq:PeriodCellLaplaceWeakForm}

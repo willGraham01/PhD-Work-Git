@@ -1,4 +1,4 @@
-\section{Examples} \label{sec:Examples}
+\section{Dispersion relations for concrete graph topologies} \label{sec:Examples}
 In this section we want to include the following examples:
 \begin{itemize}
 	\item 1D chain with a single vertex (the ``simplest" decorator graph, which we discussed in the previous section), with coupling constants as zero coupling constants isn't that exciting
@@ -6,12 +6,18 @@ In this section we want to include the following examples:
 	\item (Potentially): A graph lacking symmetries, which requires a numerical treatment to find the eigenvalues?
 \end{itemize}
 
-Throughout this section, we are concerned with determining the spectrum of the problem \tstk{this is a recall, so no number but link to the first instance of it being stated}
+Throughout this section, we are concerned with determining the spectrum of the problem \eqref{eq:WholeSpaceLaplaceEqn},
 \begin{align*}
-	-\grad_{\ddmes} u &= \omega^2 u, \quad\text{on } \ddom.
+	-\laplacian_{\ddmes} u &= \omega^2 u, \quad\text{on } \reals^2,
+\end{align*}
+via determination of the spectrum of \eqref{eq:QGFullSystem},
+\begin{align*}
+	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
+	u \text{ is continuous at each } &v_j \in \vertSet, \\
+	\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} = \alpha_j\omega^2 u\bracs{v_j}, &\quad \forall v_j \in \vertSet.
 \end{align*}
 
-\subsection{Example: One-Dimensional ``Decorated" Loop} \label{ssec:Example1DLoop}
+\subsection{One-Dimensional ``Decorated" Loop} \label{ssec:Example1DLoop}
 \tstk{brief intro for context}
 Consider the graph $\graph$ periodic in one direction (WLOG parallel to the $x_1$-axis with $x_2=0$) in $\reals^2$, with vertices $v_j = \bracs{j + \recip{2}, 0}^\top$ and edges $I_{j\bracs{j+1}}$ for $j\in\integers$.
 Assume the coupling constants at each vertex are identical, taking the value $\alpha\in\reals$.
@@ -72,7 +78,7 @@ We would then need to determine the set of solutions for each $\qm\in\left[-\pi,
 This procedure is similar to that in example \ref{ssec:ExampleCrossInPlane}, which we will study in greater depth, and so we forgo further analysis here.
 However the methodology of example \ref{ssec:ExampleCrossInPlane} is applicable here, and as one might expect produces a spectrum of similar structure.
 
-\subsection{Example: Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
+\subsection{Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
 \tstk{intro sentence that provides relevance once we decide on the order to present the examples in}
 Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
 \begin{align*}
@@ -129,7 +135,7 @@ We now look to determine the spectrum of the problem \eqref{eq:QGFullSystem}, to
 		-2\omega\csc\bracs{\frac{\omega}{2}}\cos\bracs{\frac{\qm_2}{2}} & -2\omega\csc\bracs{\frac{\omega}{2}}\cos\bracs{\frac{\qm_1}{2}} & 4\omega\cot\bracs{\frac{\omega}{2}}
 	\end{pmatrix}.
 \end{align*}
-At this point we have the option of solving for the spectrum numerically or analytically, however because we have such a small and symmetric problem we proceed analytically by solving $\mathrm{det}\bracs{ M_{\qm}\bracs{\omega} - A }=0$. \tstk{note: we might have $A$ depending on $\omega$ when $\alpha$ is non-zero, so maybe add this dependence in explicitly? Also, has $A$'s form been given at this point, if not define!?}
+At this point we have the option of solving for the spectrum numerically or analytically, however because we have such a small and symmetric problem we proceed analytically by solving $\mathrm{det}\bracs{ M_{\qm}\bracs{\omega} - A }=0$, where $A=\mathrm{diag}\bracs{0,0,\alpha\omega^2}$ is the matrix of coupling constants for $\graph$.
 After some calculation,
 \begin{align*}
 	\det\bracs{\bracs{M_{\qm}\bracs{\omega} - \omega^2 A}} &= 0 \\
@@ -144,8 +150,7 @@ So finding eigenvalues $\omega^2$ amounts to determining those $\omega$ for whic
 \begin{align} \label{eq:ExampleThickVertexDispExpr}
 	-1 \leq \Xi\bracs{\omega} \leq 1.
 \end{align}
-One can visualise the curve $\Xi$ in figure \ref{fig:Scalar_ThickVertexDR}; one can observe that the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
-The value of $\alpha$ changes the shape of $\Xi$ which in turn will also effects the resulting eigenvalues and spectral bands \tstk{do we want to give the results which validate the emergence of spectral bands? CF TFR.}.
+One can visualise the curve $\Xi$ in figure \ref{fig:Scalar_ThickVertexDR}; and a numerical estimate of the density of states \tstk{we haven't defined this anywhere prior!} is provided in figure \ref{fig:CrossInPlane_DoS}.
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -161,4 +166,20 @@ The value of $\alpha$ changes the shape of $\Xi$ which in turn will also effects
 	\end{subfigure}
 	\caption{\label{fig:Scalar_ThickVertexDR} The function $\Xi$. Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi$ takes values between $-1$ and $1$ (black lines). One can see the existence of spectral bands which shrink in size as $\omega\rightarrow\infty$.}
 \end{figure}
-\tstk{also, we have a density of states now too, we could include that????}
+One can observe that the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
+\begin{figure}[b!]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha1.pdf}
+		\caption{\label{fig:CrossInPlane_DoS_Alpha1} The density of states and spectrum for the system with $\alpha=1$.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha3.pdf}
+		\caption{\label{fig:CrossInPlane_DoS_Alpha3} The density of states and spectrum for the system with $\alpha=3$.}
+	\end{subfigure}
+	\caption{\label{fig:CrossInPlane_DoS} The spectrum and density of states for the graph topology in section \ref{ssec:ExampleCrossInPlane}.}
+\end{figure}
+The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band, values of $\alpha<2$ result in the first band starting at 0, whilst $\alpha\geq 2$ results in a gap between zero and the bottom of the spectrum \tstk{do we want to give the results which validate the emergence of spectral bands? CF TFR.}.

@@ -1,6 +1,7 @@
 \section{Appendix} \label{sec:Appendix}
+\tstk{change appendix numbering system from $X.Y$ Appendix, to Appendix: A,B,C etc. So Appendix: Singular Measures should read as Appendix A: Singular Measures}
 
-\subsubsection{Singular Measures} \label{ssec:SingularMeasures}
+\subsubsection{Appendix: Singular Measures} \label{ssec:SingularMeasures}
 Embedded graphs (section \ref{ssec:EmbeddedGraphs} allow us to introduce the measure which links quantum graph problems to the measure-theoretic problems we first introduced in section \ref{ssec:OurSystem}
 For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports the one-dimensional Lebesgue measure on the edge $I_{jk}$.
 So for each Borel set $B$ we have
@@ -22,12 +23,13 @@ For a graph embedded into a 2D domain, the singular measure is illustrated in fi
 \end{figure} \newline
 The singular measure of a graph will be the key component in our measure-theoretic formulations, which enables us to establish ideas of derivatives whilst working on a domain which has no ``area" in the Lebesgue-sense.
 
-\subsection{Measure Theoretic Concepts} \label{ssec:MeasureTheory}
+\subsection{Appendix: Key Measure Theoretic Concepts} \label{ssec:MeasureTheory}
 In this section we address the question of how one understands the equations \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplaceStrongForm}, by outlining the appropriate differential operators and function spaces that are required.
 Attempting to pose a boundary-value problem on a singular-structure, by drawing analogy to the ``ingredients" of a boundary-value problem on a thin structure, runs into problems.
 These are due to the singular structure lacking a domain interior from the perspective of the space it is embedded in, and thus the notion of boundary values ceases to make sense, and this problem persists even after taking a Gelfand transform to bring us to a family of problems on the period cell of the graph.
 This issue is resolved by not abandoning what we believe are the ingredients of a boundary-value problem, but rather by reworking our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular-structure itself, despite the fact that it is embedded in a higher-dimensional space. \tstk{zhikov mention?}
 
+\tstk{appendix subsection here}
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a finite graph embedded (as detailed in section \ref{sec:QuantumGraphs}) into the region $\ddom=\sqbracs{0,T_1}\times\sqbracs{0,T_2}\subset\reals^2$, which will serve as our singular structure.
 For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)$ define the shifted gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
 \begin{align*}
@@ -82,7 +84,7 @@ We call $\grad_\ddmes u$ the \emph{($\ddom$-)tangential derivative} of $u$ and i
 \end{align*}
 Since $\grad_\ddmes u$ is unique, we will use the shorthand $u\in\gradSobQM{\ddom}{\ddmes}$ to refer to the pair $\bracs{u, \grad_\ddmes u}$. \tstk{worth a note about how tang gradient isn't always the gradient we want when solving equations with non-identity elliptic $A$, again a Zhikov reference. For us though, this definition is convenient because we use $A=I$ throughout.}
 We can follow a similar process to define the sets $\gradZero{\ddom}{\lambda_{jk}}$ and $\gradSobQM{\ddom}{\lambda_{jk}}$. 
-These constructions give us concepts of (weak) derivative to work with; however there is still work to be done towards understanding the form of these tangential derivatives, which will be key to the derivation of our system \eqref{eq:QGFullSystem} in section \ref{ssec:Derivation}.
+These constructions give us concepts of (weak) derivative to work with; however there is still work to be done towards understanding the form of these tangential derivatives, which will be key to the derivation of our system \eqref{eq:QGFullSystem} in section \ref{sec:SystemDerivation}.
 This is the focus of sections \ref{ssec:GradsOfZeroTheory} through \ref{ssec:SobSpacesTheory}. \newline
 
 Before we continue however, we can now precisely state what we mean when we write equation \eqref{eq:PeriodCellLaplaceStrongForm}; a pair $u\in\gradSobQM{\ddom}{\ddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if (see \eqref{eq:PeriodCellLaplaceWeakForm})
@@ -94,7 +96,7 @@ We will continue to use \eqref{eq:PeriodCellLaplaceStrongForm} as shorthand for 
 
 \tstk{this is still written as an ``overview" section, the full proofs are not included. You should probably put them in Will, or have a final section of the appendix which is just the details of the proofs, and leave this one with some narrative.}
 
-\subsection{Gradients of Zero} \label{ssec:GradsOfZeroTheory}
+\subsection{Appendix subsection: Analysis of Gradients of Zero} \label{ssec:GradsOfZeroTheory}
 Crucial to our understanding of the functions (and their gradients) in $\gradSobQM{\ddom}{\ddmes}$ will be understanding the corresponding ``gradients of zero".
 \tstk{argument is based of Zhikov's stuff, and is in appendix in full}
 We work towards obtaining this understanding progressively; first we look to understand the set $\gradZero{\ddom}{\lambda_{jk}}$ when the edge $I_{jk}$ is assumed to be parallel to the $x_1$-axis, then employ a rotation argument to understand $\gradZero{\ddom}{\lambda_{jk}}$ for a general edge that is at an angle to the $x_1$-axis.
@@ -128,7 +130,7 @@ We begin by describing $\gradZero{\ddom}{\lambda_{jk}}$ for when the edge $I_{jk
 	
 	We now prove that if $\bracs{f,0}^\top\in\gradZero{\ddom}{\lambda_I}$ then $f=0$.
 	So suppose $\bracs{f,0}\in\gradZero{\ddom}{\lambda_I}$ and take an approximating sequence $\phi_n$ as in \eqref{eq:GradZeroDef}.
-	Performing a change of variables via the map $r:\interval{I}\rightarrow I$ (as described for an edge $I_{jk}$ in convention \ref{conv:MeasTheoryProblemSetup}), and setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have
+	Performing a change of variables via the map $r:\interval{I}\rightarrow I$ (as described for an edge $I_{jk}$ in convention \ref{ass:MeasTheoryProblemSetup}), and setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have
 	\begin{align*}
 		\tilde{\phi}_n\lconv{\ltwo{\interval{I}}{t}} 0, 
 		&\quad \diff{\tilde{\phi}_n}{t}\lconv{\ltwo{\interval{I}}{t}} \tilde{f}
@@ -162,7 +164,7 @@ With these two results, there is the following corollary which further reinforce
 Using our understanding of gradients of zero on single segments, we can build up an understanding of gradients of zero on embedded graphs consisting of multiple edges.
 This turns out to be the following characterisation; where each function in $\gradZero{\ddom}{\ddmes}$ behaves as a function in $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
 \begin{prop} \label{prop:GradZeroGraph}
-	Given convention \ref{conv:MeasTheoryProblemSetup}, we have that
+	Given convention \ref{ass:MeasTheoryProblemSetup}, we have that
 	\begin{align*}
 		\gradZero{\ddom}{\ddmes} &= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in \edgeSet} \\
 		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet}. \labelthis\label{eq:GradZeroSetRHS}
@@ -180,11 +182,11 @@ This turns out to be the following characterisation; where each function in $\gr
 	Then we can use the idea that $g = \sum_{j\con k} g_{jk}$ and that $\gradZero{\ddom}{\ddmes}$ is a closed, linear subspace to obtain membership of $g$ in $\gradZero{\ddom}{\ddmes}$; although in practice the expression for the sum is made more complex by the need to ensure good behaviour near the vertices of the graph.
 \end{proof}
 
-\subsection{The ``Non-Classical" Sobolev Spaces} \label{ssec:SobSpacesTheory}
+\subsection{Appendix subsection: The ``Non-Classical" Sobolev Spaces} \label{ssec:SobSpacesTheory}
 Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$.
 Given that we know that $\tgrad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$, and we have an edge-wise characterisation of $\gradZero{\ddom}{\ddmes}$, it will not be surprising to learn that we also obtain an edge-wise ``form" for the tangential gradient, as given in the following proposition.
 \begin{prop} \label{prop:GraphTangGrad}
-	Assume convention \ref{conv:MeasTheoryProblemSetup}.
+	Assume convention \ref{ass:MeasTheoryProblemSetup}.
 	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
 	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in \edgeSet$, and that
 	\begin{align*}
@@ -219,7 +221,7 @@ In particular the behaviour of functions near the vertices of $\graph$ has been 
 It is also not unreasonable to expect some special behaviour of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ at the vertices, otherwise there will be no resemblance of the connectivity of $\graph$ in our function space.
 We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$), as is proven in \tstk{zhikov ref, with page/thm number} for when $\qm=0$:
 \begin{theorem} \label{thm:CharOfGradSob}
-	Assume convention \ref{conv:MeasTheoryProblemSetup}.
+	Assume convention \ref{ass:MeasTheoryProblemSetup}.
 	Then we have that
 	\begin{align*}
 		u\in\gradSobQM{\ddom}{\ddmes} \quad\Leftrightarrow\quad 
@@ -239,3 +241,5 @@ A sketch of the key ideas is below;
 	Take smooth sequences approximating each $u_{jk}\in\gradSobQM{\ddom}{\lambda_{jk}}$, and sum them in an appropriate way to obtain convergence in $\ltwo{\ddom}{\ddmes}^2$ from the individual convergences in $\ltwo{\ddom}{\lambda_{jk}}^2$.
 	Continuity at each vertex is required to control the behaviour of the sequence that is constructed near the vertices - namely we need to ensure there is a small ball around each vertex where the value of each $u_{jk} - u\bracs{v_j}$ is uniformly bounded across those edges $j\con k$.
 \end{proof}
+
+\tstk{another subsection for the derivation of the QG problem from the measure-theoretic one. Possibly merge \ref{ssec:SobSpacesTheory} with this new section too.}

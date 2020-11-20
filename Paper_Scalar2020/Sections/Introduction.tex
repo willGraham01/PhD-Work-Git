@@ -6,40 +6,37 @@ This is subject to future advances in the field that draw parallel to the scalar
 
 \subsection{Lit Review} \label{ssec:LitReview}
 
-\subsection{Our System} \label{ssec:OurSystem}
-\tstk{review section title, this is the setup/dump section for all our references.}
-
+\subsection{Problem Formulation} \label{ssec:OurSystem}
 We shall now contextualise and outline the problem that we are interested in solving in this work.
 The reader should see section \ref{sec:QuantumGraphs} and the appendix (sections \ref{ssec:MeasureTheory} through \ref{ssec:SobSpacesTheory}) for a precise description of the objects that are mentioned in the following discussion. \newline
 
 The problem we consider in this work is motivated by the desire to study wave propagation on a periodic, singular structure in $\reals^2$, for applications in studying how the structure of a photonic crystal (or other appropriate waveguide material in non-electromagnetic contexts) impacts the waves that can propagate through the material (see section \ref{ssec:LitReview}).
-We represent this singular structure by an embedded, periodic graph $\graph$ with period graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ and period cell $\ddom\subset\reals^2$, and also construct a corresponding singular measure $\mu$ that supports $\graph$ in $\reals^2$ (section \ref{ssec:SingularMeasures}) for use later.
-Since $\graph$ has no interior from the perspective of the space into which it is embedded, it is necessary for us to formulate ``boundary value problems" and ``spectral problems" in variational form, involving integrals with respect to singular measures.
-Doing so also requires the construction and analysis of appropriate function spaces for the differential operators we wish to consider, and the details of this process are included in the appendix (section  \ref{ssec:MeasureTheory}) for the interested reader.
-The main consequences of this analysis are that we can precisely define the Laplacian operator on our singular structure, $-\grad^2_{\mu}$, and gain some important information about the functions it acts on.
-This then allows us to consider the ``spectral problem" of $-\grad^2_{\mu}$ on $\graph$ in $\reals^2$;
+We represent this singular structure by a graph $\graph$ in $\reals^2$ which we will assume to be periodic in the sense that there exists a region (period cell) $\ddom\subset\reals^2$ and vectors $p_1, p_2$ such that for any $z\in\integers$ the part of $\graph$ contained in the shifted regions $\ddom+p_1$ and $\ddom+p_2$ coincides with the part of $\graph$ contained in $\ddom$.
+We call this part of $\graph$ in $\ddom$ as the \emph{period graph} of $\graph$, and denote it by $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$, where $\vertSet$ is a finite set of vertices and $\edgeSet$ a finite set of edges.
+We define the Laplacian, $-\laplacian_{\ddmes}$, on our singular structure and consider the ``spectral problem" of $-\laplacian_{\ddmes}$ on $\graph$ in $\reals^2$
 \begin{align} \label{eq:WholeSpaceLaplaceEqn}
-	-\grad^2_{\mu} u &= \omega^2 u.
+	-\laplacian_{\ddmes} u &= \omega^2 u.
 \end{align}
-The reader may notice the lack of ``boundary data" in \eqref{eq:WholeSpaceLaplaceEqn}, however as explained in the appendix (section \ref{ssec:MeasureTheory}) this is because \eqref{eq:WholeSpaceLaplaceEqn} \emph{is} interpreted in the variational (or weak) sense.
-We wish to determine eigenvalues $\omega^2$ of \eqref{eq:WholeSpaceLaplaceEqn}, however the operator $-\grad^2_{\mu}$ has \tstk{non-compact resolvent so non-discrete spectrum?}.
-This results in us taking a Gelfand transform of the problem \eqref{eq:WholeSpaceLaplaceEqn}, 
-\begin{align*}
-	\hat{u}\bracs{x} &= \sum_{n\in\integers^2}u\bracs{x+n}e^{-i\qm\bracs{x+n}},
-\end{align*}
-and introducing the quasi-momentum parameter $\qm$ which lives in the dual-cell of $\ddom$.
-This transform provides us with a family of problems involving ``shifted-gradient" operators $\tgrad_{\mu}$,
+Here $\ddmes$ is a singular measure that supports $\graph$, the details of which are available in the appendix (section \ref{ssec:MeasureTheory}).
+It is convenient to replace \eqref{eq:WholeSpaceLaplaceEqn} with a family of problems on $\ddom$ parameterised by $\qm$ (the ``quasi-momentum") which varies over the dual-cell of $\ddom$.
+This provides us with a family of problems involving ``$\qm$-shifted" operators $\tgrad_{\mu}$,
 \begin{align} \label{eq:PeriodCellLaplaceStrongForm}
-	-\bracs{\tgrad_{\mu}}^2 u &= \omega^2 u, \quad\text{in } \ddom,
+	-\bracs{\tgrad_{\ddmes}}^2 u &= \omega^2 u, \quad\text{in } \ddom,
 \end{align}
-where each problem has a discrete spectrum, and the union of the spectra over the quasi-momentum $\qm$ providing the spectrum of our original operator $-\grad_{\mu}^2$.
-After some futher analysis of the operator $\tgrad_{\mu}$ (see appendix \tstk{ref}), \eqref{eq:PeriodCellLaplaceStrongForm} can be shown to reduce to a family of quantum graph problems; \tstk{include vertex constants $\alpha$ in here, as this is the general form of these equations!}
+where $\tgrad_{\ddmes} = \grad_{\ddmes} + i\qm$ acts component-wise.
+The link between \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplaceStrongForm} is established by means of a version of the so-called Gelfand transform \tstk{pos reference}
+\begin{align*}
+	\hat{u}\bracs{x} &= \sum_{z\in\integers}u\bracs{x+zp_1+zp_2}e^{-i\qm\bracs{x+zp_1+zp_2}},
+\end{align*}
+\eqref{eq:PeriodCellLaplaceStrongForm} can be made more explicit by writing it in the following form:
 \begin{subequations} \label{eq:QGFullSystem}
 	\begin{align}
-		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
-		u \text{ is continuous across each } &v_j \in \vertSet, \label{eq:QGVertCty }\\
-		0 = \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, &\quad \forall v_j \in \vertSet, \label{eq:QGDerivCondition}
+		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
+		u \text{ is continuous at each } &v_j \in \vertSet, \label{eq:QGVertCty}\\
+		\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \alpha_{j}u_{jk}\bracs{v_j} &\quad \forall v_j \in \vertSet. \label{eq:QGDerivCondition}
 	\end{align}
 \end{subequations}
-the determination of the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem} being the central interest of this work.
+Subscripts $jk$ in \eqref{eq:QGFullSystem} denote restrictions to the edges of $\graph_{\mathcal{P}}$.
+Our main result is the analysis of the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, equivalently \eqref{eq:QGFullSystem}, in terms of the geometry of the structure and the coupling constants $\alpha_j\in\complex$.
+The details of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} are included in the appendix (\tstk{section ref}).
 \tstk{here we mention that we can derive the equations for curved edges which gives $\qm_{jk}$ some $t$-dependence, but choose not to consider this case, that would open a whole other can of worms that would require a different treatment.}

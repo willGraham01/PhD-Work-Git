@@ -19,6 +19,8 @@
 \newtheorem{cory}[theorem]{Corollary}
 \theoremstyle{definition}
 \newtheorem{convention}[theorem]{Convention}
+\theoremstyle{definition}
+\newtheorem{assumption}[theorem]{Assumption}
 
 \allowdisplaybreaks %allows equations in the same align environment to split over multiple pages.
 
@@ -106,6 +108,7 @@
 \newcommand{\curl}[1]{\grad_{#1}\wedge}							%curl with subscript #1
 \newcommand{\kcurl}[1]{\grad_{#1}^{(\wavenumber)}\wedge}			%k-curl with measure subscript #1
 \newcommand{\ktcurl}[1]{\grad_{#1}^{\kt}\wedge}		%k,theta-curl with measure subscript #1
+\newcommand{\laplacian}{\Delta}						%laplacian operator, can have subscripts attached
 
 %displaying integrals
 \newcommand{\integral}[3]{\int_{#1}#2 \ \mathrm{d}#3}			%integral, domain #1, integrand #2, measure #3
