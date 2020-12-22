@@ -6,11 +6,30 @@ This is subject to future advances in the field that draw parallel to the scalar
 
 \subsection{Lit Review} \label{ssec:LitReview}
 
+\subsection{Physical Motivation} \label{ssec:PhysMot}
+The problem we consider in this work is motivated by the desire to study wave propagation in a medium that exhibits a periodic (micro)-structure.
+Understanding the behaviour of waves in such media has applications in the field of photonic crystals, but also extends broadly into the study of wave behaviour in a phononic \tstk{sic?} or elastic settings too (see section \ref{ssec:LitReview}), although our motivations largely stem from the former.
+One starting point for the study of such phenomena is the wave equation;
+\begin{align} \label{eq:DimensionalWaveEqn}
+	-A \laplacian u &= \omega^2 \rho u,
+\end{align}
+where $\omega$ is understood as the frequency of a propagating wave, with $A$ and $\rho$ representing physical properties of the medium that \eqref{eq:DimensionalWaveEqn} is posed in.
+For example, when studying the transverse magnetic mode of electromagnetic waves; $u$ represents the (transverse) electric field, $A$ the inverse of the electric permittivity of the medium and $\rho$ the magnetic permeability of the medium.
+It is convenient to non-dimensionalise \eqref{eq:DimensionalWaveEqn} by introducing the dimensionless variable $y=lx$, where $l>0$ is the (spatial) extent of the medium, obtaining
+\begin{align} \label{eq:NonDimensionalWaveEqn}
+	-\laplacian_{y} U(y) = z U(y), &\quad z = \frac{\omega^2 \rho l^2}{A}.
+\end{align}
+$z$ represents the square of the ratio of the spatial extent of the medium against the wavelength of propagating waves, up to a constant.
+In the context of electromagnetic waves for example, we have $z = \frac{\omega^2 \eps_{r}\mu_{r} l^2}{c^2}$ where $\eps_{r}$ is the medium's relative permittivity, and $\mu_{r}$ it's relative permeability. \newline
+
+In this work we will focus on the determination and description of the spectrum $z\in\complex$, quantitatively encapsulating the structure of the spectrum for all problems of the form \eqref{eq:DimensionalWaveEqn} on the class of domains that we consider.
+Of course, one can recover the physical frequencies $\omega^2$ of the waves propagating through the medium by ``re-dimensionalising" $z$ via \eqref{eq:NonDimensionalWaveEqn}, given knowledge of the physical material parameters.
+
 \subsection{Problem Formulation} \label{ssec:OurSystem}
-We shall now contextualise and outline the problem that we are interested in solving in this work.
+We shall now outline the problem that we are interested in solving in this work.
 The reader should see section \ref{sec:QuantumGraphs} and the appendix (sections \ref{ssec:MeasureTheory} through \ref{ssec:SobSpacesTheory}) for a precise description of the objects that are mentioned in the following discussion. \newline
 
-The problem we consider in this work is motivated by the desire to study wave propagation on a periodic, singular structure in $\reals^2$, for applications in studying how the structure of a photonic crystal (or other appropriate waveguide material in non-electromagnetic contexts) impacts the waves that can propagate through the material (see section \ref{ssec:LitReview}).
+Our work concerns the study of equations of the form \eqref{eq:NonDimensionalWaveEqn} on singular-structure domains - domains which have no interior from the perspective of the space they are embedded into \tstk{contextualise; EG photonic crystal ``struts" are much smaller than the size of the period cell of the structure, refer back to lit review where this was hopefully covered!}
 We represent this singular structure by a graph $\graph$ in $\reals^2$ which we will assume to be periodic in the sense that there exists a region (period cell) $\ddom\subset\reals^2$ and vectors $p_1, p_2$ such that for any $z\in\integers$ the part of $\graph$ contained in the shifted regions $\ddom+p_1$ and $\ddom+p_2$ coincides with the part of $\graph$ contained in $\ddom$.
 We call this part of $\graph$ in $\ddom$ as the \emph{period graph} of $\graph$, and denote it by $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$, where $\vertSet$ is a finite set of vertices and $\edgeSet$ a finite set of edges.
 We define the Laplacian, $-\laplacian_{\ddmes}$, on our singular structure and consider the ``spectral problem" of $-\laplacian_{\ddmes}$ on $\graph$ in $\reals^2$
@@ -33,7 +52,7 @@ The link between \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplace
 	\begin{align}
 		-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
 		u \text{ is continuous at each } &v_j \in \vertSet, \label{eq:QGVertCty}\\
-		\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \alpha_{j}u_{jk}\bracs{v_j} &\quad \forall v_j \in \vertSet. \label{eq:QGDerivCondition}
+		\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \alpha_{j}u\bracs{v_j} &\quad \forall v_j \in \vertSet. \label{eq:QGDerivCondition}
 	\end{align}
 \end{subequations}
 Subscripts $jk$ in \eqref{eq:QGFullSystem} denote restrictions to the edges of $\graph_{\mathcal{P}}$.
