@@ -1,59 +1,11 @@
 \section{Appendix: Analysis of the Sobolev Spaces Associated with the Measure $\nu$} \label{app:VertexAnalysis}
+Understanding the behaviour of Sobolev functions on the edges of a graph is the bulk of the information which we need to determine the edge-wise action of the equivalent quantum graph problem that we plan to derive.
+Our analysis of $\gradSobQM{\ddom}{\ddmes}$ even provides us with Sobolev functions that are continuous across the vertices.
+However we are not encapsulating the effect of introducing coupling constants $\alpha_j$ to the vertices in $\graph$ yet - and to do so we must examine the ``vertex part" $\nu$ of our measure $\dddmes$ and the Sobolev spaces associated with it.
+Thankfully, our analysis of the space $\gradSobQM{\ddom}{\nu}$ is short, on account of the fact that $\gradSobQM{\ddom}{\nu}$ is actually isomorphic \tstk{check with Kirill, as this normally implies we have a norm and I never introduced a norm on our Sob Spaces... I guess bijective is safer?} to $\complex^N$, where $N=\abs{\vertSet}$ is the number of vertices in the graph $\graph$.
 
-\subsection{Objective}
-Our desire is to show that
-\begin{conjecture} \label{conj:ThickVertexSpaceCharacterisation}
-	\begin{align*}
-		\bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\dddmes} \quad\Leftrightarrow\quad
-		& \ \text{(i)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\ddmes}, \\
-		& \ \text{(ii)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\nu}. \\
-		\\
-		\quad\Leftrightarrow\quad
-		& \ \text{(a)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet, \\
-		& \ \text{(b)} \ u \text{ is continuous across the vertices} \ v_j\in\vertSet, \\
-		& \ \text{(c)} \ \grad_{\dddmes}u\vert_{v_j} = 0 \ \forall v_j\in\vertSet.
-	\end{align*}
-\end{conjecture}
-Note that from our analysis of $\gradSob{\ddom}{\ddmes}$ we know that (i) is necessary and sufficient for (a) and (b).
-Our analysis of $\gradSob{\ddom}{\nu}$ will demonstrate that (ii) is necessary and sufficient for (c), so it suffices to show that membership of $\gradSob{\ddom}{\dddmes}$ is equivalent to one of these sets of conditions.
-
-\subsection{At present}
-At present we are able to prove the following proposition.
-\begin{prop}
-	\begin{align*}
-		\bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\dddmes} \quad\Rightarrow\quad
-		& \ \text{(i)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\ddmes}, \\
-		& \ \text{(ii)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\nu}. \\
-	\end{align*}
-	Hence,
-	\begin{align*}
-		\bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\dddmes} \quad\Rightarrow\quad
-		& \ \text{(a)} \ \bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet, \\
-		& \ \text{(b)} \ u \text{ is continuous across the vertices} \ v_j\in\vertSet, \\
-		& \ \text{(c)} \ \grad_{\dddmes}u\vert_{v_j} = 0 \ \forall v_j\in\vertSet.
-	\end{align*}
-\end{prop}
-\begin{proof}
-	Clearly, if we have smooth functions such that
-	\begin{align*}
-		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} u, \quad \grad\phi_n\lconv{\ltwo{\ddom}{\dddmes}^2}\grad_{\dddmes}u,
-	\end{align*}
-	then using the fact that
-	\begin{align*}
-		\norm{\cdot}_{\ltwo{\ddom}{\dddmes}}^2 &= \norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 + \norm{\cdot}_{\ltwo{\ddom}{\nu}}^2,
-	\end{align*}
-	we have that $\phi_n$ also converges in $\ltwo{\ddom}{\ddmes}$ and $\ltwo{\ddom}{\nu}$, as do it's gradients.	
-	The conditions (a) through (c) follow from our analysis of $\gradSob{\ddom}{\ddmes}$ and $\gradSob{\ddom}{\nu}$ (see section \ref{sec:PointMassSpaceAnalysis}).
-\end{proof}
-Whilst this is only one-half of conjecture \ref{conj:ThickVertexSpaceCharacterisation}, it is the only direction we need to employ in our derivation of the quantum-graph problem.
-Since we pose the (measure-theoretic) variational problem in the space $\gradSob{\ddom}{\dddmes}$, we then know that every function in that space also lives in $\gradSob{\ddom}{\ddmes}$ and $\gradSob{\ddom}{\nu}$, which gives us the properties we need to derive the edge-ODEs and vertex conditions.
-That said, it would be ideal from an analytical perspective to show that the reverse implication holds (to complete conjecture \ref{conj:ThickVertexSpaceCharacterisation}) so that our intuition is validated; or alternatively a counterexample would be instructive in showing why our intuition isn't correct.
-
-\subsection{Analysis of $\gradSob{\ddom}{\nu}$} \label{sec:PointMassSpaceAnalysis}
-This section contains our characterisation of $\gradSob{\ddom}{\nu}$.
+\subsection{Analysis of $\nu$-Gradients of Zero} \label{appS:VertexGradZero}
 If we fix $N = \abs{\vertSet}$ as the number of vertices, we will see that $\gradZero{\ddom}{\nu} \cong \complex^{2N}$, and thus that any $\bracs{u,\grad_{\nu}u}\in\gradSob{\ddom}{\nu}$ is such that $\grad_{\nu}u=0$.
-Don't forget that this is only $\nu$-almost everywhere, so there won't be any contradictions when we piece this space together with $\gradSob{\ddom}{\ddmes}$.
-
 \begin{definition}[$d$, $\varphi_c$, and $g^j$] \label{def:UsefulObjects}
 	Let 
 	\begin{align*}
@@ -93,34 +45,35 @@ Notice that we have the following result:
 	forms a basis of $\ltwo{\ddom}{\nu}^2$.
 \end{lemma}
 \begin{proof}
-	It is sufficient to notice that any function $f\in\ltwo{\ddom}{\nu}^2$ is entirely determined by the values it takes at the vertices $v_j$.
+	It is sufficient to notice that any $f\in\ltwo{\ddom}{\nu}^2$ is entirely determined by the values it takes at the vertices $v_j$.
 	Each of these values is a $\complex^2$-vector, and thus we may define the function
 	\begin{align*}
 		\iota:\ltwo{\ddom}{\nu}^2 \rightarrow\complex^{2N}, &\quad
-		\iota\bracs{f} = \begin{pmatrix} f\bracs{v_1} \\ f\bracs{v_2} \\ \vdots \\ f\bracs{v_N} \end{pmatrix}.
+		\iota\bracs{f} = \begin{pmatrix} f\bracs{v_1} \\ f\bracs{v_2} \\ \vdots \\ f\bracs{v_N} \end{pmatrix},
 	\end{align*}
+	where we vertically concatenate the collection of two-vectors $f\bracs{v_j}, v_j\in\vertSet$.
 	Clearly $\iota$ is a bijection, and additionally for $f,g\in\ltwo{\ddom}{\nu}$ we have that
 	\begin{align*}
 		\integral{\ddom}{f\cdot \overline{g}}{\nu} &= \sum_{v_j\in\vertSet} f\bracs{v_j}\cdot\overline{g\bracs{v_j}} \\
-		&= \iota\bracs{f}\cdot\overline{\iota\bracs{g}}.
+		&= \iota\bracs{f}\cdot\overline{\iota\bracs{g}},
 	\end{align*}
-	So $\iota$ is an isometry.
-	Moreover the inverse of the canonial basis $\clbracs{e_k \ \vert \ k\in\clbracs{1,...,2N}}$ under $\iota$ is the collection $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$, and hence $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$ forms a basis of $\ltwo{\ddom}{\nu}^2$.
+	so $\iota$ is an isometry.
+	Moreover, the preimage of the canonical basis $\clbracs{e_k \ \vert \ k\in\clbracs{1,...,2N}}$ under $\iota$ is the collection $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$, and hence $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$ forms a basis of $\ltwo{\ddom}{\nu}^2$.
 \end{proof}
 
-We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$, which will turn out to be the entire space $\ltwo{\ddom}{\nu}$.
-\begin{prop}{Characterisation of $\gradZero{\ddom}{\nu}$} \label{prop:CharPointMassGradZero}
+We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$, which will turn out to be the entire space $\ltwo{\ddom}{\nu}^2$.
+\begin{prop}[Characterisation of $\gradZero{\ddom}{\nu}$] \label{prop:CharPointMassGradZero}
 	We have that $\gradZero{\ddom}{\nu} = \ltwo{\ddom}{\nu}^2$.
 \end{prop}
 \begin{proof}
 	Since $\gradZero{\ddom}{\nu}$ is a closed, linear subspace of $\ltwo{\ddom}{\nu}^2$ by definition, it is sufficient to show that $\gradZero{\ddom}{\nu}$ contains the basis $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$.
-	We demonstrate inclusion of the elements $g^j_1$ (as that of $g^j_2$ is similar, with the obvious alternative choice of $c$, below).
+	We demonstrate inclusion of the elements $g^j_1$ (as that of $g^j_2$ is similar, with the obvious alternative choice of $c$ in what follows).
 	Take $c=\bracs{1,0}^{\top}$, fix $v_j\in\vertSet$, and set
 	\begin{align*}
 		\phi\bracs{x} &= \varphi_c\bracs{x-v_j},
 	\end{align*}
 	where $\varphi_c$ is as in definition \ref{def:UsefulObjects}.
-	Note that $\phi$ is smooth by composition of smooth functions, $\supp\phi\subset B_{d}\bracs{v_j}$, and that
+	Note that $\phi$ is smooth by composition of smooth functions, $\supp\bracs{\phi}\subset B_{d}\bracs{v_j}$, and that
 	\begin{align*}
 		\grad\phi\bracs{x} &= \bracs{\grad\varphi_c}\bracs{x-v_j}.
 	\end{align*}
@@ -143,44 +96,48 @@ We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$,
 	and hence $g^j_1\in\gradZero{\ddom}{\nu}$.
 \end{proof}
 
-This then provides us with the following characterisation of $\gradSob{\ddom}{\nu}$:
-\begin{cory} \label{eq:CharPointMassSpace}
+\subsection{The Sobolev Space $\gradSobQM{\ddom}{\nu}$} \label{appS:VertexSobSpace}
+Given that we now know that $\gradZero{\ddom}{\nu}$ encompasses the whole of $\ltwo{\ddom}{\nu}^2$, we must conclude that our ``Sobolev functions" have zero derivative ($\nu$-)almost-everywhere.
+Indeed, proposition \ref{prop:CharPointMassGradZero} gives us the following corollary:
+\begin{cory}[Characterisation of $\gradSobQM{\ddom}{\nu}$] \label{eq:CharPointMassSpace}
 	We have that
 	\begin{align*}
-		\bracs{u,\grad_{\nu}u}\in\gradSob{\ddom}{\nu} \quad\Leftrightarrow\quad 
+		\bracs{u,\tgrad_{\nu}u}\in\gradSobQM{\ddom}{\nu} \quad\Leftrightarrow\quad 
 		& \ \text{(i)} \ u\in\ltwo{\ddom}{\nu}, \\
-		& \ \text{(ii)} \ \grad_{\nu}u\in\ltwo{\ddom}{\nu}^2 \ \text{with} \ \grad_{\nu}u = 0 \ \nu\text{-almost everywhere}.
+		& \ \text{(ii)} \ \tgrad_{\nu}u = 0 \ \nu\text{-almost everywhere}.
 	\end{align*}
 \end{cory}
 \begin{proof}
-	($\Rightarrow$) For the right-directed implication; $\grad_{\nu}u\in\ltwo{\ddom}{\nu}^2$ is an element of $\ltwo{\ddom}{\nu}^2$ by definition and is orthogonal to $\gradZero{\ddom}{\nu}$, but by proposition \ref{prop:CharPointMassGradZero} we know that $\gradZero{\ddom}{\nu}=\ltwo{\ddom}{\nu}^2$, we must conclude that $\grad_{\nu}u = 0$. \newline
+	($\Rightarrow$) For the right-directed implication; $\tgrad_{\nu}u\in\ltwo{\ddom}{\nu}^2$ is an element of $\ltwo{\ddom}{\nu}^2$ by definition and is orthogonal to $\gradZero{\ddom}{\nu}$, but by proposition \ref{prop:CharPointMassGradZero} we know that $\gradZero{\ddom}{\nu}=\ltwo{\ddom}{\nu}^2$, we must conclude that $\grad_{\nu}u = 0$. \newline
 	($\Leftarrow$) For the left-directed implication, take smooth ``bump" functions $\psi_j$ (for each $v_j\in\vertSet$) with the properties
 	\begin{align*}
-		\psi_j\bracs{v_j} = 1, &\quad \grad\psi_j\bracs{v_j} = 0, \\
+		\psi_j\bracs{v_j} = 1, &\quad \grad\psi_j\bracs{v_j} = -i\qm, \\
 		\supp\bracs{\psi_j} &\subset B_{d}\bracs{v_j}.
 	\end{align*}
 	Then consider the smooth function
 	\begin{align*}
-		\phi\bracs{x} &= \sum_{v_j\in\vertSet} u\bracs{v_j}\psi_j\bracs{x}, \\
+		\phi\bracs{x} &:= \sum_{v_j\in\vertSet} u\bracs{v_j}\psi_j\bracs{x}, \\
 		\implies \grad\phi\bracs{x} &= \sum_{v_j\in\vertSet} u\bracs{v_j}\grad\psi_j\bracs{x}.
 	\end{align*}
 	Then we have that
 	\begin{align*}
 		\integral{\ddom}{\abs{\phi - u}^2}{\nu} &= \sum_{v_j\in\vertSet} \alpha_j\abs{\phi\bracs{v_j} - u\bracs{v_j}}^2 \\
+		&= \sum_{v_j\in\vertSet} \alpha_j\abs{ \sum_{v_l\in\vertSet}u\bracs{v_l}\psi_l\bracs{v_j} - u\bracs{v_j} }^2
 		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2\abs{\psi_j\bracs{v_j}-1}^2 \\
 		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \times 0 = 0,
 	\end{align*}
 	and
 	\begin{align*}
-		\integral{\ddom}{\abs{\grad\phi - 0}^2}{\nu} &= \sum_{v_j\in\vertSet} \alpha_j\abs{ \sum_{v_l\in\vertSet} \grad\psi_l\bracs{v_j} }^2 \\
-		&= \sum_{v_j\in\vertSet} \alpha_j \times 0 = 0.
+		\integral{\ddom}{\abs{\tgrad\phi - 0}^2}{\nu} 
+		&= \sum_{v_j\in\vertSet} \alpha_j\abs{ \sum_{v_l\in\vertSet} u\bracs{v_l}\grad\psi_l\bracs{v_j} + i\qm\psi_l\bracs{v_j} }^2 \\
+		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ \grad\psi_j\bracs{v_j} + i\qm\psi_j\bracs{v_j} }^2 \\
+		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ i\qm - i\qm } = 0.
 	\end{align*}
 	Thus, the constant sequence $\phi$ is such that
 	\begin{align*}
-		\phi \lconv{\ltwo{\ddom}{\nu}} u, \quad \grad\phi \lconv{\ltwo{\ddom}{\nu}^2} 0,
+		\phi \lconv{\ltwo{\ddom}{\nu}} u, \quad \tgrad\phi \lconv{\ltwo{\ddom}{\nu}^2} 0,
 	\end{align*}
 	and thus $\bracs{u,0}\in\gradSob{\ddom}{\nu}$.
 \end{proof}
-
-As a final remark, notice that corollary \ref{conj:ThickVertexSpaceCharacterisation} means that the space $\gradSob{\ddom}{\nu}$ is essentially isomorphic to $\complex^N$, namely functions in this space are entirely determined by their values at the vertices, and their gradients are always zero.
+Corollary \ref{conj:ThickVertexSpaceCharacterisation} means that the space $\gradSob{\ddom}{\nu}$ is essentially isomorphic to $\complex^N$, namely functions in this space are entirely determined by their values at the vertices, and their gradients are always zero.
 This matches our intuitive expectations, as the notion of a gradient (or rate of change) at an isolated point being non-zero implies that there is a small neighbourhood around the point in which we can observe the function values changing, but in the case of a point-mass measure this is not the case.

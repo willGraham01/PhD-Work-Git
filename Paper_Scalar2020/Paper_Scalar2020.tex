@@ -61,8 +61,8 @@
 \newpage %have a new page to start the bibliography
 \bibliographystyle{acm}
 \bibliography{Paper_Scalar2020.bib}
-\newpage %new page to clear space between bibliography and the appendix, as \section doesn't call \newpage
 
+\newpage %new page to clear space between bibliography and the appendix, as \section doesn't call \newpage
 \appendix %this informs LaTeX that the appendix starts here, so section numbering should now be alphabetical rather than numerical
 
 \input{./Sections/Appendix/A-SingularMeasures}
@@ -71,6 +71,10 @@
 
 \input{./Sections/Appendix/A-muAnalysis}
 
-\input{./Sections/Appendix/A-VertexAnalysis} %to do!
+\input{./Sections/Appendix/A-VertexAnalysis}
+
+\input{./Sections/Appendix/A-SumMeasureAnalysis}
+
+%need further two appendices - one if we really want a complete walkthrough of the derivation of the QG problem, and another for the full-blown, formal proof recitals.
 
 \end{document}
