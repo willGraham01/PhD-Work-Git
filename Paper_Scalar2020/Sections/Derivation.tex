@@ -9,14 +9,29 @@ So at any point $x\in I_{jk}$, the ``gradient" $\tgrad_{\ddmes}u$ encapsulates t
 This is true for each edge $I_{jk}$, and so $\tgrad_{\ddmes}u$ has the form of a one-dimensional derivative along each edge $I_{jk}$.
 As a result, it is not inaccurate to think of $\tgrad_{\ddmes}u(x) = u_{jk}'(x)e_{jk}$ for $x\in I_{jk}$, where $u_{jk}' = \pdiff{u_{jk}}{e_{jk}}$.
 This also means that $\tgrad_{\ddmes}u$ can be characterised by its form on each edge of the graph $\graph$, which is crucial for deriving the set of ``edge ODEs" \eqref{eq:QGEdgeODEs} and gives meaning to the $\diff{}{t}$ operator which appears in those equations.
-The reality is not quite as simple as described above, but this idea is the motivation for the line of argument presented in appendix \tstk{ref} and suffices for the derivation of \eqref{eq:QGFullSystem} that we present below. \newline
+The coupling constants attached to the vertices of the graph, as well as the connectivity of the graph itself, then dictates that these ``edge-wise" components $u_{jk}$ and $u'_{jk}$ adhere to certain matching conditions at the vertices.
+These conditions transpire to be continuity of the function $u$ at all vertices of the graph, which one might expect given that we claim to be working with (some measure-theoretic notion of) differentiable functions and Sobolev spaces.
+We also find that the ``gradient" of the function $u$ at the vertices vanishes at the vertices $v_j\in\vertSet$, however the incoming directional derivatives along the edges connecting to $v_j$ need not have limit zero as they approach $v_j$.
+In summary, the functions $u\in\gradSobQM{\ddom}{\dddmes}$ and their gradients $\tgrad_{\dddmes}u$ can be thought of as possessing the following properties (precise analogues can be found in appendix \tstk{section ref}):
+\begin{itemize}
+	\item The function $u$ is continuous at all vertices $v_j\in\vertSet$.
+	\item On each edge $I_{jk}\in\edgeSet$; $\tgrad_{\dddmes}u = \tgrad_{\lambda_{jk}}u$, with $\tgrad_{\lambda_{jk}}u$ in turn amounting to the directional derivative of $u_{jk}$ along the edge $I_{jk}$.
+	\item At each vertex $v_j\in\vertSet$, we have $\tgrad_{\dddmes}u=0$, however $\lim_{x\rightarrow v_j}\tgrad_{\lambda_{jk}}u$ need not be zero.
+\end{itemize}
+The reality is not quite as simple as described above, particularly for understanding the nature of the gradients at the vertices, but this idea is the motivation for the line of argument presented in appendix \tstk{ref} and suffices for the derivation of \eqref{eq:QGFullSystem} that we present below. \newline
 
-A function $u\in\gradSobQM{\ddom}{\ddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if
+In this section we will write our usual ``singular measure plus vertex point masses" as
+\begin{align*}
+	\dddmes &= \ddmes + \nu, \quad
+	& \nu = \sum_{v_j\in\vertSet}\alpha_j \delta_j,
+\end{align*}
+where $\ddmes$ is the singular measure supporting one of our usual graphs $\graph$; and for each $v_j\in\vertSet$, $\delta_j$ is a point-mass measure centred on the vertex $v_j$, and $\alpha_j$ is the coupling constant attached to the vertex $v_j$.
+A function $u\in\gradSobQM{\ddom}{\dddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if
 \begin{align} \label{eq:PeriodCellLaplaceWeakForm}
-	\integral{\ddom}{\tgrad_{\ddmes}u\cdot\overline{\tgrad_{\ddmes}\phi}}{\ddmes} &= \omega^2\integral{\ddom}{u\overline{\phi}}{\ddmes}, \quad\forall \phi\in\smooth{\ddom}.
+	\integral{\ddom}{\tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\phi}}{\dddmes} &= \omega^2\integral{\ddom}{u\overline{\phi}}{\dddmes}, \quad\forall \phi\in\smooth{\ddom}.
 \end{align}
-We first note that since we require this expression to hold for all smooth functions $\phi$, then for each $I_{jk}\in \edgeSet$ it must in hold for those smooth functions $\psi$ whose support intersects the interior of the edge $I_{jk}$ and no other parts of $\graph$.
-Combined with the fact that $\ddmes$ is just a sum of the edge measures (and point masses at the vertices), in this case we can reduce \eqref{eq:PeriodCellLaplaceWeakForm} to
+We first note that since we require this expression to hold for all smooth functions $\phi$, then for each $I_{jk}\in \edgeSet$ it must in hold for all those smooth functions $\psi$ whose support intersects the interior of the edge $I_{jk}$ and no other parts of $\graph$.
+Combined with the fact that $\dddmes$ is just a sum of the edge measures (and point masses at the vertices), and that $\tgrad_{\dddmes}u=\tgrad_{\lambda_{jk}}u$ on the edge $I_{jk}$, in this case we can reduce \eqref{eq:PeriodCellLaplaceWeakForm} to
 \begin{align*}
 	0 &= \integral{\ddom}{\tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi}}{\ddmes} \\
 	&= \integral{I_{jk}}{ \tgrad_{\lambda_{jk}}u \cdot \overline{\tgrad\psi} - \omega^2 u_{jk}\overline{\psi} }{\lambda_{jk}} \\
@@ -33,31 +48,35 @@ This holds for all smooth $\varphi$ with support contained in the interior of $\
 Under the assumption that $\tilde{u}_{jk}$ has enough regularity to be differentiated again, this is precisely what we have arrived at.
 Since we can repeat this process for each $I_{jk}$, we essentially have an ODE that must be satisfied on each edge of the graph $\graph$. \newline
 
-Now we turn our attention to the vertices to derive the vertex conditions we will need to complete our ODEs on the edges. \tstk{if coupling constants are non-zero this part changes!!!!}
+Now we turn our attention to the vertices to derive the vertex conditions we will need to complete our ODEs on the edges.
 Fix a specific $v_j\in \vertSet$, and consider functions $\psi\in\smooth{\ddom}$ whose support only intersects $\graph$ in some neighbourhood of $v_j$ that only contains edges which connect to $v_j$ (imagine the support as a ball centred on $v_j$, for example).
 Then we can work from \eqref{eq:PeriodCellLaplaceWeakForm} to obtain
 \begin{align*}
-	0 &= \sum_{j\con k} \integral{I_{jk}}{ \tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi} }{\lambda_{jk}} \\
-	&= \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + i\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - i\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md t,
+	0 &= \sum_{j\con k} \integral{I_{jk}}{ \tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi} }{\lambda_{jk}} 
+	+ \integral{\ddom}{\tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\psi}-\omega^2 u\overline{\psi}}{\nu} \\
+	&= \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + i\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - i\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md t \\
+	&\quad + \alpha_j\sqbracs{ \tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\psi}-\omega^2 u\overline{\psi} }\vert_{v_j} \\
+	&= \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + i\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - i\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md t \\
+	&\quad - \alpha_j \omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j}.
 \end{align*}
-where we have again used $r_{jk}$ as a change of variables (and the same notation for the transforms of $u$ and $\psi$).
+Here, we have again used $r_{jk}$ as a change of variables (and the same notation for the transforms of $u$ and $\psi$), and the results of the appendix (\tstk{ref}) inform us that $\tgrad_{\dddmes}$ vanishes at the vertex $v_j$.
 Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, we can integrate by parts in each integral to obtain
 \begin{align*}
-	0 &= \sum_{j\con k} - \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t
-	+ \sum_{j\con k}\overline{\varphi}\bracs{v_j}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} \\
+	\alpha_j\omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j} &= - \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t \\
+	&\quad + \sum_{j\con k}\overline{\varphi}\bracs{v_j}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} \\
 	&= \overline{\varphi}\bracs{v_j}\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}.
 \end{align*}
-Given that this holds for every smooth $\varphi$, and we can repeat the argument for each $v_j\in \vertSet$, we arrive at the condition that \tstk{coupling constant on LHS general case!!!!}
+Given that this holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}$, we arrive at the condition that
 \begin{align*}
-	0 &= \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in \vertSet.
+	\alpha_j\omega^2 u\bracs{v_j} &= \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in \vertSet.
 \end{align*}
-This is a Kirchoff-like condition on the derivatives of the edge-wise components of $u$, similar to those introduced in section \ref{sec:QuantumGraphs}.
-Given the result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\ddmes}$ are also continuous at each vertex $v_j$, then we have thus derived the following problem:
+Repeating the argument for each $v_j\in \vertSet$ then provides us with a condition of this form at each vertex; a Robin-like condition on the derivatives of the edge-wise components of $u$, similar to those introduced in section \ref{sec:QuantumGraphs}.
+Given the result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\dddmes}$ are also continuous at each vertex $v_j$, then we have thus derived the following problem:
 \begin{align*}
-	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \ \forall I_{jk}\in \edgeSet, \\
-	u \text{ is continuous across each } &v_j \in \vertSet, \\
-	0 = \sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, &\quad \forall v_j \in \vertSet.
+	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
+	u \text{ is continuous at each } &v_j \in \vertSet, \\
+	\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j} &\quad \forall v_j \in \vertSet,
 \end{align*}
-That is, we have arrived at \eqref{eq:QGFullSystem}.
+that is, we have arrived at \eqref{eq:QGFullSystem}.
 Solving for the eigenvalues $\omega^2$ will net us the eigenvalues of our original problem \eqref{eq:PeriodCellLaplaceStrongForm} and taking the union of the eigenvalues over $\qm$ will provide the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
 As will be made clear in the discussion that follows, the quantum graph problem \eqref{eq:QGFullSystem} is much easier to handle both analytically and numerically.
