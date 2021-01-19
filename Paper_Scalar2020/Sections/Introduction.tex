@@ -25,6 +25,8 @@ In the context of electromagnetic waves for example, we have $z = \frac{\omega^2
 In this work we will focus on the determination and description of the spectrum $z\in\complex$, quantitatively encapsulating the structure of the spectrum for all problems of the form \eqref{eq:DimensionalWaveEqn} on the class of domains that we consider.
 Of course, one can recover the physical frequencies $\omega^2$ of the waves propagating through the medium by ``re-dimensionalising" $z$ via \eqref{eq:NonDimensionalWaveEqn}, given knowledge of the physical material parameters.
 
+\tstk{this does mean that you're gunna have to go through and replace all the $\omega^2$s with $z$s Will, although it might be more convenient to use $z^2$ above, just to save on inserting square-roots everywhere.}
+
 \subsection{Problem Formulation} \label{ssec:OurSystem}
 We shall now outline the problem that we are interested in solving in this work.
 The reader should see section \ref{sec:QuantumGraphs} and the appendix (sections \ref{ssec:MeasureTheory} through \ref{ssec:SobSpacesTheory}) for a precise description of the objects that are mentioned in the following discussion. \newline
@@ -57,5 +59,5 @@ The link between \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplace
 \end{subequations}
 Subscripts $jk$ in \eqref{eq:QGFullSystem} denote restrictions to the edges of $\graph_{\mathcal{P}}$.
 Our main result is the analysis of the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, equivalently \eqref{eq:QGFullSystem}, in terms of the geometry of the structure and the coupling constants $\alpha_j\in\complex$.
-The details of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} are included in the appendix (\tstk{section ref}).
+We provide an overview of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} in section \ref{sec:SystemDerivation}, and precise details of the objects involved can be found in appendices \ref{app:muAnalysis}-\ref{app:SumMeasureAnalysis}.
 \tstk{here we mention that we can derive the equations for curved edges which gives $\qm_{jk}$ some $t$-dependence, but choose not to consider this case, that would open a whole other can of worms that would require a different treatment.}

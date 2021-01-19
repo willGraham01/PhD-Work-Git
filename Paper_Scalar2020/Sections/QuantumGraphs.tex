@@ -8,12 +8,11 @@ Although the concept of a singular measure is needed to formally link \eqref{eq:
 \subsection{Periodic Graphs embedded in the plane} \label{ssec:EmbeddedGraphs}
 We begin with the definition of a metric graph.
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
-Strictly we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$.
-In what follows we drop the superscript $l$ to avoid notational clutter.
+Strictly we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$, but in what follows we drop the superscript $l$ to avoid notational clutter.
 Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and we use the same notation $I_{jk}$ for the interval $\sqbracs{0,l_{jk}}$.
 We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j\in\reals$).
 A graph $\graph$ with the metric structure described above is called a \emph{metric graph}.
-Metric graphs convey a sense of size or bulk to the structures they describe - the edges between vertices now represent physical ``wires" as opposed to simple combinatorial links as in graph theory.
+Metric graphs convey a sense of size or bulk to the structures they describe - the edges between vertices now represent physical ``wires" as opposed to combinatorial links as in graph theory.
 One can form a quantum graph by equipping a metric graph with a suitable differential operator (and associated vertex- or ``boundary"-conditions) as discussed in section \ref{ssec:FunctionSpaces} and in greater detail in \cite{berkolaiko2013introduction}.
 Before discussing operators on metric graphs though, we first outline some notation and conventions that will be in use throughout this work. \newline
 
@@ -22,7 +21,7 @@ We say a (directed) graph $\graph = \bracs{\vertSet,\edgeSet}$ is embedded into 
 	r: \sqbracs{0,l_{jk}} \rightarrow \gamma_{jk}, \quad r(0) = v_j, \quad r\bracs{l_{jk}} = v_k.
 \end{align}
 Again, we will drop the distinction between $I_{jk}$ and $\gamma_{jk}$, simply using $I_{jk}$ for both.
-Clearly, an embedded graph gives rise to a metric graph, and a metric graph can be used to construct embedded graphs.
+Clearly, an embedded graph gives rise to a metric graph, and a metric graph can be assigned an embedding to construct an embedded graph (although there is by no means only one choice of embedding to do this, as we will touch on at the end of section \ref{sec:QuantumGraphs}).
 The choice of $\reals^2$ is simply to cover the situations we will be considering in this work, there are more general definitions depending on the choice of space to ``embed" the graph into.
 For a unit vector $x\in\reals^2$, an embedded graph is said to be $T$-periodic in the direction $x$ if it is invariant under the translation $Tx$ applied to its vertices and edges.
 In what follows, we always refer to the minimal such $T>0$ (``period") with this property for a given $x\in\reals^2$.
@@ -170,4 +169,22 @@ It can be shown that $\lambda$ is an eigenvalue of $\mathcal{A}$ if and only if
 where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 \tstk{A more general statement can be found in Derkach, Malamund.}
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
-We will exploit this fact in section \ref{sec:Examples}.
+We will exploit this fact in section \ref{sec:Examples}. \newline
+
+At this point we should address a small detail concerning our problem formulation and the definition of the $M$-matrix.
+In this work we shall often prescribe an embedded, periodic graph $\graph$ (usually in $\reals^2$) to represent our singular-structure - particularly in section \ref{sec:Examples} where we will begin our examples in this way.
+A consequence of this is that when we take a Gelfand transform, the family of operators on the period graph $\graph_{\mathcal{P}}$ that we obtain will contain dependencies on the choice of geometry that our embedding provided as well as the quasi-momentum $\qm$.
+For example, these may be dependencies on the angle between the edges and the co-ordinate axes (which is to be expected given how the constants $\theta_{jk}$ are derived, see section \ref{sec:SystemDerivation} or appendix \ref{app:muAnalysis} for details).
+With the (family of) operators on $\graph_{\mathcal{P}}$ containing these dependencies, the resulting $M$-matrix of each of these operators will also contain dependencies on the same things.
+That is, the $M$-matrix for each member of the family of operators on $\graph_{\mathcal{P}}$ will depend on each of the spectral parameter $\lambda$; the quasi-momentum $\qm$, and a number of geometric quantities arising from the embedding.
+As the $M$-matrix contains all the spectral information about the operator, this means that the spectra of each individual operator will inherit these dependencies from the embedding. 
+The union of these spectra over the quasi-momentum $\qm$ will still yield the spectrum of the original, pre-Gelfand-transformed operator on $\graph$, of course. \newline
+
+It is also possible to define the notion of a periodic quantum (or metric) graph $\tilde{\graph}$ without prescribing an embedding, as is done in \cite[Chapter~4]{berkolaiko2013introduction}.
+$\tilde{\graph}$ prescribes a notion of length and derivative, and so its $M$-matrix can then also be defined and computed, and analysed to obtain the spectrum - potentially in a manner involving an abstract version of the Gelfand transform.
+Proceeding this way means that, since no embedding of $\tilde{\graph}$ is made into a realisable (or physical) space, the resulting analysis is free of the additional geometric dependencies described above.
+Of course if it is possible to prescribe an embedding for $\tilde{\graph}$ and obtain $\graph$ (that is, if $\graph$ is a realisation of $\tilde{\graph}$), then both methods described above will produce the same spectrum.
+In our work, we elect to prescribe an embedding because our examples are motivated by physical structures (as explained above), and it is therefore much more convenient for us to prescribe a periodic graph along with it's embedding into physical space and proceed with our analysis from there.
+However it should be held in mind that the embedded periodic quantum graph $\graph$ we chose to represent our singular-structure may be only one possible realisation of an abstract periodic quantum graph $\tilde{\graph}$.
+This means that the spectrum obtained for one singular-structure topology may coincide with other topologies, so long as they also represent an embedding of $\tilde{\graph}$, despite the $M$-matrices differing due to the choice of embedding.
+In section \ref{ssec:EmbeddingDependentExample} we provide a concrete example of what is explained here.

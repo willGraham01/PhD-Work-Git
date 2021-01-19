@@ -43,8 +43,9 @@ Now using $r_{jk}$ as a change of variables and denoting $\tilde{u} = u \circ r_
 \end{align*}
 This holds for all smooth $\varphi$ with support contained in the interior of $\interval{I_{jk}}$, and can be thought of as the weak form of the equation
 \begin{align*}
-	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} &= \omega^2 \tilde{u}_{jk}, \quad t\in\interval{I_{jk}}.
+	-\bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} &= \omega^2 \tilde{u}_{jk}, \quad t\in\interval{I_{jk}},
 \end{align*}
+where $\qm_{jk} = \bracs{R_{jk}\qm}_1$.
 Under the assumption that $\tilde{u}_{jk}$ has enough regularity to be differentiated again, this is precisely what we have arrived at.
 Since we can repeat this process for each $I_{jk}$, we essentially have an ODE that must be satisfied on each edge of the graph $\graph$. \newline
 
@@ -59,7 +60,7 @@ Then we can work from \eqref{eq:PeriodCellLaplaceWeakForm} to obtain
 	&= \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + i\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - i\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md t \\
 	&\quad - \alpha_j \omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j}.
 \end{align*}
-Here, we have again used $r_{jk}$ as a change of variables (and the same notation for the transforms of $u$ and $\psi$), and the results of the appendix (\tstk{ref}) inform us that $\tgrad_{\dddmes}$ vanishes at the vertex $v_j$.
+Here, we have again used $r_{jk}$ as a change of variables (and the same notation for the transforms of $u$ and $\psi$), and the results of the appendix \ref{app:SumMeasureAnalysis} inform us that $\tgrad_{\dddmes}$ vanishes at the vertex $v_j$.
 Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, we can integrate by parts in each integral to obtain
 \begin{align*}
 	\alpha_j\omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j} &= - \sum_{j\con k} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + i\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t \\
