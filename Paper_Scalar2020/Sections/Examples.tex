@@ -10,7 +10,6 @@ via determination of the spectrum of \eqref{eq:QGFullSystem},
 	\sum_{j\con k}\bracs{\diff{}{t} + i\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j},  \quad \forall v_j \in \vertSet,
 \end{align*}
 The examples we consider in this section are done so to highlight how the properties of the spectrum vary on both the placement of coupling constants at the vertices, as well as the geometry of the singular-structures themselves. 
-We also provide some comparison to other works on singular-structure geometries \tstk{refs to Kirll-Sasha-Yulia's chain paper in example 1, for example}.
 
 \subsection{One-Dimensional Loop} \label{ssec:Example1DLoop}
 We begin our examples with the simplest example: a ``chain" of vertices that is periodic in one direction.
@@ -156,7 +155,7 @@ Since the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} is obtained by taking the 
 	\quad\text{ and }\omega\neq 2n\pi, \\
 	\text{or} \ \omega= (2n-1)\pi, \quad n\in\integers.
 \end{align*}
-As was expected, the resulting spectrum does not depend on $\beta$ (the only geometric artefact of our choice of embedding) despite the fact that the $M$-matrix for each operator on $\graph_{\mathcal{P}}$ dis contain a $\beta$-dependency.
+As was expected, the resulting spectrum does not depend on $\beta$ (the only geometric artefact of our choice of embedding) despite the fact that the $M$-matrix for each operator on $\graph_{\mathcal{P}}$ does contain a $\beta$-dependency.
 Other notable observations here include the fact that ``switching off" the coupling constant $\alpha$ (setting $\alpha=0$) results in a $2\pi$-periodic (in $\omega$) band-gap spectrum given by those $\omega$ with $-1\leq 2\cos\omega < 1$.
 In this setting the spectrum contains gaps due to the presence of the ``decoration" $v_2$ and edge $I_{12}$; if this edge is not present (leaving just the vertices $v_1^m$ in $\graph$) then the spectrum contains no gaps and consists of the positive real line, as in the example of section \ref{ssec:Example1DLoop}.
 If the coupling constant $\alpha$ is non-zero then the spectrum is no longer periodic, but still exhibits gaps, with the proportion of the real line not containing any eigenvalues increasing with $\alpha$.
@@ -254,13 +253,13 @@ One can visualise the curve $\Xi$, the spectrum and density of states in figure 
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha1.pdf}
-		\caption{\label{fig:CrossInPlane_DoS_Alpha1} The density of states and spectrum for the system with $\alpha=1$.}
+		\caption{\label{fig:CrossInPlane_DoS_Alpha1} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=1$.}
 	\end{subfigure}
 	~
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha3.pdf}
-		\caption{\label{fig:CrossInPlane_DoS_Alpha3} The density of states and spectrum for the system with $\alpha=3$.}
+		\caption{\label{fig:CrossInPlane_DoS_Alpha3} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=3$.}
 	\end{subfigure}	
 	\caption{\label{fig:Scalar_ThickVertexAllResults} The function $\Xi$, and density of states for the graph topology in section \ref{ssec:ExampleCrossInPlane}.
 	Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi$ takes values between $-1$ and $1$ (black lines).
@@ -269,4 +268,5 @@ One can visualise the curve $\Xi$, the spectrum and density of states in figure 
 We observe that the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
 The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band; values of $\alpha<2$ result in the first band starting at 0, whilst $\alpha\geq 2$ results in a gap between zero and the bottom of the spectrum.
 It can also be shown that the spectral bands are all have right-endpoints equal to a multiple of $n\pi$, although whether this endpoint is included as part of the spectrum depends on whether $n$ is even (as \eqref{eq:ExampleThickVertexSolution} only holds for $\omega\neq 2m\pi$).
-We can also compliment this analysis with a numerical estimate of the density of states, \tstk{need to define DoS?}, from which we see that the spectrum ``concentrates" on the center of each of the spectral bands (regardless of the value of $\alpha$).
+We can also compliment this analysis with a numerical estimate of the density of states (figures \ref{fig:CrossInPlane_DoS_Alpha1} and \ref{fig:CrossInPlane_DoS_Alpha3}) \tstk{need to define DoS?}, again confirming the existence of spectral gaps and also demonstrating that the spectrum ``concentrates" at the center of each spectral band.
+\tstk{Comparison to other works on singular-structure geometries ... refs to Kirll-Sasha-Yulia's chain paper, for example, where the gap at 0 wasn't opened?}.

@@ -119,7 +119,7 @@ The alternative approach is to realise \eqref{eq:QGDetSolveCondition} as a (gene
 \end{align}
 where one is solving for the eigenpairs $\bracs{\omega, w}$.
 This formulation of \eqref{eq:QGDetSolveCondition} is much better suited to situations in which a numerical approach is to be used, as working with the determinant directly is prone to instabilities and errors.
-However provided that one has an appropriate numerical scheme, \tstk{could ref Gissuer from manchester paper here} a computer can compute (an approximation to) the spectrum of \eqref{eq:QGFullSystem} and thus, by varying $\qm$ over a suitable mesh, the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+However provided that one has an appropriate numerical scheme, \tstk{could \cite{guttel2017nonlinear} Guttel, Manchester paper here} a computer can compute (an approximation to) the spectrum of \eqref{eq:QGFullSystem} and thus, by varying $\qm$ over a suitable mesh, the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
 Of course, a numerical approach will never recover the full spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, but is more appropriate when considering singular-structures as an approximation to physically-motivated thin-structures.
 There are of course other complexities to consider if one wishes to solve \eqref{eq:QGDetSolveCondition} numerically, which we highlight later in section \ref{ssec:NumericalApproachConsiderations}. \newline
 
@@ -133,7 +133,7 @@ Even for relatively simple geometries like those in section \ref{sec:Examples}, 
 
 \subsection{Considerations for a Numerical Approach to Solving \eqref{eq:QGDetSolveCondition}} \label{ssec:NumericalApproachConsiderations}
 In this section we briefly discuss some considerations for solving \eqref{eq:QGDetSolveCondition} as a generalised eigenvalue problem \eqref{eq:QGGenEvalSolve} for a fixed $\qm$, and suggestions as to how one can then efficiently recover the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
-We take as a baseline that one has an appropriate numerical scheme for handling generalised eigenvalue problems to hand \tstk{Gissuer would be good here}, and so do not delve into the details of how such an algorithm would operate.
+We take as a baseline that one has an appropriate numerical scheme for handling generalised eigenvalue problems to hand \tstk{Guttel \cite{guttel2017nonlinear} would also be good here}, and so do not delve into the details of how such an algorithm would operate.
 Instead we highlight some potentially useful ideas for handling $M_\qm$ in these contexts, and invite further insight into the utility of these ideas from the reader.
 It is of course worth mentioning that $M_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries}) so any numerical scheme gains the benefits of $M_\qm$ having this property. \newline
 
@@ -150,13 +150,13 @@ This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing a
 			\end{aligned}			
 			& j \not\con k, \\
 			\!\begin{aligned}
-				&-\sum_{j\conLeft k} \bracs{ \omega e^{i\qm_{jk}l_{jk}} \prod_{\bracs{l,m} \neq \bracs{j,k}}\sin\bracs{l_{lm}\omega} }
-				\\ &\quad - \sum_{j\conRight k} \bracs{ \omega e^{-i\qm_{kj}l_{kj}} \prod_{\bracs{l,m} \neq \bracs{j,k}}\sin\bracs{l_{ml}\omega} },
+				&-\sum_{j\conLeft k} \bracs{ \omega e^{i\qm_{jk}l_{jk}} \prod_{\substack{ l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{lm}\omega} }
+				\\ &\quad - \sum_{j\conRight k} \bracs{ \omega e^{-i\qm_{kj}l_{kj}} \prod_{\substack{l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{ml}\omega} },
 			\end{aligned}
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				&\sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\bracs{m,n}\neq\bracs{j,l}}\sin\bracs{l_{mn}\omega} }
-				\\ &\quad + 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\bracs{l,m}\neq\bracs{j,j}}\sin\bracs{l_{lm}\omega} }\sqbracs{ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} } },
+				&\sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
+				\\ &\quad + 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\sqbracs{ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} } },
 			\end{aligned}
 			& j=k.
 		\end{cases}
@@ -170,12 +170,13 @@ This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing a
 		M_\qm\bracs{\omega} &= P_{M_\qm}\tilde{M}_\qm\bracs{\omega}.
 	\end{align*}
 \end{cory}
+The product notation should be understood analogously to the summation notation over $j\con k$ introduced in section \ref{sec:QuantumGraphs}.
 Corollary \ref{cory:M-MatrixEntriesNoPoles} is just the result of pulling out the scalar factor $P_{M_\qm}$ from $M_\qm$.
 Since $P_{M_\qm}$ contains all the poles of the entries of $M_\qm$, the resulting matrix $\tilde{M}_\qm$ has no poles, and even has it's $jk^{\mathrm{th}}$ entry bounded (for all $\omega$) by the number of (direct) connections $j\con k$.
 This also means that one can then solve the generalised eigenvalue problem
-\begin{align*}
+\begin{align} \label{eq:QGGenEvalSolveNoPoles}
 	\bracs{ \tilde{M}_\qm - \omega^2 P_{M_\qm}^{-1} A}w = 0
-\end{align*}
+\end{align}
 for $\omega$ instead of \eqref{eq:QGGenEvalSolve}.
 Writing
 \begin{align*}
@@ -187,7 +188,19 @@ However the set of poles is easily computed from the set of all lengths $l_{jk}$
 \begin{align*}
 	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0}.
 \end{align*}
-As such, one can solve the generalised eigenvalue problem involving the bounded matrix $\tilde{M}_\qm$, and then exclude any $\omega$ that correspond to one of the (known) poles of $P_{M_\qm}$.
+As such, one can solve the generalised eigenvalue problem involving the bounded matrix $\tilde{M}_\qm$, and then exclude any $\omega$ that correspond to one of the (known) poles of $P_{M_\qm}$. \newline
 
-\tstk{on a hopeful stability result over $\qm$ to speed up computation}
-recall this discussion Will!
+The other immediate discussion point to consider when taking a numerical approach is how to efficiently solve \eqref{eq:QGGenEvalSolve} for $\omega$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
+This must be done to obtain the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, since our Gelfand transform requires us to take the union of the spectra of \eqref{eq:QGFullSystem} over $\qm$.
+One suggestion that comes to mind is to investigate whether the solutions $\omega$ to \eqref{eq:QGGenEvalSolve} (or \eqref{eq:QGGenEvalSolveNoPoles}) are stable with respect to changes in the $\qm$, that is whether one can obtain a result like (one of) the following:
+\begin{itemize}
+	\item For every $\eps>0$, there exists some $\delta>0$ such that if $\norm{\qm^{(1)}-\qm^{(2)}}<\delta$, then the solutions $\omega^{(1)}$ and $\omega^{(2)}$ to \eqref{eq:QGGenEvalSolve} (with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively) are such that $\norm{\omega^{(1)}-\omega^{(2)}}<\eps$.
+	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolve} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
+	\begin{align*}
+		\frac{ \norm{\qm^{(1)}-\qm^{(2)}} }{ \norm{\qm^{(1)}} } \leq c \frac{ \norm{\omega^{(1)}-\omega^{(2)}} }{ \norm{\omega^{(1)}} }
+	\end{align*}
+\end{itemize}
+Having either of these confirmed would mean that one could adopt a more informed approach to solving \eqref{eq:QGGenEvalSolve} on a $\qm$-mesh: after solving at $\qm^{(1)}$ and obtaining a solution $\omega^{(1)}$, and knowing the next mesh-point $\qm^{(2)}$ to be solved at, the value $\omega^{(1)}$ would provide a good starting guess to an algorithm determining the solution of \eqref{eq:QGGenEvalSolve} at $\qm^{(2)}$.
+By providing an informed ``initial guess" in this way, a numerical method that relies on an accurate guess should require less time to converge to a solution and thus require less time to reconstruct the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+Of course this suggestion also assumes that one is using a numerical method that relies on stepping through a $\qm$-mesh in the first place, and if other methods that do not rely on such an approach can be used, they would not benefit in the same way as suggested here.
+\tstk{Final sentence here like ``the authors would be interested to hear of any known theory or developments in this area"? Or just leave the point as it is and start the next section?}
