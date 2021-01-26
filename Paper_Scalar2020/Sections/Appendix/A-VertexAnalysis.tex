@@ -2,17 +2,18 @@
 Understanding the behaviour of Sobolev functions on the edges of a graph is the bulk of the information which we need to determine the edge-wise action of the equivalent quantum graph problem that we plan to derive.
 Our analysis of $\gradSobQM{\ddom}{\ddmes}$ even provides us with Sobolev functions that are continuous across the vertices.
 However we are not encapsulating the effect of introducing coupling constants $\alpha_j$ to the vertices in $\graph$ yet - and to do so we must examine the ``vertex part" $\nu$ of our measure $\dddmes$ and the Sobolev spaces associated with it.
-Thankfully, our analysis of the space $\gradSobQM{\ddom}{\nu}$ is short, on account of the fact that $\gradSobQM{\ddom}{\nu}$ is actually isomorphic \tstk{check with Kirill, as this normally implies we have a norm and I never introduced a norm on our Sob Spaces... I guess bijective is safer?} to $\complex^N$, where $N=\abs{\vertSet}$ is the number of vertices in the graph $\graph$.
+Thankfully, our analysis of the space $\gradSobQM{\ddom}{\nu}$ is short, on account of the fact that $\gradZero{\ddom}{\nu}$ (as a subset of $\ltwo{\ddom}{\nu}^2$) is actually isomorphic to $\complex^N$, where $N=\abs{\vertSet}$ is the number of vertices in the graph $\graph$.
+As such, any $\bracs{u,\grad_{\nu}u}\in\gradSob{\ddom}{\nu}$ has $\grad_{\nu}u=0$.
 
 \subsection{Analysis of $\nu$-Gradients of Zero} \label{appS:VertexGradZero}
-If we fix $N = \abs{\vertSet}$ as the number of vertices, we will see that $\gradZero{\ddom}{\nu} \cong \complex^{2N}$, and thus that any $\bracs{u,\grad_{\nu}u}\in\gradSob{\ddom}{\nu}$ is such that $\grad_{\nu}u=0$.
+We begin by defining some quantities that will appear in the proofs of this section.
 \begin{definition}[$d$, $\varphi_c$, and $g^j$] \label{def:UsefulObjects}
 	Let 
 	\begin{align*}
 		d=\recip{2}\min\clbracs{\norm{v_j-v_k}_2 \ \vert \ v_j,v_k\in\vertSet}
 	\end{align*}
 	be half the minimum distance between any two vertices in the graph (note that this may occur between two vertices that do not share a single edge).
-	$d$ exists since the graph $\graph$ is assumed finite.
+	$d$ exists since the graph $\graph$ is assumed finite, and is positive.
 	For $c\in\complex$, let $\varphi_c:\reals^2\rightarrow\complex$ be the smooth function such that
 	\begin{align*}
 		\varphi_c\bracs{0} = 0, &\quad \grad\varphi_c\bracs{0} = c, \\
@@ -35,7 +36,7 @@ If we fix $N = \abs{\vertSet}$ as the number of vertices, we will see that $\gra
 	\end{align*}
 \end{definition}
 
-Notice that we have the following result:
+We now demonstrate that $\ltwo{\ddom}{\nu}^2$ is isomorphic to $\complex^{2N}$.
 \begin{lemma}
 	The space $\ltwo{\ddom}{\nu}$ is isomorphic to $\complex^{2N}$.
 	Moreover, the collection 
@@ -61,7 +62,7 @@ Notice that we have the following result:
 	Moreover, the preimage of the canonical basis $\clbracs{e_k \ \vert \ k\in\clbracs{1,...,2N}}$ under $\iota$ is the collection $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$, and hence $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$ forms a basis of $\ltwo{\ddom}{\nu}^2$.
 \end{proof}
 
-We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$, which will turn out to be the entire space $\ltwo{\ddom}{\nu}^2$.
+We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$, which we find to be the entire space $\ltwo{\ddom}{\nu}^2$.
 \begin{prop}[Characterisation of $\gradZero{\ddom}{\nu}$] \label{prop:CharPointMassGradZero}
 	We have that $\gradZero{\ddom}{\nu} = \ltwo{\ddom}{\nu}^2$.
 \end{prop}
@@ -99,7 +100,7 @@ We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$,
 \subsection{The Sobolev Space $\gradSobQM{\ddom}{\nu}$} \label{appS:VertexSobSpace}
 Given that we now know that $\gradZero{\ddom}{\nu}$ encompasses the whole of $\ltwo{\ddom}{\nu}^2$, we must conclude that our ``Sobolev functions" have zero derivative ($\nu$-)almost-everywhere.
 Indeed, proposition \ref{prop:CharPointMassGradZero} gives us the following corollary:
-\begin{cory}[Characterisation of $\gradSobQM{\ddom}{\nu}$] \label{eq:CharPointMassSpace}
+\begin{cory}[Characterisation of $\gradSobQM{\ddom}{\nu}$] \label{cory:CharPointMassSpace}
 	We have that
 	\begin{align*}
 		\bracs{u,\tgrad_{\nu}u}\in\gradSobQM{\ddom}{\nu} \quad\Leftrightarrow\quad 
@@ -109,11 +110,12 @@ Indeed, proposition \ref{prop:CharPointMassGradZero} gives us the following coro
 \end{cory}
 \begin{proof}
 	($\Rightarrow$) For the right-directed implication; $\tgrad_{\nu}u\in\ltwo{\ddom}{\nu}^2$ is an element of $\ltwo{\ddom}{\nu}^2$ by definition and is orthogonal to $\gradZero{\ddom}{\nu}$, but by proposition \ref{prop:CharPointMassGradZero} we know that $\gradZero{\ddom}{\nu}=\ltwo{\ddom}{\nu}^2$, we must conclude that $\grad_{\nu}u = 0$. \newline
-	($\Leftarrow$) For the left-directed implication, take smooth ``bump" functions $\psi_j$ (for each $v_j\in\vertSet$) with the properties
+	($\Leftarrow$) For the left-directed implication, take smooth ``bump" functions $\psi_j$ for each $v_j\in\vertSet$ with the properties
 	\begin{align*}
 		\psi_j\bracs{v_j} = 1, &\quad \grad\psi_j\bracs{v_j} = -i\qm, \\
 		\supp\bracs{\psi_j} &\subset B_{d}\bracs{v_j}.
 	\end{align*}
+	(Note that these are just translated versions of the functions $\psi_c$ in definition \ref{def:UsefulObjects} with $c=-i\qm$).
 	Then consider the smooth function
 	\begin{align*}
 		\phi\bracs{x} &:= \sum_{v_j\in\vertSet} u\bracs{v_j}\psi_j\bracs{x}, \\
@@ -139,5 +141,5 @@ Indeed, proposition \ref{prop:CharPointMassGradZero} gives us the following coro
 	\end{align*}
 	and thus $\bracs{u,0}\in\gradSob{\ddom}{\nu}$.
 \end{proof}
-Corollary \ref{conj:ThickVertexSpaceCharacterisation} means that the space $\gradSob{\ddom}{\nu}$ is essentially isomorphic to $\complex^N$, namely functions in this space are entirely determined by their values at the vertices, and their gradients are always zero.
-This matches our intuitive expectations, as the notion of a gradient (or rate of change) at an isolated point being non-zero implies that there is a small neighbourhood around the point in which we can observe the function values changing, but in the case of a point-mass measure this is not the case.
+Corollary \ref{cory:CharPointMassSpace} means that the space $\gradSob{\ddom}{\nu}$ is essentially isomorphic to $\complex^N$, namely functions in this space are entirely determined by their values at the vertices, and their gradients are always zero.
+This matches our intuitive expectations, as the notion of a gradient (or rate of change) at a point being non-zero implies that there is a small neighbourhood around the point in which we can observe the function values changing, but in the case of a point-mass measure centred on isolated points, this is not the case.

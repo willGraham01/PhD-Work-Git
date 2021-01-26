@@ -1,10 +1,8 @@
-\tstk{this is still written as an ``overview" section, the full proofs are not included. You should probably put them in Will, or have a final section of the appendix which is just the details of the proofs, and leave this one with some narrative.}
-
 \section{Appendix: Analysis of the Behaviour of Sobolev Functions on the (Straight) Edges of an Embedded Graph} \label{app:muAnalysis}
 Crucial to our understanding of the functions (and their gradients) in $\gradSobQM{\ddom}{\ddmes}$ will be understanding the corresponding ``gradients of zero".
 We work towards obtaining this understanding progressively; first we look to understand the set $\gradZero{\ddom}{\lambda_{jk}}$ when the edge $I_{jk}$ is assumed to be parallel to the $x_1$-axis, then employ a rotation argument to understand $\gradZero{\ddom}{\lambda_{jk}}$ for a general edge that is at an angle to the $x_1$-axis.
 Given that the singular measure $\ddmes$ is just the sum of the individual singular measures supporting each edge, we can then prove that elements of $\gradZero{\ddom}{\ddmes}$ display the same behaviour as elements of $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
-This argument also provides us with a clear geometric interpretation for what a ($\lambda_{jk}$)-gradient of zero" is, and the edge-wise characterisation we obtain for elements of $\gradZero{\ddom}{\ddmes}$ will carry through into how we describe functions in $\gradSobQM{\ddom}{\ddmes}$.
+This argument also provides us with a clear geometric interpretation for what a ($\lambda_{jk}$)-gradient-of-zero is, and the edge-wise characterisation we obtain for elements of $\gradZero{\ddom}{\ddmes}$ will carry through into how we describe functions in $\gradSobQM{\ddom}{\ddmes}$.
 Throughout this section we take assumption \ref{ass:MeasTheoryProblemSetup} as given.
 
 \subsection{Gradients of Zero} \label{appS:muGradZero}
@@ -21,11 +19,12 @@ We begin by describing $\gradZero{\ddom}{\lambda_{jk}}$ for when the edge $I_{jk
 	\end{align*}
 \end{prop}
 \begin{proof}
-	By combining proposition \ref{prop:GradZeroInvarientUnderQM} with a result in \cite{zhikov2000extension} \tstk{precise lemma/page citation}, this result follows, however we present a brief summary of the argument.
+	By combining proposition \ref{prop:GradZeroInvarientUnderQM} with a result in \cite[Section~3.1]{zhikov2000extension} this result follows, however we present a brief summary of the argument. \newline
+	
 	Without loss of generality we assume $x_2=0$ on $I$.
 	Additionally it suffices to show that the set on the right hand side includes all functions of the specified form when $f$ is smooth, as we can then apply a density argument. \newline
 	
-	So take some $f\in\smooth{\ddom}$, then the ``constant sequence" $\phi_n = \phi = x_2 f$ is such that
+	Take some $f\in\smooth{\ddom}$, then the ``constant sequence" $\phi_n = \phi = x_2 f$ is such that
 	\begin{align*}
 		\phi_n\lconv{\ltwo{\ddom}{\lambda_I}}0, 
 		&\quad \grad\phi_n\lconv{\ltwo{\ddom}{\lambda_I}^2} \begin{pmatrix} 0 \\ f \end{pmatrix}
@@ -38,7 +37,7 @@ We begin by describing $\gradZero{\ddom}{\lambda_{jk}}$ for when the edge $I_{jk
 	Performing a change of variables via the map $r:\interval{I}\rightarrow I$ (as described for an edge $I_{jk}$ in convention \ref{ass:MeasTheoryProblemSetup}), and setting $\tilde{\phi}_n(t) := \phi_n\bracs{r(t)}$, we have
 	\begin{align*}
 		\tilde{\phi}_n\lconv{\ltwo{\interval{I}}{t}} 0, 
-		&\quad \diff{\tilde{\phi}_n}{t}\lconv{\ltwo{\interval{I}}{t}} \tilde{f}
+		&\quad \diff{\tilde{\phi}_n}{t}\lconv{\ltwo{\interval{I}}{t}} \tilde{f},
 		&\quad \toInfty{n}.
 	\end{align*}
 	Hence $\tilde{f}$ is the distributional derivative (in the $\gradSob{\interval{I}}{t}$ sense) of the zero function, so we can conclude that $\tilde{f} = 0$, and thus $f = 0$, as we sought.
@@ -66,8 +65,9 @@ With these two results, there is the following corollary which further reinforce
 	\end{align*}
 \end{cory}
 
-Using our understanding of gradients of zero on single edges, we can build up an understanding of gradients of zero on embedded graphs consisting of multiple edges.
+Using our understanding of gradients of zero on single segments, we can build up an understanding of gradients of zero on embedded graphs consisting of multiple edges.
 This turns out to be the following characterisation; where each function in $\gradZero{\ddom}{\ddmes}$ behaves as a function in $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
+We provide a sketch of the key ideas of the proof, followed by the proof in full.
 \begin{prop} \label{prop:GradZeroGraph}
 	Given convention \ref{ass:MeasTheoryProblemSetup}, we have that
 	\begin{align*}
@@ -75,8 +75,7 @@ This turns out to be the following characterisation; where each function in $\gr
 		&= \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\in\gradZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet}. \labelthis\label{eq:GradZeroSetRHS}
 	\end{align*}
 \end{prop}
-\begin{proof}
-	For the full proof, see appendix \tstk{appendix reference}.
+\begin{proof} \textit{(Sketch)}:
 	Showing that elements of $\gradZero{\ddom}{\ddmes}$ are contained in the set on the right-hand-side of \eqref{eq:GradZeroSetRHS} is straightforward due to the definition of $\ddmes$ and the fact that
 	\begin{align} \label{eq:GraphMeasNormEdgeBreakdown}
 		\norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 = \sum_{j\con k}\norm{\cdot}_{\ltwo{\ddom}{\lambda_{jk}}}^2,
@@ -87,11 +86,203 @@ This turns out to be the following characterisation; where each function in $\gr
 	Then we can use the idea that $g = \sum_{j\con k} g_{jk}$ and that $\gradZero{\ddom}{\ddmes}$ is a closed, linear subspace to obtain membership of $g$ in $\gradZero{\ddom}{\ddmes}$; although in practice the expression for the sum is made more complex by the need to ensure good behaviour near the vertices of the graph.
 \end{proof}
 
+\subsubsection{Proof of Proposition \ref{prop:GradZeroGraph}}
+Denote $B = \clbracs{g\in\ltwo{\ddom}{\ddmes}^2 \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in \edgeSet}$.
+We introduce two families of smooth functions that we shall make repeated use of, and examine some limits in $\ltwo{\ddom}{\ddmes}$ which involve them.
+\begin{definition} \label{def:etaDef}
+	Let $\eta\in\smooth{\ddom}$ be the function with the properties
+	\begin{align*}
+		\eta\bracs{x} &\in [0,1], \\
+		\eta = 0 &\text{ whenever } \abs{x}\leq 1, \\
+		\eta = 1 &\text{ whenever } \abs{x}\geq 2.
+	\end{align*}
+	For $\graph=\bracs{\vertSet,\edgeSet}$ an embedded graph, for each $v_j\in \vertSet$ and $n\in\naturals$ we define
+	\begin{align}
+		\eta_j\bracs{x} = \eta\bracs{x-v_j}, &\quad \eta_j^n\bracs{x} = \eta_j\bracs{nx}
+	\end{align}
+	which are smooth functions by composition.
+\end{definition}
+The functions $\eta_j^n$ will be used when looking to extend functions defined on one edge of $\graph$ to the whole of $\graph$, and when dealing with matching conditions at the vertices of $\graph$.
+We also check that in the limit as $n\rightarrow\infty$, $\eta_j^n$ converges to the constant function $1$ in $\ltwo{\ddom}{\ddmes}$.
+\begin{lemma}[Convergence of $\eta_j^n$ in $\ltwo{\ddom}{\ddmes}$] \label{lem:etaConv}
+	For any $v_j\in \vertSet$, 
+	\begin{align*}
+		\eta_j^n \rightarrow 1 \text{ in } \ltwo{\ddom}{\ddmes} \toInfty{n}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We can directly prove this convergence by estimating the integral from above, without loss of generality assuming all the balls that are considered lie within $\ddom$:
+	\begin{align*}
+		\integral{\ddom}{\abs{\eta_j^n-1}^2}{\ddmes} 
+		&= \integral{\ddom\setminus B_{2/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} 
+		+ \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ 
+		&\quad + \integral{B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\
+		&= \integral{\ddom\setminus B_{2/n}\bracs{v_j}}{0}{\ddmes} + \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{\abs{\eta_j^n-1}^2}{\ddmes} \\ 
+		&\quad + \integral{B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+		&\leq \integral{B_{2/n}\bracs{v_j} \setminus B_{1/n}\bracs{v_j}}{}{\ddmes} 
+		+ \integral{B_{1/n}\bracs{v_j}}{}{\ddmes} \\
+		&= \integral{B_{2/n}\bracs{v_j}}{}{\ddmes} 
+		= \ddmes\bracs{B_{2/n}\bracs{v_j}} \\
+		&\leq \frac{4 \abs{E}}{n} \rightarrow0 \toInfty{n}.
+	\end{align*}
+	The last line following because each edge of $\graph$ can intersect $B_{2/n}\bracs{v_j}$ on a segment of length at most $\frac{4}{n}$.
+\end{proof}
+
+Having defined the family of functions $\eta_j^n$ that will be useful when considering vertices of a graph $\graph$, we now define another family of functions that will help us when dealing with the edges of said graph.
+\begin{definition}[Smooth Functions on Thickened Edges, $\chi$] \label{def:ChiDef}
+	Let $I_{jk}\in \edgeSet$ be an edge of the embedded graph $\graph=\bracs{\vertSet,\edgeSet}$, and take $\eps>0$.
+	Define the set 
+	\begin{align} \label{eq:ShortenedIntervalDef}
+		I_{jk}^{\eps} := \clbracs{ x\in I_{jk} \ \vert \ \mathrm{dist}\bracs{x, \partial I_{jk}}\leq \recip{\eps}},
+	\end{align}
+	and then let $\chi_{jk}^\eps\in\smooth{\ddom}$ be the function such that 
+	\begin{align*}
+		\chi_{jk}^\eps\bracs{x} &\in [0,1], \\
+		\chi_{jk}^\eps = 1 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^\eps}\leq \recip{3\eps} \\
+		\chi_{jk}^\eps = 0 &\text{ whenever } \mathrm{dist}\bracs{x, I_{jk}^\eps}\geq \frac{2}{3\eps}
+\end{align*}
+	Note that since $\graph$ is finite, we can assume without loss of generality that the only edge of $\graph$ that intersects $\supp\bracs{\chi_{jk}^\eps}$ is $I_{jk}$, otherwise we apply a scaling to the argument of $\chi_{jk}^\eps$ to avoid this issue.
+\end{definition}
+We also check the convergence of $\chi_{jk}^\eps$ in $\ltwo{\ddom}{\ddmes}$ as $\eps\rightarrow\infty$.
+\begin{lemma}[Convergence of $\chi_{jk}^\eps$] \label{lem:ChiConv}
+	Let $\charFunc{jk}$ denote the characteristic function of the edge $I_{jk}$.
+	Then we have that 
+	\begin{align*}
+		\chi_{jk}^\eps \rightarrow \charFunc{jk} \toInfty{\eps}
+	\end{align*}
+	in $\ltwo{\ddom}{\ddmes}$, and in $\ltwo{\ddom}{\lambda_{jk}}$.
+\end{lemma}
+\begin{proof}
+	First note that due to the supports of $\chi_{jk}^\eps$ and $\charFunc{jk}$;
+	\begin{align*}
+		\integral{\ddom}{\abs{ \chi_{jk}^\eps - \charFunc{jk} }^2}{\ddmes}
+		&= \integral{\ddom}{\abs{ \chi_{jk}^\eps - \charFunc{jk} }^2}{\lambda_{jk}},
+	\end{align*}
+	so convergence in $\ltwo{\ddom}{\ddmes}$ is equivalent to convergence in $\ltwo{\ddom}{\lambda_{jk}}$.
+	Hence we now consider
+	\begin{align*}
+		\integral{\ddom}{\abs{ \chi_{jk}^\eps - \charFunc{jk} }^2}{\ddmes}
+		&= \integral{I_{jk}}{\abs{ \chi_{jk}^\eps - 1 }^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^\eps}{\abs{ \chi_{jk}^\eps - 1 }^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\cap\clbracs{\chi_{jk}^\eps = 0}}{}{\lambda_{jk}}
+		+ \integral{I_{jk}\cap\clbracs{0\leq\chi_{jk}^\eps \leq 1}}{\abs{ \chi_{jk}^\eps - 1 }^2}{\lambda_{jk}} \\
+		&\leq \recip{3\eps} + \recip{3\eps} = \frac{2}{3\eps} \rightarrow 0 \toInfty{\eps}.
+	\end{align*}
+\end{proof}
+Furthermore; we also remark that $\abs{\grad\chi_{jk}^\eps}$ is bounded by a constant multiplying $\eps$, namely $\abs{\grad\chi_{jk}^\eps} \leq c\eps$ for some $c\geq0$.
+This is simply a consequence of the construction of $\chi_{jk}^\eps$; we can view it as a transformation of a smooth function with bounded gradient that increases from 0 to 1 over the unit interval.
+The constant $c$ arises in case we have to apply a scaling to the argument of $\chi_{jk}^\eps$ due to the proximity of other edges. \newline
+
+We can now begin to prove proposition \ref{prop:GradZeroGraph}; with the inclusion $\gradZero{\ddom}{\ddmes} \subset B$ following quickly.
+\begin{prop} \label{prop:Grad0IncB}
+	For $B = \clbracs{g\in\ltwo{\ddom}{\ddmes} \ \vert \ g\vert_{I_{jk}}\cdot e_{jk}=0 \ \forall I_{jk}\in E}$, we have
+	\begin{align*}
+		\gradZero{\ddom}{\ddmes} \subset B.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	If $g\in\gradZero{\ddom}{\ddmes}$ then there exists a sequence of smooth functions $\phi_n$ such that $\phi_n\lconv{\ltwo{\ddom}{\ddmes}}0, \grad\phi_n\lconv{\ltwo{\ddom}{\ddmes}^2}g$.
+	Thus,
+	\begin{align*}
+		\sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\abs{\phi_n}^2}{\lambda_{jk}} &= \integral{\ddom}{\abs{\phi_n}^2}{\ddmes} \quad \rightarrow 0 \toInfty{n}.
+	\end{align*}
+	As every term in the sum is non-negative, each term must also be tending to zero individually, hence
+	\begin{align*}
+		\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}0, \quad \forall I_{jk}\in E.
+	\end{align*}
+	Similarly
+	\begin{align*}
+		\sum_{v_j\in V}\sum_{j\conLeft k}\integral{I_{jk}}{\abs{\grad\phi_n - g}^2}{\lambda_{jk}} &= \integral{\ddom}{\abs{\grad\phi_n - g}^2}{\ddmes} \quad
+		\rightarrow 0 \toInfty{n},
+	\end{align*}	
+	and hence 
+	\begin{align*}
+		\grad\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2} g, \quad \forall I_{jk}\in E.
+	\end{align*}
+	Hence $g\in B$.
+\end{proof}
+
+The reverse inclusion requires some preliminary results before it can be proven.
+The first result sees us demonstrate that a gradient of zero on a ``shortened" edge of the graph is also a gradient of zero on the whole graph, if we extend it by zero.
+\begin{lemma}[Extension Lemma for Gradients of Zero] \label{lem:SegGradExtend}
+	For $n\in\naturals$, let $I_{jk}^n$ be as in \eqref{eq:ShortenedIntervalDef}.
+	Suppose that we have a function $g\in\ltwo{\ddom}{\ddmes}$ with $g=0$ on $\graph\setminus I_{jk}^{n}$ and $g\cdot e_{jk}=0$ on $I_{jk}^{n}$.
+	Then 
+	\begin{align*}
+		g\in\gradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	As $g\cdot e_{jk}=0$ on $I_{jk}^{n}$ and $g=0$ on $I_{jk}\setminus I_{jk}^{n}$, we have that $g\cdot e_{jk}=0$ on $I_{jk}$ and hence $g\in\gradZero{\ddom}{\lambda_{jk}}$.
+	So we can find a sequence of smooth functions $\phi_l$ as in \eqref{eq:GradZeroDef}, and we let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function as defined in definition \ref{def:ChiDef}.
+	Now consider the sequence $\psi_l = \chi_{jk}^{n}\phi_l$; we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\psi_l}^2}{\ddmes} = \integral{I_{jk}}{\abs{\chi_{jk}^{n}\phi_l}^2}{\lambda_{jk}}
+		\leq \integral{I_{jk}}{\abs{\phi_l}^2}{\lambda_{jk}} \rightarrow0 \toInfty{l},
+	\end{align*}
+	which is one of the desired convergence results for $\psi_l$.
+	For the other convergence result we need, observe that
+	\begin{align*}
+		\integral{\ddom}{\abs{\phi_l\grad\chi_{jk}^{n}}^2}{\ddmes} &= \integral{I_{jk}}{\abs{\phi_l\grad\chi_{jk}^{n}}^2}{\lambda_{jk}} \\
+		&\leq \sup_{I_{jk}}\bracs{\abs{\grad\chi_{jk}^{n}}^{2}}\integral{I_{jk}}{\abs{\phi_l}^2}{\ddmes} \\
+		&\rightarrow 0 \toInfty{l}
+	\end{align*}
+	because $\abs{\grad\chi_{jk}^{n}}$ depends on $n$ only.
+	Additionally
+	\begin{align*}
+		\integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\ddmes} &= \integral{I_{jk}}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^n}{\abs{\chi_{jk}^n\grad\phi_l}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&\leq \integral{I_{jk}\setminus I_{jk}^n}{\abs{\grad\phi_l}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}\setminus I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} +  \integral{I_{jk}^n}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \\
+		&= \integral{I_{jk}}{\abs{\grad\phi_l - g}^2}{\lambda_{jk}} \rightarrow0 \toInfty{l},
+	\end{align*}
+	where we have made use of the fact that $g=0$ on $\graph\setminus I_{jk}^n$ and the various properties of $\chi_{jk}^n$.
+	Armed with these estimates, we have that
+	\begin{align*}
+		\integral{\ddom}{\abs{\grad\psi_l - g}^2}{\ddmes} 
+		&= \integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l + \phi_l\grad\chi_{jk}^n - g}^2}{\ddmes} \\
+		&\leq 2\integral{\ddom}{\abs{\phi_l\grad\chi_{jk}^n}^2}{\ddmes} + 2\integral{\ddom}{\abs{\chi_{jk}^n\grad\phi_l - g}^2}{\ddmes} \\
+		&\rightarrow0 \toInfty{l}.
+	\end{align*}
+	Thus, $\psi_l$ is a sequence of smooth functions such that
+	\begin{align*}
+		\psi_l \lconv{\ltwo{\ddom}{\ddmes}} 0, &\quad
+		\grad\psi_l \lconv{\ltwo{\ddom}{\ddmes}^2} g
+	\end{align*}
+	and hence, $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
+
+We are now ready to prove that $B\subset\gradZero{\ddom}{\ddmes}$.
+Here, the idea is to use the fact that we can extend a gradient of zero $g_{jk}\in\gradZero{\ddom}{\lambda_{jk}}$ by zero to obtain a gradient of zero on the whole graph; and then consider the sum of such functions in $\gradZero{\ddom}{\ddmes}$ to obtain the result we need.
+\begin{prop} \label{prop:BIncGrad0}
+	We have
+	\begin{align*}
+		B \subset \gradZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	Take $g\in B$, and define a family of functions $g_n$ by
+	\begin{align*}
+		g_n\bracs{x} &= \sum_{j\in V}\sum_{j\conLeft k}\eta_j^n\bracs{x}\eta_k^n\bracs{x}g\vert_{I_{jk}}\bracs{x}.
+	\end{align*}
+	Recall that $\graph$ is assumed finite so the sum converges.
+	For each $j,k$ with $j\conLeft k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
+	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_n\in\gradZero{\ddom}{\ddmes}$ too, $\forall n\in\naturals$.
+	By closure of $\gradZero{\ddom}{\ddmes}$ in $\ltwo{\ddom}{\ddmes}^2$; $g_n$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, and so it remains to show that $g_n\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
+	However with the result of lemma \ref{lem:etaConv}, we have that $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ and hence
+	\begin{align*}
+		g_n \lconv{\ltwo{\ddom}{\ddmes}^2} &\sum_{j\in V}\sum_{j\conLeft k}g\vert_{I_{jk}} = g \toInfty{n},
+	\end{align*}
+	so $g\in\gradZero{\ddom}{\ddmes}$.
+\end{proof}
+Propositions \ref{prop:BIncGrad0} and \ref{prop:Grad0IncB} complete the proof of proposition \ref{prop:GradZeroGraph} when combined with proposition \ref{prop:RotationOfEdgeGradients} and corollary \ref{cory:Grad0SingleEdge}.
+
 \subsection{The ``Non-Classical" Sobolev Space} \label{appS:SobSpacesTheory}
 Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$.
 Given that we know that $\tgrad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$, and we have an edge-wise characterisation of $\gradZero{\ddom}{\ddmes}$, it will not be surprising to learn that we also obtain an edge-wise ``form" for the tangential gradient, as given in the following proposition.
 \begin{prop} \label{prop:GraphTangGrad}
-	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
+	Assume convention \ref{ass:MeasTheoryProblemSetup}.
+	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the (1 dimensional) Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
 	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in \edgeSet$, and that
 	\begin{align*}
 		\bracs{ \tgrad_\ddmes u }_{jk} 
@@ -101,47 +292,93 @@ Given that we know that $\tgrad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$, and we
 \end{prop}
 Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of any kind of ``classical" derivative for $u_{jk}$ or $u$, it is just a helpful piece of notation to remind us that $u_{jk}$ does have some regularity after composition with $r_{jk}$.
 \begin{proof}
-	The proof proceeds in much the same way as how we sought to understand elements of $\gradZero{\ddom}{\ddmes}$, and full details can be found in section \ref{sec:tstk}.
-	Any tangential gradient must be orthogonal to elements $g_{jk}\in\gradZero{\ddom}{\ddmes}$ where $g\in\gradZero{\ddom}{\lambda_{jk}}$, and this must hold for each edge $I_{jk}$.
+	The proof proceeds in much the same way as how we sought to understand elements of $\gradZero{\ddom}{\ddmes}$.
+	Any tangential gradient must be orthogonal to elements $g_{jk}\in\gradZero{\ddom}{\ddmes}$ where $g\in\gradZero{\ddom}{\lambda_{jk}}$ (by proposition \ref{prop:GradZeroGraph}), and this must hold for each edge $I_{jk}$.
 	The plan is again to first consider an edge aligned parallel to the $x_1$-axis, then apply a rotation before appealing to the edge-wise decomposition of our measure. \newline
 	
 	As just mentioned, first consider an edge $I_{jk}$ parallel to the $x_1$-axis. 
-	Let $\tgrad_\ddmes u = \bracs{v_1, v_2}^\top$ denote the components of $\tgrad_\ddmes u$; we can see that $v_2=0$ immediately due to the result of proposition \ref{prop:GradZeroGraph} and the requirement that $\tgrad_\ddmes u$ be orthogonal $g_{jk}$ for every member of $g\in\gradZero{\ddom}{\lambda_{jk}}$.
-	This leaves the form of $v_1$ to be determined.
-	Since $u\in\gradSobQM{\ddom}{\ddmes}$ there existences a sequence of smooth functions $\phi_n$ which converge to $u$ in $\ltwo{\ddom}{\ddmes}$ and whose gradients $\tgrad\phi_n$ converge to $\tgrad_\ddmes u$.
-	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}) and $\partial_1\phi_n$ converges to $v_1\vert_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
+	Let $\tgrad_\ddmes u = \bracs{v_1, v_2}^\top$ denote the components of $\tgrad_\ddmes u$; we can see that $v_2\vert_{I_{jk}}=0$ immediately due to the result of proposition \ref{prop:GradZeroGraph} and thus the requirement that $\tgrad_\ddmes u$ be orthogonal to every member of $g\in\gradZero{\ddom}{\lambda_{jk}}$.
+	This leaves the form of $v_1\vert_{I_{jk}}$ to be determined.
+	Since $u\in\gradSobQM{\ddom}{\ddmes}$ there exists a sequence of smooth functions $\phi_n$ which converges to $u$ in $\ltwo{\ddom}{\ddmes}$, and whose gradients $\tgrad\phi_n$ converge to $\tgrad_\ddmes u$.
+	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n$ converges to $v_1\vert_{I_{jk}}-i\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
 	Considering the composition $\tilde{\phi}_n = \phi_n \circ r_{jk}$ we find that
 	\begin{align*}
 		\tilde{\phi}_n \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{u}_{jk},
-		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{t}} v_1\vert_{jk} - i\qm_1 \tilde{u}_{jk},
+		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{v}_1\vert_{jk} - i\qm_1 \tilde{u}_{jk},
 	\end{align*}
-	from which we can deduce that $\tilde{u}_{jk}' = v_1 - i\qm_1\tilde{u}$, and hence obtain the result for an edge parallel to the $x_1$-axis ($R_{jk}$ being the identity).
-	Any edges that are not parallel to the $x_1$-axis can now be rotated under $R_{jk}$ to bring them into an appropriate framework, the argument repeated and then unpacked to obtain the quoted form on each edge.
-	Then since this holds for each edge in any graph, the result of in the proposition is obtained.
+	from which we can deduce that $\tilde{u}_{jk}' = \tilde{v}_1\vert_{I_{jk}} - i\qm_1\tilde{u}$, and hence obtain the result for an edge parallel to the $x_1$-axis ($R_{jk}$ being the identity).
+	Then to deal with edges that are not parallel to the $x_1$-axis, we can first apply a rotation (using $R_{jk}$) to lie in a co-ordinate system with $I_{jk}$ parallel to an axis, apply the above argument, and then rotate back - the process of which introducing the various $R_{jk}$ pre-multipliers.
+	Given proposition \ref{prop:GradZeroGraph}, we are done.
 \end{proof}
 
 Whilst proposition \ref{prop:GraphTangGrad} arrives at an expected conclusion (given proposition \ref{prop:GradZeroGraph}) for the form of the tangential gradient, $\gradSobQM{\ddom}{\ddmes}$ has some additional structure that is not obvious from this study.
 In particular the behaviour of functions near the vertices of $\graph$ has been ignored up until this point, due to the fact that it does not warrant investigation when dealing with gradients of zero and hence the tangential gradients.
 It is also not unreasonable to expect some special behaviour of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ at the vertices, otherwise there will be no resemblance of the connectivity of $\graph$ in our function space.
-We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$), as is proven in \tstk{zhikov ref, with page/thm number} for when $\qm=0$:
+We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$).
+The converse is claimed in \cite[Section~4]{zhikov2002homogenization} for when $\qm=0$ on a single-junction-like graph structure.
+Again, we give a sketch of the proof first to provide a clear overview of the argument, followed by the full details of the proof.
 \begin{theorem} \label{thm:CharOfGradSob}
 	Assume convention \ref{ass:MeasTheoryProblemSetup}.
 	Then we have that
 	\begin{align*}
-		u\in\gradSobQM{\ddom}{\ddmes} \quad\Leftrightarrow\quad 
+		u \in\gradSobQM{\ddom}{\ddmes} \quad\Rightarrow\quad 
 		& (i) \ u\in\gradSobQM{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet, \\
-		& (ii) \ u \text{ is continuous at each } v_j\in \vertSet.
+		& (ii) \ u \text{ is continuous at each } v_j\in \vertSet,
 	\end{align*}
+	where $\tgrad_{\ddmes}u\vert_{I_{jk}} = \tgrad_{\lambda_{jk}}u$ on each edge $I_{jk}$.
 \end{theorem}
-For consistency with this work, we give a full proof in the appendix so that the interested reader has all the arguments associated with this work in one place.
-A sketch of the key ideas is below;
-\begin{proof}
-	The right-directed ($\Rightarrow$) implication is essentially a result of \eqref{eq:GraphMeasNormEdgeBreakdown}, as (i) follows from this almost immediately.
+\begin{proof} \textit{(Sketch):} 
+	The implication is essentially a result of \eqref{eq:GraphMeasNormEdgeBreakdown}, as (i) follows from this almost immediately.
 	(ii) is then obtained by showing that any sequence $\phi_n$ of smooth functions approximating $u$ and $\tgrad_\ddmes u$ (as in the definition of $\gradSobQM{\ddom}{\ddmes}$) is actually Cauchy in the uniform norm.
 	As such it must also converge to a continuous function by completeness of this norm, and the limit must be $u_{jk}$.
 	In particular it must also converge uniformly on the ``junction" surrounding each vertex $v_j$, and thus $u$ must be continuous at $v_j$ in particular. \newline
-	
-	The reverse implication is essentially a repeat of the argument for extending gradients of zero from one edge to the whole graph, except now we are doing similar steps for tangential gradients instead.
-	Take smooth sequences approximating each $u_{jk}\in\gradSobQM{\ddom}{\lambda_{jk}}$, and sum them in an appropriate way to obtain convergence in $\ltwo{\ddom}{\ddmes}^2$ from the individual convergences in $\ltwo{\ddom}{\lambda_{jk}}^2$.
-	Continuity at each vertex is required to control the behaviour of the sequence that is constructed near the vertices - namely we need to ensure there is a small ball around each vertex where the value of each $u_{jk} - u\bracs{v_j}$ is uniformly bounded across those edges $j\con k$.
+\end{proof}
+\begin{proof}
+	Suppose $u\in\gradSob{\ddom}{\ddmes}$, then we can find a sequence of smooth functions $\phi_l$ such that
+	\begin{align*}
+		\phi_l \lconv{\ltwo{\ddom}{\ddmes}} u, 
+		&\quad \grad\phi_l \lconv{\ltwo{\ddom}{\ddmes}^2} \grad_\ddmes u.
+	\end{align*}
+	But for each $I_{jk}\in \edgeSet$,
+	\begin{align*}
+		\integral{\ddom}{\abs{ \phi_l - u }^2}{\lambda_{jk}}
+		&\leq \integral{\ddom}{\abs{ \phi_l - u }^2}{\ddmes} \rightarrow 0, \\
+		\integral{\ddom}{\abs{ \grad\phi_l - \grad_\ddmes u }^2}{\lambda_{jk}}
+		&\leq \integral{\ddom}{\abs{ \grad\phi_l - \grad_\ddmes u }^2}{\ddmes} \rightarrow 0 \toInfty{l}.
+	\end{align*}
+	Thus $u\in\gradSob{\ddom}{\lambda_{jk}}$ (with $\grad_{\lambda_{jk}}u = \grad_\ddmes u$).
+	We now retain this sequence $\phi_l$, and consider one $v_j\in \vertSet$ and it's connecting edges $I_{jk}$ where $j\sim k$.
+	For each such $k$, to reduce the notational load denote composition with $r_{jk}$ (assumption \ref{ass:MeasTheoryProblemSetup} by an overhead tilde.
+	Then because we have (i) we conclude that 
+	\begin{align*}
+		\widetilde{\phi}_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}, 
+		&\quad \widetilde{\phi}'_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}',
+	\end{align*}
+	and hence $u\in\gradSob{\interval{I_{jk}}}{t}$.
+	As the embedding 
+	\begin{align*}
+		W^{1,2}\bracs{\interval{I_{jk}}, \md t} = \gradSob{\interval{I_{jk}}}{t} \ &\hookrightarrow \ C^{0,\recip{2}}\interval{I_{jk}}
+	\end{align*}
+	is compact; we can conclude that $\phi_l$ is a Cauchy sequence in the $C^{0,\recip{2}}$-norm, and hence is also Cauchy in the uniform norm,
+	\begin{align*}
+		\norm{\widetilde{\phi}_l}_{\mathrm{sup}_{jk}} := \sup_{\interval{I_{jk}}}\abs{\phi_l}.
+	\end{align*}
+	As the space of continuous functions is complete with respect to this norm we can conclude that $\widetilde{\phi}_l$ converges (uniformly) on this interval; and this limit must be $\widetilde{u}$, which is itself continuous on $\interval{I_{jk}}$ as it is the uniform limit of continuous functions.
+	By ``undoing" the change of variables under $r_{jk}$, we can also conclude that
+	\begin{align*}
+		\sup_{I_{jk}}\abs{\phi_l - u}\rightarrow0 \toInfty{l},
+	\end{align*}
+	that is $\phi_l$ converges uniformly to $u$ on $I_{jk}$.
+	We now claim that $\phi_l$ converges uniformly to $u$ on
+	\begin{align*}
+		J\bracs{v_j} &:= \bigcup_{j\sim k}I_{jk}
+	\end{align*}
+	too; which is easily seen because
+	\begin{align*}
+		\sup_{J\bracs{v_j}}\abs{\phi_l - u} &= \sup_{j\sim k}\sup_{I_{jk}}\abs{\phi_l - u} \\
+		&\rightarrow0 \toInfty{l},
+	\end{align*}
+	due to the uniform convergence on each edge.
+	Thus $u$ is also the uniform limit of continuous functions on $J\bracs{v_j}$, and so it continuous here, which in particular includes the vertex $v_j$ itself.
+	Hence we have (ii), and are done.
 \end{proof}

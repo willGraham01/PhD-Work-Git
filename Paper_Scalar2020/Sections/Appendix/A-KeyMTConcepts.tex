@@ -4,10 +4,10 @@ Attempting to pose a boundary-value problem on a singular-structure, by drawing 
 These are due to the singular structure lacking a domain interior from the perspective of the space it is embedded in, and thus the notion of boundary values ceases to make sense, and this problem persists even after taking a Gelfand transform to bring us to a family of problems on the period cell of the graph.
 This issue is resolved by not abandoning what we believe are the ingredients of a boundary-value problem, but rather by reworking our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular-structure itself, despite the fact that it is embedded in a higher-dimensional space.
 As we will be working with each of the measures $\dddmes, \ddmes$, and $\nu$ above individually before combining our knowledge of each, what we present here is stated in terms of a measure $\eta$ which can be thought of as representing any of the three aforementioned measures.
-Our defintions and the more general properties of the spaces presented here are (specific applications of) the work of Zhikov presented in \cite{zhikov2000extension} \tstk{and 2004?}, we will be using this framework to then further explore the specific spaces of interest to our applications and the functions therein. \newline
+Our defintions and the more general properties of the spaces presented here are motivated by the work of \cite{zhikov2000extension} and \cite{zhikov2002homogenization}. \newline
 
 First, let us introduce the notation for this section.
-Let $\eta$ be a (Borel) measure on a domain $D\subset\reals^2$ whose closure is $\sqbracs{0,T_1}\times\sqbracs{0,T_2}$ ($D$ will later become the period cell of an embedded graph $\graph$).
+Let $\eta$ be any of the (Borel) measures $\dddmes,\ddmes,\nu$ mentioned above, on a domain $\ddom\subset\reals^2$ whose closure is $\sqbracs{0,T_1}\times\sqbracs{0,T_2}$ ($\ddom$ should be thought of as the period cell of an embedded graph $\graph$).
 For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)$ define the shifted gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
 \begin{align*}
 	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}.
@@ -20,10 +20,10 @@ That is
 	W = W^{\qm}\bracs{D,\eta} &= \overline{\clbracs{\bracs{\phi,\tgrad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\eta}\times\ltwo{D}{\eta}^2.
 \end{align}
 The idea here is to construct an analogy of a Sobolev space for the measure $\eta$, and hence obtain a concept of (weak) derivative.
-This is the reason for us taking the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in \eqref{eq:WSetDefintion}, one hopes that if a sequence of smooth functions converges in $L^2$ to $u$, then their gradients also converge in $L^2$ to a function that represents the gradient of $u$ in a sense that is consistent with the measure $\eta$.
+This is the reason for us taking the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in \eqref{eq:WSetDefinition}, one hopes that if a sequence of smooth functions converges in $L^2$ to $u$, then their gradients also converge in $L^2$ to a function that represents the gradient of $u$ in a sense that is consistent with the measure $\eta$.
 Regrettably this does not turn out to be as simple a process as we would hope; we can immediately notice that if $\bracs{u,g_1},\bracs{0,g_2}\in W$ then clearly $\bracs{u, g_1+g_2}\in W$ too.
 This means that if $\bracs{u,g}\in W$ we cannot call $g$ ``the gradient" of $u$, which would imply that $W$ isn't quite the set of functions we should be working with.
-However $W$ does contain all the functions we should be working with, we just need to make sense of this ``non-uniqueness of gradients" issue. \newline
+However $W$ does contain the functions we should be working with, we just need to make sense of this ``non-uniqueness of gradients" issue. \newline
 
 We define the ``set of $\eta$-gradients of zero" as
 \begin{align} \label{eq:GradZeroDef}
@@ -31,7 +31,6 @@ We define the ``set of $\eta$-gradients of zero" as
 	&= \clbracs{ g \ \vert \ \exists\phi_n\in\smooth{D} \text{ s.t. } \phi_n\lconv{\ltwo{D}{\eta}}0, \tgrad\phi_n\lconv{\ltwo{D}{\eta}^2}g }
 \end{align}
 which is a closed, linear subspace of $\ltwo{D}{\eta}^2$. 
-\tstk{should include here some of the key properties of gradients of zero sets, like being a closed linear subspace and density of smooth functions. See Zhikov's appendix in his papers, these properties are needed for when we do the graph-wide extension theorem}
 It can be shown that $\gradZero{D}{\eta}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol:
 \begin{prop}[Gradients of Zero are Invariant Under Quasi-Momentum] \label{prop:GradZeroInvarientUnderQM}
 	For any fixed $\qm\in[-\pi,\pi)^2$, and with
@@ -41,7 +40,7 @@ It can be shown that $\gradZero{D}{\eta}$ does not depend on the value of $\qm$,
 	we have that
 	\begin{align*}
 		\mathcal{G}^0_{D, \md \eta} := \clbracs{ g \ \vert \ \bracs{0,g}\in W^0} &= 
-		\clbracs{ g \ \vert \ bracs{0,g}\in W} =: \mathcal{G}^{\qm}_{D, \md \eta}.
+		\clbracs{ g \ \vert \ \bracs{0,g}\in W} =: \mathcal{G}^{\qm}_{D, \md \eta}.
 	\end{align*}
 \end{prop}
 \begin{proof}
@@ -51,7 +50,8 @@ It can be shown that $\gradZero{D}{\eta}$ does not depend on the value of $\qm$,
 	\end{align*}
 	But then clearly
 	\begin{align*}
-		\phi_n\lconv{\ltwo{D}{\eta}}0, &\tgrad\phi_n = \grad\phi_n + i\qm\phi_n \lconv{\ltwo{D}{\eta}^2} g + 0 = g,
+		\phi_n\lconv{\ltwo{D}{\eta}}0, &\quad
+		\tgrad\phi_n = \grad\phi_n + i\qm\phi_n \lconv{\ltwo{D}{\eta}^2} g + 0 = g,
 	\end{align*}
 	so $g\in\mathcal{G}^\qm_{D, \md \eta}$.
 	The proof of the opposite inclusion is similar.
@@ -60,12 +60,12 @@ The illustration of the non-uniqueness of gradients earlier employed the fact th
 Colloquially, we can always ``add a gradient of zero" to an existing ``gradient", which will produce another ``gradient".
 So whilst a function $u$ might not have a unique gradient, it may at least have only one ``\emph{important}" gradient. \newline
 
-For each $u\in\ltwo{D}{\eta}$ there exists a $\grad_\eta u\in\gradZero{D}{\eta}^{\perp}$ such that any pair $\bracs{u,z}\in W$ can be written as $\bracs{u,\grad_\eta u + g}$ where $g\in\gradZero{D}{\eta}$.
-We call $\grad_\eta u$ the \emph{($\eta$-)tangential derivative} of $u$ and it is unique in this sense (see \tstk{ref to Zhikov}, or we could include the succinct summary I included to explain this in the confirmation report); which allows us to construct the ``Sobolev space"
+For each $u\in\ltwo{D}{\eta}$ there exists a $\tgrad_\eta u\in\gradZero{D}{\eta}^{\perp}$ such that any pair $\bracs{u,z}\in W$ can be written as $\bracs{u,\tgrad_\eta u + g}$ where $g\in\gradZero{D}{\eta}$.
+We call $\tgrad_\eta u$ the \emph{($\eta$-)tangential derivative} of $u$ and it is unique in this sense (see \cite[Section~9]{zhikov2000extension}); which allows us to construct the ``Sobolev space"
 \begin{align*}
 	\gradSobQM{D}{\eta} &= \clbracs{ \bracs{u, \tgrad_\eta u}\in W \ \vert \ \tgrad_\eta u \in \gradZero{D}{\eta}^{\perp} }.
 \end{align*}
-Since $\grad_\eta u$ is unique, we will use the shorthand $u\in\gradSobQM{D}{\eta}$ to refer to the pair $\bracs{u, \grad_\eta u}$. \tstk{worth a note about how tang gradient isn't always the gradient we want when solving equations with non-identity elliptic $A$, again a Zhikov reference. For us though, this definition is convenient because we use $A=I$ throughout.}
+Since $\grad_\eta u$ is unique, we will use the shorthand $u\in\gradSobQM{D}{\eta}$ to refer to the pair $\bracs{u, \grad_\eta u}$.
 We can now precisely state what we mean when we write equation \eqref{eq:PeriodCellLaplaceStrongForm}; a pair $u\in\gradSobQM{\ddom}{\dddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if (see \eqref{eq:PeriodCellLaplaceWeakForm})
 \begin{align*}
 	\integral{\ddom}{\tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\phi}}{\dddmes} &= \omega^2\integral{\ddom}{u\overline{\phi}}{\dddmes}, \quad\forall \phi\in\smooth{\ddom},
@@ -75,10 +75,10 @@ We will continue to use \eqref{eq:PeriodCellLaplaceStrongForm} as shorthand for 
 
 The space $\gradSobQM{D}{\eta}$ gives us a concept of (weak) derivative to work with, however this is as far as the general theory takes us.
 In order to demonstrate how \eqref{eq:PeriodCellLaplaceStrongForm} reduces to the system \eqref{eq:QGFullSystem}, we must understand the properties of the functions (and their gradients) that live in the space $\gradSobQM{\ddom}{\ddmes}$.
-This means that there is work to be done towards understanding the form of the tangential derivatives $\tgrad_{\dddmes}u$, which is the focus of sections \ref{app:muAnalysis} through \ref{app:ref}.
+This means that there is work to be done towards understanding the form of the tangential derivatives $\tgrad_{\dddmes}u$, which is the focus of sections \ref{app:muAnalysis} through \ref{app:SumMeasureAnalysis}.
 We will begin with an examination of the space $\gradSobQM{\ddom}{\ddmes}$ on (the period graph of) an embedded graph $\graph\subset\sqbracs{0,1}^2$, which will inform us about the behaviour of functions on the edges of our singular-structure.
-Then we shall proceed to analyse the space $\gradSobQM{\ddom}{\nu}$, before combining our knowledge in section \ref{sec:dddmesthing} to understand the properties of functions in $\gradSobQM{\ddom}{\dddmes}$.
-As the arguments are fairly long and cumbersome in terms of readability, we present a narrative overview (with appropriate detail) in sections \ref{app:muAnalysis} through \ref{app:ref}, and relegate longer proofs to section \tstk{create final appendix section for the long, full version of all the proofs.}
+Then we shall proceed to analyse the space $\gradSobQM{\ddom}{\nu}$, before combining our knowledge in section \ref{app:SumMeasureAnalysis} to understand the properties of functions in $\gradSobQM{\ddom}{\dddmes}$.
+As the arguments are fairly long and cumbersome in terms of readability, we present a narrative overview (with appropriate detail) in sections \ref{app:muAnalysis} through \ref{app:SumMeasureAnalysis}, and relegate longer proofs to section \tstk{create final appendix section for the long, full version of all the long-winded proofs}
 
 %
 %%old conf report stuff

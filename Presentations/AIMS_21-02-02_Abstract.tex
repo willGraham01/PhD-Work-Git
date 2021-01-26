@@ -1,0 +1,25 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\chapter*{Considerations for Quantum Graph Problems Motivated by Photonic Crystals}
+
+Photonic crystals can be thought of as thin, periodic structures that have found applications in the design of waveguides.
+This is primarily because the geometry of these crystal structures gives rise to ``frequency band gaps" - ranges of frequencies that cannot support wave propagation in the crystal - meaning one can use the crystal as a cladding for another material that does support waves at those frequencies.
+However, determining the manner in which the crystal's geometry influences these ``band gaps" is difficult - as one is typically looking at analysing Maxwell's equations on a geometrically complex and thin domain to find them.
+This begs the question; since the crystal structure is typically thin, would it be unreasonable to approximate the structure as singular (having a thickness of zero)?
+Doing so means we can borrow ideas from the theory of Quantum Graphs, essentially a framework for differential equations on graph-like structures, obtaining something that's easier to deal with than a system of PDEs (like Maxwell).
+In this talk I will discuss the treatment of these ``singular-structures" motivated by photonic crystals, the Quantum Graph problems that they lead us to, and the tools we can employ to handle them.
+We will see that the Quantum Graph problems we obtain explicitly encode the geometry of the structure; and give us access to a tool that allows us (both analytically and numerically) to obtain information about the ``band-gaps" of these structures.
+
+\end{document}
