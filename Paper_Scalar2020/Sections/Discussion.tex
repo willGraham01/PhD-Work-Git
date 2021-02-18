@@ -1,10 +1,11 @@
-\section{General formula for the $M$-Matrix of a finite period graph} \label{sec:Discussion}
-Having obtained the quantum graph problem \eqref{eq:QGFullSystem}, we now turn our attention to determination of the eigenvalues $\omega^2$.
-The appeal of transitioning from \eqref{eq:WholeSpaceLaplaceEqn} to \eqref{eq:QGFullSystem} was so that we could make use of the $M$-matrix (introduced in section \ref{ssec:MMatrix}) as a tool for determining the spectrum.
-In this section we contextualise the theory introduced in section \ref{sec:QuantumGraphs}, and in particular section \ref{ssec:MMatrix}, explaining how it is employed in our approach to determining the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
-In doing so, we will also provide a general formula for the $M$-matrix of a finite period graph on which \eqref{eq:QGFullSystem} is posed; and we will follow up on this in section \ref{sec:Examples} where we provide some explicit examples of quantum graph problems that can be solved by employing the $M$-matrix in the manner discussed below. \newline
+\section{General formula for the $M$-matrix of a finite period graph} \label{sec:Discussion}
+Having obtained the quantum graph problem \eqref{eq:QGFullSystem}, we now turn our attention to its eigenvalues $\omega^2$.
+The advantage of \eqref{eq:WholeSpaceLaplaceEqn} in comparison to \eqref{eq:QGFullSystem} is that we can now use the $M$-matrix (introduced in section \ref{ssec:MMatrix}) as a tool for determining the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+In this section we contextualise the theory introduced in section \ref{sec:QuantumGraphs}, and in particular section \ref{ssec:MMatrix}, showing how it is employed for studying the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+In doing so, we will also provide a general formula for the $M$-matrix of a finite period graph on which \eqref{eq:QGFullSystem} is posed.
+We will follow up on this in section \ref{sec:Examples}, where we provide some explicit examples of quantum graph problems that can be solved by employing the $M$-matrix in the manner discussed below.
 
-\subsection{General formula for the $M$-Matrix} \label{ssec:MMatrixResult}
+\subsection{General formula for the $M$-matrix} \label{ssec:MMatrixResult}
 \begin{prop}[$M$-matrix entries] \label{prop:M-MatrixEntries}
 	Let $\graph=\bracs{\vertSet,\edgeSet}$ be an embedded graph on which the problem \eqref{eq:QGFullSystem} is posed.
 	Suppose that $\dmap u = e_k$ where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\complex^{\abs{\vertSet}}$.
@@ -12,19 +13,13 @@ In doing so, we will also provide a general formula for the $M$-matrix of a fini
 	\begin{align*}
 		\bracs{\nmap u}_j &= 
 		\begin{cases}
-			\!\begin{aligned}
-				&0,
-			\end{aligned}			
+			0,	
 			& j \not\con k, \\
-			\!\begin{aligned}
-				&-\sum_{j\conLeft k} \omega e^{i\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
-				\\ &\quad - \sum_{j\conRight k} \omega e^{-i\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
-			\end{aligned}
+			-\sum_{j\conLeft k} \omega e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
+			- \sum_{j\conRight k} \omega e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
 			& j\neq k, \ j\con k, \\
-			\!\begin{aligned}
-				&\sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
-				\\ &\quad + 2\omega\sum_{j\conLeft j} \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega},
-			\end{aligned}
+			\sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
+			+ 2\omega\sum_{j\conLeft j} \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega},
 			& j=k.
 		\end{cases}
 	\end{align*}
@@ -35,13 +30,14 @@ Also recall the convention for summing over $j\con k$:
 	\sum_{j\con k} \omega\cot\bracs{l_{jk}\omega} &= \sum_{j\conLeft k} \omega\cot\bracs{l_{jk}\omega}	+ \sum_{j\conRight k} \omega\cot\bracs{l_{kj}\omega}
 \end{align*}
 \begin{proof}
-	The proof is an explicit computation, and follows the same idea as in \cite{ershova2014isospectrality} with adjustments for the fact that there are $\qm$ terms floating around. \newline
+	The proof below is an explicit computation, similar to that in \cite{ershova2014isospectrality} with adjustments for the dependence on $\qm$.
 	
-	We first determine the form of the edge solution $u_{jk}$ via solution of \eqref{eq:QGEdgeODEs} up to two complex constants per edge,
+	We first write the general form of the edge solution $u_{jk}$ from \eqref{eq:QGEdgeODEs}:
 	\begin{align} \label{eq:EdgeEqnGeneralSolution}
-		u_{jk} &= e^{-i\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-i\omega t} + C_{-}^{(jk)}e^{i\omega t} }.
+		u_{jk} &= e^{-\rmi\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-\rmi\omega t} + C_{-}^{(jk)}e^{\rmi\omega t} },
+		\quad C_{+}^{(jk)}, C_{-}^{(jk)}\in\complex.
 	\end{align}
-	Since the $M$-matrix maps $\complex^{\abs{\vertSet}}\rightarrow\complex^{\abs{\vertSet}}$, it is sufficient to determine the $M$-matrix's action on the canonical basis of $\complex^{\abs{\vertSet}}$.
+	Since the $M$-matrix maps $\complex^{\abs{\vertSet}}$ to $\complex^{\abs{\vertSet}}$, it is sufficient to determine its action on the canonical basis of $\complex^{\abs{\vertSet}}$.
 	So for each fixed $k\in\clbracs{1,...,\abs{\vertSet}}$ we set $\dmap u = e_k$.
 	This provides us with sufficient Dirichlet data to solve \eqref{eq:QGEdgeODEs} on each edge and eliminate the constants $C_{+}^{(jk)}$, $C_{-}^{(jk)}$ in \eqref{eq:EdgeEqnGeneralSolution}, obtaining
 	\begin{align*}
@@ -52,98 +48,98 @@ Also recall the convention for summing over $j\con k$:
 		\end{cases} \\
 		j\neq k, \ j\con k &\implies
 		\begin{cases}
-			u_{jk}(t) = e^{-i\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
-			u_{kj}(t) = -e^{-i\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
+			u_{jk}(t) = e^{-\rmi\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
+			u_{kj}(t) = -e^{-\rmi\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
 		\end{cases} \\
 		j = k &\implies 
 		\begin{cases}
-			u_{jj}(t) = e^{-i\qm_{jj}t} \bracs{ e^{-i\omega t} + \sqbracs{e^{-i\qm_{jj}l_{jj}}-e^{-i\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
+			u_{jj}(t) = e^{-\rmi\qm_{jj}t} \bracs{ e^{-\rmi\omega t} + \sqbracs{e^{-\rmi\qm_{jj}l_{jj}}-e^{-\rmi\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
 		\end{cases}
 	\end{align*}
-	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}$ at the vertices.
+	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}$ at the vertices.
 	In the case $j\not\con k$, we obviously get zero contribution from the edges $I_{jk}$ and $I_{kj}$.
-	The case $j\neq k, \ j\con k$, yields contributions from the edges $I_{jk}$ and $I_{kj}$ as follows:
+	The case $j\neq k, \ j\con k$, yields the following contributions from the edges $I_{jk}$ and $I_{kj}$:
 	\begin{align*}
-		\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}\bracs{v_j} &= -\omega e^{-i\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, \\
-		\bracs{\diff{}{t}+i\qm_{jk}}u_{jk}\bracs{v_k} &= \omega\cot\bracs{\omega l_{jk}}, \\
-		\bracs{\diff{}{t}+i\qm_{kj}}u_{kj}\bracs{v_j} &= -\omega e^{-i\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, \\
-		\bracs{\diff{}{t}+i\qm_{kj}}u_{kj}\bracs{v_k} &= \omega\cot\bracs{\omega l_{kj}}.
+		\bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}\bracs{v_j} = -\omega e^{-\rmi\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, 
+		&\qquad \bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}\bracs{v_k} = \omega\cot\bracs{\omega l_{jk}}, \\
+		\bracs{\diff{}{t}+\rmi\qm_{kj}}u_{kj}\bracs{v_j} = -\omega e^{-\rmi\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, 
+		&\qquad \bracs{\diff{}{t}+\rmi\qm_{kj}}u_{kj}\bracs{v_k} = \omega\cot\bracs{\omega l_{kj}}.
 	\end{align*}
-	And finally, when considering the case $j=k$ the contribution to $\bracs{\nmap u}_j$ from loops $I_{jj}$ in the graph also requires us to compute
+	Finally, when considering the case $j=k$, the contribution to $\bracs{\nmap u}_j$ from loops $I_{jj}$ in the graph also requires us to compute
 	\begin{align*}
-		\lim_{t\rightarrow0}-\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t) + \lim_{t\rightarrow l_{jj}}\bracs{u_{jj}'+i\qm_{jj}u_{jj}} & (t) \\
-		&= 2\omega\bracs{ \cot\bracs{\omega l_{jj}} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{\omega l_{jj}}}.	
+		-\lim_{t\rightarrow0}\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t) + \lim_{t\rightarrow l_{jj}}\bracs{u_{jj}'+i\qm_{jj}u_{jj}} & (t) \\
+		&= 2\omega\bigl( \cot\bracs{\omega l_{jj}} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{\omega l_{jj}} \bigr).	
 	\end{align*}
 	We then use the formula
 	\begin{align*}
-		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\diff{}{t}+i\qm_{jl}}u_{jl}\bracs{v_j},
+		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\diff{}{t}+\rmi\qm_{jl}}u_{jl}\bracs{v_j},
 	\end{align*}
-	and our previous computations to compute each entry $\bracs{\nmap u}_j$, and obtain the desired result.
+	which yields the desired result.
 \end{proof}
 
-As mentioned in section \ref{ssec:MMatrix}, determination of the eigenvalues $\omega^2$ of a quantum graph problem can be done by determining those $\omega^2$ such that
+As mentioned in section \ref{ssec:MMatrix}, the eigenvalues $\omega^2$ of a quantum graph correspond to solutions of the equation
 \begin{align*}
 	\det\bracs{ M\bracs{\omega} - A } = 0,
 \end{align*}
-where $A$ is the vector of vertex coupling constants and $M$ is the $M$-matrix of the quantum graph.
-In the case of \eqref{eq:QGFullSystem}, specifically \eqref{eq:QGDerivCondition}, one will notice that there is a factor of $\omega^2$ multiplying the coupling constants $\alpha_j$ as they appear in the right-hand-side of the equation.
+where $A$ is the diagonal matrix of vertex coupling constants.
+In the case of \eqref{eq:QGDerivCondition}, there is a factor of $\omega^2$ multiplying the coupling constants $\alpha_j$ as they appear in the right-hand-side of the equation.
 Furthermore, proposition \ref{prop:M-MatrixEntries} also demonstrates that the $M$-matrix (in the context of \eqref{eq:QGFullSystem}) can be thought of as a function of $\omega$ parametrised by $\qm$, and so we shall denote it by $M_{\qm}$ henceforth.
-The dependence of $M_\qm$ on $\qm$ is due to our decision to specify our singular structure (comprising the domain which \eqref{eq:WholeSpaceLaplaceEqn} was posed) as an embedded, periodic metric graph and then apply the Gelfand transform - as touched on in section \ref{ssec:MMatrix}.
-As such, to determine the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} it is necessary to solve
+The dependence of $M_\qm$ on $\qm$ is due to our decision to specify our singular structure (comprising the domain which \eqref{eq:WholeSpaceLaplaceEqn} was posed) as an embedded, periodic metric graph and then apply the Gelfand transform --- as touched on in section \ref{ssec:MMatrix}.
+As a result; the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, is determined by finding solutions $\omega$ to
 \begin{align} \label{eq:QGDetSolveCondition}
-	\det\bracs{M_\qm\bracs{\omega} - \omega^2 A} &= 0,
+	\det\bracs{M_\qm\bracs{\omega} - \omega^2 A} &= 0.
 \end{align}
-for $\omega$, over each value of $\qm$.
 
 \subsection{Consequences of Proposition \ref{prop:M-MatrixEntries}} \label{ssec:MMatrixConsequences}
-Proposition \ref{prop:M-MatrixEntries} effectively reduces the potentially intractable problem \eqref{eq:WholeSpaceLaplaceEqn} to a more accessible (family of) matrix-eigenvalue problem(s) for $M_\qm$.
-In this subsection, we will remark on some of the consequences of proposition \ref{prop:M-MatrixEntries} and discuss some of the ways that it can be exploited for use in examining physically-motivated graph topologies. \newline
+Proposition \ref{prop:M-MatrixEntries} reduces the problem \eqref{eq:WholeSpaceLaplaceEqn} to a more accessible (family of) matrix-eigenvalue problem(s) for $M_\qm$.
+We next remark on some of the consequences of proposition \ref{prop:M-MatrixEntries} and discuss some of the ways that it can be exploited for use in examining physically-motivated graph topologies.
 
 The task of solving \eqref{eq:QGDetSolveCondition} for $\omega$ can be accomplished in two ways.
-One can simply compute an expression for the determinant in terms of $\omega$, set this equal to zero, and determine those $\omega$ that satisfy the equation.
+One can simply compute an expression for the determinant in terms of $\omega$, and determine those $\omega$ that make it vanish.
 Of course the determinant also depends on $\qm$, and so it is still necessary to solve for $\omega$ for each $\qm$.
 However the task can be simplified so long as \eqref{eq:QGDetSolveCondition} can have $\omega$ and $\qm$ separated, that is be written equivalently as
 \begin{align*}
 	F\bracs{\omega} &= G\bracs{\qm}
 \end{align*}
 for some (continuous) functions $F$ and $G$.
-In this case, one can simply compute the range of $G$, and solve the inequality
+In this case, one can simply compute the range of $G$, and find $\omega$ satisfying the bounds
 \begin{align*}
 	\min\clbracs{G(\qm)} \leq F\bracs{\omega} \leq \max\clbracs{G(\qm)},
 \end{align*}
 netting the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} in one inequality.
 This is an approach that we employ in our examples in section \ref{sec:Examples}.
-The alternative approach is to realise \eqref{eq:QGDetSolveCondition} as a (generalised) eigenvalue problem,
+Alternatively, one can realise \eqref{eq:QGDetSolveCondition} as a (generalised) eigenvalue problem,
 \begin{align} \label{eq:QGGenEvalSolve}
 	\bracs{ M_\qm\bracs{\omega}-\omega^2 A }w &= 0,
 \end{align}
-where one is solving for the eigenpairs $\bracs{\omega, w}$.
-This formulation of \eqref{eq:QGDetSolveCondition} is much better suited to situations in which a numerical approach is to be used, as working with the determinant directly is prone to instabilities and errors.
-However provided that one has an appropriate numerical scheme, \tstk{could \cite{guttel2017nonlinear} Guttel, Manchester paper here} a computer can compute (an approximation to) the spectrum of \eqref{eq:QGFullSystem} and thus, by varying $\qm$ over a suitable mesh, the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
-Of course, a numerical approach will never recover the full spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, but is more appropriate when considering singular-structures as an approximation to physically-motivated thin-structures.
-There are of course other complexities to consider if one wishes to solve \eqref{eq:QGDetSolveCondition} numerically, which we highlight later in section \ref{ssec:NumericalApproachConsiderations}. \newline
+for eigenpairs $\bracs{\omega, w}$.
+This formulation \eqref{eq:QGGenEvalSolve} of \eqref{eq:QGDetSolveCondition} is much better suited to the latter approach, as working with the determinant directly is prone to instabilities.
+It is also more appropriate when considering the singular-structure as an approximation to a physically-motivated thin-structure.
+\tstk{And several algorithms for solving such formulations are available, see for example \cite{guttel2017nonlinear} for a good introduction to the topic.} 
+Once an approximation to the spectrum of \eqref{eq:QGFullSystem} is computed, by varying $\qm$ over a suitable mesh, the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} is determined.
 
-Given that we have two potential approaches to tackling \eqref{eq:QGDetSolveCondition}, the next question to consider is when one approach is more amiable than the other.
-This is answered predominantly by noticing that proposition \ref{prop:M-MatrixEntries} tells us that the complexity of the entry of $\bracs{M_\qm}_{jk}$ depends on the number of edges between the vertices $v_j$ and $v_k$, whilst the diagonal entries have a complexity that depends on the degree of the vertex $v_j$.
+Given that we have two approaches to tackling \eqref{eq:QGDetSolveCondition}, the next question to consider is when one approach is preferable to the other.
+This is answered predominantly by noticing that proposition \ref{prop:M-MatrixEntries} tells us that the complexity of the entry of $\bracs{M_\qm}_{jk}$ depends on the number of edges between the vertices $v_j$ and $v_k$, whilst the complexity of the diagonal entries depends on the degree of the vertex $v_j$.
 Furthermore, the number of vertices in the graph determines the dimensions of $M_\qm$, and the sparsity of $M_\qm$ depends on the number of pairs of vertices that are not (directly) connected by an edge.
 This leads to the colloquial rule that ``graphs with a small number of edges lend themselves to the first approach (via the determinant), whilst graphs with a large number of edges are easier to handle with approach two (as a generalised eigenvalue problem)".
-Indeed, as the entries of $M_\qm$ grow more complex and $M_\qm$ becomes less sparse, computing the determinant in \eqref{eq:QGDetSolveCondition} becomes much harder analytically (and of course, even more susceptible to instabilities numerically).
-Of course, even though it is the number of edges in the graph which predominantly dictates how ``nice" $M_\qm$ is to work with analytically, making a graph larger (that is, adding additional vertices and/or edges to an existing graph) will always make $M_\qm$ harder to work with.
-Even for relatively simple geometries like those in section \ref{sec:Examples}, the computations one has to go through to obtain expressions for the eigenvalues $\omega^2$ are fairly involved.
+Indeed, as the entries of $M_\qm$ grow more complex and $M_\qm$ becomes less sparse, computing the determinant in \eqref{eq:QGDetSolveCondition} becomes less tangible analytically (and even more susceptible to instabilities).
+%Of course, even though it is the number of edges and vertices in the graph which predominantly dictates how ``nice" $M_\qm$ is to work with analytically, adding additional vertices and/or edges to an existing graph will always make $M_\qm$ harder to work with.
+%Even for relatively simple geometries like those in section \ref{sec:Examples}, the computations required to obtain expressions for the eigenvalues $\omega^2$ are fairly involved.
+There are other challenges to consider if one wishes to solve \eqref{eq:QGDetSolveCondition} via \eqref{eq:QGGenEvalSolve} numerically, which we now discuss in section \ref{ssec:NumericalApproachConsiderations}.
 
 \subsection{Considerations for a Numerical Approach to Solving \eqref{eq:QGDetSolveCondition}} \label{ssec:NumericalApproachConsiderations}
-In this section we briefly discuss some considerations for solving \eqref{eq:QGDetSolveCondition} as a generalised eigenvalue problem \eqref{eq:QGGenEvalSolve} for a fixed $\qm$, and suggestions as to how one can then efficiently recover the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+In this section we briefly discuss solving \eqref{eq:QGDetSolveCondition} as a generalised eigenvalue problem \eqref{eq:QGGenEvalSolve} for a fixed $\qm$ and provide suggestions as to how one can efficiently recover the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
 We take as a baseline that one has an appropriate numerical scheme for handling generalised eigenvalue problems to hand \tstk{Guttel \cite{guttel2017nonlinear} would also be good here}, and so do not delve into the details of how such an algorithm would operate.
-Instead we highlight some potentially useful ideas for handling $M_\qm$ in these contexts, and invite further insight into the utility of these ideas from the reader.
-It is of course worth mentioning that $M_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries}) so any numerical scheme gains the benefits of $M_\qm$ having this property. \newline
+Instead we highlight some potentially useful ideas for handling $M_\qm$ in these contexts.
+It is worth mentioning that $M_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries}), from which most numerical schemes benefit.
 
-Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, these entries aren't particularly friendly when attempting to work with $M_\qm$ numerically.
-Each (non-zero) entry involves at least one reciprocal trigonometric function with poles in $\omega$, which need to be dealt with if $M_\qm$ is to be used in a numerical scheme that requires evaluation of $M_\qm\bracs{\omega}$.
-This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing all the poles in the entries of $M_\qm$, as follows:
+Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, these entries are not particularly friendly when attempting to work with $M_\qm$ numerically.
+Each (non-zero) entry involves at least one reciprocal trigonometric function with poles in $\omega$, which hinder evaluation of $M_\qm\bracs{\omega}$.
+This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing all the poles in question, as follows:
 \begin{cory}[$M$-matrix entries without poles] \label{cory:M-MatrixEntriesNoPoles}
-	Let $\tilde{M}_\qm\bracs{\omega}$ have entries defined by
+	Let $\widetilde{M}_\qm\bracs{\omega}$ have entries defined by
 	\begin{align*}
-		\bracs{\tilde{M}_\qm}_{jk} &= 
+		\bracs{\widetilde{M}_\qm}_{jk} &= 
 		\begin{cases}
 			\!\begin{aligned}
 				&0,
@@ -156,48 +152,50 @@ This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing a
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
 				&\sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
-				\\ &\quad + 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\sqbracs{ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} } },
+				\\ &\quad + 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\bigl[ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} \bigr] },
 			\end{aligned}
-			& j=k.
+			& j=k,
 		\end{cases}
 	\end{align*}
-	And set
+	and set
 	\begin{align*}
-		P_{M_\qm} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
+		P_{M_\qm}\bracs{\omega} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
 	\end{align*}
-	Then
+	Then one has
 	\begin{align*}
-		M_\qm\bracs{\omega} &= P_{M_\qm}\tilde{M}_\qm\bracs{\omega}.
+		M_\qm\bracs{\omega} &= P_{M_\qm}\bracs{\omega}\widetilde{M}_\qm\bracs{\omega}.
 	\end{align*}
 \end{cory}
 The product notation should be understood analogously to the summation notation over $j\con k$ introduced in section \ref{sec:QuantumGraphs}.
-Corollary \ref{cory:M-MatrixEntriesNoPoles} is just the result of pulling out the scalar factor $P_{M_\qm}$ from $M_\qm$.
-Since $P_{M_\qm}$ contains all the poles of the entries of $M_\qm$, the resulting matrix $\tilde{M}_\qm$ has no poles, and even has it's $jk^{\mathrm{th}}$ entry bounded (for all $\omega$) by the number of (direct) connections $j\con k$.
+Since $P_{M_\qm}$ contains all the poles of the entries of $M_\qm$, the matrix $\widetilde{M}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
 This also means that one can then solve the generalised eigenvalue problem
 \begin{align} \label{eq:QGGenEvalSolveNoPoles}
-	\bracs{ \tilde{M}_\qm - \omega^2 P_{M_\qm}^{-1} A}w = 0
+	\bracs{ \widetilde{M}_\qm - \omega^2 P_{M_\qm}^{-1} A}w = 0
 \end{align}
-for $\omega$ instead of \eqref{eq:QGGenEvalSolve}.
-Writing
+for $\omega$ instead of \eqref{eq:QGGenEvalSolve}, which is more regular, as
 \begin{align*}
 	P_{M_\qm}^{-1} &= \prod_{j\con k}\sin\bracs{l_{jk}\omega}
 \end{align*}
-avoids introducing poles to the mix, and it is also worth noting that $\abs{P_{M_\qm}^{-1}}\leq 1$.
-Then to ensure that the result obtained is consistent with \eqref{eq:QGGenEvalSolve}, one would have to exclude those $\omega$ found which correspond to a pole of $P_{M_\qm}$.
-However the set of poles is easily computed from the set of all lengths $l_{jk}$, with poles occurring at those
+does not have any poles.
+%and it is also worth noting that $\abs{P_{M_\qm}^{-1}}\leq 1$.
+To ensure that the result obtained is consistent with \eqref{eq:QGGenEvalSolve}, one needs to exclude those $\omega$ found that correspond to a pole of $P_{M_\qm}$, namely
 \begin{align*}
 	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0}.
 \end{align*}
-As such, one can solve the generalised eigenvalue problem involving the bounded matrix $\tilde{M}_\qm$, and then exclude any $\omega$ that correspond to one of the (known) poles of $P_{M_\qm}$. \newline
+%As such, one can solve the generalised eigenvalue problem involving the bounded matrix $\widetilde{M}_\qm$, and then exclude any $\omega$ that correspond to one of the (known) poles of $P_{M_\qm}$. \newline
 
-The other immediate discussion point to consider when taking a numerical approach is how to efficiently solve \eqref{eq:QGGenEvalSolve} for $\omega$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
+The other discussion point to consider is how to efficiently solve \eqref{eq:QGGenEvalSolve} for $\omega$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
 This must be done to obtain the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, since our Gelfand transform requires us to take the union of the spectra of \eqref{eq:QGFullSystem} over $\qm$.
 One suggestion that comes to mind is to investigate whether the solutions $\omega$ to \eqref{eq:QGGenEvalSolve} (or \eqref{eq:QGGenEvalSolveNoPoles}) are stable with respect to changes in the $\qm$, that is whether one can obtain a result like (one of) the following:
 \begin{itemize}
 	\item For every $\eps>0$, there exists some $\delta>0$ such that if $\norm{\qm^{(1)}-\qm^{(2)}}<\delta$, then the solutions $\omega^{(1)}$ and $\omega^{(2)}$ to \eqref{eq:QGGenEvalSolve} (with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively) are such that $\norm{\omega^{(1)}-\omega^{(2)}}<\eps$.
+%	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolve} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
+%	\begin{align*}
+%		\frac{ \norm{\qm^{(1)}-\qm^{(2)}} }{ \norm{\qm^{(1)}} } \leq c \frac{ \norm{\omega^{(1)}-\omega^{(2)}} }{ \norm{\omega^{(1)}} }
+%	\end{align*}
 	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolve} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
 	\begin{align*}
-		\frac{ \norm{\qm^{(1)}-\qm^{(2)}} }{ \norm{\qm^{(1)}} } \leq c \frac{ \norm{\omega^{(1)}-\omega^{(2)}} }{ \norm{\omega^{(1)}} }
+		\norm{\qm^{(1)}-\qm^{(2)}} \leq c \norm{\omega^{(1)}-\omega^{(2)}}.
 	\end{align*}
 \end{itemize}
 Having either of these confirmed would mean that one could adopt a more informed approach to solving \eqref{eq:QGGenEvalSolve} on a $\qm$-mesh: after solving at $\qm^{(1)}$ and obtaining a solution $\omega^{(1)}$, and knowing the next mesh-point $\qm^{(2)}$ to be solved at, the value $\omega^{(1)}$ would provide a good starting guess to an algorithm determining the solution of \eqref{eq:QGGenEvalSolve} at $\qm^{(2)}$.

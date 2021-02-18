@@ -1,33 +1,33 @@
-\section{Concepts from the Study of Metric- and Quantum Graphs} \label{sec:QuantumGraphs}
+\section{Concepts from the thery of metric graphs} \label{sec:QuantumGraphs}
 Here we introduce the objects appearing in the system \eqref{eq:QGFullSystem} and measure-theoretic formulation \eqref{eq:PeriodCellLaplaceStrongForm}.
-To this end, we outline some elements of the theory of quantum graphs that we borrow in what follows, and setup the notation that we use throughout this work.
+To this end, we outline some elements of the theory of metric (and quantum) graphs that we borrow in what follows, and setup the notation we use throughout.
 This includes a discussion of what is meant by an embedded graph, in order to provide a foundation for the term ``periodic graph" which represents the geometry of our (physically-motivated) singular structure.
-We then define the function spaces we use when dealing with the problem \eqref{eq:QGFullSystem}, as well as an overview of the $M$-matrix, a tool that will be key to our analysis of it's spectrum.
-Although the concept of a singular measure is needed to formally link \eqref{eq:PeriodCellLaplaceStrongForm} and \eqref{eq:QGFullSystem}, these details are left to the appendix (\ref{app:SingularMeasures}).
+We then define the function spaces we use when dealing with the problem \eqref{eq:QGFullSystem}, as well as an overview of the $M$-matrix, a tool that will be key to our analysis of its spectrum.
+The concept of a singular measure is needed to formally link \eqref{eq:PeriodCellLaplaceStrongForm} and \eqref{eq:QGFullSystem}, and these details are left to the appendix (\ref{app:SingularMeasures}).
 
-\subsection{Periodic Graphs embedded in the plane} \label{ssec:EmbeddedGraphs}
+\subsection{Periodic graphs embedded in the plane} \label{ssec:EmbeddedGraphs}
 We begin with the definition of a metric graph.
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
-Strictly we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$, but in what follows we drop the superscript $l$ to avoid notational clutter.
-Each edge $I_{jk}$ is assigned a length $l_{jk}>0$ and we use the same notation $I_{jk}$ for the interval $\sqbracs{0,l_{jk}}$.
+Strictly, we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$, however in what follows we drop the superscript $l$ to simplify the notation.
+Each edge $I_{jk}$ is assigned a length $l_{jk}>0$, and we use the same notation $I_{jk}$ for the interval $\sqbracs{0,l_{jk}}$.
 We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j\in\reals$).
 A graph $\graph$ with the metric structure described above is called a \emph{metric graph}.
-Metric graphs convey a sense of size or bulk to the structures they describe - the edges between vertices now represent physical ``wires" as opposed to combinatorial links as in graph theory.
+Metric graphs convey a sense of size or bulk to the structures they describe --- the edges between vertices now represent physical ``wires" as opposed to combinatorial links as in graph theory.
 One can form a quantum graph by equipping a metric graph with a suitable differential operator (and associated vertex- or ``boundary"-conditions) as discussed in section \ref{ssec:FunctionSpaces} and in greater detail in \cite{berkolaiko2013introduction}.
-Before discussing operators on metric graphs though, we first outline some notation and conventions that will be in use throughout this work. \newline
+Before proceeding to a discussion of operators on metric graphs, we first outline some notation and conventions that we adopt.
 
-We say a (directed) graph $\graph = \bracs{\vertSet,\edgeSet}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point which we also label $v_j\in\reals^2$; and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with (arc-)length $l_{jk}$, such that there is a continuous map
+We say that a (directed) graph $\graph = \bracs{\vertSet,\edgeSet}$ is embedded into $\reals^2$ if each vertex $v_j$ is associated to a point, which we also label $v_j\in\reals^2$, and each edge $I_{jk}$ associated to a curve $\gamma_{jk}\subset\reals^2$ with arclength $l_{jk}$, so that there is a continuous map
 \begin{align} \label{eq:GeneralCurveParam}
 	r: \sqbracs{0,l_{jk}} \rightarrow \gamma_{jk}, \quad r(0) = v_j, \quad r\bracs{l_{jk}} = v_k.
 \end{align}
-Again, we will drop the distinction between $I_{jk}$ and $\gamma_{jk}$, simply using $I_{jk}$ for both.
+We will drop the distinction between $I_{jk}$ and $\gamma_{jk}$, simply using $I_{jk}$ for both.
 Clearly, an embedded graph gives rise to a metric graph, and a metric graph can be assigned an embedding to construct an embedded graph (although there is by no means only one choice of embedding to do this, as we will touch on at the end of section \ref{sec:QuantumGraphs}).
-The choice of $\reals^2$ is simply to cover the situations we will be considering in this work, there are more general definitions depending on the choice of space to ``embed" the graph into.
+The choice of $\reals^2$ is simply to cover the situations we will consider, and there are more general definitions depending on the choice of space to ``embed" the graph into.
 For a unit vector $x\in\reals^2$, an embedded graph is said to be $T$-periodic in the direction $x$ if it is invariant under the translation $Tx$ applied to its vertices and edges.
-In what follows, we always refer to the minimal such $T>0$ (``period") with this property for a given $x\in\reals^2$.
+In what follows, we always refer to the minimal such $T>0$ (``period") for a given $x\in\reals^2$.
 Note that so long as the graph $\graph$ is periodic in two linearly independent directions, a linear transform can be applied to transform the period cell of $\graph$ into a rectangle with sides parallel to the co-ordinate axes, and so without loss of generality we only consider rectangular period cells henceforth.
 If $\graph$ is periodic in the (orthogonal) axial directions $e_1, e_2$ (with periods $T_1, T_2$ respectively), then we can define the ``period cell" or ``unit cell" $\mathcal{P}$ of $\graph$ in the obvious manner: take the intersection of the graph $\graph$ with the region $\mathcal{P} = \sqbracs{0,T_1}\times\sqbracs{0,T_2}$ and match the left boundary to the right, and the top boundary to the bottom.
-That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in the region $\mathcal{P}$ as a set on a torus, see \ref{fig:PeriodCellIllustration}.
+That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in the region $\mathcal{P}$ as a set on a torus, see figure \ref{fig:PeriodCellIllustration}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -39,7 +39,7 @@ That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{Diagram_PeriodCellEdgeAssociation.pdf}
-		\caption{\label{fig:Diagram_PeriodCellEdgeAssociation} The period cell of the graph in \ref{fig:Diagram_PeriodCellFullLattice}, notice how the edges of the period cell are associated.}
+		\caption{\label{fig:Diagram_PeriodCellEdgeAssociation} The period cell of the graph in \ref{fig:Diagram_PeriodCellFullLattice}. Notice how the edges of the period cell are associated.}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[b]{0.75\textwidth}
@@ -49,27 +49,27 @@ That is, view the part $\graph_{\mathcal{P}}$ of the graph $\graph$ contained in
 	\end{subfigure}
 	\caption{\label{fig:PeriodCellIllustration} Illustrating a periodic cell of a periodic embedded graph.}
 \end{figure} 
-We will refer to $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as the ``period graph", or ``unit graph" of $\graph$. \newline
+We will refer to $\graph_{\mathcal{P}} = \graph \cap \mathcal{P}$ as the ``period graph", or ``unit graph" of $\graph$.
 
-As mentioned in section \ref{ssec:OurSystem}, we restrict ourselves to the consideration of graphs with straight edges.
-Allowing for the possibility of curved edges within the graph gives rise to systems of a similar form to \eqref{eq:QGFullSystem} only with the parameters $\qm_{jk}$ being $t$-dependant.
+As mentioned in section \ref{ssec:OurSystem}, we restrict ourselves to considering graphs with straight edges.
+Allowing for the possibility of curved edges within the graph gives rise to systems of a similar form to \eqref{eq:QGFullSystem}, only with the parameters $\qm_{jk}$ being $t$-dependant.
 Operators of this kind have been studied before in works such as \cite{shterenberg2007homogenization}, in the context of differential operators on non-singular structures in $\reals^2$.
-The additional complication (of having $\qm_{jk}$ $t$-dependent) would require an alternative approach to determining the spectrum of \eqref{eq:QGFullSystem} to that which we take here, and we restrict ourselves to considering straight-edges only henceforth.
+The additional complication (of having $\qm_{jk}$ dependent on $t$) would require an alternative approach to determining the spectrum of \eqref{eq:QGFullSystem} to that which we take here, and we restrict ourselves to considering straight-edges only henceforth.
 We summarise our standing assumptions for the rest of this work below:
 \begin{assumption} \label{ass:MeasTheoryProblemSetup}
 	Let $\graph=\bracs{\vertSet,\edgeSet}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
-	We restrict ourselves to considering straight-edges between vertices, so each $I_{jk}\in \edgeSet$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}_2$.
+	We consider straight edges between vertices, so each $I_{jk}\in \edgeSet$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}$, where $\norm{\cdot}$ stands for the Euclidean length.
 	Let $e_{jk}$ be the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$.
 	Set
 	\begin{align} \label{eq:EdgeParameterisation}
 	r_{jk}:\sqbracs{0, l_{jk}} \ni t \mapsto v_j + te_{jk} \in I_{jk},
 	\end{align}
 	and note that $r_{jk}'(t) = e_{jk}$.
-	Finally, let $n_{jk}$ be the unit normal to $I_{jk}$ such that $y_{jk} = \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$.
+	Finally, let $n_{jk}$ be the unit normal to $I_{jk}$ so the frame $y_{jk} := \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$ (where no summation over $j,k$ is implied).
 \end{assumption}
 
-\subsection{Function Spaces} \label{ssec:FunctionSpaces}
-Consider the following function spaces
+\subsection{Function spaces} \label{ssec:FunctionSpaces}
+Consider the following function spaces:
 \begin{subequations} \label{eq:GraphFuncSpaces}
 	\begin{align}
 		L^2\bracs{\graph} := \bigoplus_{I_{jk}\in \edgeSet} \ltwo{I_{jk}}{t},
@@ -77,54 +77,54 @@ Consider the following function spaces
 		H^2\bracs{\graph} := \bigoplus_{I_{jk}\in \edgeSet} H^2_\mathrm{grad}\bracs{I_{jk}, \md t}. &
 	\end{align}
 \end{subequations}
-We define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of a function $u$ defined on $\graph$ to the edge $I_{jk}$, extended by zero.
-We will also use the shorthand $u_{jk}\bracs{v_j}$ and $u_{jk}\bracs{v_k}$ for the values $u_{jk}\bracs{0}$ and $u_{jk}\bracs{l_{jk}}$ respectively.
+We define $u_{jk} = u\vert_{I_{jk}}$ to be the restriction of a function $u$ defined on $\graph$ to the edge $I_{jk}$, extended by zero to the other edges of the graph.
+We will also use the shorthand $u_{jk}\bracs{v_j}$ and $u_{jk}\bracs{v_k}$ for the values $u_{jk}\bracs{0}$ and $u_{jk}\bracs{l_{jk}}$, respectively.
 If additionally $u$ is continuous at a vertex $v_j$, we will use the notation $u\bracs{v_j}$ for this value.
-We also use a notion of ``signed derivative" for our functions when we approach the endpoints of an edge in the graph $\graph$:
+We also use a notion of ``signed derivative" at the endpoints of an edge:
 \begin{subequations} \label{eq:SignedDerivConvention}
 	\begin{align}
-		\diff{}{t}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
-		\diff{}{t}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
+		\diff{}{n}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
+		\diff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
 	\end{align}
 \end{subequations}
-for suitably differentiable functions $u$ on $\graph$. 
-One can think of the formulae \eqref{eq:SignedDerivConvention} as defining an ``exterior facing" derivative at each endpoint.
+for a differentiable function $u$ on $\graph$, where the prime notation denotes differentiation by $t$.
+One can think of the formulae \eqref{eq:SignedDerivConvention} as defining an ``exterior facing" derivative at each endpoint, bearing in mind that the edge $I_{jk}$ is directed from $v_j$ to $v_k$.
 Before discussing differential operators on metric graphs, we introduce some additional notation for convenience: $j\conLeft k$ stands for ``an edge with endpoints $v_j$ and $v_k$, with $v_j$ on the left", and $j\con k$ is used to mean ``an edge with endpoints $v_j$ and $v_k$", whenever the direction of the edge is not important.
 We also use $j \conRight k$ alongside $k\conLeft j$.
-In other words we have,
+In other words, we have
 \begin{align*}
-	j\conLeft k &\Leftrightarrow I_{jk}\in \edgeSet, \\
-	j\con k &\Leftrightarrow I_{jk}\in \edgeSet \text{ or } I_{kj}\in \edgeSet.
+	j\conLeft k \Leftrightarrow I_{jk}\in \edgeSet, &\qquad
+	j\con k \Leftrightarrow I_{jk}\in \edgeSet \text{ or } I_{kj}\in \edgeSet.
 \end{align*}
-We then utilise this notation as shorthand in summations involving edges or vertices; for example, for a fixed $j$
+We then utilise this notation as shorthand in summations involving edges or vertices:
 \begin{align*}
 	\sum_{j\conLeft k} = \sum_{\substack{k \\ I_{jk}\in \edgeSet}}, 
-	&\quad 	\sum_{j\conRight k} = \sum_{\substack{k \\ I_{kj}\in \edgeSet}}.
-	&\quad \sum_{j\con k} = \sum_{j\conLeft k} + \sum_{j\conRight k},
+	\qquad 	\sum_{j\conRight k} = \sum_{\substack{k \\ I_{kj}\in \edgeSet}},
+	\qquad \sum_{j\con k} = \sum_{j\conLeft k} + \sum_{j\conRight k},
 \end{align*}
 so for example
 \begin{align*}
 	\sum_{j\con k}u_{jk}\bracs{v_j} &= \sum_{j\conLeft k}u_{jk}\bracs{v_j} + \sum_{j\conRight k}u_{kj}\bracs{v_j}.
 \end{align*}
-For consistency with the possibility of having multiple edges $I_{jk}^l$ connecting two vertices, then these sums should be interpreted as running over all such edges. \newline
+If there are multiple edges $I_{jk}^l$ connecting two vertices, these sums are interpreted as running over all such edges.
 
+\subsection{Differential operators on graphs} \label{ssec:DiffOpsOnGraphs}
 Differential operators on metric graphs are defined by specifying their domains and their action on each edge of the graph $\graph$.
-A well-posed problem on a graph requires specifying boundary conditions at the vertices (also referred to as ``vertex conditions"), which are identified with the end-points of the corresponding edges $I_{jk}$.
+A well-posed problem on a graph requires specifying boundary conditions at the vertices (also referred to as ``vertex conditions"), which are identified with the end-points of the corresponding edges $I_{jk}$ as discussed in section \ref{ssec:FunctionSpaces}.
 Specifying these vertex conditions also reflects the connectivity of the graph, which the function spaces \eqref{eq:GraphFuncSpaces} do not convey on their own.
 A \emph{quantum graph} is then simply a metric graph equipped with such a differential operator.
-There are a variety of choices one can make for the vertex conditions, and we will be interested in imposing continuity of the solution at each vertex, and a Robin-like condition on the derivatives of the solution.
-Such conditions are also referred to as ``$\delta-$type " conditions. \tstk{refs to Abelviero et al (exactly solvable) and \cite{berkolaiko2013introduction}}
-By way of example, let us demonstrate how we define the graph Laplacian $\mathcal{A}$ on the period graph $\graph_{\mathcal{P}}$.
+There are a variety of choices one can make for the vertex conditions, and we will be interested in imposing continuity of the solution at each vertex and a Robin-like condition on the derivatives of the solution, also known as a ``$\delta-$type" condition. \tstk{refs to Abelviero et al (exactly solvable) and \cite{berkolaiko2013introduction}}
+By way of example, let us demonstrate how we define a graph Laplacian $\mathcal{A}$ on the period graph $\graph_{\mathcal{P}}$ for a given set of coupling constants $\alpha_j$.
 The domain of $\mathcal{A}$ is defined as
-\begin{align*}
-	\mathrm{dom}\bracs{\mathcal{A}} &= \clbracs{ u\in H^2\bracs{\graph_{\mathcal{P}}} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j} },
-\end{align*}
+\begin{align} \label{eq:GraphLaplacianExample}
+	\mathrm{dom}\bracs{\mathcal{A}} &= \clbracs{ u\in H^2\bracs{\graph_{\mathcal{P}}} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\diff{u_{jk}}{n}\bracs{v_j} = \alpha_j u\bracs{v_j} },
+\end{align}
 and the differential expression on each edge is $-\ddiff{}{t}$.
-Then for a function $f\in L^2\bracs{\graph_{\mathcal{P}}}$ we can pose the resolvent problem of finding $u\in\mathrm{dom}\bracs{\mathcal{A}}$ such that
+For a function $f\in L^2\bracs{\graph_{\mathcal{P}}}$ we pose the resolvent problem of finding $u\in\mathrm{dom}\bracs{\mathcal{A}}$ such that
 \begin{align*}
-	\mathcal{A}u &= f;
+	\mathcal{A}u &= f,
 \end{align*}
-or alternatively can consider the spectral problem of finding eigenpairs $\bracs{\lambda,u}\in\complex\times\mathrm{dom}\bracs{\mathcal{A}}$ such that
+or alternatively one can consider the spectral problem of finding eigenpairs $\bracs{\lambda,u}\in\complex\times\mathrm{dom}\bracs{\mathcal{A}}$ such that
 \begin{align*}
 	\mathcal{A}u &= \lambda u.
 \end{align*}
@@ -132,35 +132,41 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 \begin{align*}
 	\mathcal{A}u = f \quad\Leftrightarrow\quad &
 	\begin{cases}
-		-\ddiff{u_{jk}}{t} = f_{jk} \ \forall j\conLeft k, \\
+		%-\ddiff{u_{jk}}{t} = f_{jk} \ \forall j\conLeft k, \\
+		-u_{jk}'' = f_{jk} \ \forall j\conLeft k, \\
 		\forall j, \ u \text{ is continuous at } v_j, \\
 		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases} \\
 	\mathcal{A}u = \lambda u \quad\Leftrightarrow\quad &
 	\begin{cases}
-		-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \forall j\conLeft k, \\
+		%-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \forall j\conLeft k, \\
+		-u_{jk}'' = \lambda u_{jk} \ \forall j\conLeft k, \\
 		\forall j, \ u \text{ is continuous at } v_j, \\
 		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases}
 \end{align*}
+One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
+As mentioned in section \ref{ssec:OurSystem}, this means the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
+Rigorous setup is beyond the scope of this paper, but the central tool for analysis of the spectrum of \eqref{eq:QGFullSystem} (the $M$-matrix, see section \ref{ssec:MMatrix}) will be introduced in the more familiar setup with no explicit dependence on $\omega^2$ in the vertex conditions.
+The analysis of the spectrum of \eqref{eq:QGFullSystem} is then carried out simply by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts.
 
 \subsection{The $M$-Matrix} \label{ssec:MMatrix}
-When tackling spectral problems on quantum graphs, the so-called $M$-matrix will provide us with a useful tool in determining the spectrum, as we discuss in section \ref{sec:SystemDerivation}.
-The $M$-matrix is in fact a generalisation of the classical Weyl-Titchmarsh $m$-function, and a particular case of the abstract $M$-operator, as it appears in the theory of boundary triples (more information can be found \tstk{refs for $M$-operator are: Kochubei, Gorbachuk \& Gorbachuk, Brown Marletta Naboko Wood, Kirill Sasha Luis. Classical references include books by Titchmarsh and Atkinson for the $m$-function}).
-Here we restrict ourselves to a short review the specific theory that will be relevant to this work.
-Let $\mathcal{A}$ be the graph Laplacian, and define the maps
+We next provide a brief overview of the $M$-matrix, a tool for characterising the \tstk{missing text in PDF annotations!?} and the spectrum of $\mathcal{A}$, which we implement in section \ref{sec:Derivation}
+The $M$-matrix is a generalisation of the classical Weyl-Titchmarsh $m$-function, and a particular case of the abstract $M$-operator, as it appears in the theory of boundary triples (more information can be found \tstk{refs for $M$-operator are: Kochubei, Gorbachuk \& Gorbachuk, Brown Marletta Naboko Wood, Kirill Sasha Luis. Classical references include books by Titchmarsh and Atkinson for the $m$-function}).
+Here we restrict ourselves to a short review the specific theory relevant to the present work.
+Let $\mathcal{A}$ be a graph Laplacian, and consider the maps
 \begin{align*}
-	\dmap, \nmap: \mathrm{dom}\bracs{\mathcal{A}} \rightarrow \complex^{\abs{\vertSet}};
+	\dmap, \nmap: \mathrm{dom}\bracs{\mathcal{A}} \rightarrow \complex^{\abs{\vertSet}},
 \end{align*}
-which send a function $u\in\mathrm{dom}\bracs{\mathcal{A}}$, to its Dirichlet and Neumann data at each of the vertices respectively;
+sending a function $u\in\mathrm{dom}\bracs{\mathcal{A}}$ to its Dirichlet and Neumann data at each of the vertices, respectively:
 \begin{align*}
 	\bracs{\dmap u}_j &= u\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}, \\
-	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
+	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{n}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
 \end{align*}
-The $M$-matrix is then defined by
+The $M$-matrix at $z\in\complex$ is then defined by
 \begin{align*}
-	\complex^{\abs{\vertSet}} \ni M\bracs{\lambda}\dmap u &= \nmap u \in \complex^{\abs{\vertSet}},
-	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-\lambda}.
+	M(z): \ \complex^{\abs{\vertSet}} \ni \dmap u \mapsto \nmap u \in \complex^{\abs{\vertSet}},
+	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-z}.
 \end{align*}
 It can be shown that $\lambda$ is an eigenvalue of $\mathcal{A}$ if and only if
 \begin{align*}
@@ -169,22 +175,22 @@ It can be shown that $\lambda$ is an eigenvalue of $\mathcal{A}$ if and only if
 where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 \tstk{A more general statement can be found in Derkach, Malamund.}
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
-We will exploit this fact in section \ref{sec:Examples}. \newline
+We will exploit this fact in section \ref{sec:Examples}.
 
 At this point we should address a small detail concerning our problem formulation and the definition of the $M$-matrix.
-In this work we shall often prescribe an embedded, periodic graph $\graph$ (usually in $\reals^2$) to represent our singular-structure - particularly in section \ref{sec:Examples} where we will begin our examples in this way.
-A consequence of this is that when we take a Gelfand transform, the family of operators on the period graph $\graph_{\mathcal{P}}$ that we obtain will contain dependencies on the choice of geometry that our embedding provided as well as the quasi-momentum $\qm$.
-For example, these may be dependencies on the angle between the edges and the co-ordinate axes (which is to be expected given how the constants $\theta_{jk}$ are derived, see section \ref{sec:SystemDerivation} or appendix \ref{app:muAnalysis} for details).
-With the (family of) operators on $\graph_{\mathcal{P}}$ containing these dependencies, the resulting $M$-matrix of each of these operators will also contain dependencies on the same things.
-That is, the $M$-matrix for each member of the family of operators on $\graph_{\mathcal{P}}$ will depend on each of the spectral parameter $\lambda$; the quasi-momentum $\qm$, and a number of geometric quantities arising from the embedding.
+In this work we shall often prescribe an embedded, periodic graph $\graph$ (usually in $\reals^2$) to represent our singular-structure --- particularly in section \ref{sec:Examples} where we apply our method of specific examples.
+A consequence of this is that when we take a Gelfand transform, the family of operators on the period graph $\graph_{\mathcal{P}}$ that we obtain contain dependencies on the choice of geometry provided by the embedding as well as on the quasi-momentum $\qm$.
+For example, these may be dependencies on the angle between the edges and the co-ordinate axes (which is to be expected, given how the constants $\qm_{jk}$ in \eqref{eq:QGFullSystem} are derived, see section \ref{sec:SystemDerivation} or appendix \ref{app:muAnalysis} for details).
+For a family of operators on $\graph_{\mathcal{P}}$ containing these dependencies, the resulting family of  $M$-matrices will also reflect these dependencies.
+That is, the $M$-matrix for each member of the family will depend on the spectral parameter $\lambda$, the quasi-momentum $\qm$, and a number of geometric quantities arising from the embedding.
 As the $M$-matrix contains all the spectral information about the operator, this means that the spectra of each individual operator will inherit these dependencies from the embedding. 
-The union of these spectra over the quasi-momentum $\qm$ will still yield the spectrum of the original, pre-Gelfand-transformed operator on $\graph$, of course. \newline
+The union of these spectra over the quasi-momentum $\qm$ will yield the spectrum of the original operator on $\graph$.
 
-It is also possible to define the notion of a periodic quantum (or metric) graph $\tilde{\graph}$ without prescribing an embedding, as is done in \cite[Chapter~4]{berkolaiko2013introduction}.
-$\tilde{\graph}$ prescribes a notion of length and derivative, and so its $M$-matrix can then also be defined and computed, and analysed to obtain the spectrum - potentially in a manner involving an abstract version of the Gelfand transform.
+Alternatively, one can define the notion of a periodic quantum (or metric) graph $\tilde{\graph}$ without prescribing an embedding, as is done in \cite[Chapter~4]{berkolaiko2013introduction}.
+The graph $\tilde{\graph}$ prescribes a notion of length and derivative, and so its $M$-matrix can then also be defined and computed, and analysed to obtain the spectrum - potentially in a manner involving an abstract version of the Gelfand transform.
 Proceeding this way means that, since no embedding of $\tilde{\graph}$ is made into a realisable (or physical) space, the resulting analysis is free of the additional geometric dependencies described above.
-Of course if it is possible to prescribe an embedding for $\tilde{\graph}$ and obtain $\graph$ (that is, if $\graph$ is a realisation of $\tilde{\graph}$), then both methods described above will produce the same spectrum.
-In our work, we elect to prescribe an embedding because our examples are motivated by physical structures (as explained above), and it is therefore much more convenient for us to prescribe a periodic graph along with it's embedding into physical space and proceed with our analysis from there.
-However it should be held in mind that the embedded periodic quantum graph $\graph$ we chose to represent our singular-structure may be only one possible realisation of an abstract periodic quantum graph $\tilde{\graph}$.
+However, when it is possible to prescribe an embedded ``realisation" $\graph$ of $\tilde{\graph}$, the two produce the same spectrum.
+In our work, we elect to prescribe an embedding because our examples are motivated by physical structures (see section \ref{sec:Intro}), and it is therefore more convenient to define a graph along with its embedding into physical space.
+However, it should be held in mind that the embedded, periodic quantum graph $\graph$ we chose to represent a given singular structure may not be the only possible realisation of an abstract periodic quantum graph $\tilde{\graph}$.
 This means that the spectrum obtained for one singular-structure topology may coincide with other topologies, so long as they also represent an embedding of $\tilde{\graph}$, despite the $M$-matrices differing due to the choice of embedding.
-In section \ref{ssec:EmbeddingDependentExample} we provide a concrete example of what is explained here.
+In section \ref{ssec:EmbeddingDependentExample} we provide a concrete example of this situation.

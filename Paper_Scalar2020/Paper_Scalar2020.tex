@@ -1,15 +1,17 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 
 \usepackage{url}
 %\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
 \usepackage{geometry}
 \geometry{a4paper} %or letterpaper or a5paper or ...
+\usepackage{fullpage}
 
 %for figures and graphics
 \usepackage{graphicx}
 \usepackage{subcaption} %allows subfigures
 \usepackage[bottom]{footmisc} %footnotes go below figures
 %\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 \graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
