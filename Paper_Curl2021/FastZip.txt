@@ -1,0 +1,3 @@
+zip -r PaperScalar2020.zip ./Diagrams/*.tex ./Diagrams/Numerical_Results ./Preamble/*.tex ./Paper_Curl2021/
+
+(run from relative directory ../)

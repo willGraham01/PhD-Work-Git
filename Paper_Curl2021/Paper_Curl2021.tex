@@ -1,0 +1,82 @@
+\documentclass[10pt]{article}
+
+\usepackage{url}
+%\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{geometry}
+\geometry{a4paper} %or letterpaper or a5paper or ...
+\usepackage{fullpage}
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+%reminders of things to fill in
+%\newcommand{\tstk}[1]{\textbf{#1}\newline}
+
+%changes the title of the bibliography page to ``References"
+\renewcommand{\refname}{References} %NB: For reports, this is \bibname rather than \refname
+
+\title{Paper Curl 2021}  % Declares the document's title.
+\author{K. Cherednichenko \& W. Graham} 	% Declares the author's name.
+\date{\today}      % commenting out this command produces today's date.
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+
+%REPORT BEGINS
+
+\maketitle
+
+%\input chapters one at a time; the references should all match up and can even cross-reference; however you won't get prompts for references across files when editing.
+%NB: Can use \include for speed, but then the directory fills up with useless .aux files.
+%To save time, comment out sections that aren't being edited. References may disappear but the file will still compile!
+
+\input{./Sections/Abstract}
+
+%\input{./Sections/Introduction}
+%
+%\input{./Sections/QuantumGraphs}
+%
+%\input{./Sections/Derivation}
+%
+%\input{./Sections/Discussion}
+%
+%\input{./Sections/Examples}
+%
+%\input{./Sections/Conclusion}
+
+\newpage %have a new page to start the bibliography
+%\bibliographystyle{acm}
+%\bibliography{Paper_Scalar2020.bib}
+
+\newpage %new page to clear space between bibliography and the appendix, as \section doesn't call \newpage
+\appendix %this informs LaTeX that the appendix starts here, so section numbering should now be alphabetical rather than numerical
+
+%\input{./Sections/Appendix/A-SingularMeasures}
+%
+%\input{./Sections/Appendix/A-KeyMTConcepts}
+%
+%\input{./Sections/Appendix/A-muAnalysis}
+%
+%\input{./Sections/Appendix/A-VertexAnalysis}
+%
+%\input{./Sections/Appendix/A-SumMeasureAnalysis}
+
+%need further two appendices - one if we really want a complete walkthrough of the derivation of the QG problem, and another for the full-blown, formal proof recitals.
+
+\end{document}
