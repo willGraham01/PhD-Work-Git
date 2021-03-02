@@ -54,7 +54,7 @@ It can then be shown that the problems \eqref{eq:PeriodCellLaplaceStrongForm} ca
 	\begin{align}
 		-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
 		u \text{ is continuous at each } &v_j \in \vertSet, \label{eq:QGVertCty}\\
-		\sum_{j\con k}\bracs{\diff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j}, \quad \forall v_j \in \vertSet, \label{eq:QGDerivCondition}
+		\sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j}, \quad \forall v_j \in \vertSet, \label{eq:QGDerivCondition}
 	\end{align}
 \end{subequations}
 where $\alpha_j\in\complex$ are suitable ``coupling constants" at the vertices, and $\qm_{jk}$ are effectively rotations of $\qm$ which can be computed if one knows the orientation of the edge $I_{jk}\in\vertSet$.

@@ -14,10 +14,10 @@ We will follow up on this in section \ref{sec:Examples}, where we provide some e
 		\bracs{\nmap u}_j &= 
 		\begin{cases}
 			0,	
-			& j \not\con k, \\
-			-\sum_{j\conLeft k} \omega e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
-			- \sum_{j\conRight k} \omega e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
-			& j\neq k, \ j\con k, \\
+			& j \not\con k, \\[5pt]
+			-\sum_{j\conLeft k} \omega \e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
+			- \sum_{j\conRight k} \omega \e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
+			& j\neq k, \ j\con k, \\[5pt]
 			\sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
 			+ 2\omega\sum_{j\conLeft j} \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega},
 			& j=k.
@@ -34,7 +34,7 @@ Also recall the convention for summing over $j\con k$:
 	
 	We first write the general form of the edge solution $u_{jk}$ from \eqref{eq:QGEdgeODEs}:
 	\begin{align} \label{eq:EdgeEqnGeneralSolution}
-		u_{jk} &= e^{-\rmi\qm_{jk}t}\bracs{ C_{+}^{(jk)}e^{-\rmi\omega t} + C_{-}^{(jk)}e^{\rmi\omega t} },
+		u_{jk} &= \e^{-\rmi\qm_{jk}t}\bracs{ C_{+}^{(jk)}\e^{-\rmi\omega t} + C_{-}^{(jk)}\e^{\rmi\omega t} },
 		\quad C_{+}^{(jk)}, C_{-}^{(jk)}\in\complex.
 	\end{align}
 	Since the $M$-matrix maps $\complex^{\abs{\vertSet}}$ to $\complex^{\abs{\vertSet}}$, it is sufficient to determine its action on the canonical basis of $\complex^{\abs{\vertSet}}$.
@@ -48,46 +48,46 @@ Also recall the convention for summing over $j\con k$:
 		\end{cases} \\
 		j\neq k, \ j\con k &\implies
 		\begin{cases}
-			u_{jk}(t) = e^{-\rmi\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
-			u_{kj}(t) = -e^{-\rmi\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
+			u_{jk}(t) = \e^{-\rmi\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
+			u_{kj}(t) = -\e^{-\rmi\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
 		\end{cases} \\
 		j = k &\implies 
 		\begin{cases}
-			u_{jj}(t) = e^{-\rmi\qm_{jj}t} \bracs{ e^{-\rmi\omega t} + \sqbracs{e^{-\rmi\qm_{jj}l_{jj}}-e^{-\rmi\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
+			u_{jj}(t) = \e^{-\rmi\qm_{jj}t} \bracs{ \e^{-\rmi\omega t} + \sqbracs{\e^{-\rmi\qm_{jj}l_{jj}}-\e^{-\rmi\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
 		\end{cases}
 	\end{align*}
-	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}$ at the vertices.
+	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}$ at the vertices.
 	In the case $j\not\con k$, we obviously get zero contribution from the edges $I_{jk}$ and $I_{kj}$.
 	The case $j\neq k, \ j\con k$, yields the following contributions from the edges $I_{jk}$ and $I_{kj}$:
 	\begin{align*}
-		\bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}\bracs{v_j} = -\omega e^{-\rmi\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, 
-		&\qquad \bracs{\diff{}{t}+\rmi\qm_{jk}}u_{jk}\bracs{v_k} = \omega\cot\bracs{\omega l_{jk}}, \\
-		\bracs{\diff{}{t}+\rmi\qm_{kj}}u_{kj}\bracs{v_j} = -\omega e^{-\rmi\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, 
-		&\qquad \bracs{\diff{}{t}+\rmi\qm_{kj}}u_{kj}\bracs{v_k} = \omega\cot\bracs{\omega l_{kj}}.
+		\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}\bracs{v_j} = -\omega \e^{-\rmi\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, 
+		&\qquad \bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}\bracs{v_k} = \omega\cot\bracs{\omega l_{jk}}, \\
+		\bracs{\pdiff{}{n}+\rmi\qm_{kj}}u_{kj}\bracs{v_j} = -\omega \e^{-\rmi\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, 
+		&\qquad \bracs{\pdiff{}{n}+\rmi\qm_{kj}}u_{kj}\bracs{v_k} = \omega\cot\bracs{\omega l_{kj}}.
 	\end{align*}
 	Finally, when considering the case $j=k$, the contribution to $\bracs{\nmap u}_j$ from loops $I_{jj}$ in the graph also requires us to compute
 	\begin{align*}
-		-\lim_{t\rightarrow0}\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t) + \lim_{t\rightarrow l_{jj}}\bracs{u_{jj}'+i\qm_{jj}u_{jj}} & (t) \\
-		&= 2\omega\bigl( \cot\bracs{\omega l_{jj}} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{\omega l_{jj}} \bigr).	
+		-\lim_{t\rightarrow0}\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t) + \lim_{t\rightarrow l_{jj}}\bracs{u_{jj}'+i\qm_{jj}u_{jj}}(t)
+		= 2\omega\bigl( \cot\bracs{\omega l_{jj}} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{\omega l_{jj}} \bigr).	
 	\end{align*}
 	We then use the formula
 	\begin{align*}
-		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\diff{}{t}+\rmi\qm_{jl}}u_{jl}\bracs{v_j},
+		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\pdiff{}{n}+\rmi\qm_{jl}}u_{jl}\bracs{v_j},
 	\end{align*}
 	which yields the desired result.
 \end{proof}
 
 As mentioned in section \ref{ssec:MMatrix}, the eigenvalues $\omega^2$ of a quantum graph correspond to solutions of the equation
 \begin{align*}
-	\det\bracs{ M\bracs{\omega} - A } = 0,
+	\det\bracs{ M\bracs{\omega^2} - A } = 0,
 \end{align*}
 where $A$ is the diagonal matrix of vertex coupling constants.
 In the case of \eqref{eq:QGDerivCondition}, there is a factor of $\omega^2$ multiplying the coupling constants $\alpha_j$ as they appear in the right-hand-side of the equation.
-Furthermore, proposition \ref{prop:M-MatrixEntries} also demonstrates that the $M$-matrix (in the context of \eqref{eq:QGFullSystem}) can be thought of as a function of $\omega$ parametrised by $\qm$, and so we shall denote it by $M_{\qm}$ henceforth.
+Furthermore, proposition \ref{prop:M-MatrixEntries} also demonstrates that the $M$-matrix (in the context of \eqref{eq:QGFullSystem}) can be thought of as being parametrised by $\qm$, and so we shall denote it by $M_{\qm}$ henceforth.
 The dependence of $M_\qm$ on $\qm$ is due to our decision to specify our singular structure (comprising the domain which \eqref{eq:WholeSpaceLaplaceEqn} was posed) as an embedded, periodic metric graph and then apply the Gelfand transform --- as touched on in section \ref{ssec:MMatrix}.
 As a result; the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, is determined by finding solutions $\omega$ to
 \begin{align} \label{eq:QGDetSolveCondition}
-	\det\bracs{M_\qm\bracs{\omega} - \omega^2 A} &= 0.
+	\det\bracs{M_\qm\bracs{\omega^2} - \omega^2 A} &= 0.
 \end{align}
 
 \subsection{Consequences of Proposition \ref{prop:M-MatrixEntries}} \label{ssec:MMatrixConsequences}
@@ -110,9 +110,9 @@ netting the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} in one inequality.
 This is an approach that we employ in our examples in section \ref{sec:Examples}.
 Alternatively, one can realise \eqref{eq:QGDetSolveCondition} as a (generalised) eigenvalue problem,
 \begin{align} \label{eq:QGGenEvalSolve}
-	\bracs{ M_\qm\bracs{\omega}-\omega^2 A }w &= 0,
+	\bracs{ M_\qm\bracs{\omega^2}-\omega^2 A }w &= 0,
 \end{align}
-for eigenpairs $\bracs{\omega, w}$.
+for eigenpairs $\bracs{\omega^2, w}$.
 This formulation \eqref{eq:QGGenEvalSolve} of \eqref{eq:QGDetSolveCondition} is much better suited to the latter approach, as working with the determinant directly is prone to instabilities.
 It is also more appropriate when considering the singular-structure as an approximation to a physically-motivated thin-structure.
 \tstk{And several algorithms for solving such formulations are available, see for example \cite{guttel2017nonlinear} for a good introduction to the topic.} 
@@ -134,12 +134,12 @@ Instead we highlight some potentially useful ideas for handling $M_\qm$ in these
 It is worth mentioning that $M_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries}), from which most numerical schemes benefit.
 
 Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, these entries are not particularly friendly when attempting to work with $M_\qm$ numerically.
-Each (non-zero) entry involves at least one reciprocal trigonometric function with poles in $\omega$, which hinder evaluation of $M_\qm\bracs{\omega}$.
+Each (non-zero) entry involves at least one reciprocal trigonometric function with poles in $\omega$, which hinder evaluation of $M_\qm\bracs{\omega^2}$.
 This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing all the poles in question, as follows:
-\begin{cory}[$M$-matrix entries without poles] \label{cory:M-MatrixEntriesNoPoles}
-	Let $\widetilde{M}_\qm\bracs{\omega}$ have entries defined by
+\begin{cory} \label{cory:M-MatrixEntriesNoPoles}
+	Let $H^{(1)}_\qm\bracs{\omega}$ have entries defined by
 	\begin{align*}
-		\bracs{\widetilde{M}_\qm}_{jk} &= 
+		\bracs{H^{(1)}_\qm}_{jk} &= 
 		\begin{cases}
 			\!\begin{aligned}
 				&0,
@@ -159,26 +159,27 @@ This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing a
 	\end{align*}
 	and set
 	\begin{align*}
-		P_{M_\qm}\bracs{\omega} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
+		H^{(2)}_\qm\bracs{\omega} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
 	\end{align*}
 	Then one has
 	\begin{align*}
-		M_\qm\bracs{\omega} &= P_{M_\qm}\bracs{\omega}\widetilde{M}_\qm\bracs{\omega}.
+		M_\qm\bracs{\omega^2} &= H^{(2)}_\qm\bracs{\omega}H^{(1)}_\qm\bracs{\omega}
 	\end{align*}
 \end{cory}
 The product notation should be understood analogously to the summation notation over $j\con k$ introduced in section \ref{sec:QuantumGraphs}.
-Since $P_{M_\qm}$ contains all the poles of the entries of $M_\qm$, the matrix $\widetilde{M}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
+It is worth noticing that, depending on whether or not there are an even number of edges in the graph $\graph$, multiplying $H^{(1)}_\qm$ and dividing $H^{(2)}_\qm$ by a factor of $\omega$ provides an expression for $M_\qm$ as a ratio of two holomorphic functions in $\omega^2$.
+Since $H^{(2)}_\qm$ contains all the poles of the entries of $M_\qm$, the matrix $H^{(1)}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
 This also means that one can then solve the generalised eigenvalue problem
 \begin{align} \label{eq:QGGenEvalSolveNoPoles}
-	\bracs{ \widetilde{M}_\qm - \omega^2 P_{M_\qm}^{-1} A}w = 0
+	\bracs{ H^{(1)}_\qm - \omega^2 \bracs{H^{(2)}_\qm}^{-1} A}w = 0
 \end{align}
 for $\omega$ instead of \eqref{eq:QGGenEvalSolve}, which is more regular, as
 \begin{align*}
-	P_{M_\qm}^{-1} &= \prod_{j\con k}\sin\bracs{l_{jk}\omega}
+	\bracs{H^{(2)}_\qm}^{-1} &= \prod_{j\con k}\sin\bracs{l_{jk}\omega}
 \end{align*}
 does not have any poles.
 %and it is also worth noting that $\abs{P_{M_\qm}^{-1}}\leq 1$.
-To ensure that the result obtained is consistent with \eqref{eq:QGGenEvalSolve}, one needs to exclude those $\omega$ found that correspond to a pole of $P_{M_\qm}$, namely
+To ensure that the result obtained is consistent with \eqref{eq:QGGenEvalSolve}, one needs to exclude those $\omega$ found that correspond to a pole of $H^{(2)}_\qm$, namely
 \begin{align*}
 	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0}.
 \end{align*}

@@ -83,8 +83,8 @@ If additionally $u$ is continuous at a vertex $v_j$, we will use the notation $u
 We also use a notion of ``signed derivative" at the endpoints of an edge:
 \begin{subequations} \label{eq:SignedDerivConvention}
 	\begin{align}
-		\diff{}{n}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
-		\diff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
+		\pdiff{}{n}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
+		\pdiff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
 	\end{align}
 \end{subequations}
 for a differentiable function $u$ on $\graph$, where the prime notation denotes differentiation by $t$.
@@ -117,7 +117,7 @@ There are a variety of choices one can make for the vertex conditions, and we wi
 By way of example, let us demonstrate how we define a graph Laplacian $\mathcal{A}$ on the period graph $\graph_{\mathcal{P}}$ for a given set of coupling constants $\alpha_j$.
 The domain of $\mathcal{A}$ is defined as
 \begin{align} \label{eq:GraphLaplacianExample}
-	\mathrm{dom}\bracs{\mathcal{A}} &= \clbracs{ u\in H^2\bracs{\graph_{\mathcal{P}}} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\diff{u_{jk}}{n}\bracs{v_j} = \alpha_j u\bracs{v_j} },
+	\mathrm{dom}\bracs{\mathcal{A}} &= \clbracs{ u\in H^2\bracs{\graph_{\mathcal{P}}} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\pdiff{u_{jk}}{n}\bracs{v_j} = \alpha_j u\bracs{v_j} },
 \end{align}
 and the differential expression on each edge is $-\ddiff{}{t}$.
 For a function $f\in L^2\bracs{\graph_{\mathcal{P}}}$ we pose the resolvent problem of finding $u\in\mathrm{dom}\bracs{\mathcal{A}}$ such that
@@ -135,14 +135,14 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 		%-\ddiff{u_{jk}}{t} = f_{jk} \ \forall j\conLeft k, \\
 		-u_{jk}'' = f_{jk} \ \forall j\conLeft k, \\
 		\forall j, \ u \text{ is continuous at } v_j, \\
-		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
+		\forall j, \sum_{j\con k}\pdiff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases} \\
 	\mathcal{A}u = \lambda u \quad\Leftrightarrow\quad &
 	\begin{cases}
 		%-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \forall j\conLeft k, \\
 		-u_{jk}'' = \lambda u_{jk} \ \forall j\conLeft k, \\
 		\forall j, \ u \text{ is continuous at } v_j, \\
-		\forall j, \sum_{j\con k}\diff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
+		\forall j, \sum_{j\con k}\pdiff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases}
 \end{align*}
 One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
@@ -161,16 +161,16 @@ Let $\mathcal{A}$ be a graph Laplacian, and consider the maps
 sending a function $u\in\mathrm{dom}\bracs{\mathcal{A}}$ to its Dirichlet and Neumann data at each of the vertices, respectively:
 \begin{align*}
 	\bracs{\dmap u}_j &= u\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}, \\
-	\bracs{\nmap u}_j &= \sum_{j\con k}\diff{u_{jk}}{n}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
+	\bracs{\nmap u}_j &= \sum_{j\con k}\pdiff{u_{jk}}{n}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
 \end{align*}
 The $M$-matrix at $z\in\complex$ is then defined by
 \begin{align*}
 	M(z): \ \complex^{\abs{\vertSet}} \ni \dmap u \mapsto \nmap u \in \complex^{\abs{\vertSet}},
 	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-z}.
 \end{align*}
-It can be shown that $\lambda$ is an eigenvalue of $\mathcal{A}$ if and only if
+It can be shown that $z$ is an eigenvalue of $\mathcal{A}$ if and only if
 \begin{align*}
-	\mathrm{det}\bracs{M\bracs{\lambda} - A}= 0,
+	\mathrm{det}\bracs{M\bracs{z} - A}= 0,
 \end{align*}
 where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 \tstk{A more general statement can be found in Derkach, Malamund.}

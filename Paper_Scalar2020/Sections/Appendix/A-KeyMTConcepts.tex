@@ -1,212 +1,80 @@
 \section{Appendix: Key Measure Theoretic Concepts} \label{app:MeasureTheory}
-In this section we address the question of how one understands the equations \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplaceStrongForm}, by outlining the appropriate differential operators and function spaces that are required.
+In this section we address the question of how one understands the equations \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplaceStrongForm}, by introducing the relevant differential operators and function spaces.
 Attempting to pose a boundary-value problem on a singular-structure, by drawing analogy to the ``ingredients" of a boundary-value problem on a thin structure, runs into problems.
-These are due to the singular structure lacking a domain interior from the perspective of the space it is embedded in, and thus the notion of boundary values ceases to make sense, and this problem persists even after taking a Gelfand transform to bring us to a family of problems on the period cell of the graph.
-This issue is resolved by not abandoning what we believe are the ingredients of a boundary-value problem, but rather by reworking our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular-structure itself, despite the fact that it is embedded in a higher-dimensional space.
-As we will be working with each of the measures $\dddmes, \ddmes$, and $\nu$ above individually before combining our knowledge of each, what we present here is stated in terms of a measure $\eta$ which can be thought of as representing any of the three aforementioned measures.
-Our defintions and the more general properties of the spaces presented here are motivated by the work of \cite{zhikov2000extension} and \cite{zhikov2002homogenization}. \newline
+These are due to the singular structure lacking a domain interior from the perspective of the space it is embedded in, so the notion of boundary values ceases to make sense.
+This issue is resolved by not abandoning what we believe are the ingredients of a boundary-value problem, but rather by reworking our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular structure itself.
+As we will be working with each of the measures $\dddmes, \ddmes$, and $\nu$ above individually before combining our knowledge of each, what we present here is stated in terms of a generic measure $\rho$.
+Our approach below is motivated by \cite{zhikov2000extension} and \cite{zhikov2002homogenization}.
 
 First, let us introduce the notation for this section.
-Let $\eta$ be any of the (Borel) measures $\dddmes,\ddmes,\nu$ mentioned above, on a domain $\ddom\subset\reals^2$ whose closure is $\sqbracs{0,T_1}\times\sqbracs{0,T_2}$ ($\ddom$ should be thought of as the period cell of an embedded graph $\graph$).
-For $\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)$ define the shifted gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
+Suppose $\rho$ is a Borel measure on 
 \begin{align*}
-	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + i\qm_1\phi \\ \partial_2\phi + i\qm_2\phi \end{pmatrix}.
+	\ddom:= \left[0,T_1\right)\times\left[0,T_2\right), 
 \end{align*}
-Recall that we pose \eqref{eq:WholeSpaceLaplaceEqn} on a periodic, embedded graph $\graph$ in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform to move us to a family of problems on the period cell of $\graph$. \newline
+which can be thought of as the period cell of an embedded graph $\graph$.
+For 
+\begin{align*}
+	\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)
+\end{align*}
+define the ``shifted" gradient operator $\tgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
+\begin{align*}
+	\tgrad\phi &= \begin{pmatrix} \partial_1\phi + \rmi\qm_1\phi \\ \partial_2\phi + \rmi\qm_2\phi \end{pmatrix}.
+\end{align*}
+Recall that we pose \eqref{eq:WholeSpaceLaplaceEqn} on a periodic, embedded graph $\graph$ in $\reals^2$, and the operator $\tgrad$ arises after using a Gelfand transform, to move us to a family of problems on the period cell of $\graph$.
 
-Denote the set of smooth functions on $D$ by $\smooth{D}$, and then let $W=W\bracs{D,\mathrm{d}\eta}$ be the closure of the set of pairs $\bracs{\phi,\tgrad\phi}$ in $\ltwo{D}{\eta}\times\ltwo{D}{\eta}^2$, where $\phi\in\smooth{D}$.
-That is
-\begin{align} \label{eq:WSetDefinition}
-	W = W^{\qm}\bracs{D,\eta} &= \overline{\clbracs{\bracs{\phi,\tgrad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\eta}\times\ltwo{D}{\eta}^2.
-\end{align}
-The idea here is to construct an analogy of a Sobolev space for the measure $\eta$, and hence obtain a concept of (weak) derivative.
-This is the reason for us taking the closure of the set of pairs $\bracs{\phi, \tgrad\phi}$ in \eqref{eq:WSetDefinition}, one hopes that if a sequence of smooth functions converges in $L^2$ to $u$, then their gradients also converge in $L^2$ to a function that represents the gradient of $u$ in a sense that is consistent with the measure $\eta$.
-Regrettably this does not turn out to be as simple a process as we would hope; we can immediately notice that if $\bracs{u,g_1},\bracs{0,g_2}\in W$ then clearly $\bracs{u, g_1+g_2}\in W$ too.
-This means that if $\bracs{u,g}\in W$ we cannot call $g$ ``the gradient" of $u$, which would imply that $W$ isn't quite the set of functions we should be working with.
-However $W$ does contain the functions we should be working with, we just need to make sense of this ``non-uniqueness of gradients" issue. \newline
-
-We define the ``set of $\eta$-gradients of zero" as
+Denote the set of smooth functions on $\ddom$ by $\smooth{\ddom}$, and let
+\begin{align*} %\label{eq:WSetDefinition}
+	W = W^{\qm}\bracs{\ddom,\rho} &:= \overline{\clbracs{\bracs{\phi,\tgrad\phi} \setVert \phi\in\smooth{\ddom}}} \quad \text{in} \ \ltwo{\ddom}{\rho}\times\ltwo{D}{\rho}^2.
+\end{align*}
+The idea here is to construct an analogy of a Sobolev space for the measure $\rho$, and hence obtain a concept of (weak) derivative.
+Notice that if $\bracs{u,g_1},\bracs{0,g_2}\in W$ then clearly $\bracs{u, g_1+g_2}\in W$ too.
+We define the ``set of $\rho$-gradients of zero" as
 \begin{align} \label{eq:GradZeroDef}
-	\gradZero{D}{\eta} &= \clbracs{ g \ \vert \ \bracs{0,g}\in W}, \\
-	&= \clbracs{ g \ \vert \ \exists\phi_n\in\smooth{D} \text{ s.t. } \phi_n\lconv{\ltwo{D}{\eta}}0, \tgrad\phi_n\lconv{\ltwo{D}{\eta}^2}g }
+	\gradZero{\ddom}{\rho} &= \clbracs{ g\in\ltwo{\ddom}{\rho}^2 \setVert \bracs{0,g}\in W}, \\
+	&= \clbracs{ g\in\ltwo{\ddom}{\rho}^2 \setVert \exists\phi_n\in\smooth{\ddom} \text{ such that } \phi_n\lconv{\ltwo{\ddom}{\rho}} 0, \tgrad\phi_n\lconv{\ltwo{\ddom}{\rho}^2} g }
 \end{align}
-which is a closed, linear subspace of $\ltwo{D}{\eta}^2$. 
-It can be shown that $\gradZero{D}{\eta}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol:
-\begin{prop}[Gradients of Zero are Invariant Under Quasi-Momentum] \label{prop:GradZeroInvarientUnderQM}
+which is a closed, linear subspace of $\ltwo{D}{\rho}^2$. 
+It can be shown that $\gradZero{D}{\rho}$ does not depend on the value of $\qm$, which is why the notation lacks a $\qm$ symbol:
+\begin{prop} \label{prop:GradZeroInvarientUnderQM}
 	For any fixed $\qm\in[-\pi,\pi)^2$, and with
 	\begin{align*}
-		W^0 &= \overline{\clbracs{\bracs{\phi,\grad\phi} \ \vert \ \phi\in\smooth{D}}} \quad \text{in} \ \ltwo{D}{\eta}\times\ltwo{D}{\eta}^2,
+		W^0 &= \overline{\clbracs{\bracs{\phi,\grad\phi} \setVert \phi\in\smooth{\ddom}}} \quad \mathrm{in} \ \ltwo{\ddom}{\rho}\times\ltwo{\ddom}{\rho}^2,
 	\end{align*}	
-	we have that
+	we have
 	\begin{align*}
-		\mathcal{G}^0_{D, \md \eta} := \clbracs{ g \ \vert \ \bracs{0,g}\in W^0} &= 
-		\clbracs{ g \ \vert \ \bracs{0,g}\in W} =: \mathcal{G}^{\qm}_{D, \md \eta}.
+		\mathcal{G}^0_{\ddom, \md \rho} := \clbracs{ g \ \vert \ \bracs{0,g}\in W^0} &= 
+		\clbracs{ g \ \vert \ \bracs{0,g}\in W} =: \mathcal{G}^{\qm}_{\ddom, \md \rho}.
 	\end{align*}
 \end{prop}
 \begin{proof}
-	Given that $\tgrad\phi = \grad\phi + i\qm\phi$ for smooth $\phi$, if $g\in\mathcal{G}^0_{D, \md \eta}$ there exists a sequence of smooth functions $\phi_n$ such that 
+	Given that $\tgrad\phi = \grad\phi + \rmi\qm\phi$ for smooth $\phi$, if $g\in\mathcal{G}^0_{\ddom, \md \rho}$ there exists a sequence of smooth functions $\phi_n$ such that 
 	\begin{align*}
-		\phi_n\lconv{\ltwo{D}{\eta}}0, &\grad\phi_n\lconv{\ltwo{D}{\eta}^2}g.
+		\phi_n\lconv{\ltwo{\ddom}{\rho}}0, &\quad \grad\phi_n\lconv{\ltwo{\ddom}{\rho}^2}g.
 	\end{align*}
 	But then clearly
 	\begin{align*}
-		\phi_n\lconv{\ltwo{D}{\eta}}0, &\quad
-		\tgrad\phi_n = \grad\phi_n + i\qm\phi_n \lconv{\ltwo{D}{\eta}^2} g + 0 = g,
+		\phi_n\lconv{\ltwo{\ddom}{\rho}}0, &\quad
+		\tgrad\phi_n = \grad\phi_n + \rmi\qm\phi_n \lconv{\ltwo{\ddom}{\rho}^2} g + 0 = g,
 	\end{align*}
-	so $g\in\mathcal{G}^\qm_{D, \md \eta}$.
+	so $g\in\mathcal{G}^\qm_{\ddom, \md \rho}$.
 	The proof of the opposite inclusion is similar.
 \end{proof}
-The illustration of the non-uniqueness of gradients earlier employed the fact that we can always add an element of $\gradZero{D}{\eta}$ to the second member of a pair $\bracs{u,z}\in W$ and produce another element of $W$.
-Colloquially, we can always ``add a gradient of zero" to an existing ``gradient", which will produce another ``gradient".
-So whilst a function $u$ might not have a unique gradient, it may at least have only one ``\emph{important}" gradient. \newline
+The illustration of the non-uniqueness of gradients earlier employed the fact that we can always add an element of $\gradZero{\ddom}{\rho}$ to the second member of a pair $\bracs{u,z}\in W$ and produce another element of $W$.
 
-For each $u\in\ltwo{D}{\eta}$ there exists a $\tgrad_\eta u\in\gradZero{D}{\eta}^{\perp}$ such that any pair $\bracs{u,z}\in W$ can be written as $\bracs{u,\tgrad_\eta u + g}$ where $g\in\gradZero{D}{\eta}$.
-We call $\tgrad_\eta u$ the \emph{($\eta$-)tangential derivative} of $u$ and it is unique in this sense (see \cite[Section~9]{zhikov2000extension}); which allows us to construct the ``Sobolev space"
+\tstk{paragraph needs to be rephrased!}
+For each $u\in\ltwo{\ddom}{\rho}$ there exists a $\tgrad_\rho u\in\gradZero{\ddom}{\rho}^{\perp}$ such that any pair $\bracs{u,z}\in W$ can be written as $\bracs{u,\tgrad_\rho u + g}$ where $g\in\gradZero{\ddom}{\rho}$.
+We call $\tgrad_\rho u$ the \emph{($\rho$-)tangential gradient} of $u$ and it is unique in this sense (see \cite[Section~9]{zhikov2000extension}); which allows us to construct the ``Sobolev space"
 \begin{align*}
-	\gradSobQM{D}{\eta} &= \clbracs{ \bracs{u, \tgrad_\eta u}\in W \ \vert \ \tgrad_\eta u \in \gradZero{D}{\eta}^{\perp} }.
+	\gradSobQM{\ddom}{\rho} &= \clbracs{ \bracs{u, \tgrad_\rho u}\in W \ \vert \ \tgrad_\rho u \in \gradZero{\ddom}{\rho}^{\perp} }.
 \end{align*}
-Since $\grad_\eta u$ is unique, we will use the shorthand $u\in\gradSobQM{D}{\eta}$ to refer to the pair $\bracs{u, \grad_\eta u}$.
+Since $\grad_\rho u$ is unique, we will use the shorthand $u\in\gradSobQM{\ddom}{\rho}$ to refer to the pair $\bracs{u, \grad_\rho u}$.
 We can now precisely state what we mean when we write equation \eqref{eq:PeriodCellLaplaceStrongForm}; a pair $u\in\gradSobQM{\ddom}{\dddmes}$ solves \eqref{eq:PeriodCellLaplaceStrongForm} if and only if (see \eqref{eq:PeriodCellLaplaceWeakForm})
 \begin{align*}
 	\integral{\ddom}{\tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\phi}}{\dddmes} &= \omega^2\integral{\ddom}{u\overline{\phi}}{\dddmes}, \quad\forall \phi\in\smooth{\ddom},
 \end{align*}
 and one has a similar interpretation for \eqref{eq:WholeSpaceLaplaceEqn}.
-We will continue to use \eqref{eq:PeriodCellLaplaceStrongForm} as shorthand for \eqref{eq:PeriodCellLaplaceWeakForm} to save on notational clutter and maintain readability, however the steps of our derivation of \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellLaplaceStrongForm} will require us to work with \eqref{eq:PeriodCellLaplaceWeakForm} directly. \newline
+We will continue to use \eqref{eq:PeriodCellLaplaceStrongForm} as shorthand for \eqref{eq:PeriodCellLaplaceWeakForm} to save on notational clutter and maintain readability, however the steps of our derivation of \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellLaplaceStrongForm} will require us to work with \eqref{eq:PeriodCellLaplaceWeakForm} directly.
 
-The space $\gradSobQM{D}{\eta}$ gives us a concept of (weak) derivative to work with, however this is as far as the general theory takes us.
-In order to demonstrate how \eqref{eq:PeriodCellLaplaceStrongForm} reduces to the system \eqref{eq:QGFullSystem}, we must understand the properties of the functions (and their gradients) that live in the space $\gradSobQM{\ddom}{\ddmes}$.
-This means that there is work to be done towards understanding the form of the tangential derivatives $\tgrad_{\dddmes}u$, which is the focus of sections \ref{app:muAnalysis} through \ref{app:SumMeasureAnalysis}.
-We will begin with an examination of the space $\gradSobQM{\ddom}{\ddmes}$ on (the period graph of) an embedded graph $\graph\subset\sqbracs{0,1}^2$, which will inform us about the behaviour of functions on the edges of our singular-structure.
-Then we shall proceed to analyse the space $\gradSobQM{\ddom}{\nu}$, before combining our knowledge in section \ref{app:SumMeasureAnalysis} to understand the properties of functions in $\gradSobQM{\ddom}{\dddmes}$.
-As the arguments are fairly long and cumbersome in terms of readability, we present a narrative overview (with appropriate detail) in sections \ref{app:muAnalysis} through \ref{app:SumMeasureAnalysis}, and relegate longer proofs to section \tstk{create final appendix section for the long, full version of all the long-winded proofs}
-
-%
-%%old conf report stuff
-%
-%With this in mind, consider the following variational problem; find a pair $\bracs{u,z}\in W$ such that
-%\begin{align} \label{eq:TangentialGradientVariationalMotivation}
-%	\integral{D}{z \cdot \grad\overline{\phi} - u\overline{\phi}}{\nu} &= 0 \quad \forall\phi\in\smooth{D}.
-%\end{align}
-%Setting aside questions of existence and uniqueness of solutions to this problem for the purposes of illustration, take an element $g\in\gradZero{D}{\nu}$, and an approximating sequence $\phi_n$ as in the definition \eqref{eq:GradZeroSequenceDefinition}.
-%Substituting $\phi_n$ into \eqref{eq:TangentialGradientVariationalMotivation} and employing a density-argument, we can see that
-%\begin{align*}
-%	\integral{D}{z \cdot g}{\nu} &= 0 \quad \forall g\in\gradZero{D}{\nu}.
-%\end{align*}
-%Namely that the member $z$ of the solution pair is orthogonal (in the $\ltwo{D}{\nu}$-norm) to $\gradZero{D}{\nu}$.
-%Stepping back, as $\gradZero{D}{\nu}$ is a closed linear subspace of $\ltwo{D}{\nu}^N$ we can decompose $\ltwo{D}{\nu}^N$ as
-%\begin{align*}
-%	\ltwo{D}{\nu}^N &= \gradZero{D}{\nu}^{\perp} \oplus \gradZero{D}{\nu}.
-%\end{align*}
-%But we have just seen that the member of the solution pair $z\in\gradZero{D}{\nu}^{\perp}$, hence $z$ is the \textit{unique} element of $\gradZero{D}{\nu}^{\perp}$ such that every pair $\bracs{u,\tilde{z}}\in W$ can be written as $\bracs{u,z+g}\in W$ for some $g\in\gradZero{D}{\nu}$.
-%Thus whilst the concept of a unique gradient does not make sense in this setting, once we consider variational problems we can obtain the concept of the \textit{tangential} gradient $z$, which is unique.
-%We therefore adopt the notation $z := \grad_\nu u$ for the second member of the solution pair $\bracs{u,z}\in W$, and can now define the (non-classical) ``Sobolev space" $\gradSob{D}{\nu}$.
-%\begin{definition}[Sobolev Space $\gradSob{D}{\nu}$] \label{def:GradSobGeneral}
-%	For $D$, $\nu$, and $W$ as in \eqref{eq:WSetDefinition} we define
-%	\begin{align*}
-%		\gradSob{D}{\nu} &:= \clbracs{\bracs{u,\grad_\nu u}\in W \ \vert \ \grad_\nu u \perp \gradZero{D}{\nu}}.
-%	\end{align*}
-%	to be the \emph{(non-classical) Sobolev space (on $D$) with respect to $\nu$}.
-%\end{definition}
-%
-%The definition of $\gradSob{D}{\nu}$ now means that we have an appropriate function space to pose variational problems such as \eqref{eq:TangentialGradientVariationalMotivation} in; this problem in particular is that of finding $\bracs{u,\grad_\nu u}\in\gradSob{D}{\nu}$ such that
-%\begin{align} \label{eq:GeneralVariationProblem}
-%	\integral{D}{\grad_\nu u \cdot \grad\overline{\phi} - u\overline{\phi}}{\nu} &= 0 \quad \forall\phi\in\smooth{D}.
-%\end{align}
-%In general, we use the following conventions for shorthand when dealing with variational problems.
-%\begin{convention}[Shorthand for Elements of $\gradSob{D}{\nu}$] \label{conv:ShorthandSobSpaceElements}
-%	As $\grad_\nu u$ is unique for each $u$ it is sufficient to specify only the element $u$ to identify the pair $\bracs{u,\grad_\nu u}\in\gradSob{D}{\nu}$, so henceforth we adopt the shorthand $u\in\gradSob{D}{\nu}$ when referring to this element.
-%\end{convention}
-%\begin{convention}[Shorthand for Variational Problems] \label{conv:ShorthandGradVariationalProblems}
-%	In general for $f\in\ltwo{D}{\nu}$ and an elliptic matrix $A(x)$, we say that $u\in\gradSob{D}{\nu}$ is a solution to the (elliptic) equation
-%	\begin{align} \label{eq:GeneralScalarStrongForm}
-%		-\grad_\nu \cdot \bracs{A(x)\grad_\nu u(x)} &= f(x), \quad x\in D
-%	\end{align}
-%	to mean that $u\in\gradSob{D}{\nu}$ solves the variational problem
-%	\begin{align} \label{eq:GeneralScalarWeakForm}
-%		\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \integral{D}{f\overline{\phi}}{\nu}, \quad \forall \phi\in\smooth{D}.
-%	\end{align}
-%	In the case when $A$ is the identity we shall write $\grad_{\nu}^2 u = \grad_{\nu}\cdot\grad_{\nu} u$.
-%\end{convention}
-%Of course \eqref{eq:GeneralScalarStrongForm} is just notation and has no meaning without \eqref{eq:GeneralScalarWeakForm}; and the convention \ref{conv:ShorthandGradVariationalProblems} is made because it is nice to envisage \eqref{eq:GeneralScalarWeakForm} as somehow being the weak form of \eqref{eq:GeneralScalarStrongForm} for analogy with classical Sobolev spaces and variational problems, however there is no formal link in this context because of the lack of the ``integration by parts" technique.
-%Existence and uniqueness of the solution pair $\bracs{u,\grad_\nu u}$ is guaranteed though, by appealing to the Riesz Representation theorem and the bilinear form defined by \eqref{eq:GeneralScalarWeakForm}.
-%One can (see \cite{zhikov2000extension}) establish that the $\grad_\nu u$ in the solution pair coincides with the unique gradient of $u$ such that $A\grad_\nu u \perp \gradZero{D}{\nu}$, highlighting that understanding $\gradZero{D}{\nu}$ is crucial to determining solutions to \eqref{eq:GeneralScalarStrongForm}.
-%For completeness, we also note that the spectral problem (when $f$ is replaced by $\lambda u$ for some eigenvalue $\lambda\in\complex$) is written as
-%\begin{align*}
-%	-\grad_\nu \cdot \bracs{A(x)\grad_\nu u(x)} &= \lambda u(x), \quad x\in D
-%\end{align*}
-%which is interpreted as 
-%\begin{align*}
-%	\integral{D}{A\grad_\nu u \cdot \grad\overline{\phi}}{\nu} &= \lambda\integral{D}{u\overline{\phi}}{\nu} \quad \forall \phi\in\smooth{D}.
-%\end{align*}
-%In which case solutions (if they exist) are triplets $\bracs{\lambda, u, \grad_\nu u}$, although it suffices to specify $\bracs{\lambda, u}$ only. \newline
-%
-%To conclude this section we present some general results that we will need later in our analysis.
-%The first is a simple result which makes proving membership of $\gradSob{D}{\nu}$ easier, and is presented in \cite{zhikov2002homogenization} as lemma 5.5.
-%\begin{prop}[Sufficient Condition for Membership of $\gradSob{D}{\nu}$] \label{prop:Lemma5-5}
-%	Suppose we have a sequence $u_n\in\gradSob{D}{\nu}$ such that $u_n\rightarrow u$ in $\ltwo{D}{\nu}$ for some $u\in\ltwo{D}{\nu}$, and that the sequence of tangential gradients $\grad_\nu u_n$ is bounded in $\ltwo{D}{\nu}^N$.
-%	Then 
-%	\begin{align*}
-%		u\in\gradSob{D}{\nu};
-%	\end{align*}
-%	that is, $\grad_{\nu} u$ exists and the pair $\bracs{u,\grad_{\nu} u}\in\gradSob{D}{\nu}$).
-%\end{prop}
-%\begin{proof}
-%	As $\grad_\nu u_n$ is bounded in $\ltwo{D}{\nu}^N$ it has a convergent subsequence that we denote by $\grad_\nu u_{n_k}$, and this sequence has some limit $v\in\ltwo{D}{\nu}^N$.
-%	Note that since $\grad_\nu u_{n_k}\in\gradZero{D}{\nu}^\perp$ for all $k\in\naturals$, the limit $v\in\gradZero{D}{\nu}^\perp$ too.
-%	Furthermore the corresponding subsequence $u_{n_k}$ of $u_n$ still converges in $\ltwo{D}{\nu}$ to $u$, being a subsequence of a convergent sequence.
-%	Now for each $k\in\naturals$ there exists an sequence of smooth functions $\phi_{k,l}$ such that
-%	\begin{align*}
-%		\phi_{k,l}\lconv{\ltwo{D}{\nu}} u_{n_k}, &\quad \grad\phi_{k,l}\lconv{\ltwo{D}{\nu}^n}\grad u_{n_k}, \toInfty{l}.
-%	\end{align*}
-%	We can therefore apply a diagonal argument to find a sequence of smooth functions $\phi_{k, l_k}$ such that
-%	\begin{align*}
-%		\phi_{k,l_k}\lconv{\ltwo{D}{\nu}} u, &\quad \grad\phi_{k,l_k}\lconv{\ltwo{D}{\nu}^N}v, \toInfty{k}.
-%	\end{align*}
-%	Since $v\in\gradZero{D}{\nu}^\perp$, we conclude that $v = \grad_\nu u$ and thus
-%	\begin{align*}
-%		\bracs{u, \grad_\nu u}\in \gradSob{D}{\nu}.
-%	\end{align*}
-%\end{proof}
-%
-%The second result that we present is essentially the equivalent of the product rule for tangential gradients.
-%\begin{prop}[Product Rule for Tangential Gradients] \label{prop:ProductRuleGradients}
-%	Suppose $u,v\in\gradSob{D}{\nu}$.
-%	Then we also have that
-%	\begin{align*}
-%		\bracs{uv, u\grad_\nu v + v\grad_\nu u}\in\gradSob{D}{\nu}.
-%	\end{align*}
-%\end{prop}
-%\begin{proof}
-%	Take smooth sequences $\phi_l, \psi_l$ such that
-%	\begin{align*}
-%		\phi_l \lconv{\ltwo{D}{\nu}} u, &\quad \grad\phi_l \lconv{\ltwo{D}{\nu}^N} \grad_\nu u, \\
-%		\psi_l \lconv{\ltwo{D}{\nu}} v, &\quad \grad\psi_l \lconv{\ltwo{D}{\nu}^N} \grad_\nu v.
-%	\end{align*}
-%	Note that because of these convergences, the sequences 
-%	\begin{align*}
-%		\norm{\phi_l}_{\ltwo{D}{\nu}}, \norm{\psi_l}_{\ltwo{D}{\nu}}, \norm{\grad\phi_l}_{\ltwo{D}{\nu}^N}, \norm{\grad\psi_l}_{\ltwo{D}{\nu}^N}.
-%	\end{align*}
-%	are all bounded in $\reals$.
-%	We now examine the sequence formed from term-wise products, $\phi_l\psi_l$.
-%	Note that this remains a sequence of smooth functions, and we have that $\phi_l\psi_l \rightarrow uv \toInfty{l}$ by the Algebra of Limits in $\ltwo{D}{\nu}$.
-%	Furthermore,
-%	\begin{align*}
-%		\recip{4}\integral{D}{\abs{ \grad\bracs{\phi_l\psi_l} - u\grad_\nu v - v\grad_\nu u }^2}{\nu}
-%		&\leq \recip{2}\integral{D}{\abs{ \phi_l\grad\psi_l - u\grad_\nu v }^2}{\nu} \\
-%		& \ + \recip{2}\integral{D}{\abs{ \psi_l\grad\phi_l - v\grad_\nu u }^2}{\nu} \\
-%		&\leq \norm{\phi_l - u}_{\ltwo{D}{\nu}}^2\norm{\grad\psi_l}_{\ltwo{D}{\nu}^N}^2 \\
-%		& \ + \norm{u}_{\ltwo{D}{\nu}}^2\norm{\grad\psi_l - \grad_\nu v}_{\ltwo{D}{\nu}^N}^2 \\
-%		& \ + \norm{\psi_l - v}_{\ltwo{D}{\nu}}^2\norm{\grad\phi_l}_{\ltwo{D}{\nu}^N}^2 \\
-%		& \ + \norm{v}_{\ltwo{D}{\nu}}^2\norm{\grad\phi_l - \grad_\nu u}_{\ltwo{D}{\nu}^N}^2 \\
-%		&\rightarrow 0 \toInfty{l}.
-%	\end{align*}
-%	Finally we note that as $\grad_\nu u, \grad_\nu v \in\gradZero{D}{\nu}^\perp$, the function $u\grad_\nu v + v\grad_\nu u\in\gradZero{D}{\nu}^\perp$ too.
-%	Since
-%	\begin{align*}
-%		\phi_l\psi_l \lconv{\ltwo{D}{\nu}} uv, &\quad \grad\bracs{\phi_l\psi_l} \lconv{\ltwo{D}{\nu}^N} u\grad_\nu v + v\grad_\nu u,
-%	\end{align*}
-%	we conclude that $\grad_\nu\bracs{uv} = u\grad_\nu v + v\grad_\nu u$ and
-%	\begin{align*}
-%		\bracs{uv, u\grad_\nu v + v\grad_\nu u}\in\gradSob{D}{\nu}.
-%	\end{align*}
-%\end{proof}
+In order to demonstrate how \eqref{eq:PeriodCellLaplaceStrongForm} reduces to the system \eqref{eq:QGFullSystem}, we must understand the properties of the functions (and their gradients) in the space $\gradSobQM{\ddom}{\ddmes}$, which is the focus of sections \ref{app:muAnalysis} through \ref{app:SumMeasureAnalysis}.
+This begins by examining $\gradSobQM{\ddom}{\ddmes}$, which will then determine the behaviour of functions on the singular-structure.
+The space $\gradSobQM{\ddom}{\nu}$ is examined next, before concluding with section \ref{app:SumMeasureAnalysis} in which we describe the functions in $\gradSobQM{\ddom}{\dddmes}$.

@@ -1,32 +1,33 @@
 \section{Appendix: Singular Measures} \label{app:SingularMeasures}
-Embedded graphs (section \ref{ssec:EmbeddedGraphs}) allow us to introduce the measure which links quantum graph problems to the measure-theoretic problems we first introduced in section \ref{ssec:OurSystem}
-For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure which supports the one-dimensional Lebesgue measure on the edge $I_{jk}$.
-So for each Borel set $B$ we have
+Embedded graphs (section \ref{ssec:EmbeddedGraphs}) allow us to introduce the measure that links quantum graphs to the measure-theoretic formulation we introduced in section \ref{ssec:OurSystem}.
+For an embedded graph $\graph = \bracs{\vertSet,\edgeSet}$ and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure that supports the one-dimensional Lebesgue measure on $I_{jk}$:
 \begin{align*}
-	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}}
+	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}},
+	&\quad\text{for all Borel } B,
 \end{align*}
 where $\lambda_1$ is the Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:GeneralCurveParam}).
 Then set $\ddmes$ to be the (Borel) measure defined by
 \begin{align*}
 	\ddmes\bracs{B} = \sum_{v_j\in \vertSet}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
 \end{align*}
-Then $\ddmes$ is the ``singular measure that supports $\graph$"; or alternatively the ``singular measure on $\graph$", or the ``(singular) measure that supports the edges of $\graph$".
+We refer to $\ddmes$ as the ``singular measure that supports $\graph$"; or alternatively the ``singular measure on $\graph$", or the ``(singular) measure that supports the edges of $\graph$".
 For a graph embedded into a 2D domain, the singular measure $\ddmes$ is illustrated in figure \ref{fig:Diagram_SingularMeasure2D}.
 \begin{figure}[b!]
 	\centering
 	\includegraphics[scale=0.85]{Diagram_SingularMeasure2D.pdf}
-	\caption{\label{fig:Diagram_SingularMeasure2D} For a graph embedded in $\reals^2$, the $\ddmes$-measure of any Borel set $B$ is obtained from summing the contributions of each $\lambda_{jk}$, as indicated by the thickened and coloured lines.
+	\caption{\label{fig:Diagram_SingularMeasure2D} For a graph embedded in $\reals^2$, the $\ddmes$-measure of any Borel set $B$ is obtained from summing the contributions of each $\lambda_{jk}$, as indicated by the thickened lines.
 	Sets that do not intersect $\graph$ have zero measure.}
-\end{figure} \newline
+\end{figure}
 
 Now for each $v_j\in\vertSet$ let $\delta_j$ be a point-mass measure centred on $v_j$, namely
 \begin{align*}
-	\delta_j\bracs{B} &= \begin{cases} 1 & v_j\in B, \\ 0 & v_j\not\in B, \end{cases}
+	\delta_j\bracs{B} &= \begin{cases} 1, & v_j\in B, \\ 0, & v_j\not\in B, \end{cases}
 \end{align*}
 and let
 \begin{align*}
-	\nu\bracs{B} &= \sum_{v_j\in\vertSet}\alpha_j\delta_j\bracs{B},
+	\nu\bracs{B} = \sum_{v_j\in\vertSet}\alpha_j\delta_j\bracs{B},
+	\quad\text{for all Borel } B,
 \end{align*}
-for Borel sets $B$, where each $\alpha_j$ is the coupling constant at the vertex $v_j$.
-Finally, form the measure $\dddmes = \ddmes + \nu$.
-The measures $\dddmes$, $\ddmes$, and $\nu$ will be the key components in our measure-theoretic formulations, enabling us to establish ideas of derivatives whilst working on a domain which has no ``area" in the Lebesgue-sense.
+where each $\alpha_j$ is the coupling constant at the vertex $v_j$.
+Finally, consider the measure $\dddmes = \ddmes + \nu$.
+The measures $\dddmes$, $\ddmes$, and $\nu$ will be key to our measure-theoretic formulations, enabling us to establish notions of derivatives on a domains with no interior (or no ``area" in the Lebesgue-sense).
