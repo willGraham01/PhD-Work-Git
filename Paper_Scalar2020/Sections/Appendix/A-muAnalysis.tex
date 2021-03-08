@@ -161,13 +161,13 @@ We are now in a position to prove the aforementioned converse inclusion.
 	For each $j,k$ with $j\conLeft k$, the function $\eta_j^n\eta_k^n g\vert_{I_{jk}}$ satisfies the hypothesis of lemma \ref{lem:SegGradExtend}, so $\eta_j^n\eta_k^n g\vert_{I_{jk}}\in\gradZero{\ddom}{\ddmes}$.
 	Furthermore, as $\gradZero{\ddom}{\ddmes}$ is a linear subspace of $\ltwo{\ddom}{\ddmes}^{2}$, $g_n\in\gradZero{\ddom}{\ddmes}$ too, $\forall n\in\naturals$.
 	By closure of $\gradZero{\ddom}{\ddmes}$ in $\ltwo{\ddom}{\ddmes}^2$; $g_n$ converges in $\gradZero{\ddom}{\ddmes}$ provided it converges at all, and so it remains to show that $g_n\lconv{\ltwo{\ddom}{\ddmes}^2} g \toInfty{n}$.
-	However with the result of lemma \ref{lem:etaConv}, we have that $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ and hence
+	Since $\eta_j^n\eta_k^n g\vert_{I_{jk}}\lconv{\ltwo{\ddom}{\ddmes}^2} g\vert_{I_{jk}}$ we have that
 	\begin{align*}
 		g_n \lconv{\ltwo{\ddom}{\ddmes}^2} &\sum_{j\in V}\sum_{j\conLeft k}g\vert_{I_{jk}} = g \toInfty{n},
 	\end{align*}
 	so $g\in\gradZero{\ddom}{\ddmes}$.
 \end{proof}
-Propositions \ref{prop:BIncGrad0} and \ref{prop:Grad0IncB} complete the proof of proposition \ref{prop:GradZeroGraph} when combined with proposition \ref{prop:RotationOfEdgeGradients} and corollary \ref{cory:Grad0SingleEdge}.
+Propositions \ref{prop:BIncGrad0} and \ref{prop:Grad0IncB} complete the proof of proposition \ref{prop:GradZeroGraph} when combined with propositions \ref{prop:GradZeroParallelZhikov} and  \ref{prop:RotationOfEdgeGradients}.
 
 \subsection{The ``Non-Classical" Sobolev Space} \label{appS:SobSpacesTheory}
 Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$, and enables us to obtain an edge-wise ``form" for the tangential gradient, as follows:

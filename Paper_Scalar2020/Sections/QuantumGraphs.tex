@@ -113,7 +113,7 @@ Differential operators on metric graphs are defined by specifying their domains 
 A well-posed problem on a graph requires specifying boundary conditions at the vertices (also referred to as ``vertex conditions"), which are identified with the end-points of the corresponding edges $I_{jk}$ as discussed in section \ref{ssec:FunctionSpaces}.
 Specifying these vertex conditions also reflects the connectivity of the graph, which the function spaces \eqref{eq:GraphFuncSpaces} do not convey on their own.
 A \emph{quantum graph} is then simply a metric graph equipped with such a differential operator.
-There are a variety of choices one can make for the vertex conditions, and we will be interested in imposing continuity of the solution at each vertex and a Robin-like condition on the derivatives of the solution, also known as a ``$\delta-$type" condition. \tstk{refs to Abelviero et al (exactly solvable) and \cite{berkolaiko2013introduction}}
+There are a variety of choices one can make for the vertex conditions, and we will be interested in imposing continuity of the solution at each vertex and a Robin-like condition on the derivatives of the solution, also known as a ``$\delta-$type" condition \cite{albeverio2012solvable, berkolaiko2013introduction}.
 By way of example, let us demonstrate how we define a graph Laplacian $\mathcal{A}$ on the period graph $\graph_{\mathcal{P}}$ for a given set of coupling constants $\alpha_j$.
 The domain of $\mathcal{A}$ is defined as
 \begin{align} \label{eq:GraphLaplacianExample}
@@ -151,8 +151,8 @@ Rigorous setup is beyond the scope of this paper, but the central tool for analy
 The analysis of the spectrum of \eqref{eq:QGFullSystem} is then carried out simply by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts.
 
 \subsection{The $M$-Matrix} \label{ssec:MMatrix}
-We next provide a brief overview of the $M$-matrix, a tool for characterising the \tstk{missing text in PDF annotations!?} and the spectrum of $\mathcal{A}$, which we implement in section \ref{sec:Derivation}
-The $M$-matrix is a generalisation of the classical Weyl-Titchmarsh $m$-function, and a particular case of the abstract $M$-operator, as it appears in the theory of boundary triples (more information can be found \tstk{refs for $M$-operator are: Kochubei, Gorbachuk \& Gorbachuk, Brown Marletta Naboko Wood, Kirill Sasha Luis. Classical references include books by Titchmarsh and Atkinson for the $m$-function}).
+We next provide a brief overview of the $M$-matrix, a tool for characterising the spectrum of $\mathcal{A}$, which we implement in section \ref{sec:SystemDerivation}.
+The $M$-matrix is a generalisation of the classical Weyl-Titchmarsh $m$-function, and a particular case of the abstract $M$-operator, as it appears in the theory of boundary triples (more information on the $M$-operator can be found in \cite{kochubei1975extensions, kochubei1980characteristic, gorbachuk1991boundary, brown2008boundary, brown2020functional, cherednichenko2020scattering, cherednichenko2018functional}, whilst information for the $m$-function can be found in \cite{titchmarsh1962eigenfunction, atkinson1964discrete}).
 Here we restrict ourselves to a short review the specific theory relevant to the present work.
 Let $\mathcal{A}$ be a graph Laplacian, and consider the maps
 \begin{align*}
@@ -172,8 +172,7 @@ It can be shown that $z$ is an eigenvalue of $\mathcal{A}$ if and only if
 \begin{align*}
 	\mathrm{det}\bracs{M\bracs{z} - A}= 0,
 \end{align*}
-where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
-\tstk{A more general statement can be found in Derkach, Malamund.}
+where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants (general statements concerning the $M$-operator can be found in \cite{derkach1991generalized, derkach2014boundary}).
 One can see that this effectively reduces a system of ODEs to a matrix eigenvalue problem, at least as far as determining the spectrum is concerned.
 We will exploit this fact in section \ref{sec:Examples}.
 

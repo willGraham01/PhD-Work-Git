@@ -11,7 +11,7 @@ CHAP_ABS := $(addprefix $(CHAPDIR)/, $(CHAPNAMES))
 # append .pdf extension to chapter names for targets
 CHAP_TEX := $(CHAP_ABS:=.tex)
 # location of bibliography files
-BIB_FILES := Paper_Scalar2020.bib
+BIB_FILES := ../BibFiles/*.bib
 # name of report file to make
 NAME := Paper_Scalar2020
 
