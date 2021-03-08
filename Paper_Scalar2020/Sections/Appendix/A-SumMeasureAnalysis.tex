@@ -2,6 +2,7 @@
 Now that the analysis of sections \ref{app:muAnalysis} and \ref{app:VertexAnalysis} is complete, we turn out attention to $\gradSobQM{\ddom}{\dddmes}$.
 Needless to say, our reason for considering the spaces in this order is because we expect that functions that live in $\gradSobQM{\ddom}{\dddmes}$ are combinations of functions that live in $\gradSobQM{\ddom}{\ddmes}$ and $\gradSobQM{\ddom}{\nu}$; in a similar vein of reasoning to how we demonstrated that $\gradSobQM{\ddom}{\ddmes}$ is constructed by considering the various spaces $\gradSobQM{\ddom}{\lambda_{jk}}$.
 The implication that we require is given below, however we conjecture that the converse implication also holds, given the analogies with \ref{thm:CharOfGradSob}.
+\tstk{we suggested to put this onto one line, but then the proof becomes cumbersome and undoes most of the space that we saved from compacting the statement. Plus, we don't go onto a new page in the current format, so I'm leaving it like this for now}
 \begin{theorem} \label{thm:ThickVertexSpaceCharacterisation}
 	\begin{align*}
 		\bracs{u, \grad_{\dddmes}u}\in\gradSob{\ddom}{\dddmes} \quad\Rightarrow\quad
@@ -26,6 +27,6 @@ If the converse to theorem \ref{thm:CharOfGradSob} is true, as implied from resu
 	\begin{align*}
 		\norm{\cdot}_{\ltwo{\ddom}{\dddmes}}^2 &= \norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 + \norm{\cdot}_{\ltwo{\ddom}{\nu}}^2,
 	\end{align*}
-	we have that $\phi_n$ also converges in $\ltwo{\ddom}{\ddmes}$ and $\ltwo{\ddom}{\nu}$, as do its gradients in $\ltwo{\ddom}{\ddmes}^2$ and $\ltwo{\ddom}{\nu}^2$.
+	we infer that $\phi_n$ also converges in $\ltwo{\ddom}{\ddmes}$ and $\ltwo{\ddom}{\nu}$, as do its gradients in $\ltwo{\ddom}{\ddmes}^2$ and $\ltwo{\ddom}{\nu}^2$.
 \end{proof}
 Since we pose the (measure-theoretic) variational problem in the space $\gradSob{\ddom}{\dddmes}$, we then know that every function in that space also lives in $\gradSob{\ddom}{\ddmes}$ and $\gradSob{\ddom}{\nu}$, which gives us the properties we need to derive the edge-ODEs and vertex conditions (our quantum graph problem).

@@ -1,5 +1,4 @@
-\section{Appendix: Analysis of the Sobolev Spaces Associated with the Measure $\nu$} \label{app:VertexAnalysis}
-Understanding the behaviour of Sobolev functions on the edges of a graph is the bulk of the information which we need to determine the edge-wise action of the equivalent quantum graph problem that we plan to derive.
+\section{Appendix: Sobolev spaces associated with the measure $\nu$} \label{app:VertexAnalysis}
 Our analysis of $\gradSobQM{\ddom}{\ddmes}$ even provides us with Sobolev functions that are continuous across the vertices.
 However we are not encapsulating the effect of introducing coupling constants $\alpha_j$ to the vertices in $\graph$ yet - and to do so we must examine the ``vertex part" $\nu$ of our measure $\dddmes$ and the Sobolev spaces associated with it.
 Thankfully, our analysis of the space $\gradSobQM{\ddom}{\nu}$ is short, on account of the fact that $\gradZero{\ddom}{\nu}$ (as a subset of $\ltwo{\ddom}{\nu}^2$) is actually isomorphic to $\complex^N$, where $N=\abs{\vertSet}$ is the number of vertices in the graph $\graph$.
@@ -8,30 +7,30 @@ As such, any $\bracs{u,\grad_{\nu}u}\in\gradSob{\ddom}{\nu}$ has $\grad_{\nu}u=0
 \subsection{Analysis of $\nu$-Gradients of Zero} \label{appS:VertexGradZero}
 We begin by defining some quantities that will appear in the proofs of this section.
 \begin{definition}[$d$, $\varphi_c$, and $g^j$] \label{def:UsefulObjects}
-	Let 
+	Denote
 	\begin{align*}
-		d=\recip{2}\min\clbracs{\norm{v_j-v_k}_2 \ \vert \ v_j,v_k\in\vertSet}
+		d &:= \recip{2}\min\clbracs{\norm{v_j-v_k}_2 \ \vert \ v_j,v_k\in\vertSet},
 	\end{align*}
-	be half the minimum distance between any two vertices in the graph (note that this may occur between two vertices that do not share a single edge).
-	$d$ exists since the graph $\graph$ is assumed finite, and is positive.
-	For $c\in\complex$, let $\varphi_c:\reals^2\rightarrow\complex$ be the smooth function such that
+	which exists since the graph $\graph$ is assumed finite, and is positive.
+	For $c\in\complex$, let $\varphi_c:\reals^2\rightarrow\complex$ be a smooth function such that
 	\begin{align*}
-		\varphi_c\bracs{0} = 0, &\quad \grad\varphi_c\bracs{0} = c, \\
-		\supp\bracs{\varphi_c} &\subset B_{d}\bracs{0},
+		\varphi_c\bracs{0} = 0, 
+		\quad \grad\varphi_c\bracs{0} = c,
+		\quad \supp\bracs{\varphi_c} \subset B_{d}\bracs{0},
 	\end{align*}
 	where $B_{d}\bracs{0}$ denotes the ball of radius $d$ centred at the origin.
 	Finally, for each $v_j\in\vertSet$ define
 	\begin{align*}
 		g^j_1\bracs{x} &=
 		\begin{cases}
-			\begin{pmatrix} 1 \\ 0 \end{pmatrix} & x=v_j, \\
-			0 & x\neq v_j. \\
+			\bracs{1,0}^\top, & x=v_j, \\
+			0, & x\neq v_j. \\
 		\end{cases}
 		&\quad
 		g^j_2\bracs{x} &=
 		\begin{cases}
-			\begin{pmatrix} 0 \\ 1 \end{pmatrix} & x=v_j, \\
-			0 & x\neq v_j. \\
+			\bracs{0,1}^\top, & x=v_j, \\
+			0, & x\neq v_j. \\
 		\end{cases}
 	\end{align*}
 \end{definition}
@@ -39,24 +38,21 @@ We begin by defining some quantities that will appear in the proofs of this sect
 We now demonstrate that $\ltwo{\ddom}{\nu}^2$ is isomorphic to $\complex^{2N}$.
 \begin{lemma}
 	The space $\ltwo{\ddom}{\nu}$ is isomorphic to $\complex^{2N}$.
-	Moreover, the collection 
-	\begin{align*}
-		\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}
-	\end{align*}
-	forms a basis of $\ltwo{\ddom}{\nu}^2$.
+	Moreover, the collection $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$ forms a basis of $\ltwo{\ddom}{\nu}^2$.
 \end{lemma}
 \begin{proof}
 	It is sufficient to notice that any $f\in\ltwo{\ddom}{\nu}^2$ is entirely determined by the values it takes at the vertices $v_j$.
 	Each of these values is a $\complex^2$-vector, and thus we may define the function
 	\begin{align*}
 		\iota:\ltwo{\ddom}{\nu}^2 \rightarrow\complex^{2N}, &\quad
-		\iota\bracs{f} = \begin{pmatrix} f\bracs{v_1} \\ f\bracs{v_2} \\ \vdots \\ f\bracs{v_N} \end{pmatrix},
+		\iota\bracs{f} = \bracs{ f\bracs{v_1}, ..., f\bracs{v_N} }^\top,
 	\end{align*}
 	where we vertically concatenate the collection of two-vectors $f\bracs{v_j}, v_j\in\vertSet$.
 	Clearly $\iota$ is a bijection, and additionally for $f,g\in\ltwo{\ddom}{\nu}$ we have that
 	\begin{align*}
-		\integral{\ddom}{f\cdot \overline{g}}{\nu} &= \sum_{v_j\in\vertSet} f\bracs{v_j}\cdot\overline{g\bracs{v_j}} \\
-		&= \iota\bracs{f}\cdot\overline{\iota\bracs{g}},
+		\integral{\ddom}{f\cdot \overline{g}}{\nu} 
+		&= \sum_{v_j\in\vertSet} f\bracs{v_j}\cdot\overline{g\bracs{v_j}}
+		= \iota\bracs{f}\cdot\overline{\iota\bracs{g}},
 	\end{align*}
 	so $\iota$ is an isometry.
 	Moreover, the preimage of the canonical basis $\clbracs{e_k \ \vert \ k\in\clbracs{1,...,2N}}$ under $\iota$ is the collection $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$, and hence $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$ forms a basis of $\ltwo{\ddom}{\nu}^2$.
@@ -68,72 +64,55 @@ We now characterise the set of $\nu$-gradients of zero, $\gradZero{\ddom}{\nu}$,
 \end{prop}
 \begin{proof}
 	Since $\gradZero{\ddom}{\nu}$ is a closed, linear subspace of $\ltwo{\ddom}{\nu}^2$ by definition, it is sufficient to show that $\gradZero{\ddom}{\nu}$ contains the basis $\clbracs{g_1^j, g_2^j \ \vert \ v_j\in\vertSet}$.
-	We demonstrate inclusion of the elements $g^j_1$ (as that of $g^j_2$ is similar, with the obvious alternative choice of $c$ in what follows).
+	We demonstrate inclusion of the elements $g^j_1$ (as that of $g^j_2$ is similar).
 	Take $c=\bracs{1,0}^{\top}$, fix $v_j\in\vertSet$, and set
 	\begin{align*}
 		\phi\bracs{x} &= \varphi_c\bracs{x-v_j},
 	\end{align*}
 	where $\varphi_c$ is as in definition \ref{def:UsefulObjects}.
-	Note that $\phi$ is smooth by composition of smooth functions, $\supp\bracs{\phi}\subset B_{d}\bracs{v_j}$, and that
+	Note that $\phi$ is smooth by composition of smooth functions, $\supp\bracs{\phi}\subset B_{d}\bracs{v_j}$, and that $\grad\phi\bracs{x} = \bracs{\grad\varphi_c}\bracs{x-v_j}$.
+	Then clearly
 	\begin{align*}
-		\grad\phi\bracs{x} &= \bracs{\grad\varphi_c}\bracs{x-v_j}.
+		\integral{\ddom}{\abs{\phi}^2}{\nu} = 0,
+		&\quad \integral{\ddom}{\abs{\grad\phi - g^j_1}^2}{\nu} = 0.
 	\end{align*}
-	Then we have that
-	\begin{align*}
-		\integral{\ddom}{\abs{\phi}^2}{\nu} &= \sum_{v_l\in\vertSet} \alpha_l\abs{\phi\bracs{v_l}}^2 \\
-		&= \alpha_j\abs{\varphi_c\bracs{0}}^2 + \sum_{v_l\neq v_j}\alpha_l\abs{\phi\bracs{v_l}}^2 \\
-		&= 0 + \sum_{v_l\neq v_j} \alpha_l \times 0 = 0,
-	\end{align*}
-	and
-	\begin{align*}
-		\integral{\ddom}{\abs{\grad\phi - g^j_1}^2}{\nu} &= \sum_{v_l\in\vertSet} \alpha_l\abs{\grad\phi\bracs{v_l} - g^j_1\bracs{v_l}}^2 \\
-		&= \alpha_j\abs{\grad\varphi_c\bracs{0} - \bracs{1,0}^{\top}}^2 + \sum_{v_l\neq v_j} \alpha_l\abs{\grad\varphi_c\bracs{v_l} - 0}^2 \\
-		&= 0 + \sum_{v_l\neq v_j} \alpha_l\abs{0 - 0}^2 = 0.
-	\end{align*}
-	Hence, the constant sequence of smooth functions $\phi$ is such that
-	\begin{align*}
-		\phi\lconv{\ltwo{\ddom}{\nu}}0, \quad \grad\phi\lconv{\ltwo{\ddom}{\nu}^2} g^j_1,
-	\end{align*}
-	and hence $g^j_1\in\gradZero{\ddom}{\nu}$.
+	Hence, one has $g^j_1\in\gradZero{\ddom}{\nu}$.
 \end{proof}
 
 \subsection{The Sobolev Space $\gradSobQM{\ddom}{\nu}$} \label{appS:VertexSobSpace}
 Given that we now know that $\gradZero{\ddom}{\nu}$ encompasses the whole of $\ltwo{\ddom}{\nu}^2$, we must conclude that our ``Sobolev functions" have zero derivative ($\nu$-)almost-everywhere.
 Indeed, proposition \ref{prop:CharPointMassGradZero} gives us the following corollary:
 \begin{cory}[Characterisation of $\gradSobQM{\ddom}{\nu}$] \label{cory:CharPointMassSpace}
-	We have that
-	\begin{align*}
-		\bracs{u,\tgrad_{\nu}u}\in\gradSobQM{\ddom}{\nu} \quad\Leftrightarrow\quad 
-		& \ \text{(i)} \ u\in\ltwo{\ddom}{\nu}, \\
-		& \ \text{(ii)} \ \tgrad_{\nu}u = 0 \ \nu\text{-almost everywhere}.
-	\end{align*}
+	We have that $\bracs{u,\tgrad_{\nu}u}\in\gradSobQM{\ddom}{\nu}$ if and only if $u\in\ltwo{\ddom}{\nu}$ and $\tgrad_{\nu}u = 0$ $\nu$-almost everywhere.
 \end{cory}
 \begin{proof}
-	($\Rightarrow$) For the right-directed implication; $\tgrad_{\nu}u\in\ltwo{\ddom}{\nu}^2$ is an element of $\ltwo{\ddom}{\nu}^2$ by definition and is orthogonal to $\gradZero{\ddom}{\nu}$, but by proposition \ref{prop:CharPointMassGradZero} we know that $\gradZero{\ddom}{\nu}=\ltwo{\ddom}{\nu}^2$, we must conclude that $\grad_{\nu}u = 0$. \newline
-	($\Leftarrow$) For the left-directed implication, take smooth ``bump" functions $\psi_j$ for each $v_j\in\vertSet$ with the properties
+	First assume $\bracs{u,\tgrad_{\nu}u}\in\gradSobQM{\ddom}{\nu}$.
+	Then $\tgrad_{\nu}u\in\ltwo{\ddom}{\nu}^2$ is an element of $\ltwo{\ddom}{\nu}^2$ by definition and is orthogonal to $\gradZero{\ddom}{\nu}$, but by proposition \ref{prop:CharPointMassGradZero} we know that $\gradZero{\ddom}{\nu}=\ltwo{\ddom}{\nu}^2$, so we must conclude that $\grad_{\nu}u = 0$.
+	
+	For the converse implication, take smooth ``bump" functions $\psi_j$ for each $v_j\in\vertSet$ with the properties
 	\begin{align*}
-		\psi_j\bracs{v_j} = 1, &\quad \grad\psi_j\bracs{v_j} = -i\qm, \\
-		\supp\bracs{\psi_j} &\subset B_{d}\bracs{v_j}.
+		\psi_j\bracs{v_j} = 1, 
+		\quad \grad\psi_j\bracs{v_j} = -\rmi\qm,
+		\quad \supp\bracs{\psi_j} &\subset B_{d}\bracs{v_j}.
 	\end{align*}
-	(Note that these are just translated versions of the functions $\psi_c$ in definition \ref{def:UsefulObjects} with $c=-i\qm$).
+	(Note that these are just translated versions of the functions $\psi_c$ in definition \ref{def:UsefulObjects} with $c=-\rmi\qm$).
 	Then consider the smooth function
 	\begin{align*}
-		\phi\bracs{x} &:= \sum_{v_j\in\vertSet} u\bracs{v_j}\psi_j\bracs{x}, \\
-		\implies \grad\phi\bracs{x} &= \sum_{v_j\in\vertSet} u\bracs{v_j}\grad\psi_j\bracs{x}.
+		\phi\bracs{x} := \sum_{v_j\in\vertSet} u\bracs{v_j}\psi_j\bracs{x},
+		&\quad \grad\phi\bracs{x} = \sum_{v_j\in\vertSet} u\bracs{v_j}\grad\psi_j\bracs{x}.
 	\end{align*}
-	Then we have that
+	Then we have
 	\begin{align*}
 		\integral{\ddom}{\abs{\phi - u}^2}{\nu} &= \sum_{v_j\in\vertSet} \alpha_j\abs{\phi\bracs{v_j} - u\bracs{v_j}}^2 \\
 		&= \sum_{v_j\in\vertSet} \alpha_j\abs{ \sum_{v_l\in\vertSet}u\bracs{v_l}\psi_l\bracs{v_j} - u\bracs{v_j} }^2
-		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2\abs{\psi_j\bracs{v_j}-1}^2 \\
-		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \times 0 = 0,
+		= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2\abs{\psi_j\bracs{v_j}-1}^2 = 0
 	\end{align*}
 	and
 	\begin{align*}
 		\integral{\ddom}{\abs{\tgrad\phi - 0}^2}{\nu} 
 		&= \sum_{v_j\in\vertSet} \alpha_j\abs{ \sum_{v_l\in\vertSet} u\bracs{v_l}\grad\psi_l\bracs{v_j} + i\qm\psi_l\bracs{v_j} }^2 \\
-		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ \grad\psi_j\bracs{v_j} + i\qm\psi_j\bracs{v_j} }^2 \\
-		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ i\qm - i\qm } = 0.
+		&= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ \grad\psi_j\bracs{v_j} + i\qm\psi_j\bracs{v_j} }^2
+		= \sum_{v_j\in\vertSet} \alpha_j\abs{u\bracs{v_j}}^2 \abs{ i\qm - i\qm } = 0.
 	\end{align*}
 	Thus, the constant sequence $\phi$ is such that
 	\begin{align*}

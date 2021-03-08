@@ -109,8 +109,7 @@ First, we show that a gradient of zero on a ``shortened" edge of the graph is al
 	Then $g\in\gradZero{\ddom}{\ddmes}$.
 \end{lemma}
 \begin{proof}
-	As $g\cdot e_{jk}=0$ on $I_{jk}^{n}$ and $g=0$ on $I_{jk}\setminus I_{jk}^{n}$, we have that $g\cdot e_{jk}=0$ on $I_{jk}$ and hence $g\in\gradZero{\ddom}{\lambda_{jk}}$.
-	So we can find a sequence of smooth functions $\phi_l$ as in \eqref{eq:GradZeroDef}, and we let $\chi_{jk}^{n}\in\smooth{\ddom}$ be the function as defined in definition \ref{def:ChiDef}.
+	As $g\cdot e_{jk}=0$ on $I_{jk}^{n}$ and $g=0$ on $I_{jk}\setminus I_{jk}^{n}$, we have that $g\cdot e_{jk}=0$ on $I_{jk}$ and hence $g\in\gradZero{\ddom}{\lambda_{jk}}$, so we can find a sequence of smooth functions $\phi_l$ as in \eqref{eq:GradZeroDef}.
 	Now consider the sequence $\psi_l = \chi_{jk}^{n}\phi_l$; we have that
 	\begin{align*}
 		\integral{\ddom}{\abs{\psi_l}^2}{\ddmes} = \integral{I_{jk}}{\abs{\chi_{jk}^{n}\phi_l}^2}{\lambda_{jk}}
@@ -170,19 +169,16 @@ We are now in a position to prove the aforementioned converse inclusion.
 \end{proof}
 Propositions \ref{prop:BIncGrad0} and \ref{prop:Grad0IncB} complete the proof of proposition \ref{prop:GradZeroGraph} when combined with proposition \ref{prop:RotationOfEdgeGradients} and corollary \ref{cory:Grad0SingleEdge}.
 
-\tstk{Kirill comments 27-02-21 are done to here}
 \subsection{The ``Non-Classical" Sobolev Space} \label{appS:SobSpacesTheory}
-Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$.
-Given that we know that $\tgrad_\ddmes u \perp \gradZero{\ddom}{\ddmes}$, and we have an edge-wise characterisation of $\gradZero{\ddom}{\ddmes}$, it will not be surprising to learn that we also obtain an edge-wise ``form" for the tangential gradient, as given in the following proposition.
+Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$, and enables us to obtain an edge-wise ``form" for the tangential gradient, as follows:
 \begin{prop} \label{prop:GraphTangGrad}
-	Assume convention \ref{ass:MeasTheoryProblemSetup}.
 	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the (1 dimensional) Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
 	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in \edgeSet$, and that
 	\begin{align*}
 		\bracs{ \tgrad_\ddmes u }_{jk} 
-		&= R_{jk}^\top \begin{pmatrix} u_{jk}' + i\bracs{R_{jk}\qm}_1 u_{jk} \\ 0	\end{pmatrix}
+		&= R_{jk}^\top \begin{pmatrix} u_{jk}' + \rmi\bracs{R_{jk}\qm}_1 u_{jk} \\ 0	\end{pmatrix}
 	\end{align*}
-	where $u_{jk}' = \bracs{ \tilde{u}_{jk}' } \circ r_{jk}^{-1}$.
+	where $u_{jk}' = \tilde{u}_{jk}' \circ r_{jk}^{-1}$.
 \end{prop}
 Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of any kind of ``classical" derivative for $u_{jk}$ or $u$, it is just a helpful piece of notation to remind us that $u_{jk}$ does have some regularity after composition with $r_{jk}$.
 \begin{proof}
@@ -194,39 +190,30 @@ Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of
 	Let $\tgrad_\ddmes u = \bracs{v_1, v_2}^\top$ denote the components of $\tgrad_\ddmes u$; we can see that $v_2\vert_{I_{jk}}=0$ immediately due to the result of proposition \ref{prop:GradZeroGraph} and thus the requirement that $\tgrad_\ddmes u$ be orthogonal to every member of $g\in\gradZero{\ddom}{\lambda_{jk}}$.
 	This leaves the form of $v_1\vert_{I_{jk}}$ to be determined.
 	Since $u\in\gradSobQM{\ddom}{\ddmes}$ there exists a sequence of smooth functions $\phi_n$ which converges to $u$ in $\ltwo{\ddom}{\ddmes}$, and whose gradients $\tgrad\phi_n$ converge to $\tgrad_\ddmes u$.
-	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n$ converges to $v_1\vert_{I_{jk}}-i\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
+	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n$ converges to $v_1\vert_{I_{jk}}-\rmi\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
 	Considering the composition $\tilde{\phi}_n = \phi_n \circ r_{jk}$ we find that
 	\begin{align*}
 		\tilde{\phi}_n \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{u}_{jk},
-		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{v}_1\vert_{jk} - i\qm_1 \tilde{u}_{jk},
+		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{v}_1\vert_{jk} - \rmi\qm_1 \tilde{u}_{jk},
 	\end{align*}
 	from which we can deduce that $\tilde{u}_{jk}' = \tilde{v}_1\vert_{I_{jk}} - i\qm_1\tilde{u}$, and hence obtain the result for an edge parallel to the $x_1$-axis ($R_{jk}$ being the identity).
-	Then to deal with edges that are not parallel to the $x_1$-axis, we can first apply a rotation (using $R_{jk}$) to lie in a co-ordinate system with $I_{jk}$ parallel to an axis, apply the above argument, and then rotate back - the process of which introducing the various $R_{jk}$ pre-multipliers.
+	Then to deal with edges that are not parallel to the $x_1$-axis, we can first apply a rotation (using $R_{jk}$) to lie in a co-ordinate system with $I_{jk}$ parallel to an axis, apply the above argument, and then rotate back --- the process of which introducing the various $R_{jk}$ pre-multipliers.
 	Given proposition \ref{prop:GradZeroGraph}, we are done.
 \end{proof}
 
-Whilst proposition \ref{prop:GraphTangGrad} arrives at an expected conclusion (given proposition \ref{prop:GradZeroGraph}) for the form of the tangential gradient, $\gradSobQM{\ddom}{\ddmes}$ has some additional structure that is not obvious from this study.
-In particular the behaviour of functions near the vertices of $\graph$ has been ignored up until this point, due to the fact that it does not warrant investigation when dealing with gradients of zero and hence the tangential gradients.
-It is also not unreasonable to expect some special behaviour of the functions $u\in\gradSobQM{\ddom}{\ddmes}$ at the vertices, otherwise there will be no resemblance of the connectivity of $\graph$ in our function space.
-We can deduce that functions $u\in\gradSobQM{\ddom}{\ddmes}$ actually possess continuity at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$).
-The converse is claimed in \cite[Section~4]{zhikov2002homogenization} for when $\qm=0$ on a single-junction-like graph structure.
-Again, we give a sketch of the proof first to provide a clear overview of the argument, followed by the full details of the proof.
+Insofar, we have not considered the behaviour of functions $u\in\gradSobQM{\ddom}{\ddmes}$ near the vertices of the graph, and it is reasonable to expect some special behaviour at the vertices, otherwise there will be no reflection of the connectivity of $\graph$.
+This is addressed in the following theorem --- we can deduce that $u$ is continuous at the vertices $v_j\in \vertSet$ of $\graph$ (for any $\qm$).
+Notably, the converse is claimed in \cite[Section~4]{zhikov2002homogenization} for when $\qm=0$ on a single-junction-like graph structure.
 \begin{theorem} \label{thm:CharOfGradSob}
-	Assume convention \ref{ass:MeasTheoryProblemSetup}.
-	Then we have that
-	\begin{align*}
-		u \in\gradSobQM{\ddom}{\ddmes} \quad\Rightarrow\quad 
-		& (i) \ u\in\gradSobQM{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in \edgeSet, \\
-		& (ii) \ u \text{ is continuous at each } v_j\in \vertSet,
-	\end{align*}
-	where $\tgrad_{\ddmes}u\vert_{I_{jk}} = \tgrad_{\lambda_{jk}}u$ on each edge $I_{jk}$.
+	Suppose that $u \in\gradSobQM{\ddom}{\ddmes}$.
+	Then $\bracs{u, \tgrad_{\lambda_{jk}}u}\in\gradSobQM{\ddom}{\lambda_{jk}}$ for all $I_{jk}\in \edgeSet$, and $u$ is continuous at each $v_j\in \vertSet$.
+	where $\tgrad_{\lambda_{jk}}u = \tgrad_{\ddmes}u\vert_{I_{jk}}$ on each edge $I_{jk}$.
 \end{theorem}
-\begin{proof} \textit{(Sketch):} 
-	The implication is essentially a result of \eqref{eq:GraphMeasNormEdgeBreakdown}, as (i) follows from this almost immediately.
-	(ii) is then obtained by showing that any sequence $\phi_n$ of smooth functions approximating $u$ and $\tgrad_\ddmes u$ (as in the definition of $\gradSobQM{\ddom}{\ddmes}$) is actually Cauchy in the uniform norm.
+\textit{(Sketch of proof)}: 
+	The implication is essentially a result of \eqref{eq:GraphMeasNormEdgeBreakdown}, as $\bracs{u, \tgrad_{\lambda_{jk}}u}\in\gradSobQM{\ddom}{\lambda_{jk}}$ follows from this immediately.
+	Continuity at the vertices is then obtained by showing that any sequence $\phi_n$ of smooth functions approximating $u$ and $\tgrad_\ddmes u$ (as in the definition of $\gradSobQM{\ddom}{\ddmes}$) is actually Cauchy in the uniform norm.
 	As such it must also converge to a continuous function by completeness of this norm, and the limit must be $u_{jk}$.
-	In particular it must also converge uniformly on the ``junction" surrounding each vertex $v_j$, and thus $u$ must be continuous at $v_j$ in particular. \newline
-\end{proof}
+	In particular it must also converge uniformly on the ``junction" surrounding each vertex $v_j$, and thus $u$ must be continuous at $v_j$ in particular.
 \begin{proof}
 	Suppose $u\in\gradSob{\ddom}{\ddmes}$, then we can find a sequence of smooth functions $\phi_l$ such that
 	\begin{align*}
@@ -242,8 +229,8 @@ Again, we give a sketch of the proof first to provide a clear overview of the ar
 	\end{align*}
 	Thus $u\in\gradSob{\ddom}{\lambda_{jk}}$ (with $\grad_{\lambda_{jk}}u = \grad_\ddmes u$).
 	We now retain this sequence $\phi_l$, and consider one $v_j\in \vertSet$ and it's connecting edges $I_{jk}$ where $j\sim k$.
-	For each such $k$, to reduce the notational load denote composition with $r_{jk}$ (assumption \ref{ass:MeasTheoryProblemSetup} by an overhead tilde.
-	Then because we have (i) we conclude that 
+	For each such $k$, to reduce the notational load denote composition with $r_{jk}$ (see assumption \ref{ass:MeasTheoryProblemSetup}) by an overhead tilde.
+	Since we have shown $u\in\gradSob{\ddom}{\lambda_{jk}}$, we conclude that 
 	\begin{align*}
 		\widetilde{\phi}_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}, 
 		&\quad \widetilde{\phi}'_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}',
@@ -253,7 +240,7 @@ Again, we give a sketch of the proof first to provide a clear overview of the ar
 	\begin{align*}
 		W^{1,2}\bracs{\interval{I_{jk}}, \md t} = \gradSob{\interval{I_{jk}}}{t} \ &\hookrightarrow \ C^{0,\recip{2}}\interval{I_{jk}}
 	\end{align*}
-	is compact; we can conclude that $\phi_l$ is a Cauchy sequence in the $C^{0,\recip{2}}$-norm, and hence is also Cauchy in the uniform norm,
+	is compact, we can conclude that $\phi_l$ is a Cauchy sequence in the $C^{0,\recip{2}}$-norm, and hence is also Cauchy in the uniform norm,
 	\begin{align*}
 		\norm{\widetilde{\phi}_l}_{\mathrm{sup}_{jk}} := \sup_{\interval{I_{jk}}}\abs{\phi_l}.
 	\end{align*}
@@ -265,14 +252,14 @@ Again, we give a sketch of the proof first to provide a clear overview of the ar
 	that is $\phi_l$ converges uniformly to $u$ on $I_{jk}$.
 	We now claim that $\phi_l$ converges uniformly to $u$ on
 	\begin{align*}
-		J\bracs{v_j} &:= \bigcup_{j\sim k}I_{jk}
+		J\bracs{v_j} &:= \bigcup_{j\sim k}I_{jk}.
 	\end{align*}
-	too; which is easily seen because
+	Indeed, one has 
 	\begin{align*}
-		\sup_{J\bracs{v_j}}\abs{\phi_l - u} &= \sup_{j\sim k}\sup_{I_{jk}}\abs{\phi_l - u} \\
-		&\rightarrow0 \toInfty{l},
+		\sup_{J\bracs{v_j}}\abs{\phi_l - u} 
+		&= \sup_{j\sim k}\sup_{I_{jk}}\abs{\phi_l - u}
+		\rightarrow0 \toInfty{l},
 	\end{align*}
 	due to the uniform convergence on each edge.
-	Thus $u$ is also the uniform limit of continuous functions on $J\bracs{v_j}$, and so it continuous here, which in particular includes the vertex $v_j$ itself.
-	Hence we have (ii), and are done.
+	Thus $u$ is also the uniform limit of continuous functions on $J\bracs{v_j}$, and so it continuous here, which in particular includes the vertex $v_j$ itself, which completes the proof.
 \end{proof}

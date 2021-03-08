@@ -1,4 +1,15 @@
-﻿\begin{tikzpicture}
+\documentclass[crop, tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+
+\begin{tikzpicture}
 
 	%Graph in the 2D plane, place on the right ideally.
 	\pgfdeclarelayer{foreground}
@@ -82,3 +93,5 @@
 	\end{scope}
 
 \end{tikzpicture}
+
+\end{document}
