@@ -1,3 +1,3 @@
-zip -r PaperScalar2020.zip ./Diagrams/*.tex ./Diagrams/Numerical_Results ./Preamble/*.tex ./Paper_Scalar2020/
+zip -r PaperScalar2020.zip ./Diagrams/*.tex ./Diagrams/Numerical_Results ./Preamble/*.tex ./Paper_Scalar2020/ ./BibFiles/
 
 (run from relative directory ../)

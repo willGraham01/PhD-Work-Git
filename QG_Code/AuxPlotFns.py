@@ -13,6 +13,7 @@ NOTE: Importing this package by default sets matplotlib to render TeX in axis la
 Rough table of contents:
 	- FigWindowSettings
 	- GenTitStr
+	- GetDateTime
 	- PlotContour
 	- PlotSurf
 	- PlotHeatmap
@@ -29,11 +30,13 @@ from matplotlib import rc, cm
 
 import seaborn as sns
 
+from datetime import datetime
+
 #Sets the default window style for 2D plots.
 # No right or top boarder on plots, tick marks on remaining boarders
 def FigWindowSettings(axis):
 	'''
-	Changes a matplotlib.pyplot axis object to have no top and right boarder or tick marks.
+	Changes a matplotlib.pyplot axis object to have no top and right border or tick marks.
 	INPUTS:
 		axis: 	matplotlib.pyplot axis object
 	'''
@@ -61,6 +64,21 @@ def GenTitStr(wavenumber, alpha):
 	else:
 		titStr = r'$\alpha=' + r"{:.2f}".format(alpha) + r'$'
 	return titStr
+
+def GetDateTime():
+	'''
+	Generates a string containing the current date and time, for use in saving files and timestamping them.
+	INPUTS:
+	
+	OUTPUTS:
+		dstr: 	str, the current date and time, formatted as Year-Month-Day_H-M-S
+	'''
+
+	now = datetime.now()
+	
+	#YY-mm-dd_H-M-S
+	dstr = now.strftime('%Y-%m-%d_%H-%M-%S')
+	return dstr
 
 def PlotContour(x, y, z):
 	'''

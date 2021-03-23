@@ -215,7 +215,7 @@ As a result we obtain
 \begin{align} \label{eq:ExampleThickVertexSolution}
 	\cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} &= \cos\omega - \frac{\alpha\omega}{4}\sin\omega, 
 \end{align}
-excluding $\omega=2n\pi, n\in\integers$.
+excluding $\omega=2n\pi, n\in\integers$ \tstk{check this! Meeting notes 22/03/21}.
 For ease, we define
 \begin{align*}
 	\Xi\bracs{\omega} := \cos\omega - \frac{\alpha\omega}{4}\sin\omega.
@@ -241,21 +241,21 @@ We visualise the curve $\Xi$, the spectrum and density of states in figure \ref{
 	\newline
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha1.pdf}
-		\caption{\label{fig:CrossInPlane_DoS_Alpha1} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=1$.}
+		\includegraphics[scale=0.5]{Scalar_CrossInPlane_DoS_alpha-1.pdf}
+		\caption{\label{fig:Scalar_CrossInPlane_DoS_alpha-1} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=-1$.}
 	\end{subfigure}
 	~
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_DoS_Alpha3.pdf}
-		\caption{\label{fig:CrossInPlane_DoS_Alpha3} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=3$.}
+		\includegraphics[scale=0.5]{Scalar_CrossInPlane_DoS_alpha-4.pdf}
+		\caption{\label{fig:Scalar_CrossInPlane_DoS_alpha-4} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=-4$.}
 	\end{subfigure}	
 	\caption{\label{fig:Scalar_ThickVertexAllResults} The function $\Xi$, and density of states for the graph topology in section \ref{ssec:ExampleCrossInPlane}.
 	Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi$ takes values between $-1$ and $1$ (black lines).
 	One can see the existence of spectral bands (red lines) which shrink in size as $\omega\rightarrow\infty$, with the spectrum concentrating on the centre of these bands.}
 \end{figure}
 We observe that the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
-The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band; values of $\alpha<2$ result in the first band starting at 0, whilst $\alpha\geq 2$ results in a gap between zero and the bottom of the spectrum.
+The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band; values of $\alpha<-2$ result in the first band starting at 0 \tstk{check this! Meeting notes 22/03/21}, whilst $\alpha\geq -2$ results in a gap between zero and the bottom of the spectrum. \tstk{check phrasing here}
 This can be contrasted with the work of \cite{cherednichenko2019time}, in which physical constraints on the parameters in the problem prevented the opening of this band-gap at the bottom of the spectrum. \tstk{Can probably be elaborated on}.
 It can also be shown that the spectral bands are all have right-endpoints equal to a multiple of $n\pi$, although whether this endpoint is included as part of the spectrum depends on whether $n$ is even (as \eqref{eq:ExampleThickVertexSolution} only holds for $\omega\neq 2m\pi$).
 We can also complement this analysis with a numerical estimate of the density of states (figures \ref{fig:CrossInPlane_DoS_Alpha1} and \ref{fig:CrossInPlane_DoS_Alpha3}) \tstk{need to define DoS?}, again confirming the existence of spectral gaps and also demonstrating that the spectrum ``concentrates" at the center of each spectral band.

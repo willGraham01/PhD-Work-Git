@@ -8,7 +8,7 @@ Created on Tue Jul 28 08:31:12 2020
 Script and functions to numerically compute the (Integrated) Density of States for the TFR thick-vertex cross-in-plane setup, see section 2.2 of the TFR.
 
 Equation (2.7) in section 2.2 gives that eigenvalues w are those which solve the following equation:
-	(alpha*w/4)sin(w) + cos(w) = cos((theta1+theta2)/2)cos((theta1-theta2)/2)
+	-(alpha*w/4)sin(w) + cos(w) = cos((theta1+theta2)/2)cos((theta1-theta2)/2)
 This will necesitate the use of fsolve to determine the eigenvalues which a given theta (quasimomentum) corresponds to.
 Propositions 2.2 and 2.3 in section 2.2 also demonstrate that each "band" I_n is contained in the interval [(n-1)pi, n*pi], so we can utilise this knowledge to compute the Integrated DoS in over each band sequentally. Furthermore, we know that the right-endpoint of each band is precisely n*pi.
 
@@ -45,7 +45,7 @@ def LHS(w, alpha):
 		LHSVals: (n,) float numpy array, evaluation of the LHS
 	'''
 	
-	LHSVals = (alpha/4) * w * sin(w) + cos(w) #default np array ops are element-wise
+	LHSVals = -(alpha/4) * w * sin(w) + cos(w) #default np array ops are element-wise
 	return LHSVals
 
 def LHSDeriv(w, alpha):
