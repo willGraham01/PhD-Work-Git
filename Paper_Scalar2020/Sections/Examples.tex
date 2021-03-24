@@ -210,17 +210,34 @@ To determine the spectrum of the problem \eqref{eq:QGFullSystem}, we write down 
 		-2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} & -2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} & 4\omega\cot\bracs{\dfrac{\omega}{2}}
 	\end{pmatrix}.
 \end{align*}
-We proceed analytically by solving \eqref{eq:QGDetSolveCondition}, where $A=\mathrm{diag}\bracs{0,0,\alpha}$ is the matrix of coupling constants for $\graph$.
-As a result we obtain
+Now we employ the decomposition provided by corollary \ref{cory:M-MatrixEntriesNoPoles}, and set
+\begin{align*}
+	H_\qm^{(1)}\bracs{\omega^2} &=
+	\begin{pmatrix}[1.75]
+		2\cos\bracs{\dfrac{\omega}{2}} & 0 & -2\cos\bracs{\dfrac{\qm_2}{2}} \\
+		0 & 2\cos\bracs{\dfrac{\omega}{2}} & -2\cos\bracs{\dfrac{\qm_1}{2}} \\
+		-2\cos\bracs{\dfrac{\qm_2}{2}} & -2\cos\bracs{\dfrac{\qm_1}{2}} & 4\cos\bracs{\dfrac{\omega}{2}}
+	\end{pmatrix}, \\
+	H_\qm^{(2)}\bracs{\omega^2} &= \omega\csc\bracs{\frac{\omega}{2}}, \\
+	\widetilde{M}_\qm\bracs{\omega^2} &= H_\qm^{(1)}\bracs{\omega^2} - \bracs{H_\qm^{(2)}\bracs{\omega^2}}^{-1}A,
+\end{align*}
+note that we have chosen to take the additional factor of $\omega$ out of $H_\qm^{(1)}$ and into $H^{(2)}_\qm$ due to $\graph$ having an odd number of vertices.
+We now proceed analytically by solving \eqref{eq:QGDetSolveCondition}, where $A=\mathrm{diag}\bracs{0,0,\alpha}$ is the matrix of coupling constants for $\graph$, obtaining
 \begin{align} \label{eq:ExampleThickVertexSolution}
-	\cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} &= \cos\omega - \frac{\alpha\omega}{4}\sin\omega, 
+	0 = 2\cos\bracs{\frac{\omega}{2}}
+	\bracs{ \cos\bracs{\omega} - \frac{\alpha\omega}{4}\sin\bracs{\omega} - \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} }.
 \end{align}
-excluding $\omega=2n\pi, n\in\integers$ \tstk{check this! Meeting notes 22/03/21}.
 For ease, we define
 \begin{align*}
 	\Xi\bracs{\omega} := \cos\omega - \frac{\alpha\omega}{4}\sin\omega.
 \end{align*}
-The left-hand side of \eqref{eq:ExampleThickVertexSolution} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, so finding eigenvalues $\omega^2$ amounts to determining $\omega$ for which
+Clearly, $\omega=\bracs{2n-1}\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} for every $\qm\in\left[-\pi,\pi\right), n\in\naturals$ due to the factor of $2\cos\bracs{\frac{\omega}{2}}$.
+This leaves the remaining solutions $\omega$ to be determined by
+\begin{align*}
+	\Xi\bracs{\omega} &= \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}},
+\end{align*}
+for each $\qm\in\left[-\pi,\pi\right)$.
+However we have separated $\qm$ and $\omega$ in this expression, and the left-hand side of \eqref{eq:ExampleThickVertexSolution} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, we simply have to determine $\omega$ for which
 \begin{align} \label{eq:ExampleThickVertexDispExpr}
 	-1 \leq \Xi\bracs{\omega} \leq 1.
 \end{align}
@@ -254,8 +271,32 @@ We visualise the curve $\Xi$, the spectrum and density of states in figure \ref{
 	Red regions indicate those $\omega$ that correspond to eigenvalues $\omega^2$, when $\Xi$ takes values between $-1$ and $1$ (black lines).
 	One can see the existence of spectral bands (red lines) which shrink in size as $\omega\rightarrow\infty$, with the spectrum concentrating on the centre of these bands.}
 \end{figure}
+We now have to consider the possibility that some solutions that have been found coincide with poles of $H_\qm^{(2)}\bracs{\omega^2}$, which occur when $\omega = 2n\pi, n\in\naturals_0$.
+Indeed we have that $\Xi\bracs{2n\pi}=1$, so $2n\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} when $\qm=0$.
+At this point it is necessary for us to look at the eigenvalues $\widetilde{\beta}_j\bracs{\omega^2}$ (see section \ref{ssec:ApproachConsiderations}) of $\tilde{M}_0$.
+Whilst we could numerically explore the relevant branch $\widetilde{\beta}_{j,0}$ as discussed in section \ref{ssec:ApproachConsiderations}, in this example we can compute them as
+\begin{align*}
+	\widetilde{\beta}_{1,0}\bracs{\omega^2} &= 2\cos\bracs{\frac{\omega}{2}}, \\
+	\widetilde{\beta}_{2,0}\bracs{\omega^2} &= 3\cos\bracs{\frac{\omega}{2}} - \frac{\alpha\omega}{2}\sin\bracs{\frac{\omega}{2}} - \recip{2}\sqrt{ 32 + \bracs{ 2\cos\bracs{\frac{\omega}{2}} - \alpha\omega\sin\bracs{\frac{\omega}{2}} }^2 }, \\
+	\widetilde{\beta}_{3,0}\bracs{\omega^2} &= 3\cos\bracs{\frac{\omega}{2}} - \frac{\alpha\omega}{2}\sin\bracs{\frac{\omega}{2}} + \recip{2}\sqrt{ 32 + \bracs{ 2\cos\bracs{\frac{\omega}{2}} - \alpha\omega\sin\bracs{\frac{\omega}{2}} }^2 }.
+\end{align*}
+The first branch is never zero at $\omega=2n\pi$, whilst
+\begin{align*}
+	\widetilde{\beta}_{2,0}\bracs{2n\pi} &= 3\bracs{\bracs{-1}^n - 1}, \\
+	\widetilde{\beta}_{3,0}\bracs{2n\pi} &= 3\bracs{\bracs{-1}^n + 1},
+\end{align*}
+so when $n$ is odd, $\widetilde{\beta}_{3,0}\bracs{2n\pi} = 0$, and when $n$ is even, $\widetilde{\beta}_{2,0}\bracs{2n\pi} = 0$.
+An examination of the limits $\lim_{\omega\rightarrow2n\pi}H_{0}^{(2)}\widetilde{\beta}_{2,0}$ and $\lim_{\omega\rightarrow2n\pi}H_{0}^{(2)}\widetilde{\beta}_{3,0}$ then implies that only $\omega=0$ is part of the spectrum of \eqref{eq:QGFullSystem}.
+And so we conclude that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is composed of those $\omega$ such that:
+\begin{align*}
+	&\omega = \bracs{2n-1}\pi, \quad n\in\naturals, \\
+	\text{or } &\omega = 0, \\
+	\text{or } & -1 \leq \cos\omega - \frac{\alpha\omega}{4}\sin\omega < 1.
+\end{align*}
+\tstk{numerical results should go here now - also add 0 into the figures that are generated to be consistent? Although they do only plot $\Xi$, so maybe keep them like this and mention in caption that this is only the curve $\Xi$.}
+
 We observe that the points $\omega$ that satisfy \eqref{eq:ExampleThickVertexDispExpr} are divided into distinct ``spectral bands" which shrink as $\omega\rightarrow\infty$.
-The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band; values of $\alpha<-2$ result in the first band starting at 0 \tstk{check this! Meeting notes 22/03/21}, whilst $\alpha\geq -2$ results in a gap between zero and the bottom of the spectrum. \tstk{check phrasing here}
-This can be contrasted with the work of \cite{cherednichenko2019time}, in which physical constraints on the parameters in the problem prevented the opening of this band-gap at the bottom of the spectrum. \tstk{Can probably be elaborated on}.
-It can also be shown that the spectral bands are all have right-endpoints equal to a multiple of $n\pi$, although whether this endpoint is included as part of the spectrum depends on whether $n$ is even (as \eqref{eq:ExampleThickVertexSolution} only holds for $\omega\neq 2m\pi$).
+The value of $\alpha$ affects whether there is a gap in the spectrum between 0 and the first spectral band; values of $\alpha<-2$ result in the beginning of first spectral band coinciding with the eigenvalue at 0, whilst $\alpha\geq -2$ results in a gap between zero and the bottom of the spectrum.
+This can be contrasted with the work of \cite{cherednichenko2019time}, in which physical constraints on the parameters in the problem prevented the opening of this band-gap at the bottom of the spectrum.
+It can also be shown that the spectral bands are all have right-endpoints equal to a multiple of $n\pi$ (although as we have seen whether this endpoint is included as part of the band depends on whether $n$ is even or odd).
 We can also complement this analysis with a numerical estimate of the density of states (figures \ref{fig:CrossInPlane_DoS_Alpha1} and \ref{fig:CrossInPlane_DoS_Alpha3}) \tstk{need to define DoS?}, again confirming the existence of spectral gaps and also demonstrating that the spectrum ``concentrates" at the center of each spectral band.

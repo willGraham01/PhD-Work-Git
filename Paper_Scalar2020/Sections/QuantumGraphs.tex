@@ -174,11 +174,11 @@ It can be shown that $u\in\mathrm{dom}\bracs{\mathcal{A}}$ is an eigenvector of 
 \begin{align*}
 	\bigl( M\bracs{z_0} - A \bigr) \dmap u = 0,
 \end{align*}
-\tstk{EKK Isospectrality, theorem 2.1, only gives that $z_0$ is in the spectrum if and only if $\bracs{M\bracs{z} - A}^{-1}$ admits analytic continuation to $z_0$ - how did we get to ``needing a zero eigenvalue from this"? Kirill's Critical Contrast Paper \cite[page 698]{cherednichenko2019time}, on page 698, states the above, but doesn't provide an explicit reference.} where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
+\tstk{EKK Isospectrality, theorem 2.1, only gives that $z_0$ is in the spectrum if and only if $\bracs{M\bracs{z} - A}^{-1}$ admits analytic continuation to $z_0$. Kirill's Critical Contrast Paper \cite[page 698]{cherednichenko2019time}, on page 698, states the above, but doesn't provide an explicit reference.} where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 That is, one can determine the eigenvalues of $\mathcal{A}$ by finding those $z$ for which the matrix $M(z)-A$ has zero as an eigenvalue.
-Our approach for determining the spectrum of $\mathcal{A}$ shall be as follows; let $\beta_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $M(z)-A$ viewed as \tstk{analytic - still have poles in them?} functions of $z$.
-In section \ref{sec:Discussion} we demonstrate (via explicit formulae) that the $M$-matrix is meromorphic, and can thus be expressed as $M(z) = H^{(1)}(z)H^{(2)}(z)$ for two functions $H^{(1)}$ and $H^{(2)}$ --- with $H^{(1)}$ holomorphic, and $H^{(2)}$ scalar-valued with $\recip{H^{(2)}(z)}$ holomorphic.
-Letting $\widetilde{\beta}_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $\widetilde{M}(z) := H^{(1)}\bracs{z} - \bracs{H^{(2)}}^{-1}A$ which are \tstk{continuous  -correct word here, since we've removed all the poles} functions of $z$, we can determine those $z$ for which at least one $\widetilde{\beta}_j(z)=0$ by solving
+Let us denote by $\beta_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ the eigenvalues of the matrix $M(z)-A$ viewed as \tstk{continuous up to a set of discrete points - still have poles in them?} functions of $z$.
+In section \ref{sec:Discussion} we demonstrate (via explicit formulae) that the $M$-matrix is meromorphic, and can thus be expressed as $M(z) = H^{(1)}(z)H^{(2)}(z)$ for two functions $H^{(1)}$ and $H^{(2)}$ --- with $H^{(2)}$ scalar-valued and $H^{(1)}(z), \bracs{H^{(2)}(z)}^{-1}$ holomorphic in $z$.
+Letting $\widetilde{\beta}_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $\widetilde{M}(z) := H^{(1)}\bracs{z} - \bracs{H^{(2)}(z)}^{-1}A$ which are \tstk{continuous - this IS the correct word here, since we've removed all the poles} functions of $z$, we can determine those $z$ for which at least one $\widetilde{\beta}_j(z)=0$ by solving
 \begin{align*}
 	\mathrm{det}\bracs{\widetilde{M}(z)} = 0,
 \end{align*}
@@ -193,8 +193,8 @@ As for those $z_0\in\sigma$ that coincide with poles of $H^{(2)}$, if
 \begin{align*}
 	\lim_{z\rightarrow z_0}H^{(2)}(z)\widetilde{\beta}_j(z) = 0,
 \end{align*} 
-for each $\widetilde{\beta}_j$ with $\widetilde{\beta}_j\bracs{z_0}=0$, then $z_0$ is in the spectrum of $\mathcal{A}$, otherwise it is not.
-This approach provides access to the spectrum of $\mathcal{A}$ in a manner that, as is discussed in section \ref{sec:Discussion}, can be handled numerically as well as analytically.
+for at least one \tstk{is this enough, or does it need to be ALL?} $\widetilde{\beta}_j$ with $\widetilde{\beta}_j\bracs{z_0}=0$, then $z_0$ is in the spectrum of $\mathcal{A}$, otherwise it is not.
+This provides access to the spectrum of $\mathcal{A}$ in a manner that, as is discussed in section \ref{sec:Discussion}, can be implemented numerically as well as analytically.
 The key observation being that this approach effectively reduces a system of ODEs to a matrix eigenvalue problem, plus some additional analysis on a set of isolated points, as far as determining the spectrum of $\mathcal{A}$ is concerned.
 We will exploit this fact in section \ref{sec:Examples}.
 

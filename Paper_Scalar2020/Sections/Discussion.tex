@@ -77,65 +77,20 @@ Also recall the convention for summing over $j\con k$:
 	which yields the desired result.
 \end{proof}
 
-As mentioned in section \ref{ssec:MMatrix}, the eigenvalues $\omega^2$ of a quantum graph correspond to solutions of the equation
-\begin{align*}
-	\det\bracs{ M\bracs{\omega^2} - A } = 0,
-\end{align*}
-where $A$ is the diagonal matrix of vertex coupling constants.
+\tstk{revised from meeting 23-03-2021}
+As mentioned in section \ref{ssec:MMatrix}, the eigenvalues $\omega^2$ of a quantum graph correspond to when the matrix $M\bracs{\omega^2} - A$ has zero as an eigenvalue, where $A$ is the diagonal matrix of vertex coupling constants.
 In the case of \eqref{eq:QGDerivCondition}, there is a factor of $\omega^2$ multiplying the coupling constants $\alpha_j$ as they appear in the right-hand-side of the equation.
 Furthermore, proposition \ref{prop:M-MatrixEntries} also demonstrates that the $M$-matrix (in the context of \eqref{eq:QGFullSystem}) can be thought of as being parametrised by $\qm$, and so we shall denote it by $M_{\qm}$ henceforth.
 The dependence of $M_\qm$ on $\qm$ is due to our decision to specify our singular structure (comprising the domain which \eqref{eq:WholeSpaceLaplaceEqn} was posed) as an embedded, periodic metric graph and then apply the Gelfand transform --- as touched on in section \ref{ssec:MMatrix}.
-As a result; the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, is determined by finding solutions $\omega$ to
-\begin{align} \label{eq:QGDetSolveCondition}
-	\det\bracs{M_\qm\bracs{\omega^2} - \omega^2 A} &= 0.
-\end{align}
+In the following section, we continue our analysis of the $M$-matrix and outline how it can be used to recover the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem}, and thus \eqref{eq:WholeSpaceLaplaceEqn}. \tstk{consider reordering this section, show the proposition first, outline the approach, then discuss consequences}
+%As a result; the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, is determined by finding solutions $\omega$ to
+%\begin{align} \label{eq:QGDetSolveCondition}
+%	\det\bracs{M_\qm\bracs{\omega^2} - \omega^2 A} &= 0.
+%\end{align}
 
 \subsection{Consequences of Proposition \ref{prop:M-MatrixEntries}} \label{ssec:MMatrixConsequences}
-Proposition \ref{prop:M-MatrixEntries} reduces the problem \eqref{eq:WholeSpaceLaplaceEqn} to a more accessible (family of) matrix-eigenvalue problem(s) for $M_\qm$.
-We next remark on some of the consequences of proposition \ref{prop:M-MatrixEntries} and discuss some of the ways that it can be exploited for use in examining physically-motivated graph topologies.
-
-The task of solving \eqref{eq:QGDetSolveCondition} for $\omega$ can be accomplished in two ways.
-One can simply compute an expression for the determinant in terms of $\omega$, and determine those $\omega$ that make it vanish.
-Of course the determinant also depends on $\qm$, and so it is still necessary to solve for $\omega$ for each $\qm$.
-However the task can be simplified so long as \eqref{eq:QGDetSolveCondition} can have $\omega$ and $\qm$ separated, that is be written equivalently as
-\begin{align*}
-	F\bracs{\omega} &= G\bracs{\qm}
-\end{align*}
-for some (continuous) functions $F$ and $G$.
-In this case, one can simply compute the range of $G$, and find $\omega$ satisfying the bounds
-\begin{align*}
-	\min\clbracs{G(\qm)} \leq F\bracs{\omega} \leq \max\clbracs{G(\qm)},
-\end{align*}
-netting the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} in one inequality.
-This is an approach that we employ in our examples in section \ref{sec:Examples}.
-Alternatively, one can realise \eqref{eq:QGDetSolveCondition} as a (generalised) eigenvalue problem,
-\begin{align} \label{eq:QGGenEvalSolve}
-	\bracs{ M_\qm\bracs{\omega^2}-\omega^2 A }w &= 0,
-\end{align}
-for eigenpairs $\bracs{\omega^2, w}$.
-This formulation \eqref{eq:QGGenEvalSolve} of \eqref{eq:QGDetSolveCondition} is much better suited to the latter approach, as working with the determinant directly is prone to instabilities.
-It is also more appropriate when considering the singular-structure as an approximation to a physically-motivated thin-structure.
-\tstk{And several algorithms for solving such formulations are available, see for example \cite{guttel2017nonlinear} for a good introduction to the topic.} 
-Once an approximation to the spectrum of \eqref{eq:QGFullSystem} is computed, by varying $\qm$ over a suitable mesh, the spectrum of \eqref{eq:WholeSpaceLaplaceEqn} is determined.
-
-Given that we have two approaches to tackling \eqref{eq:QGDetSolveCondition}, the next question to consider is when one approach is preferable to the other.
-This is answered predominantly by noticing that proposition \ref{prop:M-MatrixEntries} tells us that the complexity of the entry of $\bracs{M_\qm}_{jk}$ depends on the number of edges between the vertices $v_j$ and $v_k$, whilst the complexity of the diagonal entries depends on the degree of the vertex $v_j$.
-Furthermore, the number of vertices in the graph determines the dimensions of $M_\qm$, and the sparsity of $M_\qm$ depends on the number of pairs of vertices that are not (directly) connected by an edge.
-This leads to the colloquial rule that ``graphs with a small number of edges lend themselves to the first approach (via the determinant), whilst graphs with a large number of edges are easier to handle with approach two (as a generalised eigenvalue problem)".
-Indeed, as the entries of $M_\qm$ grow more complex and $M_\qm$ becomes less sparse, computing the determinant in \eqref{eq:QGDetSolveCondition} becomes less tangible analytically (and even more susceptible to instabilities).
-%Of course, even though it is the number of edges and vertices in the graph which predominantly dictates how ``nice" $M_\qm$ is to work with analytically, adding additional vertices and/or edges to an existing graph will always make $M_\qm$ harder to work with.
-%Even for relatively simple geometries like those in section \ref{sec:Examples}, the computations required to obtain expressions for the eigenvalues $\omega^2$ are fairly involved.
-There are other challenges to consider if one wishes to solve \eqref{eq:QGDetSolveCondition} via \eqref{eq:QGGenEvalSolve} numerically, which we now discuss in section \ref{ssec:NumericalApproachConsiderations}.
-
-\subsection{Considerations for a Numerical Approach to Solving \eqref{eq:QGDetSolveCondition}} \label{ssec:NumericalApproachConsiderations}
-In this section we briefly discuss solving \eqref{eq:QGDetSolveCondition} as a generalised eigenvalue problem \eqref{eq:QGGenEvalSolve} for a fixed $\qm$ and provide suggestions as to how one can efficiently recover the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
-We take as a baseline that one has an appropriate numerical scheme for handling generalised eigenvalue problems to hand \tstk{Guttel \cite{guttel2017nonlinear} would also be good here}, and so do not delve into the details of how such an algorithm would operate.
-Instead we highlight some potentially useful ideas for handling $M_\qm$ in these contexts.
-It is worth mentioning that $M_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries}), from which most numerical schemes benefit.
-
-Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, these entries are not particularly friendly when attempting to work with $M_\qm$ numerically.
-Each (non-zero) entry involves at least one reciprocal trigonometric function with poles in $\omega$, which hinder evaluation of $M_\qm\bracs{\omega^2}$.
-This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing all the poles in question, as follows:
+Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, we can improve upon this when looking for a method for determining the spectrum of \eqref{eq:QGFullSystem}.
+Indeed, we can see from proposition \ref{prop:M-MatrixEntries} that $M_\qm$ is meromorphic, and thus has the following decomposition, in which a scalar prefactor containing all the poles of $M_\qm$ is pulled out:
 \begin{cory} \label{cory:M-MatrixEntriesNoPoles}
 	Let $H^{(1)}_\qm\bracs{\omega}$ have entries defined by
 	\begin{align*}
@@ -163,43 +118,98 @@ This can be dealt with by pulling a scalar prefactor out of $M_\qm$ containing a
 	\end{align*}
 	Then one has
 	\begin{align*}
-		M_\qm\bracs{\omega^2} &= H^{(2)}_\qm\bracs{\omega}H^{(1)}_\qm\bracs{\omega}
+		M_\qm\bracs{\omega^2} &= H^{(2)}_\qm\bracs{\omega}H^{(1)}_\qm\bracs{\omega}.
 	\end{align*}
 \end{cory}
 The product notation should be understood analogously to the summation notation over $j\con k$ introduced in section \ref{sec:QuantumGraphs}.
 It is worth noticing that, depending on whether or not there are an even number of edges in the graph $\graph$, multiplying $H^{(1)}_\qm$ and dividing $H^{(2)}_\qm$ by a factor of $\omega$ provides an expression for $M_\qm$ as a ratio of two holomorphic functions in $\omega^2$.
 Since $H^{(2)}_\qm$ contains all the poles of the entries of $M_\qm$, the matrix $H^{(1)}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
-This also means that one can then solve the generalised eigenvalue problem
-\begin{align} \label{eq:QGGenEvalSolveNoPoles}
-	\bracs{ H^{(1)}_\qm - \omega^2 \bracs{H^{(2)}_\qm}^{-1} A}w = 0
-\end{align}
-for $\omega$ instead of \eqref{eq:QGGenEvalSolve}, which is more regular, as
-\begin{align*}
-	\bracs{H^{(2)}_\qm}^{-1} &= \prod_{j\con k}\sin\bracs{l_{jk}\omega}
-\end{align*}
-does not have any poles.
-%and it is also worth noting that $\abs{P_{M_\qm}^{-1}}\leq 1$.
-To ensure that the result obtained is consistent with \eqref{eq:QGGenEvalSolve}, one needs to exclude those $\omega$ found that correspond to a pole of $H^{(2)}_\qm$, namely
-\begin{align*}
-	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0}.
-\end{align*}
-%As such, one can solve the generalised eigenvalue problem involving the bounded matrix $\widetilde{M}_\qm$, and then exclude any $\omega$ that correspond to one of the (known) poles of $P_{M_\qm}$. \newline
 
-The other discussion point to consider is how to efficiently solve \eqref{eq:QGGenEvalSolve} for $\omega$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
-This must be done to obtain the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, since our Gelfand transform requires us to take the union of the spectra of \eqref{eq:QGFullSystem} over $\qm$.
-One suggestion that comes to mind is to investigate whether the solutions $\omega$ to \eqref{eq:QGGenEvalSolve} (or \eqref{eq:QGGenEvalSolveNoPoles}) are stable with respect to changes in the $\qm$, that is whether one can obtain a result like (one of) the following:
+In terms of utility in determining the spectrum of \eqref{eq:QGFullSystem}, corollary \ref{cory:M-MatrixEntriesNoPoles} provides us with the following methodology.
+We are required to determine those $\omega^2$ for which the matrix $M_\qm\bracs{\omega^2}-A$ has at least one zero eigenvalue.
+Let $\beta_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of the matrix $M_\qm\bracs{\omega^2}-A$, as \tstk{analytic? too strong, ``continuous up to a set of discrete points" is what I want to say} functions of $\omega^2$ - we will call the $\beta_j$ ``eigenvalue branches" of $M_\qm\bracs{\omega^2}-A$.
+Also set $\widetilde{M}_\qm\bracs{\omega^2} = H^{(1)}_\qm - \omega^2 \bracs{H^{(2)}_\qm}^{-1} A$, and let $\widetilde{\beta}_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of $\widetilde{M}_\qm$ which are continuous in $\omega^2$ (since this matrix, by construction, has no poles).
+Then $\widetilde{M}_\qm$ has at least one zero eigenvalue at those $\omega^2$ for which there exists a $w\in\complex^{\abs{\vertSet}}$ such that
+\begin{align} \label{eq:QGGenEvalSolveNoPoles}
+	\widetilde{M}_\qm\bracs{\omega^2}w = 0.
+\end{align}
+Since the spectrum is our primary concern, we could also chose to determine these $\omega^2$ via solution to 
+\begin{align} \label{eq:QGDetSolveCondition}
+	\det\widetilde{M}_\qm\bracs{\omega^2} &= 0,
+\end{align}
+the merits of each approach (via \eqref{eq:QGGenEvalSolveNoPoles} or \eqref{eq:QGDetSolveCondition}) we will discuss in section \ref{ssec:ApproachConsiderations}.
+Denote the set of $\omega^2$ that solve \eqref{eq:QGGenEvalSolveNoPoles} (or equivalently \eqref{eq:QGDetSolveCondition}) by $\sigma_\qm$.
+Since $\beta_j\bracs{\omega^2} = H_\qm^{(2)}\widetilde{\beta}_j\bracs{\omega^2}$, provided $\omega_0^2\in\sigma_\qm$ is not a pole of $H_\qm^{(2)}$, we then have that $\omega_0^2$ is in the spectrum of \eqref{eq:QGFullSystem}.
+If $\omega_0^2\in\sigma_\qm$ does coincide with a pole of $H_\qm^{(2)}$, then one requires that 
+\begin{align*}
+	\lim_{\omega\rightarrow\omega_0}H_\qm^{(2)}\bracs{\omega}\widetilde{\beta}_j\bracs{\omega^2} = 0
+\end{align*}
+\tstk{for all?} for at least one eigenvalue branch with $\widetilde{\beta}_j\bracs{\omega_0^2}=0$, for $\omega_0^2$ to be in the spectrum of \eqref{eq:QGFullSystem}.
+Corollary \ref{cory:M-MatrixEntriesNoPoles} also informs us of the poles of $H_\qm^{(2)}$, namely 
+\begin{align*}
+	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0},
+\end{align*}
+so we immediately know which (if any) $\omega_0^2\in\sigma_\qm$ correspond to poles of $H_\qm^{(2)}$, and thus require this additional check.
+The problem \eqref{eq:WholeSpaceLaplaceEqn} has now been effectively reduced to a more accessible (family of) matrix-eigenvalue problem(s) for $M_\qm$, and we are presented with two approaches for determining the spectrum $\sigma_\qm$ --- either via \eqref{eq:QGGenEvalSolveNoPoles} or \eqref{eq:QGDetSolveCondition}, which we discuss in the following section.
+
+\subsection{Considerations for the Approach to Solving \eqref{eq:QGDetSolveCondition}} \label{ssec:ApproachConsiderations}
+In this section we briefly discuss the merits of determining the spectrum $\sigma_\qm$ via \eqref{eq:QGGenEvalSolveNoPoles} or \eqref{eq:QGDetSolveCondition} for a fixed $\qm$, and provide suggestions as to how one can efficiently recover the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+We take as a baseline that one has to hand an appropriate numerical scheme for handling a generalised eigenvalue problem (a good introduction to which can be found in \cite{guttel2017nonlinear}), and so do not delve into the details of how such an algorithm would operate, instead choosing to highlight some potentially useful ideas for handling $\widetilde{M}_\qm$ in these contexts.
+However it is worth mentioning that $\widetilde{M}_\qm$ is Hermitian (as can be seen from proposition \ref{prop:M-MatrixEntries} and corollary \ref{cory:M-MatrixEntriesNoPoles}), from which most numerical schemes benefit.
+
+The task of solving via \eqref{eq:QGDetSolveCondition} for $\sigma_\qm$ requires that one to compute an expression for the determinant in terms of $\omega$, and determine those $\omega$ that make it vanish.
+Of course the determinant also depends on $\qm$, and it is necessary to determine $\sigma_\qm$ for each $\qm$ (so that the union over $\qm$ can be taken).
+This task can be simplified so long as \eqref{eq:QGDetSolveCondition} can have $\omega$ and $\qm$ separated, that is be written equivalently as
+\begin{align*}
+	F\bracs{\omega} &= G\bracs{\qm}
+\end{align*}
+for some (continuous) functions $F$ and $G$.
+In this case, one can simply compute the range of $G$ and find $\omega$ satisfying the bounds
+\begin{align*}
+	\min\clbracs{G(\qm)} \leq F\bracs{\omega} \leq \max\clbracs{G(\qm)},
+\end{align*}
+netting the union $\bigcup_{\qm}\sigma_\qm$ of \eqref{eq:WholeSpaceLaplaceEqn} in one inequality.
+This is an approach that we employ in our examples in section \ref{sec:Examples}.
+If such a separation is impossible, one could still attempt to solve the resulting expression and obtain $\sigma_\qm$, and take the union over $\qm$.
+Solution may even be possible numerically, although this may require extensive analytic work to find an expression for the determinant that is suitable for a root-finding scheme to work with, and one should consider the alternative approach below in this case.
+One could instead determine $\sigma_\qm$ by working from the (generalised) eigenvalue problem \eqref{eq:QGGenEvalSolveNoPoles}, seeking eigenpairs $\bracs{\omega^2, w}\in\complex\times\complex^{\abs{\vertSet}}$.
+This approach is much better suited when relying on a numerical solver, as working with the determinant directly is prone to instabilities, although of course one only obtains an approximation to $\sigma_\qm$.
+Then by varying $\qm$ over a suitable mesh, an approximation to $\bigcup_{\qm}\sigma_\qm$ can be obtained.
+
+Given that we have two approaches to determine $\sigma_\qm$, the next question to consider is when one approach is preferable to the other.
+This is answered predominantly by noticing that proposition \ref{prop:M-MatrixEntries} tells us that the complexity of the entry of $\bracs{M_\qm}_{jk}$ (hence of $\bracs{\widetilde{M}_\qm}_{jk}$) depends on the number of edges between the vertices $v_j$ and $v_k$, whilst the complexity of the diagonal entries depends on the degree of the vertex $v_j$.
+Furthermore, the number of vertices in the graph determines the dimensions of $\widetilde{M}_\qm$, and the sparsity of $\widetilde{M}_\qm$ depends on the number of pairs of vertices that are not (directly) connected by an edge.
+This leads to the colloquial rule that ``graphs with a small number of edges lend themselves to the first approach (via \eqref{eq:QGDetSolveCondition}), whilst graphs with a large number of edges are easier to handle with approach two (via \eqref{eq:QGGenEvalSolveNoPoles})".
+Indeed, as the entries of $\widetilde{M}_\qm$ grow more complex and $\widetilde{M}_\qm$ becomes less sparse, computing the determinant in \eqref{eq:QGDetSolveCondition} becomes less tangible analytically (and even more inadvisable numerically).
+
+Another point of discussion is how to determine whether $\omega_0\in\sigma_\qm$ is an eigenvalue of \eqref{eq:QGFullSystem} when it coincides with a pole of $H_\qm^{(2)}$.
+Where possible analytically, one could diagonalise $\tilde{M}_\qm\bracs{\omega^2}$ to read off the eigenvalue branches $\widetilde{\beta}_{j,\qm}$ as functions of $\omega^2$, and examine the limit
+\begin{align*}
+	\lim_{\omega\rightarrow\omega_0}H_\qm^{(2)}\bracs{\omega}\widetilde{\beta}_{j,\qm}\bracs{\omega^2}
+\end{align*}
+analytically, for those branches with $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2}=0$.
+This quickly becomes impractical for large (in the sense of the previous paragraph) $M$-matrices, and a viable alternative would be to examine the behaviour of the relevant branch $\widetilde{\beta}_{j,\qm}$ numerically.
+For example, one could adopt the following methodology:
+\begin{enumerate}
+	\item Fix a suitably small step size $\eps>0$.
+	\item Compute the eigenvalue of $\widetilde{M}_\qm\bracs{\omega_0^2+\eps}$ closest to zero, which provides an approximation for the value $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2+\eps}$.
+	\item Proceed inductively: for each $n\in\naturals$ compute an approximation to $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2+n\eps}$ by finding the eigenvalue of $\widetilde{M}_\qm\bracs{\omega_0^2+n\eps}$ closest to $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2+(n-1)\eps}$.
+	\item If desired, swap $\eps$ with $-\eps$ and repeat to get a two-sided trace of $\widetilde{\beta}_{j,\qm}$.
+\end{enumerate}
+The idea being to attempt to ``trace" or ``follow" the branch $\widetilde{\beta}_{j,\qm}$ in a region around $\omega_0^2$, which then allows an approximation of the behaviour of $H_\qm^{(2)}\widetilde{\beta}_{j,\qm}$ near $\omega_0^2$.
+Of course, this idea is not without limitations and complexities --- for example if the algebraic multiplicity of $\omega_0^2$ is greater than one, there would be the need to approximate multiple branches near $\omega_0^2$.
+
+Our final discussion point concerns how to efficiently solve \eqref{eq:QGGenEvalSolveNoPoles} for $\sigma_\qm$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
+This must be done to obtain the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, which (because of the Gelfand transform) we obtain from the union $\bigcup_{\qm}\sigma_\qm$.
+One suggestion that comes to mind is to investigate whether the solutions $\omega$ to \eqref{eq:QGGenEvalSolveNoPoles} (or \eqref{eq:QGDetSolveCondition}) are stable with respect to changes in the $\qm$, that is whether one can obtain a result like (one of) the following:
 \begin{itemize}
-	\item For every $\eps>0$, there exists some $\delta>0$ such that if $\norm{\qm^{(1)}-\qm^{(2)}}<\delta$, then the solutions $\omega^{(1)}$ and $\omega^{(2)}$ to \eqref{eq:QGGenEvalSolve} (with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively) are such that $\norm{\omega^{(1)}-\omega^{(2)}}<\eps$.
-%	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolve} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
-%	\begin{align*}
-%		\frac{ \norm{\qm^{(1)}-\qm^{(2)}} }{ \norm{\qm^{(1)}} } \leq c \frac{ \norm{\omega^{(1)}-\omega^{(2)}} }{ \norm{\omega^{(1)}} }
-%	\end{align*}
-	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolve} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
+	\item For every $\eps>0$, there exists some $\delta>0$ such that if $\norm{\qm^{(1)}-\qm^{(2)}}<\delta$, then the solutions $\omega^{(1)}$ and $\omega^{(2)}$ to \eqref{eq:QGGenEvalSolveNoPoles} (with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively) are such that $\norm{\omega^{(1)}-\omega^{(2)}}<\eps$.
+	\item There exists some $c\geq 0$ such that; if $\omega^{(1)}$ and $\omega^{(2)}$ are solutions to \eqref{eq:QGGenEvalSolveNoPoles} with $\qm$ taking the values $\qm^{(1)}$ and $\qm^{(2)}$ respectively, then
 	\begin{align*}
 		\norm{\qm^{(1)}-\qm^{(2)}} \leq c \norm{\omega^{(1)}-\omega^{(2)}}.
 	\end{align*}
 \end{itemize}
-Having either of these confirmed would mean that one could adopt a more informed approach to solving \eqref{eq:QGGenEvalSolve} on a $\qm$-mesh: after solving at $\qm^{(1)}$ and obtaining a solution $\omega^{(1)}$, and knowing the next mesh-point $\qm^{(2)}$ to be solved at, the value $\omega^{(1)}$ would provide a good starting guess to an algorithm determining the solution of \eqref{eq:QGGenEvalSolve} at $\qm^{(2)}$.
-By providing an informed ``initial guess" in this way, a numerical method that relies on an accurate guess should require less time to converge to a solution and thus require less time to reconstruct the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+Having either of these confirmed would mean that one could adopt a more informed approach to solving \eqref{eq:QGGenEvalSolveNoPoles} on a $\qm$-mesh: after solving at $\qm^{(1)}$ and obtaining a solution $\omega^{(1)}$, and knowing the next mesh-point $\qm^{(2)}$ to be solved at, the value $\omega^{(1)}$ would provide a good starting guess to an algorithm determining the solution of \eqref{eq:QGGenEvalSolveNoPoles} at $\qm^{(2)}$.
+By providing an informed ``initial guess" in this way, a numerical method should require less time to converge to a solution, and thus require less time to reconstruct the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
 Of course this suggestion also assumes that one is using a numerical method that relies on stepping through a $\qm$-mesh in the first place, and if other methods that do not rely on such an approach can be used, they would not benefit in the same way as suggested here.
 \tstk{Final sentence here like ``the authors would be interested to hear of any known theory or developments in this area"? Or just leave the point as it is and start the next section?}
