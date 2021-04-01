@@ -21,3 +21,5 @@
 *.npz
 *.xml
 *.ipynb_checkpoints/
+*EvalDump/
+*StiffnessMatrixDump/
