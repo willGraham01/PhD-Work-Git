@@ -120,7 +120,7 @@ def ValidateSolutions(regionGrid, solStore, kappaRange, omegaRange, alpha, tol=1
 
 if __name__ == "__main__":
 	
-	alpha = 3.
+	alpha = -2.
 	wPiBands = 3
 	wPtsPerPi = 1000
 	omegaRange = np.linspace(0, wPiBands*np.pi, num=wPtsPerPi*wPiBands)
