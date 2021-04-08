@@ -9,15 +9,15 @@
 6) Create surface using boundary loop minus copies of holes. */
 
 /*Things to setup before we begin meshing...*/
-N = 4;
+N = 13;
 /* N details the number of unit cells in x and y, so N^2 period cells constitute the entire domain */
 If ( N<2 )
     Error("N==%.0f - MESH CREATION WILL FAIL, ABORT", N);
     Abort;
 EndIf
 h = 0.5 / N; //tube widths
-alpha = 2.0; //parameter alpha that appears as the coupling constant in the QG problem. NOTE: This assumes alpha = V_edge / V_junction, so might be 1/alpha when reconciled with analytic work!
-r = Sqrt( h / (alpha * Pi) ); //circle radius, given alpha and tube width
+alpha = 2.0; //parameter alpha that appears as the coupling constant in the QG problem. NOTE: This assumes alpha = V_junction / V_edge, and also takes the absolute value for meshing purposes (alpha is negative in analytic setup for QG)
+r = Sqrt( (h * alpha) / Pi ); //circle radius, given alpha and tube width
 cLen = h / 2.0; //Characteristic length for mesh points - simplex size will be of this order
 circToTube = Sqrt( (r*r) - ((h*h)/4.0) ); //horizontal/vertical distance from centre of a circle to the beginning of a tube
 Printf("Domain has %.0f unit cells.", N);
