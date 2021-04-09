@@ -1,0 +1,78 @@
+\section{Introduction} \label{sec:Intro}
+
+\tstk{This section includes our literature review and motivation.
+The purpose of the paper is to present the equations that were derived for the TFR/curl-curl system as what can be interpreted as an "effective" or "limit" problem for a fine/thin-structure material.
+This is subject to future advances in the field that draw parallel to the scalar-case developments, of course.
+This text should be deleted upon completion of the LitReview.}
+
+\subsection{Lit Review} \label{ssec:LitReview}
+
+\subsection{Physical motivation} \label{ssec:PhysMot}
+The problem we consider in the present work is motivated by the desire to study wave propagation in a medium that exhibits a periodic (micro) structure.
+Understanding the behaviour of waves in such media has applications in the field of photonic crystals, but also extends broadly into the study of wave behaviour in an elastic setting (see section \ref{ssec:LitReview}), although our motivations largely stem from the former.
+The system of Maxwell equations are the typical starting point for describing the propagation of light,
+\begin{subequations} \label{eq:MaxwellSystem}
+	\begin{align} 
+		\grad \cdot \bracs{\epsilon E} &= \rho_{f}, \label{eq:E-div} \\
+		\grad \cdot \bracs{\mu H} &= 0, \label{eq:H-div} \\
+		\curl{} E &= -\recip{c} \pdiff{\bracs{\mu H}}{t}, \label{eq:E-curlEqn}\\
+		\curl{} H &= \recip{c}\bracs{J_{f} + \pdiff{\bracs{\epsilon E}}{t}}, \label{eq:H-curlEqn}
+	\end{align}
+\end{subequations}
+where $E, H$ are the electric and magnetic fields respectively, $\rho_{f}$ is the free charge density, and $J_f$ the current density. 
+The parameters $\epsilon$ and $\mu$ are the electric permittivity and magnetic permeability of the material waves are propagating in, and $c$ the speed of light in vacuum.
+In the absence of external currents and charges, and under the assumption that $\epsilon$ and $\mu$ are constant, one can take the curl of \eqref{eq:E-curlEqn} (alternatively \eqref{eq:H-curlEqn}), interchange the order of the resulting time-derivative and curl-operation on the right hand side, and then substitute \eqref{eq:H-curlEqn} (respectively \eqref{eq:E-curlEqn}) the to obtain the ``curl-of-the-curl" equation
+\begin{align*}
+	- \curl{}\bracs{ \curl{} u } &= \frac{\epsilon\mu}{c^2}\pddiff{u}{t}.
+\end{align*}
+The vector field $u$ represents either the electric ($E$) or magnetic field ($H$) depending on the chosen polarisation (TE or TM), and is required to be divergence-free (due to \eqref{eq:E-div} and \eqref{eq:H-div}).
+Assuming a time-harmonic field $u = e^{-\rmi\omega t}$ for some frequency $\omega$, one obtains the (eigenvalue) equation
+\begin{align} \label{eq:CurlCurlEqn}
+	- \curl{}\bracs{ \curl{} u } &= zu,
+\end{align}
+\tstk{there shouldn't be a $-$ sign on the LHS?!?!?!?}
+where $z = \frac{\epsilon\mu\omega^2}{c^2}$, and $u$ is a divergence-free field.
+Since $z$ has physical units of square Hertz, we will continue to write $\omega^2$ for the spectral parameter $z$ throughout this work.
+This also retains an intuitive link to applications: the spectrum (that is, the set of $z=\omega^2$ in \eqref{eq:CurlCurlEqn} that are allowed in some sense) provides access to the frequencies of waves that can propagate in the singular-structures we examine, which determines the use of the structure itself as a waveguide.
+Our focus will be on quantitatively encapsulating the structure of the spectrum for all problems of the form \eqref{eq:CurlCurlEqn} on the class of domains that we consider.
+
+\subsection{Problem formulation} \label{ssec:OurSystem}
+We shall now outline the problem to be addressed.
+The reader may wish to refer to section \ref{sec:QuantumGraphs} and the appendix (sections \tstk{sec refs}) for a precise description of the objects that are mentioned in the discussion below. 
+
+Our work concerns the study of equations of the form \eqref{eq:CurlCurlEqn} on singular domains, that is domains which have no interior from the perspective of the space they are embedded into.
+We represent such a singular structure by a graph $\graph$ in $\reals^2$, which we will assume to be periodic in the sense that there exists a region (period cell) $\ddom\subset\reals^2$ and vectors $p_1, p_2$ such that for any $z\in\integers$ the part of $\graph$ contained in the shifted regions $\ddom+p_1$ and $\ddom+p_2$ coincides with the part of $\graph$ contained in $\ddom$.
+We call this part of $\graph$ in $\ddom$ as the \emph{period graph} of $\graph$, and denote it by $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$, where $\vertSet$ is a finite set of vertices and $\edgeSet$ a finite set of edges.
+The graph $\graph$ is then ``extruded" into 3 dimensions to form a domain that consists of a union of planes, $\ddom\times\bracs{0,\infty}$, which is a 3-dimensional singular structure.
+For the singular structure above define the gradient operator $\grad_{\dddmes}$, and consider the ``spectral problem"
+\begin{subequations} \label{eq:WholeSpaceCurlCurl}
+	\begin{align} 
+		-\curl{\dddmes} \bracs{ \curl{\dddmes}u } = \omega^2 u &, \\
+		u \text{ is divergence-free} &.
+	\end{align}
+\end{subequations}
+Here the subscript $\dddmes$ stands for the sum of the singular measure supported by the planes induced by $\graph$ and point mass measures at centred at the vertices of $\graph$, the details of which are available in the appendix (section \ref{app:SingularMeasures}).
+It is convenient to take a Fourier transform along in the $x_3$ direction, and replace \eqref{eq:WholeSpaceCurlCurl} with a family of problems on $\ddom$ parametrised by $\wavenumber$ (the Fourier variable, representing a ``wavenumber"), and $\qm$ (the ``quasi-momentum") which varies over the dual-cell of $\ddom$.
+This provides us with a family of problems involving ``$\kt$-shifted" gradients $\ktgrad_{\dddmes}$,
+\begin{align} \label{eq:PeriodCellCurlCurlStrongForm}
+	- \ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom,
+\end{align}
+where $\ktgrad_{\dddmes}$ acts component-wise (in the same way as the familiar curl operation). % = \bracs{\pdiff{}{x_1} + \rmi\qm_1, \pdiff{}{x_2} + \rmi\qm_2, \rmi\wavenumber}^\top
+The link between \eqref{eq:WholeSpaceCurlCurl} and \eqref{eq:PeriodCellCurlCurlStrongForm} is established by means of a version of the so-called Gelfand transform \cite{gelfand1950expansion}
+\begin{align*}
+	\hat{u}\bracs{x} &= \sum_{z_1,z_2\in\integers^2}u\bracs{x+zp_1+zp_2}\e^{-\rmi\qm\bracs{x+zp_1+zp_2}}.
+\end{align*}
+It can then be shown that the spectrum of the problem \eqref{eq:PeriodCellCurlCurlStrongForm} can be determined from the spectra of the following family of problems (see section \ref{sec:SystemDerivation}):
+\begin{subequations} \label{eq:QGFullSystem}
+	\begin{align}
+		- \bracs{ \diff{}{t} + \rmi\qm_{jk} }^2 u_{3,jk} - \bracs{\omega^2-\wavenumber^2}u_{3,jk} = 0, &\quad t\in\interval{\abs{I_{jk}}}, \quad\forall I_{jk}\in\edgeSet, \\
+		u_3 \text{ is continuous at each } & v_j\in\vertSet, \\
+		\sum_{j\con k}\bracs{ \pdiff{}{n} + \rmi\qm_{jk} }u_{3,jk} = \omega^2\alpha_j u\bracs{v_j}, &\quad\forall v_j\in\vertSet.
+	\end{align}
+\end{subequations}
+\tstk{again, spurious $-$ sign above might change parts of these equations!!!}
+The $\alpha_j\in\complex$ are suitable ``coupling constants" at the vertices, and $\qm_{jk}$ are effectively rotations of $\qm$ which can be computed if one knows the orientation of the edge $I_{jk}\in\vertSet$.
+Subscripts $3,jk$ in \eqref{eq:QGFullSystem} denote restrictions of the component $u_3$ to the edges of $\graph_{\mathcal{P}}$, and the notion of the ``signed derivative" $\pdiff{}{n}$ is defined in section \ref{ssec:FunctionSpaces}.
+Problems like \eqref{eq:QGFullSystem} belong to the class of problems with generalised resolvents, since the spectral parameter $\omega^2$ appears in the boundary condition \eqref{eq:QGDerivCondition} \cite{strauss1954generalized, strauss1968extensions, strauss1998functional, cherednichenko2018effective}.
+We analyse the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, equivalently \eqref{eq:QGFullSystem}, in terms of the geometry of the structure and the constants $\alpha_j$.
+We provide an overview of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellCurlCurlStrongForm} in section \ref{sec:SystemDerivation}, and precise details of the objects involved can be found in appendices \tstk{refs!}

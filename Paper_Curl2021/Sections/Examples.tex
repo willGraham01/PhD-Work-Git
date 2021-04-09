@@ -1,0 +1,161 @@
+\section{Examples} \label{sec:Examples}
+
+\subsection{A Periodic Cross in the Plane}
+\tstk{linking first sentence}
+Our first example is a two-dimensional graph whose period cell represents a lattice-like structure in $\reals^2$.
+In this example we will use the $M$-matrix to determine an equation describing those $\omega$ which constitute the spectrum analytically, and complement this with some numerical computations to plot the resulting spectrum and density of states.
+
+Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
+\begin{align*}
+	& v_1^{\bracs{n,m}} = \bracs{\recip{2},0} + \bracs{n,m}, 
+	v_2^{\bracs{n,m}} = \bracs{0,\recip{2}} + \bracs{n,m},
+	v_3^{\bracs{n,m}} = \bracs{\recip{2},\recip{2}} + \bracs{n,m}, \\
+	& I_{13}^{\bracs{n,m}} = \sqbracs{v_1^{\bracs{n,m}}, v_3^{\bracs{n,m}}},
+	I_{23}^{\bracs{n,m}} = \sqbracs{v_2^{\bracs{n,m}}, v_3^{\bracs{n,m}}}, \\
+	& I_{31}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_1^{\bracs{n+1,m}}},
+	I_{32}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_2^{\bracs{n,m+1}}}.
+\end{align*}
+With 
+\begin{align*}
+	\vertSet^* = \clbracs{v_j^{\bracs{n,m}} \ \vert \ j\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2},
+	\qquad \edgeSet^* = \clbracs{I_{jk}^{\bracs{n,m}} \ \vert \ j,k\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2},
+\end{align*}
+and setting coupling constants
+\begin{align*}
+	\alpha_3^{\bracs{n,m}} = \alpha \in\reals, 
+	\qquad \alpha_j^{\bracs{n,m}} = 0, \quad j\in\clbracs{1,2,4,5},
+\end{align*}
+$\graph^* = \bracs{\vertSet^*,\edgeSet^*}$ is an embedded, periodic graph in $\reals^2$.
+Its period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \ref{fig:Diagram_TFRGraph}; consisting of 5 vertices and 4 edges.
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_TFRGraph.pdf}
+		\caption{\label{fig:Diagram_TFRGraph} The period graph that we are considering. All edges have length $\recip{2}$, and the quasi-momentum on horizontal edges is $-\qm_1$ and on vertical edges is $-\qm_2$.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_TFRQuantumGraph.pdf}
+		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:ExampleCrossInPlane}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
+	\end{subfigure}
+	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period cell of the graph $\graph^*$. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGFullSystem}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
+\end{figure}
+We next associate vertices that lie on the boundary of the period cell, matching $v_2$ with $v_4$ and $v_1$ with $v_5$, to obtain the quantum graph $\graph=\bracs{\vertSet,\edgeSet}$ with $\vertSet=\clbracs{v_1,v_2,v_3}$, $\edgeSet=\clbracs{I_{13},I_{23},I_{31},I_{32}}$, and lengths
+\begin{align*}
+	l_{13} = l_{23} = l_{31} = l_{32} = \recip{2}.
+\end{align*}
+Given that all the edges of $\graph^*$ are parallel to the co-ordinate axes, it is easy to compute the values of $\qm_{jk}$ for each $I_{jk}\in E$ and a given $\qm=\bracs{\qm_1,\qm_2}\in[-\pi,\pi)^2$:
+\begin{align*}
+	\qm_{13} = \qm_{31} = -\qm_2, &\quad \qm_{23} = \qm_{32} = -\qm_1.
+\end{align*}
+\tstk{$\kt$-results for curl-curl...}
+
+\subsection{A Periodic ``Star" in the Plane} \label{ssec:9VertexStarGraph}
+This is the example that Kirill said we should look at - required me to numerically solve for the DR.
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_9VertexStarGraph.pdf}
+		\caption{\label{fig:Diagram_9VertexStarGraph} The period graph considered in section \ref{ssec:9VertexStarGraph}. Diagonal edges have length $\recip{\sqrt{2}}$ with $\qm_{jk}$ being a linear combination of $\qm_1$ and $\qm_2$. Horizontal and vertical edges have length $\recip{2}$ and $\qm_{jk}$ only involves one of the components $\qm_1$ or $\qm_2$.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_9VertexStarQuantumGraph.pdf}
+		\caption{\label{fig:Diagram_9VertexStarQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:9VertexStarGraph}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 4-vertex quantum graph.}
+	\end{subfigure}
+	\caption{\label{fig:9VertexStarGraph} (\ref{fig:Diagram_9VertexStarGraph}) The period cell of the graph considered in section \ref{ssec:9VertexStarGraph}. (\ref{fig:Diagram_9VertexStarQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGFullSystem}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
+\end{figure}
+For this graph, we find that
+\begin{align*}
+	H_{\qm}^{(1)} &=
+	\begin{pmatrix}[1]
+		\Lambda\cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} &
+		0 &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_1}{2} &
+		0 \\
+		0 &
+		\Lambda\cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_2}{2} &
+		0 \\
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_1}{2} &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_2}{2} &
+		2\Lambda\bracs{ \cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} + \sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{\sqrt{2}} } &
+		-2\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\qm_1}{2}\cos\dfrac{\qm_2}{2} \\
+		0 &
+		0 &
+		-2\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\qm_1}{2}\cos\dfrac{\qm_2}{2} &
+		2\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{\sqrt{2}}
+	\end{pmatrix}, \\
+	H_{\qm}^{(2)} &= 2\csc\dfrac{\Lambda}{2}\csc\dfrac{\Lambda}{\sqrt{2}}, \\
+	A &= \mathrm{diag}\bracs{0,0,\alpha,0}.
+\end{align*}
+Note that we have labelled $v_5$ as $V_3$ in our quantum graph... hence the $\alpha$ in position $(3,3)$ in $A$.
+Solving the usual $\det\bracs{H_{\qm}^{(1)} - \bracs{ H_{\qm}^{(2)} }^{-1}\omega^2 A}=0$ then provides us with
+\begin{align*}
+	0 &= \Lambda^3\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{2}\sin^2\dfrac{\Lambda}{sqrt{2}},
+\end{align*}
+or
+\begin{align*}
+	0 &= -2\Lambda\sin\Lambda\cos^2\dfrac{\qm_1}{2}\cos^2\dfrac{\qm_2}{2} \\
+	&\quad -\Lambda\sin\bracs{\Lambda\sqrt{2}}\bracs{\cos^2\dfrac{\qm_1}{2} + \cos^2\dfrac{\qm_2}{2}} \\
+	&\quad + \Lambda\bracs{ \cos\Lambda\sin\bracs{\Lambda\sqrt{2}} + \sin\Lambda\cos\bracs{\Lambda\sqrt{2}} + \sin\Lambda + \sin\bracs{\Lambda\sqrt{2}} } \\
+	&\quad - \frac{\alpha\omega^2}{4}\sin\Lambda\sin\bracs{\Lambda\sqrt{2}}.
+\end{align*}
+Here was can do the trick of solving for roots of a 2-d polynomial
+\begin{align*}
+	A v_1 v_2 + B (v_1 + v_2) + C = 0,
+\end{align*}
+with $v_1 = \cos^2\dfrac{\qm_1}{2}$, $v_2 = \cos^2\dfrac{\qm_2}{2}$ and $A,B,C$ being $\qm$-invariant.
+This way, we can determine whether given $\omega, \wavenumber$ are spectral points by determining whether this multivariate polynomial has a root in $\sqbracs{0,1}^2$.
+
+\subsection{A Periodic Diamond-Like Structure in the Plane} \label{ssec:5VertexDiamondGraph}
+This is another example, where we have kept the same number of vertices but made our analysis more complicated by the addition of more edges.
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_5VertexDiamondGraph.pdf}
+		\caption{\label{fig:Diagram_5VertexDiamondGraph} The period graph considered in section \ref{ssec:9VertexStarGraph}. Diagonal edges have length $\recip{\sqrt{2}}$ with $\qm_{jk}$ being a linear combination of $\qm_1$ and $\qm_2$. Horizontal and vertical edges have length $\recip{2}$ and $\qm_{jk}$ only involves one of the components $\qm_1$ or $\qm_2$.}
+	\end{subfigure}
+	~
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{Diagram_5VertexDiamondQuantumGraph.pdf}
+		\caption{\label{fig:Diagram_5VertexDiamondQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:9VertexStarGraph}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 4-vertex quantum graph.}
+	\end{subfigure}
+	\caption{\label{fig:5VertexDiamondGraph} (\ref{fig:Diagram_5VertexDiamondGraph}) The period cell of the graph considered in section \ref{ssec:5VertexDiamondGraph}. (\ref{fig:Diagram_5VertexDiamondQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGFullSystem}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
+\end{figure}
+
+$M$-matrix for this problem is
+\begin{align*}
+	H_{\qm}^{(1)} &= 
+	\begin{pmatrix}[2]
+		\Lambda\bracs{ \cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} + 2\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{\sqrt{2}} } &
+		-2\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\qm_1}{2}\cos\dfrac{\qm_2}{2} &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_2}{2} \\
+		-2\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\qm_1}{2}\cos\dfrac{\qm_2}{2} &
+		\Lambda\bracs{ \cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} + 2\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{\sqrt{2}} } &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_1}{2} \\
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_2}{2} &
+		-\Lambda\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\qm_1}{2} &
+		2\Lambda\cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}}
+	\end{pmatrix}, \\
+	H_{\qm}^{(2)} &= 2\csc\dfrac{\Lambda}{2}\csc\dfrac{\Lambda}{\sqrt{2}}, \\
+	\bracs{ H_{\qm}^{(2)} }^{-1} &= \recip{2}\sin\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}}, \\
+	A &= \mathrm{diag}\bracs{0, 0, \alpha}.
+\end{align*}
+Then we just solve $\det\bracs{H_{\qm}^{(1)} - \bracs{ H_{\qm}^{(2)} }^{-1}\omega^2 A}=0$ to get the eigenvalues - it's not particularly nice, ending up at
+\begin{align*}
+	0 = \Lambda^2\sin\dfrac{\Lambda}{\sqrt{2}},
+\end{align*}
+or
+\begin{align*}
+	0 &= 2\bracs{\alpha\omega^2\sin^2\dfrac{\Lambda}{2} - 2\Lambda\sin\dfrac{\Lambda}{\sqrt{2}} - 4\Lambda\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{2} }\sin\dfrac{\Lambda}{2}\cos^2\dfrac{\qm_1}{2}\cos^2\dfrac{\qm_2}{2} \\
+	&\quad - \Lambda\bracs{ 2\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{\sqrt{2}} + \cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}} }\sin\dfrac{\Lambda}{\sqrt{2}} \bracs{\cos^2\dfrac{\qm_1}{2 + }\cos^2\dfrac{\qm_2}{2}} \\
+	&\quad + \bracs{4\Lambda\cos\dfrac{\Lambda}{2} - \alpha\omega^2\sin\dfrac{\Lambda}{2}} \bracs{ \recip{2}\cos^2\dfrac{\Lambda}{2}\sin^2\dfrac{\Lambda}{\sqrt{2}} + 2\sin\dfrac{\Lambda}{2}\cos\dfrac{\Lambda}{2}\sin\dfrac{\Lambda}{\sqrt{2}}\cos\dfrac{\Lambda}{\sqrt{2}} + 2\sin^2\dfrac{\Lambda}{2}\cos^2\dfrac{\Lambda}{\sqrt{2}} }.
+\end{align*}
+\tstk{validate these before doing numerics, Will! Written in this form so that we can do the polynomial root-search trick in terms of $\cos^2\dfrac{\qm_1}{2}$ and $\cos^2\dfrac{\qm_2}{2}$ rather than trawling through values of $\omega, \wavenumber$ instead.}

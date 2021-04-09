@@ -1,0 +1,29 @@
+\documentclass[crop, tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+	\begin{tikzpicture}[->,>=stealth',auto,node distance=3cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+	
+		%nodes and edges
+		\node[main node] (5) {$v_5$};
+		\node[main node] (1) [left of=5] {$v_4, v_6$};
+		\node[main node] (2) [above of=5] {$v_2, v_8$};
+		\node[main node] (3) [below right of=5, align=center] {$v_1, v_3,$ \\ $v_7, v_9$};
+		
+		\path[every node/.style={font=\sffamily\small}]
+			(1) edge[bend right] (5)
+			(5) edge[bend right] (1)
+			(2) edge[bend right] (5)
+			(5) edge[bend right] (2)
+			(3) edge[bend right] (5)
+			(5) edge[bend right] (3)
+			(3) edge[bend right=60] (5)
+			(5) edge[bend right=60] (3);
+	\end{tikzpicture}
+\end{document}
