@@ -30,10 +30,9 @@ Assuming a time-harmonic field $u = e^{-\rmi\omega t}$ for some frequency $\omeg
 \begin{align} \label{eq:CurlCurlEqn}
 	- \curl{}\bracs{ \curl{} u } &= zu,
 \end{align}
-\tstk{there shouldn't be a $-$ sign on the LHS?!?!?!?}
 where $z = \frac{\epsilon\mu\omega^2}{c^2}$, and $u$ is a divergence-free field.
 Since $z$ has physical units of square Hertz, we will continue to write $\omega^2$ for the spectral parameter $z$ throughout this work.
-This also retains an intuitive link to applications: the spectrum (that is, the set of $z=\omega^2$ in \eqref{eq:CurlCurlEqn} that are allowed in some sense) provides access to the frequencies of waves that can propagate in the singular-structures we examine, which determines the use of the structure itself as a waveguide.
+This also retains an intuitive link to applications: the spectrum (that is, the set of $z=\omega^2$ that possess an eigenfunction which solves \eqref{eq:CurlCurlEqn}) provides access to the frequencies of waves that can propagate in the singular-structures we examine, which determines the use of the structure itself as a waveguide.
 Our focus will be on quantitatively encapsulating the structure of the spectrum for all problems of the form \eqref{eq:CurlCurlEqn} on the class of domains that we consider.
 
 \subsection{Problem formulation} \label{ssec:OurSystem}
@@ -53,11 +52,10 @@ For the singular structure above define the gradient operator $\grad_{\dddmes}$,
 \end{subequations}
 Here the subscript $\dddmes$ stands for the sum of the singular measure supported by the planes induced by $\graph$ and point mass measures at centred at the vertices of $\graph$, the details of which are available in the appendix (section \ref{app:SingularMeasures}).
 It is convenient to take a Fourier transform along in the $x_3$ direction, and replace \eqref{eq:WholeSpaceCurlCurl} with a family of problems on $\ddom$ parametrised by $\wavenumber$ (the Fourier variable, representing a ``wavenumber"), and $\qm$ (the ``quasi-momentum") which varies over the dual-cell of $\ddom$.
-This provides us with a family of problems involving ``$\kt$-shifted" gradients $\ktgrad_{\dddmes}$,
+This provides us with a family of problems involving ``$\kt$-shifted" gradients $\ktgrad_{\dddmes}$ (see \tstk{section reference},
 \begin{align} \label{eq:PeriodCellCurlCurlStrongForm}
-	- \ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom,
+	- \ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom.
 \end{align}
-where $\ktgrad_{\dddmes}$ acts component-wise (in the same way as the familiar curl operation). % = \bracs{\pdiff{}{x_1} + \rmi\qm_1, \pdiff{}{x_2} + \rmi\qm_2, \rmi\wavenumber}^\top
 The link between \eqref{eq:WholeSpaceCurlCurl} and \eqref{eq:PeriodCellCurlCurlStrongForm} is established by means of a version of the so-called Gelfand transform \cite{gelfand1950expansion}
 \begin{align*}
 	\hat{u}\bracs{x} &= \sum_{z_1,z_2\in\integers^2}u\bracs{x+zp_1+zp_2}\e^{-\rmi\qm\bracs{x+zp_1+zp_2}}.
@@ -70,7 +68,6 @@ It can then be shown that the spectrum of the problem \eqref{eq:PeriodCellCurlCu
 		\sum_{j\con k}\bracs{ \pdiff{}{n} + \rmi\qm_{jk} }u_{3,jk} = \omega^2\alpha_j u\bracs{v_j}, &\quad\forall v_j\in\vertSet.
 	\end{align}
 \end{subequations}
-\tstk{again, spurious $-$ sign above might change parts of these equations!!!}
 The $\alpha_j\in\complex$ are suitable ``coupling constants" at the vertices, and $\qm_{jk}$ are effectively rotations of $\qm$ which can be computed if one knows the orientation of the edge $I_{jk}\in\vertSet$.
 Subscripts $3,jk$ in \eqref{eq:QGFullSystem} denote restrictions of the component $u_3$ to the edges of $\graph_{\mathcal{P}}$, and the notion of the ``signed derivative" $\pdiff{}{n}$ is defined in section \ref{ssec:FunctionSpaces}.
 Problems like \eqref{eq:QGFullSystem} belong to the class of problems with generalised resolvents, since the spectral parameter $\omega^2$ appears in the boundary condition \eqref{eq:QGDerivCondition} \cite{strauss1954generalized, strauss1968extensions, strauss1998functional, cherednichenko2018effective}.

@@ -1,0 +1,59 @@
+\section{Appendix: Singular Measures and the Shifted Gradient Operator} \label{app:SMandSGO}
+In this section we provide details of the measures which link quantum graphs (section \ref{sec:QuantumGraphs}) to the measure theoretic formulation we introduced in section \ref{ssec:OurSystem}, and the ``shifted-gradient" operator $\ktgrad$ which appears in \eqref{eq:PeriodCellCurlCurlStrongForm}.
+First, let us introduce the notation for this section.
+Set 
+\begin{align*}
+	\ddom:= \left[0,T_1\right)\times\left[0,T_2\right), 
+\end{align*}
+and $\dddom = \ddom \times \bracs{0,\infty}$.
+Let $\graph = \bracs{\vertSet,\edgeSet}$ be an embedded graph in $\ddom$, and for each $I_{jk}\in \edgeSet$, define the (Borel) measure $\lambda_{jk}$ as the measure that supports the one-dimensional Lebesgue measure on $I_{jk}$:
+\begin{align*}
+	\lambda_{jk}\bracs{B} = \lambda_{1}\bracs{r_{jk}^{-1}\bracs{B \cap I_{jk}}},
+	&\quad\text{for all Borel } B,
+\end{align*}
+where $\lambda_1$ is the Lebesgue measure on $\reals$, and $r_{jk}$ is the parametrisation of the edge $I_{jk}$ (see \eqref{eq:GeneralCurveParam}).
+Then set $\ddmes$ to be the (Borel) measure defined by
+\begin{align*}
+	\ddmes\bracs{B} = \sum_{v_j\in \vertSet}\sum_{j\conLeft k} \lambda_{jk}\bracs{B}.
+\end{align*}
+We refer to $\ddmes$ as the ``singular measure that supports $\graph$"; or alternatively the ``singular measure on $\graph$", or the ``(singular) measure that supports the edges of $\graph$".
+For a graph embedded into a 2D domain, the singular measure $\ddmes$ is illustrated in figure \ref{fig:Diagram_SingularMeasure2D}.
+\begin{figure}[b!]
+	\centering
+	\includegraphics[scale=0.85]{Diagram_SingularMeasure2D.pdf}
+	\caption{\label{fig:Diagram_SingularMeasure2D} For a graph embedded in $\reals^2$, the $\ddmes$-measure of any Borel set $B$ is obtained from summing the contributions of each $\lambda_{jk}$, as indicated by the thickened lines.
+	Sets that do not intersect $\graph$ have zero measure.}
+\end{figure}
+
+Now for each $v_j\in\vertSet$ let $\delta_j$ be a point-mass measure centred on $v_j$, namely
+\begin{align*}
+	\delta_j\bracs{B} &= \begin{cases} 1, & v_j\in B, \\ 0, & v_j\not\in B, \end{cases}
+\end{align*}
+and let
+\begin{align*}
+	\nu\bracs{B} = \sum_{v_j\in\vertSet}\alpha_j\delta_j\bracs{B},
+	\quad\text{for all Borel } B,
+\end{align*}
+where each $\alpha_j$ is the coupling constant at the vertex $v_j$.
+We then let $\dddmes = \ddmes + \nu$.
+Our singular-structure in $\dddom$ is then an extrusion of the graph $\graph$ into the third ($x_3$) dimension, each edge $I_{jk}\in\edgeSet$ inducing a plane in $\dddom$.
+We can then equip $\dddom$ with the product measure $\dddmes\otimes\lambda_{1}$ to obtain a 2-dimensional singular structure in a 3-dimensional domain.
+The measures $\dddmes$, $\ddmes$, and $\nu$ will be key to our measure-theoretic formulations, enabling us to establish notions of derivatives on a domains with no interior (or no ``area" in the Lebesgue-sense).
+
+When we come to consider variational problems on our singular structure, it is helpful to take both a Fourier and Gelfand transform due to the features our singular structure possesses.
+The result of these transforms being that the usual gradient operator is (effectively) replaced by the operator $\ktgrad$ in \eqref{eq:PeriodCellCurlCurlStrongForm}.
+Clearly, the Fourier transform in the $x_3$ direction introduces the Fourier variable (physically, the ``wavenumber") $\wavenumber$ and replaces derivatives with respect to $x_3$ by multiplication by a constant $\rmi\wavenumber$.
+The Gelfand transform then affects the components of the gradient operator which act in the $\bracs{x_1,x_2}$-plane, where we have a periodic structure.
+Recall that we pose \eqref{eq:WholeSpaceCurlCurl} on a periodic, embedded graph $\graph$ in $\reals^2$, and the Gelfand transform to move us to a family of problems on the period cell of $\graph$.
+As a result, we introduce the quasi-momentum
+\begin{align*}
+	\qm=\bracs{\qm_1,\qm_2}\in\left[-\frac{\pi}{T_1},\frac{\pi}{T_1}\right)\times\left[-\frac{\pi}{T_2},\frac{\pi}{T_2}\right)
+\end{align*}
+define the ``shifted" gradient operator $\ktgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
+\begin{align*}
+	\ktgrad\phi &= \begin{pmatrix} \partial_1\phi + \rmi\qm_1\phi \\ \partial_2\phi + \rmi\qm_2\phi \\ \rmi\wavenumber\phi \end{pmatrix}.
+\end{align*}
+Note that this is an operator on functions of two variables $\phi\bracs{x_1,x_2}\in\smooth{\ddom}$, since the Fourier transform removes the dependence on the variable $x_3$.
+This is the reason why \eqref{eq:PeriodCellCurlCurlStrongForm} is posed on the period cell of an embedded graph, rather than on the ``extrusion" of the period graph.
+
+
