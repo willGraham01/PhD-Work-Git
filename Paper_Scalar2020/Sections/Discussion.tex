@@ -15,11 +15,11 @@ We will follow up on this in section \ref{sec:Examples}, where we provide some e
 		\begin{cases}
 			0,	
 			& j \not\con k, \\[5pt]
-			-\sum_{j\conLeft k} \omega \e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
-			- \sum_{j\conRight k} \omega \e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
+			\sum_{j\conLeft k} \omega \e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
+			+ \sum_{j\conRight k} \omega \e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
 			& j\neq k, \ j\con k, \\[5pt]
-			\sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
-			+ 2\omega\sum_{j\conLeft j} \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega},
+			- \sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
+			- 2\omega\sum_{j\conLeft j} \clbracs{ \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega} },
 			& j=k.
 		\end{cases}
 	\end{align*}
@@ -49,18 +49,18 @@ Also recall the convention for summing over $j\con k$:
 		j\neq k, \ j\con k &\implies
 		\begin{cases}
 			u_{jk}(t) = \e^{-\rmi\qm_{jk}\bracs{t-l_{jk}}}\csc\bracs{\omega l_{jk}}\sin\bracs{\omega t}, \\
-			u_{kj}(t) = -\e^{-\rmi\qm_{kj}\bracs{t-l_{kj}}}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega t},
+			u_{kj}(t) = \e^{-\rmi\qm_{kj}t}\csc\bracs{\omega l_{kj}}\sin\bracs{\omega \bracs{l_{kj}-t}},
 		\end{cases} \\
 		j = k &\implies 
 		\begin{cases}
-			u_{jj}(t) = \e^{-\rmi\qm_{jj}t} \bracs{ \e^{-\rmi\omega t} + \sqbracs{\e^{-\rmi\qm_{jj}l_{jj}}-\e^{-\rmi\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
+			u_{jj}(t) = \e^{-\rmi\qm_{jj}t} \bracs{ \e^{-\rmi\omega t} + \sqbracs{\e^{\rmi\qm_{jj}l_{jj}}-\e^{-\rmi\omega l_{jj}}}\csc\bracs{\omega l_{jj}}\sin\bracs{\omega t}  },
 		\end{cases}
 	\end{align*}
 	This in turn enables us to explicitly differentiate the expressions for $u_{jk}$, and read off the values of $\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}$ at the vertices.
 	In the case $j\not\con k$, we obviously get zero contribution from the edges $I_{jk}$ and $I_{kj}$.
 	The case $j\neq k, \ j\con k$, yields the following contributions from the edges $I_{jk}$ and $I_{kj}$:
 	\begin{align*}
-		\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}\bracs{v_j} = -\omega \e^{-\rmi\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, 
+		\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}\bracs{v_j} = -\omega \e^{\rmi\qm_{jk}l_{jk}}\csc\bracs{\omega l_{jk}}, 
 		&\qquad \bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}\bracs{v_k} = \omega\cot\bracs{\omega l_{jk}}, \\
 		\bracs{\pdiff{}{n}+\rmi\qm_{kj}}u_{kj}\bracs{v_j} = -\omega \e^{-\rmi\qm_{kj}l_{kj}}\csc\bracs{\omega l_{kj}}, 
 		&\qquad \bracs{\pdiff{}{n}+\rmi\qm_{kj}}u_{kj}\bracs{v_k} = \omega\cot\bracs{\omega l_{kj}}.
@@ -72,21 +72,16 @@ Also recall the convention for summing over $j\con k$:
 	\end{align*}
 	We then use the formula
 	\begin{align*}
-		\bracs{\nmap u}_j &= \sum_{j\con l} \bracs{\pdiff{}{n}+\rmi\qm_{jl}}u_{jl}\bracs{v_j},
+		\bracs{\nmap u}_j &= -\sum_{j\con l} \bracs{\pdiff{}{n}+\rmi\qm_{jl}}u_{jl}\bracs{v_j},
 	\end{align*}
 	which yields the desired result.
 \end{proof}
 
-\tstk{revised from meeting 23-03-2021}
 As mentioned in section \ref{ssec:MMatrix}, the eigenvalues $\omega^2$ of a quantum graph correspond to when the matrix $M\bracs{\omega^2} - A$ has zero as an eigenvalue, where $A$ is the diagonal matrix of vertex coupling constants.
 In the case of \eqref{eq:QGDerivCondition}, there is a factor of $\omega^2$ multiplying the coupling constants $\alpha_j$ as they appear in the right-hand-side of the equation.
 Furthermore, proposition \ref{prop:M-MatrixEntries} also demonstrates that the $M$-matrix (in the context of \eqref{eq:QGFullSystem}) can be thought of as being parametrised by $\qm$, and so we shall denote it by $M_{\qm}$ henceforth.
 The dependence of $M_\qm$ on $\qm$ is due to our decision to specify our singular structure (comprising the domain which \eqref{eq:WholeSpaceLaplaceEqn} was posed) as an embedded, periodic metric graph and then apply the Gelfand transform --- as touched on in section \ref{ssec:MMatrix}.
-In the following section, we continue our analysis of the $M$-matrix and outline how it can be used to recover the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem}, and thus \eqref{eq:WholeSpaceLaplaceEqn}. \tstk{consider reordering this section, show the proposition first, outline the approach, then discuss consequences}
-%As a result; the spectrum of \eqref{eq:QGFullSystem} for each $\qm$, and thus the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, is determined by finding solutions $\omega$ to
-%\begin{align} \label{eq:QGDetSolveCondition}
-%	\det\bracs{M_\qm\bracs{\omega^2} - \omega^2 A} &= 0.
-%\end{align}
+In the following section, we continue our analysis of the $M$-matrix and outline how it can be used to recover the eigenvalues $\omega^2$ of \eqref{eq:QGFullSystem}, and thus \eqref{eq:WholeSpaceLaplaceEqn}.
 
 \subsection{Consequences of Proposition \ref{prop:M-MatrixEntries}} \label{ssec:MMatrixConsequences}
 Whilst proposition \ref{prop:M-MatrixEntries} provides an explicit form for the entries of the $M$-matrix, we can improve upon this when looking for a method for determining the spectrum of \eqref{eq:QGFullSystem}.
@@ -101,13 +96,13 @@ Indeed, we can see from proposition \ref{prop:M-MatrixEntries} that $M_\qm$ is m
 			\end{aligned}			
 			& j \not\con k, \\
 			\!\begin{aligned}
-				&-\sum_{j\conLeft k} \bracs{ \omega e^{i\qm_{jk}l_{jk}} \prod_{\substack{ l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{lm}\omega} }
-				\\ &\quad - \sum_{j\conRight k} \bracs{ \omega e^{-i\qm_{kj}l_{kj}} \prod_{\substack{l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{ml}\omega} },
+				&\sum_{j\conLeft k} \bracs{ \omega e^{i\qm_{jk}l_{jk}} \prod_{\substack{ l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{lm}\omega} }
+				\\ &\quad + \sum_{j\conRight k} \bracs{ \omega e^{-i\qm_{kj}l_{kj}} \prod_{\substack{l\con m \\ \bracs{l,m} \neq \bracs{j,k} }}\sin\bracs{l_{ml}\omega} },
 			\end{aligned}
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				&\sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
-				\\ &\quad + 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\bigl[ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} \bigr] },
+				&- \sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
+				\\ &\quad - 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\bigl[ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} \bigr] },
 			\end{aligned}
 			& j=k,
 		\end{cases}

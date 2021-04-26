@@ -87,6 +87,12 @@ We also use a notion of ``signed derivative" at the endpoints of an edge:
 		\pdiff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
 	\end{align}
 \end{subequations}
+\tstk{when we have QM terms, we need to clarify! Namely, we should have
+	\begin{align}
+		\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_j} &= -\bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t)+\rmi\qm u_{jk}(t), \\
+		\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t)+\rmi\qm u_{jk}(t),
+	\end{align}
+for consistency, since we use shifted gradients! (See Kirill-Sasha-CritConstrastPaper) I don't think we explain this notation until it appears in sections 3 and 4, and even then we don't articulate what it means}
 for a differentiable function $u$ on $\graph$, where the prime notation denotes differentiation by $t$.
 One can think of the formulae \eqref{eq:SignedDerivConvention} as defining an ``exterior facing" derivative at each endpoint, bearing in mind that the edge $I_{jk}$ is directed from $v_j$ to $v_k$.
 Before discussing differential operators on metric graphs, we introduce some additional notation for convenience: $j\conLeft k$ stands for ``an edge with endpoints $v_j$ and $v_k$, with $v_j$ on the left", and $j\con k$ is used to mean ``an edge with endpoints $v_j$ and $v_k$", whenever the direction of the edge is not important.
@@ -147,6 +153,7 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 \end{align*}
 One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
 As mentioned in section \ref{ssec:OurSystem}, this means the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
+\tstk{$\alpha_j<0$ is physically relevant cases - mention?}
 Rigorous setup is beyond the scope of this paper, but the central tool for analysis of the spectrum of \eqref{eq:QGFullSystem} (the $M$-matrix, see section \ref{ssec:MMatrix}) will be introduced in the more familiar setup with no explicit dependence on $\omega^2$ in the vertex conditions.
 The analysis of the spectrum of \eqref{eq:QGFullSystem} is then carried out simply by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts.
 
@@ -161,7 +168,7 @@ Let $\mathcal{A}$ be a graph Laplacian, and consider the maps
 sending a function $u\in\mathrm{dom}\bracs{\mathcal{A}}$ to its Dirichlet and Neumann data at each of the vertices, respectively:
 \begin{align*}
 	\bracs{\dmap u}_j &= u\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}, \\
-	\bracs{\nmap u}_j &= \sum_{j\con k}\pdiff{u_{jk}}{n}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
+	\bracs{\nmap u}_j &= -\sum_{j\con k}\pdiff{u_{jk}}{n}\bracs{v_j}, \quad &j=1,...,\abs{\vertSet}. 
 \end{align*}
 The $M$-matrix at $z\in\complex$ is then defined by
 \begin{align*}

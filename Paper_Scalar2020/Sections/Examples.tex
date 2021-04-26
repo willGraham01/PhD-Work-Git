@@ -1,8 +1,11 @@
+\tstk{SECTION REDO FOR CORRECTED M-MATRIX SIGN, AND $\alpha<0$ THROUGHOUT. REDO FIGURES AND NUMERICS AS APPROPRIATE}
+
 \section{Dispersion relations for concrete graph topologies} \label{sec:Examples}
 Throughout this section, we are concerned with determining the spectrum of the problem \eqref{eq:WholeSpaceLaplaceEqn}, via the spectra of \eqref{eq:QGFullSystem}, for $\qm\in\left[-\pi,\pi\right)$.
 The examples we consider in this section are chosen to highlight how the properties of the spectrum vary on both the placement of coupling constants at the vertices, as well as the geometry of the singular-structures themselves. 
 
 \subsection{One-Dimensional Loop} \label{ssec:Example1DLoop}
+\tstk{edit this section to emphasise ``splitting edges" method of removing loops? Quite a nice section to demonstrate this in. Also fix notation - define the $H$-matrices, etc.}
 We begin with the simplest example: a ``chain" of vertices that is periodic in one direction.
 Its purpose is mainly to be used to draw contrast with the following example in section \ref{ssec:EmbeddingDependentExample}, where we will show that adding additional ``pieces" to the chain can cause spectral gaps to open.
 However this example is also useful as a conceptual demonstration of how one takes the period graph of a physical singular-structure and employs proposition \ref{prop:M-MatrixEntries} to construct the $M$-matrix and extract the spectral information.
@@ -21,7 +24,7 @@ One can apply proposition \ref{prop:M-MatrixEntries} at this point to compute th
 We illustrate the process of moving from $\graph$ to $\graph_{\mathcal{P}}$ in figure \ref{fig:Diagram_1DExample}.
 Note that the artificial vertex having coupling constant equal to zero ensures that the incoming edge solutions and their derivatives match at $v_2$, ensuring that introducing $v_2$ does not alter the behaviour of solutions along the ``cut loop".
 Studying the $M$-matrix of $\graph_{\mathcal{P}}$ to determine the eigenvalues $\omega^2$ is now equivalent to studying the spectrum of the original problem.
-\begin{figure}[b]
+\begin{figure}[h!]
 	\centering
 	\begin{subfigure}[t]{0.3\textwidth}
 		\centering
@@ -135,7 +138,7 @@ The matrix of coupling constants is $A=\mathrm{diag}\bracs{\alpha, 0, 0}$, so on
 \end{align}
 and determine the eigenvalues $\omega^2$ and hence the spectrum.
 The factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition} attains the value 0 at $\omega=\bracs{2n-1}\pi, \ n\in\naturals$ (independently of the value of $\qm$), and has poles at $\omega=2n\pi, \ n\in\naturals$.
-The remaining parts of the spectrum are determined by the equation
+The remaining parts of the spectrum are determined by the equation \tstk{LIES, there is a term missing}
 \begin{align*}
 	2\cos\omega - \frac{\omega\alpha}{2}\sin\omega = \cos\qm.
 \end{align*}
