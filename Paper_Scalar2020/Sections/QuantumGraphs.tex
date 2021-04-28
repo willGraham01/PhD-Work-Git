@@ -10,7 +10,7 @@ We begin with the definition of a metric graph.
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
 Strictly, we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$, however in what follows we drop the superscript $l$ to simplify the notation.
 Each edge $I_{jk}$ is assigned a length $l_{jk}>0$, and we use the same notation $I_{jk}$ for the interval $\sqbracs{0,l_{jk}}$.
-We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j\in\reals$).
+We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j<0$, to be consistent with our physical motivation in section \ref{ssec:PhysMot}).
 A graph $\graph$ with the metric structure described above is called a \emph{metric graph}.
 Metric graphs convey a sense of size or bulk to the structures they describe --- the edges between vertices now represent physical ``wires" as opposed to combinatorial links as in graph theory.
 One can form a quantum graph by equipping a metric graph with a suitable differential operator (and associated vertex- or ``boundary"-conditions) as discussed in section \ref{ssec:FunctionSpaces} and in greater detail in \cite{berkolaiko2013introduction}.
@@ -87,12 +87,6 @@ We also use a notion of ``signed derivative" at the endpoints of an edge:
 		\pdiff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
 	\end{align}
 \end{subequations}
-\tstk{when we have QM terms, we need to clarify! Namely, we should have
-	\begin{align}
-		\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_j} &= -\bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t)+\rmi\qm u_{jk}(t), \\
-		\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t)+\rmi\qm u_{jk}(t),
-	\end{align}
-for consistency, since we use shifted gradients! (See Kirill-Sasha-CritConstrastPaper) I don't think we explain this notation until it appears in sections 3 and 4, and even then we don't articulate what it means}
 for a differentiable function $u$ on $\graph$, where the prime notation denotes differentiation by $t$.
 One can think of the formulae \eqref{eq:SignedDerivConvention} as defining an ``exterior facing" derivative at each endpoint, bearing in mind that the edge $I_{jk}$ is directed from $v_j$ to $v_k$.
 Before discussing differential operators on metric graphs, we introduce some additional notation for convenience: $j\conLeft k$ stands for ``an edge with endpoints $v_j$ and $v_k$, with $v_j$ on the left", and $j\con k$ is used to mean ``an edge with endpoints $v_j$ and $v_k$", whenever the direction of the edge is not important.
@@ -153,7 +147,7 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 \end{align*}
 One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
 As mentioned in section \ref{ssec:OurSystem}, this means the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
-\tstk{$\alpha_j<0$ is physically relevant cases - mention?}
+\tstk{We don't mention the fact that $\alpha$ should be thought of as a ratio of volumes from a thin-structure problem, nor elaborate on what it should be from physical intuition - we have mentioned we'll only deal with $\alpha_j<0$ but we might want to elaborate here.}
 Rigorous setup is beyond the scope of this paper, but the central tool for analysis of the spectrum of \eqref{eq:QGFullSystem} (the $M$-matrix, see section \ref{ssec:MMatrix}) will be introduced in the more familiar setup with no explicit dependence on $\omega^2$ in the vertex conditions.
 The analysis of the spectrum of \eqref{eq:QGFullSystem} is then carried out simply by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts.
 
@@ -176,16 +170,15 @@ The $M$-matrix at $z\in\complex$ is then defined by
 	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-z}.
 \end{align*}
 (More general statements concerning the $M$-operator can be found in \cite{derkach1991generalized, derkach2014boundary}).
-\tstk{the following is revised following the meeting on 22/03/21, so that it reads in line with the theory and our numerical approaches in the examples section}
 It can be shown that $u\in\mathrm{dom}\bracs{\mathcal{A}}$ is an eigenvector of of $\mathcal{A}$ with eigenvalue $z_0\in\complex$ if and only if
 \begin{align*}
 	\bigl( M\bracs{z_0} - A \bigr) \dmap u = 0,
 \end{align*}
-\tstk{EKK Isospectrality, theorem 2.1, only gives that $z_0$ is in the spectrum if and only if $\bracs{M\bracs{z} - A}^{-1}$ admits analytic continuation to $z_0$. Kirill's Critical Contrast Paper \cite[page 698]{cherednichenko2019time}, on page 698, states the above, but doesn't provide an explicit reference.} where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
+%\tstk{EKK Isospectrality, theorem 2.1, only gives that $z_0$ is in the spectrum if and only if $\bracs{M\bracs{z} - A}^{-1}$ admits analytic continuation to $z_0$. Kirill's Critical Contrast Paper \cite[page 698]{cherednichenko2019time}, on page 698, states the above, but doesn't provide an explicit reference.} where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
 That is, one can determine the eigenvalues of $\mathcal{A}$ by finding those $z$ for which the matrix $M(z)-A$ has zero as an eigenvalue.
-Let us denote by $\beta_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ the eigenvalues of the matrix $M(z)-A$ viewed as \tstk{continuous up to a set of discrete points - still have poles in them?} functions of $z$.
+Let us denote by $\beta_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ the eigenvalues of the matrix $M(z)-A$ viewed as functions of $z$.
 In section \ref{sec:Discussion} we demonstrate (via explicit formulae) that the $M$-matrix is meromorphic, and can thus be expressed as $M(z) = H^{(1)}(z)H^{(2)}(z)$ for two functions $H^{(1)}$ and $H^{(2)}$ --- with $H^{(2)}$ scalar-valued and $H^{(1)}(z), \bracs{H^{(2)}(z)}^{-1}$ holomorphic in $z$.
-Letting $\widetilde{\beta}_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $\widetilde{M}(z) := H^{(1)}\bracs{z} - \bracs{H^{(2)}(z)}^{-1}A$ which are \tstk{continuous - this IS the correct word here, since we've removed all the poles} functions of $z$, we can determine those $z$ for which at least one $\widetilde{\beta}_j(z)=0$ by solving
+Letting $\widetilde{\beta}_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $\widetilde{M}(z) := H^{(1)}\bracs{z} - \bracs{H^{(2)}(z)}^{-1}A$ which are continuous functions of $z$, we can determine those $z$ for which at least one $\widetilde{\beta}_j(z)=0$ by solving
 \begin{align*}
 	\mathrm{det}\bracs{\widetilde{M}(z)} = 0,
 \end{align*}
@@ -200,7 +193,7 @@ As for those $z_0\in\sigma$ that coincide with poles of $H^{(2)}$, if
 \begin{align*}
 	\lim_{z\rightarrow z_0}H^{(2)}(z)\widetilde{\beta}_j(z) = 0,
 \end{align*} 
-for at least one \tstk{is this enough, or does it need to be ALL?} $\widetilde{\beta}_j$ with $\widetilde{\beta}_j\bracs{z_0}=0$, then $z_0$ is in the spectrum of $\mathcal{A}$, otherwise it is not.
+for at least one $\widetilde{\beta}_j$ with $\widetilde{\beta}_j\bracs{z_0}=0$, then $z_0$ is in the spectrum of $\mathcal{A}$, otherwise it is not.
 This provides access to the spectrum of $\mathcal{A}$ in a manner that, as is discussed in section \ref{sec:Discussion}, can be implemented numerically as well as analytically.
 The key observation being that this approach effectively reduces a system of ODEs to a matrix eigenvalue problem, plus some additional analysis on a set of isolated points, as far as determining the spectrum of $\mathcal{A}$ is concerned.
 We will exploit this fact in section \ref{sec:Examples}.

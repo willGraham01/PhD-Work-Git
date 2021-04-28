@@ -63,9 +63,15 @@ Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, and we i
 	\alpha_j\omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j} 
 	&= - \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t
 	+ \sum_{k: \ k\con j}\overline{\varphi}\bracs{v_j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} \\
-	&= \overline{\varphi}\bracs{v_j}\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}.
+	&= \overline{\varphi}\bracs{v_j}\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}. \labelthis\label{eq:DerivationVertexConditionWeak}
 \end{align*}
-Given that this holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}$, we arrive at the condition that
+Here we use the notation for the ``shifted, signed derivative",
+\begin{align*}
+	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_j} &= -\bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_j} = -\lim_{t\rightarrow0} \bracs{ u_{jk}'(t)+\rmi\qm u_{jk}(t) }, \\
+	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{t\rightarrow l_{jk}} \bracs{ u_{jk}'(t)+\rmi\qm u_{jk}(t) },
+\end{align*}
+as is appropriate after use of the Gelfand transform.
+Given that \eqref{eq:DerivationVertexConditionWeak} holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}$, we arrive at the condition that
 \begin{align*}
 	\alpha_j\omega^2 u\bracs{v_j} &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in \vertSet.
 \end{align*}

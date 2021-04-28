@@ -18,7 +18,7 @@ We will follow up on this in section \ref{sec:Examples}, where we provide some e
 			\sum_{j\conLeft k} \omega \e^{\rmi\qm_{jk}l_{jk}} \csc\bracs{l_{jk}\omega} 
 			+ \sum_{j\conRight k} \omega \e^{-\rmi\qm_{kj}l_{kj}} \csc\bracs{l_{kj}\omega},
 			& j\neq k, \ j\con k, \\[5pt]
-			- \sum_{j\con l} \omega\cot\bracs{l_{jl}\omega}
+			- \sum_{\substack{j\con l \\ j\neq l}} \omega\cot\bracs{l_{jl}\omega}
 			- 2\omega\sum_{j\conLeft j} \clbracs{ \cot\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}}\csc\bracs{l_{jj}\omega} },
 			& j=k.
 		\end{cases}
@@ -101,7 +101,7 @@ Indeed, we can see from proposition \ref{prop:M-MatrixEntries} that $M_\qm$ is m
 			\end{aligned}
 			& j\neq k, \ j\con k, \\
 			\!\begin{aligned}
-				&- \sum_{j\con l} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
+				&- \sum_{\substack{j\con l \\ j\neq l}} \bracs{ \omega\cos\bracs{l_{jl}\omega}\prod_{\substack{ m\con n \\ \bracs{m,n}\neq\bracs{j,l} }}\sin\bracs{l_{mn}\omega} }
 				\\ &\quad - 2\omega\sum_{j\conLeft j} \bracs{ \sqbracs{ \prod_{\substack{l\con m \\ \bracs{l,m}\neq\bracs{j,j} }}\sin\bracs{l_{lm}\omega} }\bigl[ \cos\bracs{l_{jj}\omega} - \cos\bracs{\qm_{jj}l_{jj}} \bigr] },
 			\end{aligned}
 			& j=k,
@@ -109,21 +109,21 @@ Indeed, we can see from proposition \ref{prop:M-MatrixEntries} that $M_\qm$ is m
 	\end{align*}
 	and set
 	\begin{align*}
-		H^{(2)}_\qm\bracs{\omega} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
+		H^{(2)}\bracs{\omega} &= \prod_{j\con k}\csc\bracs{l_{jk}\omega}.
 	\end{align*}
 	Then one has
 	\begin{align*}
-		M_\qm\bracs{\omega^2} &= H^{(2)}_\qm\bracs{\omega}H^{(1)}_\qm\bracs{\omega}.
+		M_\qm\bracs{\omega^2} &= H^{(2)}\bracs{\omega}H^{(1)}_\qm\bracs{\omega}.
 	\end{align*}
 \end{cory}
 The product notation should be understood analogously to the summation notation over $j\con k$ introduced in section \ref{sec:QuantumGraphs}.
-It is worth noticing that, depending on whether or not there are an even number of edges in the graph $\graph$, multiplying $H^{(1)}_\qm$ and dividing $H^{(2)}_\qm$ by a factor of $\omega$ provides an expression for $M_\qm$ as a ratio of two holomorphic functions in $\omega^2$.
-Since $H^{(2)}_\qm$ contains all the poles of the entries of $M_\qm$, the matrix $H^{(1)}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
+It is worth noticing that, depending on whether or not there are an even number of edges in the graph $\graph$, multiplying $H^{(1)}_\qm$ and dividing $H^{(2)}$ by a factor of $\omega$ provides an expression for $M_\qm$ as a ratio of two holomorphic functions in $\omega^2$.
+Since $H^{(2)}$ contains all the poles of the entries of $M_\qm$, the matrix $H^{(1)}_\qm$ has no poles, and even has its entry $jk$ bounded (uniformly in $\omega$) by the number of (direct) connections $j\con k$.
 
 In terms of utility in determining the spectrum of \eqref{eq:QGFullSystem}, corollary \ref{cory:M-MatrixEntriesNoPoles} provides us with the following methodology.
 We are required to determine those $\omega^2$ for which the matrix $M_\qm\bracs{\omega^2}-A$ has at least one zero eigenvalue.
-Let $\beta_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of the matrix $M_\qm\bracs{\omega^2}-A$, as \tstk{analytic? too strong, ``continuous up to a set of discrete points" is what I want to say} functions of $\omega^2$ - we will call the $\beta_j$ ``eigenvalue branches" of $M_\qm\bracs{\omega^2}-A$.
-Also set $\widetilde{M}_\qm\bracs{\omega^2} = H^{(1)}_\qm - \omega^2 \bracs{H^{(2)}_\qm}^{-1} A$, and let $\widetilde{\beta}_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of $\widetilde{M}_\qm$ which are continuous in $\omega^2$ (since this matrix, by construction, has no poles).
+Let $\beta_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of the matrix $M_\qm\bracs{\omega^2}-A$, as functions of $\omega^2$ - we will call the $\beta_j$ ``eigenvalue branches" of $M_\qm\bracs{\omega^2}-A$.
+Also set $\widetilde{M}_\qm\bracs{\omega^2} = H^{(1)}_\qm - \omega^2 \bracs{H^{(2)}}^{-1} A$, and let $\widetilde{\beta}_j\bracs{\omega^2}, j\in\clbracs{1,...,\abs{\vertSet}}$ denote the eigenvalues of $\widetilde{M}_\qm$ which are continuous in $\omega^2$ (since this matrix, by construction, has no poles).
 Then $\widetilde{M}_\qm$ has at least one zero eigenvalue at those $\omega^2$ for which there exists a $w\in\complex^{\abs{\vertSet}}$ such that
 \begin{align} \label{eq:QGGenEvalSolveNoPoles}
 	\widetilde{M}_\qm\bracs{\omega^2}w = 0.
@@ -134,17 +134,17 @@ Since the spectrum is our primary concern, we could also chose to determine thes
 \end{align}
 the merits of each approach (via \eqref{eq:QGGenEvalSolveNoPoles} or \eqref{eq:QGDetSolveCondition}) we will discuss in section \ref{ssec:ApproachConsiderations}.
 Denote the set of $\omega^2$ that solve \eqref{eq:QGGenEvalSolveNoPoles} (or equivalently \eqref{eq:QGDetSolveCondition}) by $\sigma_\qm$.
-Since $\beta_j\bracs{\omega^2} = H_\qm^{(2)}\widetilde{\beta}_j\bracs{\omega^2}$, provided $\omega_0^2\in\sigma_\qm$ is not a pole of $H_\qm^{(2)}$, we then have that $\omega_0^2$ is in the spectrum of \eqref{eq:QGFullSystem}.
-If $\omega_0^2\in\sigma_\qm$ does coincide with a pole of $H_\qm^{(2)}$, then one requires that 
+Since $\beta_j\bracs{\omega^2} = H^{(2)}\widetilde{\beta}_j\bracs{\omega^2}$, provided $\omega_0^2\in\sigma_\qm$ is not a pole of $H^{(2)}$, we then have that $\omega_0^2$ is in the spectrum of \eqref{eq:QGFullSystem}.
+If $\omega_0^2\in\sigma_\qm$ does coincide with a pole of $H^{(2)}$, then one requires that 
 \begin{align*}
-	\lim_{\omega\rightarrow\omega_0}H_\qm^{(2)}\bracs{\omega}\widetilde{\beta}_j\bracs{\omega^2} = 0
+	\lim_{\omega\rightarrow\omega_0}H^{(2)}\bracs{\omega}\widetilde{\beta}_j\bracs{\omega^2} = 0
 \end{align*}
-\tstk{for all?} for at least one eigenvalue branch with $\widetilde{\beta}_j\bracs{\omega_0^2}=0$, for $\omega_0^2$ to be in the spectrum of \eqref{eq:QGFullSystem}.
-Corollary \ref{cory:M-MatrixEntriesNoPoles} also informs us of the poles of $H_\qm^{(2)}$, namely 
+for at least one eigenvalue branch with $\widetilde{\beta}_j\bracs{\omega_0^2}=0$, for $\omega_0^2$ to be in the spectrum of \eqref{eq:QGFullSystem}.
+Corollary \ref{cory:M-MatrixEntriesNoPoles} also informs us of the poles of $H^{(2)}$, namely 
 \begin{align*}
 	\omega &= \frac{n\pi}{l_{jk}}, \quad j\conLeft k, \ n\in\naturals_{0},
 \end{align*}
-so we immediately know which (if any) $\omega_0^2\in\sigma_\qm$ correspond to poles of $H_\qm^{(2)}$, and thus require this additional check.
+so we immediately know which (if any) $\omega_0^2\in\sigma_\qm$ correspond to poles of $H^{(2)}$, and thus require this additional check.
 The problem \eqref{eq:WholeSpaceLaplaceEqn} has now been effectively reduced to a more accessible (family of) matrix-eigenvalue problem(s) for $M_\qm$, and we are presented with two approaches for determining the spectrum $\sigma_\qm$ --- either via \eqref{eq:QGGenEvalSolveNoPoles} or \eqref{eq:QGDetSolveCondition}, which we discuss in the following section.
 
 \subsection{Considerations for the Approach to Solving \eqref{eq:QGDetSolveCondition}} \label{ssec:ApproachConsiderations}
@@ -177,10 +177,10 @@ Furthermore, the number of vertices in the graph determines the dimensions of $\
 This leads to the colloquial rule that ``graphs with a small number of edges lend themselves to the first approach (via \eqref{eq:QGDetSolveCondition}), whilst graphs with a large number of edges are easier to handle with approach two (via \eqref{eq:QGGenEvalSolveNoPoles})".
 Indeed, as the entries of $\widetilde{M}_\qm$ grow more complex and $\widetilde{M}_\qm$ becomes less sparse, computing the determinant in \eqref{eq:QGDetSolveCondition} becomes less tangible analytically (and even more inadvisable numerically).
 
-Another point of discussion is how to determine whether $\omega_0\in\sigma_\qm$ is an eigenvalue of \eqref{eq:QGFullSystem} when it coincides with a pole of $H_\qm^{(2)}$.
+Another point of discussion is how to determine whether $\omega_0\in\sigma_\qm$ is an eigenvalue of \eqref{eq:QGFullSystem} when it coincides with a pole of $H^{(2)}$.
 Where possible analytically, one could diagonalise $\tilde{M}_\qm\bracs{\omega^2}$ to read off the eigenvalue branches $\widetilde{\beta}_{j,\qm}$ as functions of $\omega^2$, and examine the limit
 \begin{align*}
-	\lim_{\omega\rightarrow\omega_0}H_\qm^{(2)}\bracs{\omega}\widetilde{\beta}_{j,\qm}\bracs{\omega^2}
+	\lim_{\omega\rightarrow\omega_0}H^{(2)}\bracs{\omega}\widetilde{\beta}_{j,\qm}\bracs{\omega^2}
 \end{align*}
 analytically, for those branches with $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2}=0$.
 This quickly becomes impractical for large (in the sense of the previous paragraph) $M$-matrices, and a viable alternative would be to examine the behaviour of the relevant branch $\widetilde{\beta}_{j,\qm}$ numerically.
@@ -191,7 +191,7 @@ For example, one could adopt the following methodology:
 	\item Proceed inductively: for each $n\in\naturals$ compute an approximation to $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2+n\eps}$ by finding the eigenvalue of $\widetilde{M}_\qm\bracs{\omega_0^2+n\eps}$ closest to $\widetilde{\beta}_{j,\qm}\bracs{\omega_0^2+(n-1)\eps}$.
 	\item If desired, swap $\eps$ with $-\eps$ and repeat to get a two-sided trace of $\widetilde{\beta}_{j,\qm}$.
 \end{enumerate}
-The idea being to attempt to ``trace" or ``follow" the branch $\widetilde{\beta}_{j,\qm}$ in a region around $\omega_0^2$, which then allows an approximation of the behaviour of $H_\qm^{(2)}\widetilde{\beta}_{j,\qm}$ near $\omega_0^2$.
+The idea being to attempt to ``trace" or ``follow" the branch $\widetilde{\beta}_{j,\qm}$ in a region around $\omega_0^2$, which then allows an approximation of the behaviour of $H^{(2)}\widetilde{\beta}_{j,\qm}$ near $\omega_0^2$.
 Of course, this idea is not without limitations and complexities --- for example if the algebraic multiplicity of $\omega_0^2$ is greater than one, there would be the need to approximate multiple branches near $\omega_0^2$.
 
 Our final discussion point concerns how to efficiently solve \eqref{eq:QGGenEvalSolveNoPoles} for $\sigma_\qm$ for each $\qm$ (or for each value in a suitable mesh of $\qm$ values).
