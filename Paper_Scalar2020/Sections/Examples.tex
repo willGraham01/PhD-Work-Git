@@ -1,10 +1,9 @@
-\tstk{SECTION REDO FOR CORRECTED M-MATRIX SIGN, AND $\alpha<0$ THROUGHOUT. REDO FIGURES AND NUMERICS AS APPROPRIATE}
-
 \section{Dispersion relations for concrete graph topologies} \label{sec:Examples}
 Throughout this section, we are concerned with determining the spectrum of the problem \eqref{eq:WholeSpaceLaplaceEqn}, via the spectra of \eqref{eq:QGFullSystem}, on graphs with a period cell contained in the unit square, and thus for $\qm\in\left[-\pi,\pi\right)^2$.
 The examples we consider in this section are chosen to highlight the methodology discussed in section \ref{sec:Discussion}, illustrate how the properties of the spectrum vary on the coupling constants at the vertices as well as the geometry of the singular-structure itself, and elaborate on the (non-)effect on the spectrum due to the choice of embedding a quantum graph. 
 
 \subsection{One-Dimensional Loop} \label{ssec:Example1DLoop}
+\tstk{still needs checked regarding m-matrix and dummy vertex issue...}
 \tstk{edit this section to emphasise ``splitting edges" method of removing loops? Quite a nice section to demonstrate this in. Also fix notation - define the $H$-matrices, etc.}
 We begin with the simplest example: a ``chain" of vertices that is periodic in one direction, to provide a conceptual demonstration of how one takes the period graph of a physical singular-structure and employs proposition \ref{prop:M-MatrixEntries} to construct the $M$-matrix and extract the spectral information.
 We will also highlight a useful trick involving ``splitting" edges of a graph via the use of ``dummy vertices", which can aid analysis of the problem.
@@ -139,7 +138,7 @@ The factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition}
 	-\recip{2} \leq \frac{3}{2}\cos\omega + \frac{\alpha\omega}{2}\sin\omega & \leq \frac{3}{2}, \\
 	\Leftrightarrow \abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } &\leq 2. 
 \end{align*}
-Poles of $H^{(2)}$ occur at $\omega= 2n\pi$, which also solve \eqref{eq:EmbeddedGraphDetSolveCondition} for $\qm=0$, however one can discern that these are not part of the spectrum upon examination of the eigenvalue branches.
+Poles of $H^{(2)}$ occur at $\omega= 2n\pi$, which also solve \eqref{eq:EmbeddedGraphDetSolveCondition} for $\qm=0$, however one can discern that these are not part of the spectrum upon examination of the eigenvalue branches (we will perform this step in detail in section \ref{ssec:ExampleCrossInPlane}).
 The spectrum of \eqref{eq:WholeSpaceLaplaceEqn} therefore consists of those $\omega$ such that
 \begin{align*}
 	\abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } \leq 2,
@@ -174,7 +173,7 @@ and setting coupling constants
 	\qquad \alpha_j^{\bracs{n,m}} = 0, \quad j\in\clbracs{1,2,4,5},
 \end{align*}
 $\graph^* = \bracs{\vertSet^*,\edgeSet^*}$ is an embedded, periodic graph in $\reals^2$.
-Its period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \ref{fig:Diagram_TFRGraph}; consisting of 5 vertices and 4 edges.
+Its period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \ref{fig:Diagram_TFRGraph}; consisting of 5 (effectively 3) vertices and 4 edges.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -196,74 +195,50 @@ We next associate vertices that lie on the boundary of the period cell, matching
 \end{align*}
 Given that all the edges of $\graph^*$ are parallel to the co-ordinate axes, it is easy to compute the values of $\qm_{jk}$ for each $I_{jk}\in E$ and a given $\qm=\bracs{\qm_1,\qm_2}\in[-\pi,\pi)^2$:
 \begin{align*}
-	\qm_{13} = \qm_{31} = -\qm_2, &\quad \qm_{23} = \qm_{32} = -\qm_1.
+	\qm_{13} = \qm_{31} = \qm_2, &\quad \qm_{23} = \qm_{32} = \qm_1.
 \end{align*}
 
 To determine the spectrum of the problem \eqref{eq:QGFullSystem}, we write down the $M$-matrix via \ref{prop:M-MatrixEntries}, as follows: \tstk{wrong signs!}
 \begin{align*}
 	M_{\qm}\bracs{\omega^2} &=
 	\begin{pmatrix}[1.75]
-		2\omega\cot\bracs{\dfrac{\omega}{2}} & 0 & -2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} \\
-		0 & 2\omega\cot\bracs{\dfrac{\omega}{2}} & -2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} \\
-		-2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} & -2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} & 4\omega\cot\bracs{\dfrac{\omega}{2}}
+		-2\omega\cot\bracs{\dfrac{\omega}{2}} & 0 & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} \\
+		0 & -2\omega\cot\bracs{\dfrac{\omega}{2}} & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} \\
+		2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} & -4\omega\cot\bracs{\dfrac{\omega}{2}}
 	\end{pmatrix}.
 \end{align*}
-Now we employ the decomposition provided by corollary \ref{cory:M-MatrixEntriesNoPoles}, and set
+Using corollary \ref{cory:M-MatrixEntriesNoPoles}, set
 \begin{align*}
 	H_\qm^{(1)}\bracs{\omega^2} &=
-	\begin{pmatrix}[1.75]
-		2\cos\bracs{\dfrac{\omega}{2}} & 0 & -2\cos\bracs{\dfrac{\qm_2}{2}} \\
-		0 & 2\cos\bracs{\dfrac{\omega}{2}} & -2\cos\bracs{\dfrac{\qm_1}{2}} \\
-		-2\cos\bracs{\dfrac{\qm_2}{2}} & -2\cos\bracs{\dfrac{\qm_1}{2}} & 4\cos\bracs{\dfrac{\omega}{2}}
+	\begin{pmatrix}[2]
+		\cos\dfrac{\omega}{2} & 0 & -\cos\dfrac{\qm_2}{2} \\
+		0 & \cos\dfrac{\omega}{2} & -\cos\dfrac{\qm_1}{2} \\
+		-\cos\dfrac{\qm_2}{2} & -\cos\dfrac{\qm_1}{2} & 2\cos\dfrac{\omega}{2}
 	\end{pmatrix}, \\
-	H^{(2)}\bracs{\omega^2} &= \omega\csc\bracs{\frac{\omega}{2}}, \\
-	\widetilde{M}_\qm\bracs{\omega^2} &= H_\qm^{(1)}\bracs{\omega^2} - \bracs{H^{(2)}\bracs{\omega^2}}^{-1}A,
+	H^{(2)}\bracs{\omega^2} &= -2\omega\csc\frac{\omega}{2}.
 \end{align*}
-note that we have chosen to take the additional factor of $\omega$ out of $H_\qm^{(1)}$ and into $H^{(2)}$ due to $\graph$ having an odd number of vertices.
+Note that we have chosen to take the additional factor of $\omega$ out of $H_\qm^{(1)}$ and into $H^{(2)}$ due to $\graph$ having an odd number of vertices.
 We now proceed analytically by solving \eqref{eq:QGDetSolveCondition}, where $A=\mathrm{diag}\bracs{0,0,\alpha}$ is the matrix of coupling constants for $\graph$, obtaining
 \begin{align} \label{eq:ExampleThickVertexSolution}
-	0 = 2\cos\bracs{\frac{\omega}{2}}
-	\bracs{ \cos\bracs{\omega} - \frac{\alpha\omega}{4}\sin\bracs{\omega} - \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} }.
+	0 = \cos\bracs{\frac{\omega}{2}}
+	\bracs{ \cos\bracs{\omega} + \frac{\alpha\omega}{4}\sin\bracs{\omega} - \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} }.
 \end{align}
 For ease, we define
 \begin{align*}
-	\Xi\bracs{\omega} := \cos\omega - \frac{\alpha\omega}{4}\sin\omega.
+	\Xi\bracs{\omega} := \cos\omega + \frac{\alpha\omega}{4}\sin\omega.
 \end{align*}
-Clearly, $\omega=\bracs{2n-1}\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} for every $\qm\in\left[-\pi,\pi\right), n\in\naturals$ due to the factor of $2\cos\bracs{\frac{\omega}{2}}$.
+Clearly, $\omega=\bracs{2n-1}\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} for every $\qm\in\left[-\pi,\pi\right), n\in\naturals$ due to the factor of $\cos\bracs{\frac{\omega}{2}}$.
 This leaves the remaining solutions $\omega$ to be determined by
-\begin{align*}
+\begin{align} \label{eq:ExampleThickVertexXiEqn}
 	\Xi\bracs{\omega} &= \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}},
-\end{align*}
-for each $\qm\in\left[-\pi,\pi\right)$.
-However we have separated $\qm$ and $\omega$ in this expression, and the left-hand side of \eqref{eq:ExampleThickVertexSolution} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, we simply have to determine $\omega$ for which
-\begin{align} \label{eq:ExampleThickVertexDispExpr}
-	-1 \leq \Xi\bracs{\omega} \leq 1.
 \end{align}
-We now have to consider the possibility that some solutions that have been found coincide with poles of $H^{(2)}\bracs{\omega^2}$, which occur when $\omega = 2n\pi, n\in\naturals_0$.
-Indeed we have that $\Xi\bracs{2n\pi}=1$, so $2n\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} when $\qm=0$.
-At this point it is necessary for us to look at the eigenvalues $\widetilde{\beta}_j\bracs{\omega^2}$ (see section \ref{ssec:ApproachConsiderations}) of $\tilde{M}_0$.
-Whilst we could numerically explore the relevant branch $\widetilde{\beta}_{j,0}$ as discussed in section \ref{ssec:ApproachConsiderations}, in this example we can compute them as
-\begin{align*}
-	\widetilde{\beta}_{1,0}\bracs{\omega^2} &= 2\cos\bracs{\frac{\omega}{2}}, \\
-	\widetilde{\beta}_{2,0}\bracs{\omega^2} &= 3\cos\bracs{\frac{\omega}{2}} - \frac{\alpha\omega}{2}\sin\bracs{\frac{\omega}{2}} - \recip{2}\sqrt{ 32 + \bracs{ 2\cos\bracs{\frac{\omega}{2}} - \alpha\omega\sin\bracs{\frac{\omega}{2}} }^2 }, \\
-	\widetilde{\beta}_{3,0}\bracs{\omega^2} &= 3\cos\bracs{\frac{\omega}{2}} - \frac{\alpha\omega}{2}\sin\bracs{\frac{\omega}{2}} + \recip{2}\sqrt{ 32 + \bracs{ 2\cos\bracs{\frac{\omega}{2}} - \alpha\omega\sin\bracs{\frac{\omega}{2}} }^2 }.
-\end{align*}
-The first branch is never zero at $\omega=2n\pi$, whilst
-\begin{align*}
-	\widetilde{\beta}_{2,0}\bracs{2n\pi} &= 3\bracs{\bracs{-1}^n - 1}, \\
-	\widetilde{\beta}_{3,0}\bracs{2n\pi} &= 3\bracs{\bracs{-1}^n + 1},
-\end{align*}
-so when $n$ is odd, $\widetilde{\beta}_{3,0}\bracs{2n\pi} = 0$, and when $n$ is even, $\widetilde{\beta}_{2,0}\bracs{2n\pi} = 0$.
-An examination of the limits $\lim_{\omega\rightarrow2n\pi}H^{(2)}\widetilde{\beta}_{2,0}$ and $\lim_{\omega\rightarrow2n\pi}H^{(2)}\widetilde{\beta}_{3,0}$ then implies that only $\omega=0$ is part of the spectrum of \eqref{eq:QGFullSystem}.
-And so we conclude that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is composed of those $\omega$ such that:
-\begin{subequations} \label{eq:CrossInPlane_ScalarDR}
-	\begin{align}
-		&\omega = \bracs{2n-1}\pi, \quad n\in\naturals, \\
-		\text{or } &\omega = 0, \\
-		\text{or } & -1 \leq \cos\omega - \frac{\alpha\omega}{4}\sin\omega \leq 1, \ \text{and} \ \omega\neq 2n\pi, n\in\naturals.
-	\end{align}
-\end{subequations}
-One can visualise the curve $\Xi$ and corresponding spectrum in \ref{fig:CrossInPlane_ScalarDR}.
+for each $\qm\in\left[-\pi,\pi\right)$.
+The left-hand side of \eqref{eq:ExampleThickVertexXiEqn} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, so each $\omega$ for which
+\begin{align} \label{eq:ExampleThickVertexDispExpr}
+	-1 \leq \Xi\bracs{\omega} \leq 1,
+\end{align}
+will solve \eqref{eq:ExampleThickVertexSolution} for some $\qm\in\left[-\pi,\pi\right)^2$.
+One can visualise the curve $\Xi$ alongside the $\omega$ that satisfy \eqref{eq:ExampleThickVertexSolution} in figure \ref{fig:CrossInPlane_ScalarDR}.
 \begin{figure}[b]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -280,9 +255,38 @@ One can visualise the curve $\Xi$ and corresponding spectrum in \ref{fig:CrossIn
 	\caption{\label{fig:CrossInPlane_ScalarDR} The function $\Xi$ for $\alpha=-1$ and $\alpha=-4$. Red regions indicate those $\omega$ correspond to eigenvalues $\omega^2$, occurring when $\Xi$ takes values between $-1$ and $1$.}
 \end{figure}
 
+We now have to consider the possibility that some $\omega$ that satisfy \eqref{eq:ExampleThickVertexSolution} coincide with poles of $H^{(2)}$, which occur when $\omega = 2n\pi, n\in\naturals$ (note that $H^{(2)}$ has a finite limit as $\omega\rightarrow0$, so $\omega=0$ is in the spectrum since it solves \eqref{eq:ExampleThickVertexSolution}).
+Indeed we have that $\Xi\bracs{2n\pi}=1$, so $\omega=2n\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} when $\qm=0$.
+At this point it is necessary for us to look at the eigenvalues $\widetilde{\beta}_j\bracs{\omega^2}$ (see section \ref{ssec:ApproachConsiderations}) of 
+\begin{align*}
+	\tilde{M} = H^{(1)}_{\qm} - \omega^2 \bracs{H^{(2)}}^{-1}A,
+\end{align*}
+for $\qm=0$.
+Whilst we could numerically explore the relevant branches $\widetilde{\beta}_{j}$ (see section \ref{ssec:ApproachConsiderations}), in this example we can compute them as
+\begin{align*}
+	\widetilde{\beta}_1\bracs{\omega} &= \cos\frac{\omega}{2}, \\
+	\widetilde{\beta}_{\pm}\bracs{\omega} &= \frac{3}{2}\cos\frac{\omega}{2} + \frac{\alpha\omega}{4}\sin\frac{\omega}{2} \pm \recip{2}\sqrt{ 8 + \bracs{ \cos\frac{\omega}{2} + \frac{\alpha\omega}{2}\sin\frac{\omega}{2} }^2 },
+\end{align*}
+The branch $\widetilde{\beta}_1$ is never zero at $\omega=2n\pi$, whilst 
+\begin{align*}
+	\widetilde{\beta}_{\pm}\bracs{2n\pi} = \frac{3}{2}\bracs{ \bracs{-1}^n \pm 1},
+\end{align*}
+so when $n$ is odd, $\widetilde{\beta}_{+}\bracs{2n\pi} = 0$, and when $n$ is even, $\widetilde{\beta}_{-}\bracs{2n\pi} = 0$.
+Examining the limits
+\begin{align*}
+	\lim_{\omega\rightarrow2n\pi} H^{(2)}\widetilde{\beta}_{-} &= -\frac{4\alpha}{3}\bracs{n\pi}^2, &\quad n \ \text{even}, \\
+	\lim_{\omega\rightarrow2n\pi} H^{(2)}\widetilde{\beta}_{+} &= -\frac{4\alpha}{3}\bracs{n\pi}^2, &\quad n \ \text{odd},
+\end{align*}
+then gives the conclusion that $\omega=2n\pi$ is not part of the spectrum of \eqref{eq:QGFullSystem}, for $n\in\naturals$.
+And so we conclude that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is composed of those $\omega$ such that:
+\begin{align} \label{eq:CrossInPlane_ScalarDR}
+	-1 \leq \cos\omega + \frac{\alpha\omega}{4}\sin\omega \leq 1, \quad \omega\neq 2n\pi, n\in\naturals.
+\end{align}
+
 For any $\alpha<0$, the curve $\Xi$ has the same shape as shown in figure \ref{fig:CrossInPlane_ScalarDR}, which can be used to demonstrate that the spectrum comprises a union of pairwise disjoint ``spectral bands" $I_n\subset\sqbracs{(n-1)\pi, n\pi}$.
 The band $I_n$ (for any $n\in\naturals$) has left-endpoint $(n-1)\pi$, although whether this endpoint is part of the spectrum depends on whether $n$ is odd or even in accordance with \eqref{eq:CrossInPlane_ScalarDR}, and a right-endpoint strictly less than $n\pi$.
-It is worth remarking that this behaviour is reversed for $\alpha\geq 0$ and bands with $n>1$ (them having right-endpoint $n\pi$ and left-endpoint strictly greater than $(n-1)\pi$), and for $\alpha\geq2$ there is a gap between an isolated eigenvalue at $0$ and the beginning of the band $I_1$ - however $\alpha\geq0$ breaks the constraints of models for physical applications \tstk{should link back to where (if ANYWHERE) we mentioned thin-structure limit stuff?}.
+It is worth remarking that this behaviour is reversed for $\alpha\geq 0$ and bands with $n>1$, them having right-endpoint $n\pi$ and left-endpoint strictly greater than $(n-1)\pi$.
+For $\alpha\geq2$ there is a gap between an isolated eigenvalue at $0$ and the beginning of the band $I_1$ - however $\alpha\geq0$ breaks the constraints of models for physical applications \tstk{should link back to where (if ANYWHERE) we mentioned thin-structure limit stuff?}.
 This is consistent with similar applications of singular-structures as approximations to thin-material structures, like the work of \cite{cherednichenko2019time}, in which the natural physical constraints on the parameters in the problem prevent the opening of a band-gap at the bottom of the spectrum.
 To round off the analysis, quantities such as the integrated density of states (IDoS) and density of states (DoS) can also be estimated from \eqref{eq:CrossInPlane_ScalarDR}, which demonstrating that the spectrum ``concentrates" at the center of each spectral band.
 Examples are shown in figure \ref{fig:CrossInPlane_ScalarDoS}.
@@ -299,5 +303,5 @@ Examples are shown in figure \ref{fig:CrossInPlane_ScalarDoS}.
 		\caption{\label{fig:CrossInPlane_ScalarDoS_alpha-4-00} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=-4$.}
 	\end{subfigure}	
 	\caption{\label{fig:CrossInPlane_ScalarDoS} The (relative) IDoS, DoS, and spectrum for the graph topology in section \ref{ssec:ExampleCrossInPlane}.
-	The relative IDoS at the value $x$ is defined as the IDoS at $x$ minus $\left\lfloor\frac{x}{\pi}\right\rfloor\bracs{2\pi}^2$.}
+	The relative IDoS at the value $x$ is defined as the IDoS at the value $x$ minus $\left\lfloor\frac{x}{\pi}\right\rfloor\bracs{2\pi}^2$.}
 \end{figure}
