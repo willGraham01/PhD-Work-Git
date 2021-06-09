@@ -45,6 +45,7 @@ This holds for all smooth $\varphi$ with support contained in the interior of $\
 \begin{align*}
 	-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} &= \omega^2 \tilde{u}_{jk}, \quad t\in\interval{I_{jk}},
 \end{align*}
+where $\qm_{jk} := \bracs{R_{jk}\qm}_1$.
 
 Now we turn our attention to the derivation of vertex conditions.
 Fix a vertex $v_j\in \vertSet$, and consider functions $\psi\in\smooth{\ddom}$ whose support only intersects $\graph$ in a neighbourhood of $v_j$ that only contains edges which connect to $v_j$ (which can be, for example, a ball of sufficiently small radius centred on $v_j$).
@@ -58,7 +59,7 @@ Then we can work from \eqref{eq:PeriodCellLaplaceWeakForm} to obtain
 	 - \alpha_j \omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j}.
 \end{align*}
 Here, we have again used $r_{jk}$ as a change of variables (and the same notation for the transforms of $u$ and $\psi$), and the results of the appendix \ref{app:SumMeasureAnalysis} inform us that $\tgrad_{\dddmes}$ vanishes at the vertex $v_j$.
-Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, and we integrate by parts in each integral to obtain
+Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, this implies
 \begin{align*}
 	\alpha_j\omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j} 
 	&= - \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t
@@ -71,18 +72,17 @@ Here we use the notation for the ``shifted, signed derivative",
 	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{t\rightarrow l_{jk}} \bracs{ u_{jk}'(t)+\rmi\qm u_{jk}(t) },
 \end{align*}
 as is appropriate after use of the Gelfand transform.
-Given that \eqref{eq:DerivationVertexConditionWeak} holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}$, we arrive at the condition that
+Given that \eqref{eq:DerivationVertexConditionWeak} holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}\neq 0$, we arrive at the condition that
 \begin{align*}
 	\alpha_j\omega^2 u\bracs{v_j} &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}, \quad \forall v_j \in \vertSet.
 \end{align*}
 Repeating the argument for each $v_j\in \vertSet$ then provides us with a condition of this form at each vertex.
 One should note the presence of $\omega^2$ in this equation, so this is not a standard Robin condition on the derivatives of the edge-wise components of $u$, but rather indicates that our problem belongs to the class of problems with generalised resolvents, as mentioned in section \ref{sec:QuantumGraphs}.
-Given the result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\dddmes}$ are also continuous at each vertex $v_j$, then we have thus derived the following problem:
+The result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\dddmes}$ are also continuous at each vertex $v_j$, and thus the following problem (precisely \eqref{eq:QGFullSystem}) has been derived:
 \begin{align*}
 	-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
 	u \text{ is continuous at each } &v_j \in \vertSet, \\
-	\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j},  \quad \forall v_j \in \vertSet,
+	\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j},  \quad \forall v_j \in \vertSet.
 \end{align*}
-that is, we have arrived at \eqref{eq:QGFullSystem}.
-Solving for the eigenvalues $\omega^2$ will net us the eigenvalues of our original problem \eqref{eq:PeriodCellLaplaceStrongForm} and taking the union of the eigenvalues over $\qm$ will provide the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
-As will be made clear in the discussion that follows, the quantum graph problem \eqref{eq:QGFullSystem} is much easier to handle both analytically and numerically.
+Solving for the eigenvalues $\omega^2$ will net us the eigenvalues of our original problem \eqref{eq:PeriodCellLaplaceStrongForm}, and taking the union of the eigenvalues over $\qm$ will provide the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}.
+As will be made clear in the discussion that follows, the quantum graph problem \eqref{eq:QGFullSystem} is much easier to handle both analytically and numerically thanks to the utility of the $M$-matrix.

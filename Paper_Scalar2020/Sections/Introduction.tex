@@ -23,7 +23,7 @@ It is convenient to non-dimensionalise \eqref{eq:DimensionalWaveEqn} by introduc
 Here $U\bracs{y} = u\bracs{y,l}$, and the parameter $z$ represents the square of the ratio of the spatial extent of the medium against the wavelength of propagating waves, up to a constant.
 In the context of electromagnetic waves for example, we have $z = \frac{\bracs{fl}^2 \eps_\mathrm{r}\mu_\mathrm{r}}{c^2}$ where $\eps_\mathrm{r}$ and $\mu_\mathrm{r}$ are the medium's relative permittivity and relative permeability (respectively) of the material, and $c$ is the speed of light in vacuum, see \cite{jackson1999classical, cessenat1996mathematical}.
 
-To avoid additional notational clutter in equations, we will write $\omega^2$ for the spectral parameter $z$ throughout this work.
+To avoid additional notational clutter in equations, we will write $\omega^2 := z$ where convenient throughout this work.
 This also retains an intuitive link to applications: the spectrum (that is, the set of $z=\omega^2$ in \eqref{eq:DimensionalWaveEqn} that are allowed in some sense) essentially provides access to the frequencies of waves that can propagate in the singular-structures we examine (by ``re-dimensionalising" $z$ via \eqref{eq:NonDimensionalWaveEqn}), which determines the use of the structure itself as a waveguide.
 Our focus will be on quantitatively encapsulating the structure of the spectrum for all problems of the form \eqref{eq:DimensionalWaveEqn} on the class of domains that we consider.
 
@@ -33,7 +33,7 @@ The reader may wish to refer to section \ref{sec:QuantumGraphs} and the appendix
 
 Our work concerns the study of equations of the form \eqref{eq:NonDimensionalWaveEqn} on singular domains, that is domains which have no interior from the perspective of the space they are embedded into.
 We represent such a singular structure by a graph $\graph$ in $\reals^2$, which we will assume to be periodic in the sense that there exists a region (period cell) $\ddom\subset\reals^2$ and vectors $p_1, p_2$ such that for any $z\in\integers$ the part of $\graph$ contained in the shifted regions $\ddom+p_1$ and $\ddom+p_2$ coincides with the part of $\graph$ contained in $\ddom$.
-We call this part of $\graph$ in $\ddom$ as the \emph{period graph} of $\graph$, and denote it by $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$, where $\vertSet$ is a finite set of vertices and $\edgeSet$ a finite set of edges.
+We call this part of $\graph$ in $\ddom$ the \emph{period graph} of $\graph$, and denote it by $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$, where $\vertSet$ is a finite set of vertices and $\edgeSet$ a finite set of edges.
 For the singular structure above define the Laplacian $-\laplacian_{\dddmes}$, and consider the ``spectral problem"
 \begin{align} \label{eq:WholeSpaceLaplaceEqn}
 	-\laplacian_{\dddmes} u &= \omega^2 u.
@@ -49,7 +49,7 @@ The link between \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplace
 \begin{align*}
 	\hat{u}\bracs{x} &= \sum_{z_1,z_2\in\integers^2}u\bracs{x+zp_1+zp_2}\e^{-\rmi\qm\bracs{x+zp_1+zp_2}}.
 \end{align*}
-It can then be shown that the problems \eqref{eq:PeriodCellLaplaceStrongForm} can be written in the following form (see section \ref{sec:SystemDerivation}:
+It can then be shown that the problems \eqref{eq:PeriodCellLaplaceStrongForm} can be written in the following form (see section \ref{sec:SystemDerivation}):
 \begin{subequations} \label{eq:QGFullSystem}
 	\begin{align}
 		-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \label{eq:QGEdgeODEs} \\
@@ -60,5 +60,15 @@ It can then be shown that the problems \eqref{eq:PeriodCellLaplaceStrongForm} ca
 where $\alpha_j\in\complex$ are suitable ``coupling constants" at the vertices, and $\qm_{jk}$ are effectively rotations of $\qm$ which can be computed if one knows the orientation of the edge $I_{jk}\in\vertSet$.
 Subscripts $jk$ in \eqref{eq:QGFullSystem} denote restrictions to the edges of $\graph_{\mathcal{P}}$, and the notion of the ``signed derivative" $\pdiff{}{n}$ is defined in section \ref{ssec:FunctionSpaces}.
 Problems like \eqref{eq:QGFullSystem} belong to the class of problems with generalised resolvents, since the spectral parameter $\omega^2$ appears in the boundary condition \eqref{eq:QGDerivCondition} \cite{strauss1954generalized, strauss1968extensions, strauss1998functional, cherednichenko2018effective}.
-We analyse the spectrum of \eqref{eq:WholeSpaceLaplaceEqn}, equivalently \eqref{eq:QGFullSystem}, in terms of the geometry of the structure and the constants $\alpha_j$.
+The coupling constants $\alpha_j$ may be complex-valued, however to retain links to physical applications our interest lies in those problems for which $\alpha_j>0$.
 We provide an overview of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} in section \ref{sec:SystemDerivation}, and precise details of the objects involved can be found in appendices \ref{app:muAnalysis}-\ref{app:SumMeasureAnalysis}.
+
+\tstk{some of this should go into physical motivation, some of it should stay here.
+There might even be a case for another section, ``problem contextifying" or something, just to be clear on how everything is coming together}
+We briefly elaborate on this with the motivation below --- the concepts and statements can be made mathematically precise, and the interested reader can find these details in \tstk{exner-post, kuchment-zheng}.
+Consider a differential equation (such as the Laplace equation) on a (connected) periodic domain $D_{l,r}$ in $\reals^2$ that consists of a union of ``tube regions" of width $l>0$, connected by circular ``junction regions" of radius $r>0$.
+Such a problem has an associated spectrum $\sigma_{l,r}$, and one can ask what happens to $\sigma_{l,r}$ as $l,r\rightarrow0$, that is as the area of the domain shrinks to zero.
+The result of this limit can be obtained from studying a quantum graph that mimics the connectivity of the ``tubes" and ``junctions" of $D_{l,r}$, replacing the ``tubes" with edges and ``junctions" with vertices.
+The appropriate quantum graph to study also depends on how $l$ and $r$ scale with one another, or more precisely on how the area of the ``tube regions" scales with that of the ``junction regions".
+The coupling constants $\alpha_j$ for the quantum graph are themselves derived from the ratio of the areas of the ``junction regions" and the connecting ``tubes", which results in $\alpha_j> 0$.
+The measure-theoretic (``singular structure") problem that we begin from enters the picture here --- such problems provide us with access to the appropriate quantum graph (see section \ref{sec:Derivation}) via analysis of the appropriate differential operator on the singular structure (or graph) in $\reals^2$.

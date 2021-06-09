@@ -1,4 +1,4 @@
-\section{Concepts from the thery of metric graphs} \label{sec:QuantumGraphs}
+\section{Concepts from the theory of metric graphs} \label{sec:QuantumGraphs}
 Here we introduce the objects appearing in the system \eqref{eq:QGFullSystem} and measure-theoretic formulation \eqref{eq:PeriodCellLaplaceStrongForm}.
 To this end, we outline some elements of the theory of metric (and quantum) graphs that we borrow in what follows, and setup the notation we use throughout.
 This includes a discussion of what is meant by an embedded graph, in order to provide a foundation for the term ``periodic graph" which represents the geometry of our (physically-motivated) singular structure.
@@ -10,7 +10,7 @@ We begin with the definition of a metric graph.
 Let $\graph=\bracs{\vertSet,\edgeSet}$ be a directed graph with vertices $v_j\in \vertSet$ and edges $I_{jk}=\bracs{v_j, v_k}\in \edgeSet$, where $I_{jk}$ is directed from vertex $v_j$ (``on the left") to vertex $v_k$ (``on the right").
 Strictly, we should use the notation $I_{jk}^l$ for the edges, where the superscript $l$ parametrises the edges sharing the endpoints $v_j$ and $v_k$, however in what follows we drop the superscript $l$ to simplify the notation.
 Each edge $I_{jk}$ is assigned a length $l_{jk}>0$, and we use the same notation $I_{jk}$ for the interval $\sqbracs{0,l_{jk}}$.
-We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j<0$, to be consistent with our physical motivation in section \ref{ssec:PhysMot}).
+We also assign each vertex $v_j$ a ``coupling constant" $\alpha_j\in\complex$ (although in our examples we will only be considering $\alpha_j<0$, to be consistent with our physical motivation in section \ref{ssec:PhysMot}), and denote by $\alpha := \mathrm{diag}\bracs{\alpha_1, \alpha_2, ..., \alpha_{\abs{\vertSet}}}$ the diagonal matrix with these coupling constants along the diagonal.
 A graph $\graph$ with the metric structure described above is called a \emph{metric graph}.
 Metric graphs convey a sense of size or bulk to the structures they describe --- the edges between vertices now represent physical ``wires" as opposed to combinatorial links as in graph theory.
 One can form a quantum graph by equipping a metric graph with a suitable differential operator (and associated vertex- or ``boundary"-conditions) as discussed in section \ref{ssec:FunctionSpaces} and in greater detail in \cite{berkolaiko2013introduction}.
@@ -137,19 +137,23 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 		\forall j, \ u \text{ is continuous at } v_j, \\
 		\forall j, \sum_{j\con k}\pdiff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases} \\
-	\mathcal{A}u = \lambda u \quad\Leftrightarrow\quad &
+	\mathcal{A}u = z u \quad\Leftrightarrow\quad &
 	\begin{cases}
-		%-\ddiff{u_{jk}}{t} = \lambda u_{jk} \ \forall j\conLeft k, \\
-		-u_{jk}'' = \lambda u_{jk} \ \forall j\conLeft k, \\
+		%-\ddiff{u_{jk}}{t} = z u_{jk} \ \forall j\conLeft k, \\
+		-u_{jk}'' = z u_{jk} \ \forall j\conLeft k, \\
 		\forall j, \ u \text{ is continuous at } v_j, \\
 		\forall j, \sum_{j\con k}\pdiff{u_{jk}}{t}\bracs{v_j} = \alpha_j u\bracs{v_j}.
 	\end{cases}
 \end{align*}
 One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
 As mentioned in section \ref{ssec:OurSystem}, this means the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
-\tstk{We don't mention the fact that $\alpha$ should be thought of as a ratio of volumes from a thin-structure problem, nor elaborate on what it should be from physical intuition - we have mentioned we'll only deal with $\alpha_j<0$ but we might want to elaborate here.}
 Rigorous setup is beyond the scope of this paper, but the central tool for analysis of the spectrum of \eqref{eq:QGFullSystem} (the $M$-matrix, see section \ref{ssec:MMatrix}) will be introduced in the more familiar setup with no explicit dependence on $\omega^2$ in the vertex conditions.
-The analysis of the spectrum of \eqref{eq:QGFullSystem} is then carried out simply by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts.
+\tstk{The discussion on GRs and why we can ``actually use" our method}
+As discussed in \cite[page 1846]{cherednichenko2018effective}, introducing an explicit dependence on $\omega^2$ in the vertex conditions (or in the domain of $\mathcal{A}$) does not affect the structure of the arguments that underpin the theory in section \ref{ssec:MMatrix}.
+\tstk{The paper we cite specifically refers to those arguments found in Ryzhov, V.: Weyl-Titchmarsh function of an abstract boundary value problem, operator colligations, and linear systems with boundary control. Complex Anal. Oper. Theory 3(1), 289–322 (2009)}
+Ultimately, the analysis of (the spectrum of) \eqref{eq:QGFullSystem} is carried out by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts, that is by replacing the matrix $\alpha$ with $B = \omega^2\alpha$ in section \ref{ssec:MMatrix}.
+An alternative to working with generalised resolvents directly is also highlighted in \cite[Section 6]{cherednichenko2017norm} --- one can look to transform a problem with $\omega^2$-dependent $\delta$-type vertex conditions into a problem with $\omega^2$-independent $\delta'$-type vertex conditions.
+Of course, one would have to find the appropriate (unitary) transform, but the theory of section \ref{ssec:MMatrix} would then directly apply to the transformed problem.
 
 \subsection{The $M$-Matrix} \label{ssec:MMatrix}
 We next provide a brief overview of the $M$-matrix, a tool for characterising the spectrum of $\mathcal{A}$, which we implement in section \ref{sec:SystemDerivation}.
@@ -170,48 +174,33 @@ The $M$-matrix at $z\in\complex$ is then defined by
 	 &\quad \forall u\in\mathrm{ker}\bracs{\mathcal{A}-z}.
 \end{align*}
 (More general statements concerning the $M$-operator can be found in \cite{derkach1991generalized, derkach2014boundary}).
-It can be shown that $u\in\mathrm{dom}\bracs{\mathcal{A}}$ is an eigenvector of of $\mathcal{A}$ with eigenvalue $z_0\in\complex$ if and only if
-\begin{align*}
-	\bigl( M\bracs{z_0} - A \bigr) \dmap u = 0,
-\end{align*}
-%\tstk{EKK Isospectrality, theorem 2.1, only gives that $z_0$ is in the spectrum if and only if $\bracs{M\bracs{z} - A}^{-1}$ admits analytic continuation to $z_0$. Kirill's Critical Contrast Paper \cite[page 698]{cherednichenko2019time}, on page 698, states the above, but doesn't provide an explicit reference.} where $A = \mathrm{diag}\bracs{\alpha_1, \alpha_2, ... , \alpha_{\abs{\vertSet}}}$ is the diagonal matrix of the vertex coupling constants.
-That is, one can determine the eigenvalues of $\mathcal{A}$ by finding those $z$ for which the matrix $M(z)-A$ has zero as an eigenvalue.
-Let us denote by $\beta_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ the eigenvalues of the matrix $M(z)-A$ viewed as functions of $z$.
-In section \ref{sec:Discussion} we demonstrate (via explicit formulae) that the $M$-matrix is meromorphic, and can thus be expressed as $M(z) = H^{(1)}(z)H^{(2)}(z)$ for two functions $H^{(1)}$ and $H^{(2)}$ --- with $H^{(2)}$ scalar-valued and $H^{(1)}(z), \bracs{H^{(2)}(z)}^{-1}$ holomorphic in $z$.
-Letting $\widetilde{\beta}_j(z), j\in\clbracs{1,...\abs{\vertSet}}$ denote the eigenvalues of the matrix $\widetilde{M}(z) := H^{(1)}\bracs{z} - \bracs{H^{(2)}(z)}^{-1}A$ which are continuous functions of $z$, we can determine those $z$ for which at least one $\widetilde{\beta}_j(z)=0$ by solving
-\begin{align*}
-	\mathrm{det}\bracs{\widetilde{M}(z)} = 0,
-\end{align*}
-for $z\in\complex$, or alternatively by solving
-\begin{align*}
-	\widetilde{M}(z)v = 0,
-\end{align*}
-for pairs $\bracs{z,v}\in\complex\times\complex^{\abs{\vertSet}}$.
-Denote the set of solutions $z$ to the above as $\sigma$.
-Then for those $z_0\in\sigma$ that do not coincide with the poles of $H^{(2)}$, we have $\beta_{j}\bracs{z_0} = H^{(2)}\bracs{z_0}\widetilde{\beta}_j\bracs{z_0}$, implying $z$ is in the spectrum of $\mathcal{A}$.
-As for those $z_0\in\sigma$ that coincide with poles of $H^{(2)}$, if
-\begin{align*}
-	\lim_{z\rightarrow z_0}H^{(2)}(z)\widetilde{\beta}_j(z) = 0,
-\end{align*} 
-for at least one $\widetilde{\beta}_j$ with $\widetilde{\beta}_j\bracs{z_0}=0$, then $z_0$ is in the spectrum of $\mathcal{A}$, otherwise it is not.
-This provides access to the spectrum of $\mathcal{A}$ in a manner that, as is discussed in section \ref{sec:Discussion}, can be implemented numerically as well as analytically.
-The key observation being that this approach effectively reduces a system of ODEs to a matrix eigenvalue problem, plus some additional analysis on a set of isolated points, as far as determining the spectrum of $\mathcal{A}$ is concerned.
-We will exploit this fact in section \ref{sec:Examples}.
+One thing to be noted here is that $\mathcal{A}$ is required to be an extension of a \emph{simple} operator (see \cite[Section 2.2]{ershova2014isospectrality} for precise definitions).
+This can be guaranteed by ensuring $\graph$ contains no looping edges, and has all edge-lengths pairwise-irrationally related \cite{ashurova2014simplicity}.
+In section \ref{ssec:ArtificialVertices} we will see that this any graph can be manipulated to adhere to these specifications, through the use of ``artificial" vertices.
 
-At this point we should address a small detail concerning our problem formulation and the definition of the $M$-matrix.
-In this work we shall often prescribe an embedded, periodic graph $\graph$ (usually in $\reals^2$) to represent our singular-structure --- particularly in section \ref{sec:Examples} where we apply our method of specific examples.
-A consequence of this is that when we take a Gelfand transform, the family of operators on the period graph $\graph_{\mathcal{P}}$ that we obtain contain dependencies on the choice of geometry provided by the embedding as well as on the quasi-momentum $\qm$.
-For example, these may be dependencies on the angle between the edges and the co-ordinate axes (which is to be expected, given how the constants $\qm_{jk}$ in \eqref{eq:QGFullSystem} are derived, see section \ref{sec:SystemDerivation} or appendix \ref{app:muAnalysis} for details).
+\tstk{it should be $M+\alpha$ throughout due to the definition of our normal derivs and DN maps, no? Also needs addressing in section 4 and the examples of section 5 if true.
+Alternatively, put the $-$ sign into the BCs and change $\nu$ measure to be $-\alpha$ in it, and change accordingly in the derivation and appendices}
+It can be shown that $z_0\in\complex$ belongs to the spectrum of $\mathcal{A}$ if and only if $\bracs{M\bracs{z} - \alpha}^{-1}$ does \emph{not} admit analytic continuation into $z_0$ (see \cite[Theorem 2.1]{ershova2014isospectrality}).
+Equivalently, zero is an eigenvalue of $M\bracs{z_0}-\alpha$ if and only if $z_0$ is an eigenvalue of $\mathcal{A}$ (as presented in \cite[Proposition 1]{derkach1991generalized}, \cite[page 698]{cherednichenko2019time}).
+The eigenvalues of $\mathcal{A}$ can thus be found through analysis of the $M$-matrix, by solving for pairs $u\in\mathrm{dom}\bracs{\mathcal{A}}$, $z_0\in\complex$ such that
+\begin{align*}
+	\bigl( M\bracs{z_0} - \alpha \bigr) \dmap u = 0.
+\end{align*}
+In section \ref{sec:Discussion} we will expand on how this result provides access to the spectrum of $\mathcal{A}$, and utilise these ideas in the examples of section \ref{sec:Examples}.
+
+Before continuing, we address a detail concerning our problem formulation and the definition of the $M$-matrix.
+In this work we prescribe an embedded, periodic graph $\graph$ (usually in $\reals^2$) to represent our singular-structure.
+As a consequence, upon taking a Gelfand transform the family of operators on the period graph $\graph_{\mathcal{P}}$ contain dependencies on the choice of geometry provided by the embedding, as well as on the quasi-momentum $\qm$.
+For example, there may be dependencies on the angle between the edges and the co-ordinate axes (which is not unexpected given how the constants $\qm_{jk}$ in \eqref{eq:QGFullSystem} are derived, see section \ref{sec:SystemDerivation} or appendix \ref{app:muAnalysis} for details).
 For a family of operators on $\graph_{\mathcal{P}}$ containing these dependencies, the resulting family of  $M$-matrices will also reflect these dependencies.
-That is, the $M$-matrix for each member of the family will depend on the spectral parameter $\lambda$, the quasi-momentum $\qm$, and a number of geometric quantities arising from the embedding.
-As the $M$-matrix contains all the spectral information about the operator, this means that the spectra of each individual operator will inherit these dependencies from the embedding. 
+That is, the $M$-matrix for each member of the family will depend on the spectral parameter $z$, the quasi-momentum $\qm$, and a number of geometric quantities arising from the embedding.
+As the $M$-matrix contains all the spectral information about the operator, this means that the spectra of each individual operator on $\graph_{\mathcal{P}}$ will inherit these dependencies from the embedding. 
 The union of these spectra over the quasi-momentum $\qm$ will yield the spectrum of the original operator on $\graph$.
-
-Alternatively, one can define the notion of a periodic quantum (or metric) graph $\tilde{\graph}$ without prescribing an embedding, as is done in \cite[Chapter~4]{berkolaiko2013introduction}.
-The graph $\tilde{\graph}$ prescribes a notion of length and derivative, and so its $M$-matrix can then also be defined and computed, and analysed to obtain the spectrum - potentially in a manner involving an abstract version of the Gelfand transform.
+However, the notion of a periodic quantum (or metric) graph $\tilde{\graph}$ can be defined without prescribing an embedding, as is done in \cite[Chapter~4]{berkolaiko2013introduction}.
+The graph $\tilde{\graph}$ prescribes a notion of length and derivative, and so its $M$-matrix can then also be defined and computed, and analysed to obtain the spectrum --- potentially in a manner involving an abstract version of the Gelfand transform.
 Proceeding this way means that, since no embedding of $\tilde{\graph}$ is made into a realisable (or physical) space, the resulting analysis is free of the additional geometric dependencies described above.
-However, when it is possible to prescribe an embedded ``realisation" $\graph$ of $\tilde{\graph}$, the two produce the same spectrum.
+When it is possible to prescribe an embedded ``realisation" $\graph$ of $\tilde{\graph}$, the two approaches produce the same spectrum.
 In our work, we elect to prescribe an embedding because our examples are motivated by physical structures (see section \ref{sec:Intro}), and it is therefore more convenient to define a graph along with its embedding into physical space.
 However, it should be held in mind that the embedded, periodic quantum graph $\graph$ we chose to represent a given singular structure may not be the only possible realisation of an abstract periodic quantum graph $\tilde{\graph}$.
-This means that the spectrum obtained for one singular-structure topology may coincide with other topologies, so long as they also represent an embedding of $\tilde{\graph}$, despite the $M$-matrices differing due to the choice of embedding.
-In section \ref{ssec:EmbeddingDependentExample} we provide a concrete example of this situation.
+This means that the spectrum obtained for one singular-structure may coincide with others, so long as they also represent an embedding of $\tilde{\graph}$, despite the $M$-matrices differing due to the choice of embedding.
+In section \ref{ssec:EmbeddingDependentExample} we provide a concrete example to compliment this discussion.

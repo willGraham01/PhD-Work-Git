@@ -1,7 +1,7 @@
 \section{Appendix: Sobolev functions on the edges of an embedded graph} \label{app:muAnalysis}
 In what follows, we describe the set $\gradZero{\ddom}{\lambda_{jk}}$ when the edge $I_{jk}$ is parallel to the $x_1$-axis, then employ a rotation argument to understand $\gradZero{\ddom}{\lambda_{jk}}$ for a general edge that is at an angle to the $x_1$-axis.
 Given that the singular measure $\ddmes$ is just the sum of the individual singular measures supporting each edge, we can then prove that elements of $\gradZero{\ddom}{\ddmes}$ display the same behaviour as elements of $\gradZero{\ddom}{\lambda_{jk}}$ when restricted to the edge $I_{jk}$.
-Throughout this section, Assumption \ref{ass:MeasTheoryProblemSetup} is adopted.
+Throughout this section, assumption \ref{ass:MeasTheoryProblemSetup} is adopted.
 
 \subsection{Gradients of Zero} \label{appS:muGradZero}
 \begin{prop}[Gradients of Zero on a Segment Parallel to the $x_1$-axis] \label{prop:GradZeroParallelZhikov}
@@ -190,7 +190,7 @@ Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of
 	Let $\tgrad_\ddmes u = \bracs{v_1, v_2}^\top$ denote the components of $\tgrad_\ddmes u$; we can see that $v_2\vert_{I_{jk}}=0$ immediately due to the result of proposition \ref{prop:GradZeroGraph} and thus the requirement that $\tgrad_\ddmes u$ be orthogonal to every member of $g\in\gradZero{\ddom}{\lambda_{jk}}$.
 	This leaves the form of $v_1\vert_{I_{jk}}$ to be determined.
 	Since $u\in\gradSobQM{\ddom}{\ddmes}$ there exists a sequence of smooth functions $\phi_n$ which converges to $u$ in $\ltwo{\ddom}{\ddmes}$, and whose gradients $\tgrad\phi_n$ converge to $\tgrad_\ddmes u$.
-	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n$ converges to $v_1\vert_{I_{jk}}-\rmi\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
+	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n\rightarrow v_1\vert_{I_{jk}}-\rmi\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
 	Considering the composition $\tilde{\phi}_n = \phi_n \circ r_{jk}$ we find that
 	\begin{align*}
 		\tilde{\phi}_n \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{u}_{jk},
@@ -206,8 +206,7 @@ This is addressed in the following theorem --- we can deduce that $u$ is continu
 Notably, the converse is claimed in \cite[Section~4]{zhikov2002homogenization} for when $\qm=0$ on a single-junction-like graph structure.
 \begin{theorem} \label{thm:CharOfGradSob}
 	Suppose that $u \in\gradSobQM{\ddom}{\ddmes}$.
-	Then $\bracs{u, \tgrad_{\lambda_{jk}}u}\in\gradSobQM{\ddom}{\lambda_{jk}}$ for all $I_{jk}\in \edgeSet$, and $u$ is continuous at each $v_j\in \vertSet$.
-	where $\tgrad_{\lambda_{jk}}u = \tgrad_{\ddmes}u\vert_{I_{jk}}$ on each edge $I_{jk}$.
+	Then $\bracs{u, \tgrad_{\lambda_{jk}}u}\in\gradSobQM{\ddom}{\lambda_{jk}}$ for all $I_{jk}\in \edgeSet$, and $u$ is continuous at each $v_j\in \vertSet$, where $\tgrad_{\lambda_{jk}}u = \tgrad_{\ddmes}u\vert_{I_{jk}}$ on each edge $I_{jk}$.
 \end{theorem}
 \textit{(Sketch of proof)}: 
 	The implication is essentially a result of \eqref{eq:GraphMeasNormEdgeBreakdown}, as $\bracs{u, \tgrad_{\lambda_{jk}}u}\in\gradSobQM{\ddom}{\lambda_{jk}}$ follows from this immediately.

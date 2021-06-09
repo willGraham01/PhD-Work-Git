@@ -1,25 +1,23 @@
 \section{Dispersion relations for concrete graph topologies} \label{sec:Examples}
-Throughout this section, we are concerned with determining the spectrum of the problem \eqref{eq:WholeSpaceLaplaceEqn}, via the spectra of \eqref{eq:QGFullSystem}, on graphs with a period cell contained in the unit square, and thus for $\qm\in\left[-\pi,\pi\right)^2$.
-The examples we consider in this section are chosen to highlight the methodology discussed in section \ref{sec:Discussion}, illustrate how the properties of the spectrum vary on the coupling constants at the vertices as well as the geometry of the singular-structure itself, and elaborate on the (non-)effect on the spectrum due to the choice of embedding a quantum graph. 
+In this section we provide examples to demonstrate how the spectrum of the problem \eqref{eq:WholeSpaceLaplaceEqn} is obtained via the analysis of the $M$-matrix for the quantum graph problem \eqref{eq:QGFullSystem}.
+The examples are chosen to highlight the methodology and some of the remarks discussed in sections \ref{sec:QuantumGraphs} and \ref{sec:Discussion}, and to motivate the final discussion in section \ref{sec:Conclusion}. 
 
 \subsection{One-Dimensional Loop} \label{ssec:Example1DLoop}
-\tstk{still needs checked regarding m-matrix and dummy vertex issue...}
-\tstk{edit this section to emphasise ``splitting edges" method of removing loops? Quite a nice section to demonstrate this in. Also fix notation - define the $H$-matrices, etc.}
-We begin with the simplest example: a ``chain" of vertices that is periodic in one direction, to provide a conceptual demonstration of how one takes the period graph of a physical singular-structure and employs proposition \ref{prop:M-MatrixEntries} to construct the $M$-matrix and extract the spectral information.
-We will also highlight a useful trick involving ``splitting" edges of a graph via the use of ``dummy vertices", which can aid analysis of the problem.
+We begin with the simplest example: a ``chain" of vertices that is periodic in one direction, to demonstrate how one takes the period graph of a physical singular-structure and employs proposition \ref{prop:M-MatrixEntries} to construct the $M$-matrix and extract the spectral information.
+We also highlight the necessity of ``splitting" edges of a graph via the use of ``dummy vertices", to remove loops and edge-lengths that are rationally-related to compliment section \ref{ssec:ArtificialVertices}.
 
-Consider the graph $\graph$ periodic in one direction (without loss of generality assumed parallel to the $x_1$-axis with $x_2=0$) in $\reals\times\sqbracs{0,1}$, with vertices $v_j = \bracs{j + \recip{2}, 0}^\top$ and edges $I_{j\bracs{j+1}}$ for $j\in\integers$.
-Since $\graph$ is only periodic in the $x_1$-direction, the period cell lies in $S^1\times\sqbracs{0,1}$ rather than the usual 2D-torus for a graph periodic in two directions in $\reals^2$, and we only have a scalar quasi-momentum $\qm\in\left[-\pi,\pi\right)$ (one can set $\qm_2=0$ in \eqref{eq:QGFullSystem} when constructing the $\qm_{jk}$ to account for the lack of periodicity in $x_2$).
-Assume the coupling constants at each vertex are identical, taking the value $\alpha<0$.
-Then the quantum graph which corresponds to the period graph of $\graph$ is simply a single vertex $v$ with a looping edge $I$ of length 1, with quasi-momentum $\qm$ on $I$ and coupling constant $\alpha$ at $v$. 
-One can apply proposition \ref{prop:M-MatrixEntries} at this point to compute the (one-dimensional) $M$-matrix, however for illustrative purposes (and consistency with the examples that follow), we elect to introduce an artificial vertex to break the loop $I$ into two edges, producing a new quantum graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ with
+Consider the graph $\graph$ periodic in one direction in $\reals\times\sqbracs{0,1}$, with vertices $v_j = \bracs{j + \recip{2}, 0}^\top$ and edges $I_{j\bracs{j+1}}, \ j\in\integers$.
+Since $\graph$ is only periodic in the $x_1$-direction, the period cell lies in $S^1\times\sqbracs{0,1}$ rather than the 2D-torus, and the quasi-momentum $\qm\in\left[-\pi,\pi\right)$ is scalar (one can set $\qm_2=0$ in \eqref{eq:QGFullSystem} when constructing the $\qm_{jk}$ to account for the lack of periodicity in $x_2$).
+Place identical coupling constants at each vertex, with $\alpha_j = \alpha_1 \ \forall j$.
+The quantum graph that corresponds to the period graph of $\graph$ consists of a single vertex $v$ with a looping edge $I$ of length 1, with quasi-momentum $\qm$ on $I$ and coupling constant $\alpha_1$ at $v$.
+We must introduce an artificial vertex to break the loop $I$ into two edges with irrationally-related edge lengths, producing a new quantum graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ with
 \begin{align*}
 	\vertSet = \clbracs{ v_1 , v_2 }, \quad \edgeSet = \clbracs{ I_{12}, I_{21} },
-	&\qquad \abs{I_{12}} = \abs{I_{21}} = \recip{2}, \quad \qm_{12} = \qm_{21} = \qm, 
-	&\qquad \alpha_1 = \alpha, \quad &\alpha_2 = 0.
+	&\qquad \abs{I_{12}} = a, \quad \abs{I_{21}} = 1-a, \quad \qm_{12} = \qm_{21} = \qm, 
+	&\qquad \alpha_1 = \alpha, \quad &\alpha_2 = 0,
 \end{align*}
-We illustrate the process of moving from $\graph$ to $\graph_{\mathcal{P}}$ in figure \ref{fig:Diagram_1DExample}.
-Note that the artificial vertex having coupling constant equal to zero ensures that the incoming edge solutions and their derivatives match at $v_2$, ensuring that introducing $v_2$ does not alter the behaviour of solutions along the ``cut loop".
+where $a$ and $1-a$ are irrationally related --- $a = \recip{\sqrt{2}}$ would suffice, for example.
+The process of moving from $\graph$ to $\graph_{\mathcal{P}}$ is illustrated in figure \ref{fig:Diagram_1DExample}.
 Studying the $M$-matrix of $\graph_{\mathcal{P}}$ to determine the eigenvalues $\omega^2$ is now equivalent to studying the spectrum of the original problem.
 \begin{figure}[h!]
 	\centering
@@ -43,52 +41,103 @@ Studying the $M$-matrix of $\graph_{\mathcal{P}}$ to determine the eigenvalues $
 	\caption{\label{fig:Diagram_1DExample} The graphs $\graph$ and $\graph_{\mathcal{P}}$.}
 \end{figure} \newline
 
-One can construct the $M$-matrix for $\graph_{\mathcal{P}}$ using proposition \ref{prop:M-MatrixEntries}, obtaining \tstk{signs are wrong!}
+Using proposition \ref{prop:M-MatrixEntries} and corollary \ref{cory:M-MatrixEntriesNoPoles}, we find that
 \begin{align*}
-	M_{\qm}\bracs{\omega^2} &= 
+	\mathfrak{M}_{\qm}\bracs{\omega^2} &= 
 	\begin{pmatrix}[1.75]
-		2\omega\cot\dfrac{\omega}{2} & -2\omega\csc\dfrac{\omega}{2}\cos\dfrac{\qm}{2} \\
-		-2\omega\csc\dfrac{\omega}{2}\cos\frac{\qm}{2} & 2\omega\cot\dfrac{\omega}{2}
-	\end{pmatrix}.
+		-\omega c_a \tilde{s}_a - \omega s_a \tilde{c}_{a} + \omega^2\alpha_1 s_a \tilde{s}_a &
+		\omega e^{\rmi\qm a} \tilde{s}_a + \omega e^{-\rmi\qm(1-a)} s_a \\
+		\omega e^{-\rmi\qm a} \tilde{s}_a + \omega e^{\rmi\qm(1-a)} s_a &
+		-\omega c_a \tilde{s}_a - \omega s_a \tilde{c}_a
+	\end{pmatrix}, \\
+	H^{(2)}\bracs{\omega^2} &= s_a s_b, \\
 \end{align*}
-The matrix of coupling constants is $A = \mathrm{diag}\bracs{\alpha, 0}$, so we work with the matrix
+where
 \begin{align*}
-	\tilde{M}_\qm\bracs{\omega^2} &= 
-	\begin{pmatrix}[1.75]
-		2\omega\cot\dfrac{\omega}{2} - \alpha\omega^2 & -2\omega\csc\dfrac{\omega}{2}\cos\dfrac{\qm}{2} \\
-		-2\omega\csc\dfrac{\omega}{2}\cos\dfrac{\qm}{2} & 2\omega\cot\dfrac{\omega}{2}		
-	\end{pmatrix},
+	s_a &= \sin\bracs{a\omega}, \quad c_a = \cos\bracs{a\omega}, 
+	\quad \tilde{s}_a = \sin\bracs{(1-a)\omega}, \quad \tilde{c}_a = \cos\bracs{(1-a)\omega}.
 \end{align*}
-and solve either $\tilde{M}_\qm\bracs{\omega^2} w = 0$ for eigenpairs $\bracs{\omega^2, w}$, or $\det\tilde{M}_\qm \bracs{\omega^2} = 0$ for the eigenvalues $\omega^2$.
-With $\tilde{M}_\qm$ being a relatively small matrix, taking the latter approach is feasible analytically, and one can obtain the following equation for $\omega$ for a given $\qm$:
+Computing $\det\mathfrak{M}_{\qm}\bracs{\omega^2}$ and solving \eqref{eq:QGDetSolveCondition} yields
+\begin{align} \label{eq:1DChainDetEqual0}
+	0 = 2\omega^2 s_a \tilde{s}_a \bracs{ \cos\omega - \frac{\omega\alpha_1}{2}\sin\omega - \cos\qm }.
+\end{align}
+Notice that the factor in front of the brackets in \eqref{eq:1DChainDetEqual0} is zero at the roots of $H^{(2)}$.
+Otherwise, since $\cos\qm$ attains every value in $\sqbracs{-1,1}$ for $\qm\in\left[-\pi,\pi\right)$, the bracketed term in \eqref{eq:1DChainDetEqual0} implies that any $\omega$ satisfying
 \begin{align*}
-	\cos\qm &= \cos\omega - \frac{\alpha\omega}{2}\sin\omega.
+	-1 \leq \cos\omega - \frac{\omega\alpha_1}{2}\sin\omega \leq 1,
 \end{align*}
-We would then need to determine, for each $\qm\in\left[-\pi, \pi\right)$, the set of solutions for $\omega$ and then take the union to provide the spectrum of our original problem.
-This procedure is similar to that in example \ref{ssec:ExampleCrossInPlane}, which we will study in greater depth, and as one might expect produces a qualitatively similar spectrum.
+is part of the spectrum of \eqref{eq:QGFullSystem}.
+
+We now consider solutions of \eqref{eq:1DChainDetEqual0} that are also zeros of $H^{(2)}$ --- let $\omega_0$ denote one of these values, so $\omega_0\in\clbracs{\frac{n\pi}{a}, \frac{n\pi}{b} \setVert n\in\naturals }$.
+The eigenvalue branches of $\mathfrak{M}_{\qm}$ can be computed,
+\begin{align*}
+	\widetilde{\beta}_{\pm, \qm}\bracs{\omega^2} &= -\omega\sin\omega + \frac{\omega^2\alpha_1}{2}s_a \tilde{s}_a \pm \omega\sqrt{ \sin^2\omega + \frac{\omega^2\alpha_1^2}{4}s_a^2 \tilde{s}_a^2 - 2s_a \tilde{s}_a\bracs{\cos\omega+\cos\qm} },
+\end{align*}
+however only $\widetilde{\beta}_{+, \qm}\bracs{\omega_0^2}=0$.
+As such, $\omega_0$ is part of the spectrum of \eqref{eq:QGFullSystem} when
+\begin{align*}
+	\lim_{\omega\rightarrow\omega_0}\bracs{ H^{(2)} }^{-1}\widetilde{\beta}_{+} = 0,
+\end{align*}
+which (after applying L'h\^ospital's rule) only occurs when
+\begin{align*}
+	\exists\qm_0\in\left[-\pi,\pi\right) \text{ s.t. } \cos\omega_0 - \frac{\omega_0\alpha_1}{2}\sin\omega_0 - \cos\qm_0 = 0. 
+\end{align*}
+Therefore, the spectrum of \eqref{eq:QGFullSystem} is fully described by those $\omega$ that satisfy
+\begin{align*}
+	\-1 \leq \cos\omega - \frac{\omega\alpha_1}{2}\sin\omega \leq 1.
+\end{align*}
+
+\tstk{This might get removed, but it's here just to provide a record!}
+We reiterate that breaking the looping edge and ensuring that the resulting edge-lengths are irrationally-related is necessary to obtain a full description of the spectrum, and failure to do so results in the loss of the Dirichlet eigenvalues.
+By way of illustration, if the looping edge is not broken then one obtains
+\begin{align*}
+	\det\mathfrak{M}_{\qm} &= \cos\omega - \frac{\omega\alpha_1}{2}\sin\omega - \cos\qm, \\
+	H^{(2)} &= \omega\sin\omega, \\
+	\beta_{\qm} &= \cos\omega - \frac{\omega\alpha_1}{2}\sin\omega - \cos\qm.
+\end{align*}
+This means that $\beta_{0}\bracs{(2k\pi)^2}=0$ and $\beta_{-\pi}\bracs{(2(k-1)\pi)^2}=0$ for $k\in\naturals$, but 
+\begin{align*}
+	\lim_{\omega\rightarrow 2k\pi}H^{(2)}\beta_{0} &= \alpha_1\bracs{2k\pi}^2 \neq 0, \\
+	\lim_{\omega\rightarrow 2(k-1)\pi} H^{(2)}\beta_{-\pi} &= \alpha_1\bracs{2(k-1)\pi}^2 \neq 0,
+\end{align*}
+which leads one to falsely exclude $\omega=n\pi$ from the spectrum.
+These cases $\omega=2k\pi, \qm=0$ and $\omega=2(k-1)\pi, \qm=-\pi$ are in fact the eigenvalues of the problem
+\begin{align*}
+	-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, \quad &t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
+	u \text{ is continuous at each } &v_j \in \vertSet, \\
+	u\bracs{v_j} = 0, \quad &v_j\in\vertSet,
+\end{align*}
+which also happen to be solutions to \eqref{eq:QGFullSystem}.
+Similar problems occur when the lengths $a$ and $1-a$ are rationally related --- taking $a=\recip{2}$ results in similar ``loss" of the eigenvalues $\omega=2k\pi, \ k\in\naturals$, for example.
 
 \subsection{``Decorated" Graph with Dependencies Arising from the Embedding} \label{ssec:EmbeddingDependentExample}
-We next provide an explicit example to complement the discussion that concluded section \ref{ssec:MMatrix} as well as demonstrate that adding additional edges to a graph can be used to open gaps in the resulting spectrum.
-Because of the need to distinguish between two objects that bear similar names, we will prefix the term ``quantum graph" with ``(embedded)" when we are discussing an quantum graph that has been equipped with an embedding, and will use the prefix ``(abstract)" when we wish to refer to a quantum graph that has yet to be assigned an embedding.
+We next provide an explicit example to complement the discussion that concluded section \ref{ssec:MMatrix}, concerning our decision to bestow our quantum graphs with an embedding. 
+To avoid confusion in this section, the term ``quantum graph" will be prefixed with ``(embedded)" when we are discussing an quantum graph that has been equipped with an embedding, and prefixed with ``(abstract)" when referring to a quantum graph that has not been assigned an embedding.
 
-Consider the (embedded) graph $\graph$ periodic in one direction (without loss of generality assumed parallel to the $x_1$-axis with $x_2=0$) in $\reals\times\sqbracs{0,1}$, with vertices
+Consider the (embedded) graph $\graph$ in $\reals\times\sqbracs{0,1}$, with vertices
 \begin{align*}
 	v_1^m = \bracs{m + \recip{2}, \recip{2}}^\top, 
 	&\quad v_2^m = \bracs{m + \recip{2}\bracs{1+\cos\beta}, \recip{2}\bracs{1+\sin\beta}}^\top,
 \end{align*}
 for a fixed angle $\beta\in\bracs{0,\pi}$, and edges $I_{1}^{m} = \sqbracs{v_1^m, v_1^{m+1}}$ and $I_{12}^m=\sqbracs{v_1^m, v_2^m}$ for $m\in\integers$.
-Place a single coupling constant with value $\alpha$ at each $v_1^m$, and assume that $v_2^m$ has coupling constant zero for each $m$.
+Place a coupling constant $\alpha_1$ at each $v_1^m$, and let $v_2^m$ have zero coupling constant, for each $m$.
 Then the (abstract) quantum graph which corresponds to the (embedded) period graph of $\graph$ consists of two vertices and two edges, with one of the edges being a loop.
-However it is important to note that the (abstract) quantum graph does not contain any reference to the angle $\beta$ at which the edge connecting the two vertices is orientated at --- this is entirely an artefact of our decision to embed this graph into $\reals\times\sqbracs{0,1}$.
-We again elect to introduce an artificial vertex to obtain an equivalent (embedded) quantum graph $\graph_{\mathcal{P}}$ which describes the (embedded) period graph of $\graph$:
+It is also worth noting that the (abstract) quantum graph does not contain any reference to the angle $\beta$ at which the edges $I^m_{12}$ are orientated at --- this is entirely an artefact of our decision to embed this graph into $\reals\times\sqbracs{0,1}$.
+Upon introducing an artificial vertex to break the looping edge (see example \ref{ssec:Example1DLoop}), the (embedded) quantum graph $\graph_{\mathcal{P}}$ which describes the (embedded) period graph of $\graph$ is
 \begin{align*}
 	&\graph_{\mathcal{P}} = \bracs{\vertSet, \edgeSet}, \quad
 	\vertSet = \clbracs{ v_1, v_2, v_3 }, \quad
 	\edgeSet = \clbracs{ I_{12}, I_{13}, I_{31} }, \\
-	&v_1 = \bracs{\recip{2},\recip{2}}, \quad
-	v_2 = \bracs{\recip{2}\bracs{1+\cos\beta}, \recip{2}\bracs{1+\sin\beta}}, \quad
-	v_3 = \bracs{1, \recip{2}}.
+	&v_1 = \bracs{0,\recip{2}}, \quad
+	v_2 = \bracs{\recip{2}\cos\beta, \recip{2}\sin\beta}, \quad
+	v_3 = \bracs{a, \recip{2}},
 \end{align*}
+where $a$ is chosen so that the lengths of the edges ($a, 1-a,$ and $\recip{2}$) are pairwise irrationally related.
+Since $\graph_{\mathcal{P}}$ is periodic in the $x_1$-direction with period 1, the quasi-momentum $\qm\in\left[-\pi,\pi\right)$ is scalar and
+\begin{align*}
+	\qm_{13} = \qm_{31} = \qm, \quad \qm_{12} = \qm\cos\beta,
+\end{align*}
+and the coupling constant at $v_1$ is $\alpha_1$. 
 The process of moving from $\graph$ to $\graph_{\mathcal{P}}$ is illustrated in figure \ref{fig:Diagram_1DAngledEdgeExample}.
 \begin{figure}[t]
 	\centering
@@ -107,201 +156,176 @@ The process of moving from $\graph$ to $\graph_{\mathcal{P}}$ is illustrated in 
 	\begin{subfigure}[t]{0.3\textwidth}
 		\centering
 		\includegraphics[scale=1.85]{Diagram_1DAngledEdge-Computation.pdf}	
-		\caption{\label{fig:Diagram_1DAngledEdge-Computation} The equivalent graph $\graph_{\mathcal{P}}$ that we study. Note that the dummy vertex $v_3$ has coupling constant 0.}
+		\caption{\label{fig:Diagram_1DAngledEdge-Computation} The equivalent graph $\graph_{\mathcal{P}}$ that we study. Note that the dummy vertex $v_3$ has coupling constant 0, and the edges $I_{13}$, $I_{31}$, and $I_{12}$ have irrationally-related lengths.}
 	\end{subfigure}
 	\caption{\label{fig:Diagram_1DAngledEdgeExample} The graphs $\graph$ and $\graph_{\mathcal{P}}$.}
 \end{figure}
 
-Since $\graph_{\mathcal{P}}$ is periodic in the $x_1$-direction with period 1, we have a scalar quasi-momentum $\qm\in\left[-\pi,\pi\right)$ with
-\begin{align*}
-	\qm_{13} = \qm_{31} = \qm, \quad \qm_{12} = \qm\cos\beta,
-\end{align*}
-and still have a coupling constant $\alpha$ at $v_1$. 
-One can apply proposition \ref{prop:M-MatrixEntries} at this point to compute the $M$-matrix corresponding to the problem \eqref{eq:QGFullSystem} on $\graph_{\mathcal{P}}$, obtaining
-\begin{align} \label{eq:EmbeddedGraphMMatrix}
-	M_\qm\bracs{\omega^2} &=
+Applying proposition \ref{prop:M-MatrixEntries} and corollary \ref{cory:M-MatrixEntriesNoPoles} yields
+\begin{align*} 
+	\mathfrak{M}_\qm\bracs{\omega^2} &=
 	\begin{pmatrix}[1.75]
-		-3\omega\cot\dfrac{\omega}{2} & \omega \exp\bracs{\dfrac{\rmi\qm\cos\beta}{2}}\csc\dfrac{\omega}{2} & 2\omega\csc\dfrac{\omega}{2}\cos\dfrac{\qm}{2} \\
-		\omega \exp\bracs{-\dfrac{\rmi\qm\cos\beta}{2}}\csc\dfrac{\omega}{2} & -\omega\cot\dfrac{\omega}{2} & 0 \\
-		2\omega\csc\dfrac{\omega}{2}\cos\frac{\qm}{2} & 0 & -2\omega\cot\dfrac{\omega}{2}
-	\end{pmatrix}.
-\end{align}
-Here it can be seen that the angle $\beta$ has entered into the form of the $M$-matrix due to our choice of embedding, in particular the manner in which we chose to embed the vertex $v_2$ and edge $I_{12}$.
-However we will see that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is independent of $\beta$, as one would expect from examining its (abstract) periodic quantum graph in the alternative manner described in section \ref{ssec:MMatrix}.
+		-\bracs{c_a s_b s_2 + s_a c_b s_2 + s_a s_b c_2 - \omega\alpha_1 s_a s_b s_2} &
+		\exp\bracs{\dfrac{\rmi\qm\cos\beta}{2}}s_a s_b &
+		e^{\rmi\qm a}s_b s_2 + e^{-\rmi\qm b}s_a s_2 \\
+		\exp\bracs{-\dfrac{\rmi\qm\cos\beta}{2}}s_a s_b &
+		-s_a s_b c_2 &
+		0 \\
+		e^{-\rmi\qm a}s_b s_2 + e^{\rmi\qm b}s_a s_2 &
+		0 &
+		-\bracs{c_a s_b s_2 + s_a c_b s_2}
+	\end{pmatrix}, \\
+	H^{(2)} &= \omega s_a s_b s_2,
+\end{align*}
+where
+\begin{align*}
+	s_a &= \sin\bracs{a\omega}, \quad c_a = \cos\bracs{a\omega}, &\quad
+	s_b = \sin\bracs{b\omega}, \quad c_b = \cos\bracs{b\omega}, &\quad
+	s_2 = \sin\bracs{\frac{\omega}{2}}, \quad c_2 = \cos\bracs{\frac{\omega}{2}}.
+\end{align*}
+Note that the angle $\beta$ has entered into the form of the $M$-matrix due to our embedding, however we shall see that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is independent of $\beta$, as one would expect from examining its (abstract) periodic quantum graph in the alternative manner described in section \ref{ssec:MMatrix}.
 
-Setting $H^{(2)} = \omega\csc\omega$, and noting that the matrix of coupling constants is $A=\mathrm{diag}\bracs{\alpha, 0, 0}$, we solve \eqref{eq:QGDetSolveCondition} to obtain
+Solving \eqref{eq:QGDetSolveCondition} yields
 \begin{align} \label{eq:EmbeddedGraphDetSolveCondition}
-	0 = 2\cos\frac{\omega}{2}\sqbracs{ \cos\qm + \recip{2} - \frac{3}{2}\cos\omega - \frac{\alpha\omega}{2}\sin\omega }.
+	0 = 2s_a^2 s_b^2 s_2^2 c_2\sqbracs{ \cos\qm + \recip{2} - \frac{3}{2}\cos\omega + \frac{\alpha_1\omega}{2}\sin\omega }.
 \end{align}
-The factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition} attains the value 0 at $\omega=\bracs{2n-1}\pi, \ n\in\naturals$ (independently of the value of $\qm$), whilst the rest of the spectrum is those $\omega$ for which
+Set $\Xi\bracs{\omega} = \frac{3}{2}\cos\omega - \frac{\alpha_1\omega}{2}\sin\omega$.
+We find ourselves in a similar situation to example \ref{ssec:Example1DLoop}: the factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition} is zero at precisely the roots of $H^{(2)}$, whilst the rest of the spectrum is those $\omega$ for which there exists at least one $\qm$ such that $\Xi\bracs{\omega} = \cos\theta + \recip{2}$.
+Thus, the remainder of the spectrum is those $\omega$ such that
 \begin{align*}
-	-\recip{2} \leq \frac{3}{2}\cos\omega + \frac{\alpha\omega}{2}\sin\omega & \leq \frac{3}{2}, \\
-	\Leftrightarrow \abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } &\leq 2. 
+	\min_{\qm\in\left[-\pi,\pi\right)}\bracs{\cos\theta + \recip{2}} &\leq \Xi\bracs{\omega} 
+	\leq \max_{\qm\in\left[-\pi,\pi\right)} \bracs{\cos\theta + \recip{2}}, \\
+	\Leftrightarrow & \abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } \leq 2, 
 \end{align*}
-Poles of $H^{(2)}$ occur at $\omega= 2n\pi$, which also solve \eqref{eq:EmbeddedGraphDetSolveCondition} for $\qm=0$, however one can discern that these are not part of the spectrum upon examination of the eigenvalue branches (we will perform this step in detail in section \ref{ssec:ExampleCrossInPlane}).
-The spectrum of \eqref{eq:WholeSpaceLaplaceEqn} therefore consists of those $\omega$ such that
-\begin{align*}
-	\abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } \leq 2,
-	\quad\text{ and }\omega\neq 2n\pi, n\in\naturals \\
-	\text{or} \ \omega = (2n-1)\pi, \quad n\in\naturals.
-\end{align*}
-As was expected, the resulting spectrum does not depend on $\beta$ despite the fact that the $M$-matrix for each operator on $\graph_{\mathcal{P}}$ does contain a $\beta$-dependency.
-It is also due to the presence of the ``decoration" $v_2$ and edge $I_{12}$ that the spectrum differs from that of the example in section \ref{ssec:Example1DLoop}, although this difference will only depend on the length of the additional edge $I_{12}$ (and any coupling constant placed at this vertex).
-
-\subsection{Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
-Our final example is a two-dimensional graph whose period cell represents a lattice-like structure in $\reals^2$.
-In this example we will use the $M$-matrix to determine an equation describing those $\omega$ which constitute the spectrum analytically, and complement this with some numerical computations to plot the resulting spectrum and density of states.
-
-Consider the periodic graph defined as follows; for each $\bracs{n,m}\in\integers^2$ define
-\begin{align*}
-	& v_1^{\bracs{n,m}} = \bracs{\recip{2},0} + \bracs{n,m}, 
-	v_2^{\bracs{n,m}} = \bracs{0,\recip{2}} + \bracs{n,m},
-	v_3^{\bracs{n,m}} = \bracs{\recip{2},\recip{2}} + \bracs{n,m}, \\
-	& I_{13}^{\bracs{n,m}} = \sqbracs{v_1^{\bracs{n,m}}, v_3^{\bracs{n,m}}},
-	I_{23}^{\bracs{n,m}} = \sqbracs{v_2^{\bracs{n,m}}, v_3^{\bracs{n,m}}}, \\
-	& I_{31}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_1^{\bracs{n+1,m}}},
-	I_{32}^{\bracs{n,m}} = \sqbracs{v_3^{\bracs{n,m}}, v_2^{\bracs{n,m+1}}}.
-\end{align*}
-With 
-\begin{align*}
-	\vertSet^* = \clbracs{v_j^{\bracs{n,m}} \ \vert \ j\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2},
-	\qquad \edgeSet^* = \clbracs{I_{jk}^{\bracs{n,m}} \ \vert \ j,k\in\clbracs{1,2,3}, \bracs{n,m}\in\integers^2},
-\end{align*}
-and setting coupling constants
-\begin{align*}
-	\alpha_3^{\bracs{n,m}} = \alpha \in\reals, 
-	\qquad \alpha_j^{\bracs{n,m}} = 0, \quad j\in\clbracs{1,2,4,5},
-\end{align*}
-$\graph^* = \bracs{\vertSet^*,\edgeSet^*}$ is an embedded, periodic graph in $\reals^2$.
-Its period graph occupies $\sqbracs{0,1}^2$ and can be visualised in figure \ref{fig:Diagram_TFRGraph}; consisting of 5 (effectively 3) vertices and 4 edges.
+these points are visualised in figure \ref{fig:1DDecoratedGraph}.
 \begin{figure}[b!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{Diagram_TFRGraph.pdf}
-		\caption{\label{fig:Diagram_TFRGraph} The period graph that we are considering. All edges have length $\recip{2}$, and the quasi-momentum on horizontal edges is $-\qm_1$ and on vertical edges is $-\qm_2$.}
+		\includegraphics[scale=0.55]{1DDecoratedGraph_alpha1.pdf}
+		\caption{\label{fig:1DDecoratedGraph_alpha1} The values of $\omega$ which solve \eqref{eq:EmbeddedGraphDetSolveCondition} with $\alpha_1=1$. No zeros of $H^{(2)}$ form part of the spectrum in this case.}
 	\end{subfigure}
 	~
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{Diagram_TFRQuantumGraph.pdf}
-		\caption{\label{fig:Diagram_TFRQuantumGraph} The quantum graph that appears in our example in section \ref{ssec:ExampleCrossInPlane}. Due to the identification of vertices on the boundary of the period graph, we are effectively dealing with a 3-vertex quantum graph.}
+		\includegraphics[scale=0.55]{1DDecoratedGraph_alpha0-25.pdf}
+		\caption{\label{fig:1DDecoratedGraph_alpha0-25} The values of $\omega$ which solve \eqref{eq:EmbeddedGraphDetSolveCondition} with $\alpha_1=\recip{4}$. With $\alpha_1$ this small, some of the zeros of $H^{(2)}$ form part of the spectrum.}
 	\end{subfigure}
-	\caption{\label{fig:5VertexCross} (\ref{fig:Diagram_TFRGraph}) The period cell of the graph $\graph^*$. (\ref{fig:Diagram_TFRQuantumGraph}) The equivalent quantum graph on which we pose \eqref{eq:QGFullSystem}, retaining the lengths $l_{jk}$ and appropriate $\qm_{jk}$.}
+	\caption{\label{fig:1DDecoratedGraph} The values of $\omega$ which solve \eqref{eq:EmbeddedGraphDetSolveCondition}, using $a=\recip{\sqrt{2}}$. Changing the value of $\alpha$ effects how many zeros of $H^{(2)}$ are included in the spectrum. The ``Dispersion Relation" refers to the expression $3\cos\omega + \alpha\omega\sin\omega - 1$.}
 \end{figure}
-We next associate vertices that lie on the boundary of the period cell, matching $v_2$ with $v_4$ and $v_1$ with $v_5$, to obtain the quantum graph $\graph=\bracs{\vertSet,\edgeSet}$ with $\vertSet=\clbracs{v_1,v_2,v_3}$, $\edgeSet=\clbracs{I_{13},I_{23},I_{31},I_{32}}$, and lengths
+Zeros of $H^{(2)}$ occur at $\omega= 2n\pi, \frac{n\pi}{a}, \frac{n\pi}{b}$, which also solve \eqref{eq:EmbeddedGraphDetSolveCondition} for all values of $\qm$.
+Examining the limit \eqref{eq:EigenvalueBranchLimit} reveals that a zero of $H^{(2)}$, say $\omega_0$, is part of the spectrum only when there exists a $\qm_0\in\left[-\pi,\pi\right)$ such that $\Xi\bracs{\omega_0}=\cos\theta_0+\recip{2}$.
+That is, the bracketed term in \eqref{eq:EmbeddedGraphDetSolveCondition} is required to be zero for a root of $H^{(2)}$ to be part of the spectrum.
+The eigenvalue branches in the vicinity of root $\omega_0=\pi\sqrt{2}$ are plotted in figure \ref{fig:1DDecoratedGraphEvalBranches-Thetas}, to illustrate this point.
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{1DDecoratedGraphEvalBranches-Thetas.pdf}
+	\caption{\label{fig:1DDecoratedGraphEvalBranches-Thetas} eigenvalue branches of the matrix $\mathfrak{M}_{\qm}$ near $\omega_0 = \pi\sqrt{2}$, which is a root of $H^{(2)}$. The value $\qm_0\approx-0.691\pi$ solves $\Xi\bracs{\omega_0}=\cos\qm_0+\recip{2}$, and the limit \eqref{eq:EigenvalueBranchLimit} is zero. At other values of $\qm$ however, the limit \eqref{eq:EigenvalueBranchLimit} is non-zero.}
+\end{figure}
+It is also worth noting that (in figure \ref{fig:1DDecoratedGraphEvalBranches-Thetas}) there are two eigenvalue branches which are zero at $\omega_0$, with the third being non-zero at $\omega_0$.
+For both branches, the limit \eqref{eq:EigenvalueBranchLimit} exists, however only for one is it zero.
+The spectrum of \eqref{eq:WholeSpaceLaplaceEqn} thus consists of those $\omega$ such that
 \begin{align*}
-	l_{13} = l_{23} = l_{31} = l_{32} = \recip{2}.
+	\abs{ 3\cos\omega + \alpha\omega\sin\omega - 1 } \leq 2.
 \end{align*}
-Given that all the edges of $\graph^*$ are parallel to the co-ordinate axes, it is easy to compute the values of $\qm_{jk}$ for each $I_{jk}\in E$ and a given $\qm=\bracs{\qm_1,\qm_2}\in[-\pi,\pi)^2$:
-\begin{align*}
-	\qm_{13} = \qm_{31} = \qm_2, &\quad \qm_{23} = \qm_{32} = \qm_1.
-\end{align*}
+As expected, the spectrum does not depend on $\beta$ despite the fact that the $M$-matrix for each operator on $\graph_{\mathcal{P}}$ does.
+It does differ from the spectrum of the quantum graph in section \ref{ssec:Example1DLoop} due to the presence of the ``decoration" $I_{12}$, although this difference only depends on the length of the additional edge $I_{12}$.
 
-To determine the spectrum of the problem \eqref{eq:QGFullSystem}, we write down the $M$-matrix via \ref{prop:M-MatrixEntries}, as follows: \tstk{wrong signs!}
+\subsection{Cross in the Periodic Plane} \label{ssec:ExampleCrossInPlane}
+Our final example is a two-dimensional graph whose period cell represents a lattice-like structure in $\reals^2$.
+Consider the embedded, periodic graph defined as follows --- for each $\bracs{n,m}\in\integers^2$ define
 \begin{align*}
-	M_{\qm}\bracs{\omega^2} &=
-	\begin{pmatrix}[1.75]
-		-2\omega\cot\bracs{\dfrac{\omega}{2}} & 0 & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} \\
-		0 & -2\omega\cot\bracs{\dfrac{\omega}{2}} & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} \\
-		2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_2}{2}} & 2\omega\csc\bracs{\dfrac{\omega}{2}}\cos\bracs{\dfrac{\qm_1}{2}} & -4\omega\cot\bracs{\dfrac{\omega}{2}}
+	v^{(n,m)} &= \bracs{n+\recip{2}, m+\recip{2}}, \quad
+	I_{\mathrm{left}}^{\bracs{n,m}} = \sqbracs{v^{\bracs{n,m}}, v^{\bracs{n+1,m}}}, \quad
+	I_{\mathrm{up}}^{\bracs{n,m}} = \sqbracs{v^{\bracs{n,m}}, v^{\bracs{n,m+1}}}, \\
+	\vertSet^* &= \clbracs{v^{\bracs{n,m}} \setVert \bracs{n,m}\in\integers^2}, \quad
+	\edgeSet^* = \clbracs{ I_{\mathrm{l}}^{\bracs{n,m}}, I_{\mathrm{u}}^{\bracs{n,m}} \setVert \bracs{n,m}\in\integers^2}, \quad
+	\graph^* = \bracs{\vertSet^*, \edgeSet^*}.
+\end{align*}
+Place a coupling constant $\alpha^{\bracs{n,m}} =: \alpha_3>0$ at each $v^{(n,m)}$.
+The period graph of $\graph^*$ occupies $\left[0,1\right)^2$ and consists of a single vertex with two looping edges of length 1.
+Breaking the loops by introducing two artificial vertices takes us to the quantum graph
+\begin{align*}
+	\vertSet = \clbracs{v_1, v_2, v_3}, \quad
+	\edgeSet = \clbracs{I_{13}, I_{31}, I_{23}, I_{32}}, \quad
+	\graph = \bracs{\vertSet, \edgeSet},
+\end{align*}
+with
+\begin{align*}
+	l_{13} = b, \quad l_{31} = \tilde{b} := 1-b, \quad 
+	l_{23} = a, \quad l_{32} = \tilde{a} := 1-a, \qquad
+	\qm_{13} = \qm_{31} = \qm_2, \quad \qm_{23} = \qm_{32} = \qm_1,
+\end{align*}
+and coupling constant $\alpha_3$ at $v_3$ (and zero coupling constants at the dummy vertices $v_1$ and $v_2$).
+To avoid notational clutter, we also define
+\begin{align*}
+	s_a &= \sin\bracs{a\omega}, \quad 
+	c_a = \cos\bracs{a\omega}, \quad 
+	s_b = \sin\bracs{b\omega}, \quad 
+	c_b = \cos\bracs{b\omega}, \\
+	\tilde{s}_a &= \sin\bracs{\omega\bracs{1-a}}, \quad 
+	\tilde{c}_a = \cos\bracs{\omega\bracs{1-a}}, \quad 
+	\tilde{s}_b = \sin\bracs{\omega\bracs{1-b}}, \quad 
+	\tilde{c}_b = \cos\bracs{\omega\bracs{1-b}}.
+\end{align*}
+Using corollary \ref{cory:M-MatrixEntriesNoPoles} we set $H^{(2)} = s_a s_b \tilde{s}_a \tilde{s}_b$, and obtain
+\begin{align*}
+	\mathfrak{M}_{\qm} &=
+	\begin{pmatrix}[2.5]
+		-\omega s_a \tilde{s}_a \bracs{ s_b \tilde{c}_b + c_b \tilde{s}_b } &
+		0 &
+		\begin{split}
+			&\omega s_a \tilde{s}_a \bracs{ e^{\rmi\qm_2\tilde{b}}s_b + e^{-\rmi\qm_2 b}\tilde{s}_b }
+		\end{split} \\
+		0 &
+		-\omega s_b \tilde{s}_b \bracs{ s_a \tilde{c}_a + c_a \tilde{s}_a } &
+		\begin{split}
+			&\omega s_b \tilde{s}_b \bracs{ e^{\rmi\qm_1\tilde{a}}s_a + e^{-\rmi\qm_1 a}\tilde{s}_a } 
+		\end{split} \\
+		\omega s_a \tilde{s}_a \bracs{ e^{-\rmi\qm_2\tilde{b})}s_b + e^{\rmi\qm_2 b}\tilde{s}_b } &
+		\omega s_b \tilde{s}_b \bracs{ e^{-\rmi\qm_1\tilde{a}}s_a + e^{\rmi\qm_1 a}\tilde{s}_a } &
+		\begin{split}
+			&-\omega ( s_a s_b \tilde{s}_a \tilde{c}_b 
+			+ s_a s_b \tilde{c}_a \tilde{s}_b \\ 
+			& + s_a c_b \tilde{s}_a \tilde{s}_b
+			+ c_a s_b \tilde{s}_a \tilde{s}_b \\
+			& - \omega\alpha_3 s_a s_b \tilde{s}_a \tilde{s}_b )
+		\end{split}
 	\end{pmatrix}.
 \end{align*}
-Using corollary \ref{cory:M-MatrixEntriesNoPoles}, set
-\begin{align*}
-	H_\qm^{(1)}\bracs{\omega^2} &=
-	\begin{pmatrix}[2]
-		\cos\dfrac{\omega}{2} & 0 & -\cos\dfrac{\qm_2}{2} \\
-		0 & \cos\dfrac{\omega}{2} & -\cos\dfrac{\qm_1}{2} \\
-		-\cos\dfrac{\qm_2}{2} & -\cos\dfrac{\qm_1}{2} & 2\cos\dfrac{\omega}{2}
-	\end{pmatrix}, \\
-	H^{(2)}\bracs{\omega^2} &= -2\omega\csc\frac{\omega}{2}.
-\end{align*}
-Note that we have chosen to take the additional factor of $\omega$ out of $H_\qm^{(1)}$ and into $H^{(2)}$ due to $\graph$ having an odd number of vertices.
-We now proceed analytically by solving \eqref{eq:QGDetSolveCondition}, where $A=\mathrm{diag}\bracs{0,0,\alpha}$ is the matrix of coupling constants for $\graph$, obtaining
+Examining \eqref{eq:QGDetSolveCondition} yields
 \begin{align} \label{eq:ExampleThickVertexSolution}
-	0 = \cos\bracs{\frac{\omega}{2}}
-	\bracs{ \cos\bracs{\omega} + \frac{\alpha\omega}{4}\sin\bracs{\omega} - \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} }.
+	0 = \omega^3 s_a^2 s_b^2 \tilde{s}_a^2 \tilde{s}_b^2 \sin\bracs{\omega} 
+	\bracs{ 4\cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}} + \omega\alpha_3\sin\omega - 4\cos\omega}.
 \end{align}
 For ease, we define
 \begin{align*}
-	\Xi\bracs{\omega} := \cos\omega + \frac{\alpha\omega}{4}\sin\omega.
+	\Xi\bracs{\omega} := \cos\omega - \frac{\alpha_3\omega}{4}\sin\omega.
 \end{align*}
-Clearly, $\omega=\bracs{2n-1}\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} for every $\qm\in\left[-\pi,\pi\right), n\in\naturals$ due to the factor of $\cos\bracs{\frac{\omega}{2}}$.
-This leaves the remaining solutions $\omega$ to be determined by
-\begin{align} \label{eq:ExampleThickVertexXiEqn}
-	\Xi\bracs{\omega} &= \cos\bracs{\frac{\qm_1+\qm_2}{2}}\cos\bracs{\frac{\qm_1-\qm_2}{2}},
-\end{align}
-for each $\qm\in\left[-\pi,\pi\right)$.
-The left-hand side of \eqref{eq:ExampleThickVertexXiEqn} attains every value in the interval $\sqbracs{-1,1}$ over the range $\qm\in[-\pi,\pi)^2$, so each $\omega$ for which
-\begin{align} \label{eq:ExampleThickVertexDispExpr}
-	-1 \leq \Xi\bracs{\omega} \leq 1,
-\end{align}
-will solve \eqref{eq:ExampleThickVertexSolution} for some $\qm\in\left[-\pi,\pi\right)^2$.
-One can visualise the curve $\Xi$ alongside the $\omega$ that satisfy \eqref{eq:ExampleThickVertexSolution} in figure \ref{fig:CrossInPlane_ScalarDR}.
-\begin{figure}[b]
-	\centering
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_ScalarDR_alpha-1-00.pdf}
-		\caption{\label{fig:CrossInPlane_ScalarDR_alpha-1-00} The function $\Xi$ for $\alpha=-1$.}
-	\end{subfigure}
-	~
-	\begin{subfigure}[t]{0.45\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_ScalarDR_alpha-4-00.pdf}
-		\caption{\label{fig:CrossInPlane_ScalarDR_alpha-4-00} The function $\Xi$ for $\alpha=-4$.}
-	\end{subfigure}
-	\caption{\label{fig:CrossInPlane_ScalarDR} The function $\Xi$ for $\alpha=-1$ and $\alpha=-4$. Red regions indicate those $\omega$ correspond to eigenvalues $\omega^2$, occurring when $\Xi$ takes values between $-1$ and $1$.}
-\end{figure}
-
-We now have to consider the possibility that some $\omega$ that satisfy \eqref{eq:ExampleThickVertexSolution} coincide with poles of $H^{(2)}$, which occur when $\omega = 2n\pi, n\in\naturals$ (note that $H^{(2)}$ has a finite limit as $\omega\rightarrow0$, so $\omega=0$ is in the spectrum since it solves \eqref{eq:ExampleThickVertexSolution}).
-Indeed we have that $\Xi\bracs{2n\pi}=1$, so $\omega=2n\pi$ is a solution to \eqref{eq:ExampleThickVertexSolution} when $\qm=0$.
-At this point it is necessary for us to look at the eigenvalues $\widetilde{\beta}_j\bracs{\omega^2}$ (see section \ref{ssec:ApproachConsiderations}) of 
+From here, the analysis is similar to that of example \ref{ssec:EmbeddingDependentExample} --- any root of $H^{(2)}$ solves \eqref{eq:ExampleThickVertexSolution}, in addition to those $\omega$ for which $-1\leq\Xi\bracs{\omega}\leq 1$.
+Examination of the eigenvalue branches then produces a familiar conclusion; a root of $H^{(2)}$, say $\omega_0$, forms part of the spectrum of \eqref{eq:QGFullSystem} on $\graph$ if and only if there exists a $\qm_0$ such that the bracket in \eqref{eq:EmbeddedGraphDetSolveCondition} is zero at $\bracs{\omega_0,\qm_0}$.
+As a result, the spectrum consists of exactly those $\omega$ such that
 \begin{align*}
-	\tilde{M} = H^{(1)}_{\qm} - \omega^2 \bracs{H^{(2)}}^{-1}A,
+	-1 \leq \cos\omega - \frac{\alpha_3\omega}{4}\sin\omega \leq 1.
 \end{align*}
-for $\qm=0$.
-Whilst we could numerically explore the relevant branches $\widetilde{\beta}_{j}$ (see section \ref{ssec:ApproachConsiderations}), in this example we can compute them as
-\begin{align*}
-	\widetilde{\beta}_1\bracs{\omega} &= \cos\frac{\omega}{2}, \\
-	\widetilde{\beta}_{\pm}\bracs{\omega} &= \frac{3}{2}\cos\frac{\omega}{2} + \frac{\alpha\omega}{4}\sin\frac{\omega}{2} \pm \recip{2}\sqrt{ 8 + \bracs{ \cos\frac{\omega}{2} + \frac{\alpha\omega}{2}\sin\frac{\omega}{2} }^2 },
-\end{align*}
-The branch $\widetilde{\beta}_1$ is never zero at $\omega=2n\pi$, whilst 
-\begin{align*}
-	\widetilde{\beta}_{\pm}\bracs{2n\pi} = \frac{3}{2}\bracs{ \bracs{-1}^n \pm 1},
-\end{align*}
-so when $n$ is odd, $\widetilde{\beta}_{+}\bracs{2n\pi} = 0$, and when $n$ is even, $\widetilde{\beta}_{-}\bracs{2n\pi} = 0$.
-Examining the limits
-\begin{align*}
-	\lim_{\omega\rightarrow2n\pi} H^{(2)}\widetilde{\beta}_{-} &= -\frac{4\alpha}{3}\bracs{n\pi}^2, &\quad n \ \text{even}, \\
-	\lim_{\omega\rightarrow2n\pi} H^{(2)}\widetilde{\beta}_{+} &= -\frac{4\alpha}{3}\bracs{n\pi}^2, &\quad n \ \text{odd},
-\end{align*}
-then gives the conclusion that $\omega=2n\pi$ is not part of the spectrum of \eqref{eq:QGFullSystem}, for $n\in\naturals$.
-And so we conclude that the spectrum of \eqref{eq:QGFullSystem} on $\graph$ is composed of those $\omega$ such that:
-\begin{align} \label{eq:CrossInPlane_ScalarDR}
-	-1 \leq \cos\omega + \frac{\alpha\omega}{4}\sin\omega \leq 1, \quad \omega\neq 2n\pi, n\in\naturals.
-\end{align}
-
-For any $\alpha<0$, the curve $\Xi$ has the same shape as shown in figure \ref{fig:CrossInPlane_ScalarDR}, which can be used to demonstrate that the spectrum comprises a union of pairwise disjoint ``spectral bands" $I_n\subset\sqbracs{(n-1)\pi, n\pi}$.
-The band $I_n$ (for any $n\in\naturals$) has left-endpoint $(n-1)\pi$, although whether this endpoint is part of the spectrum depends on whether $n$ is odd or even in accordance with \eqref{eq:CrossInPlane_ScalarDR}, and a right-endpoint strictly less than $n\pi$.
-It is worth remarking that this behaviour is reversed for $\alpha\geq 0$ and bands with $n>1$, them having right-endpoint $n\pi$ and left-endpoint strictly greater than $(n-1)\pi$.
-For $\alpha\geq2$ there is a gap between an isolated eigenvalue at $0$ and the beginning of the band $I_1$ - however $\alpha\geq0$ breaks the constraints of models for physical applications \tstk{should link back to where (if ANYWHERE) we mentioned thin-structure limit stuff?}.
-This is consistent with similar applications of singular-structures as approximations to thin-material structures, like the work of \cite{cherednichenko2019time}, in which the natural physical constraints on the parameters in the problem prevent the opening of a band-gap at the bottom of the spectrum.
-To round off the analysis, quantities such as the integrated density of states (IDoS) and density of states (DoS) can also be estimated from \eqref{eq:CrossInPlane_ScalarDR}, which demonstrating that the spectrum ``concentrates" at the center of each spectral band.
+To round off the analysis, quantities such as the integrated density of states (IDoS) and density of states (DoS) can also be estimated from \eqref{eq:ExampleThickVertexSolution}, which demonstrating that the spectrum ``concentrates" at the center of each spectral band.
 Examples are shown in figure \ref{fig:CrossInPlane_ScalarDoS}.
-\begin{figure}[h]
+\begin{figure}[b!]
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_ScalarDoS_alpha-1-00.pdf}
-		\caption{\label{fig:CrossInPlane_ScalarDoS_alpha-1-00} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=-1$.}
+		\includegraphics[scale=0.5]{CrossInPlane_ScalarDoS_alpha1-00.pdf}
+		\caption{\label{fig:CrossInPlane_ScalarDoS_alpha1-00} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha_3=1$.}
 	\end{subfigure}
 	~
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[scale=0.5]{CrossInPlane_ScalarDoS_alpha-4-00.pdf}
-		\caption{\label{fig:CrossInPlane_ScalarDoS_alpha-4-00} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha=-4$.}
+		\includegraphics[scale=0.5]{CrossInPlane_ScalarDoS_alpha4-00.pdf}
+		\caption{\label{fig:CrossInPlane_ScalarDoS_alpha4-00} The (relative) integrated density of states (IDoS), density of states (DoS) and spectrum for the system with $\alpha_3=4$.}
 	\end{subfigure}	
 	\caption{\label{fig:CrossInPlane_ScalarDoS} The (relative) IDoS, DoS, and spectrum for the graph topology in section \ref{ssec:ExampleCrossInPlane}.
 	The relative IDoS at the value $x$ is defined as the IDoS at the value $x$ minus $\left\lfloor\frac{x}{\pi}\right\rfloor\bracs{2\pi}^2$.}
 \end{figure}
+For any $\alpha_3>0$, the spectrum comprises a union of pairwise disjoint ``spectral bands" $I_n\subset\sqbracs{(n-1)\pi, n\pi}$, each with left-endpoint $(n-1)\pi$ and a right-endpoint strictly less than $n\pi$.
+It is worth remarking that this behaviour is reversed for $\alpha_3<0$, the bands having right-endpoint $n\pi$ and left-endpoint strictly greater than $(n-1)\pi$.
+For $\alpha\leq-2$ there is even a gap between an isolated eigenvalue at $0$ and the beginning of the band $I_1$ --- however $\alpha<0$ breaks real-world constraints \tstk{should link back to where (if ANYWHERE) we mentioned thin-structure limit stuff?}.
+This is consistent with similar applications of singular-structures as approximations to thin-material structures, like the work of \cite{cherednichenko2019time}, in which the natural physical constraints on the parameters in the problem prevent the opening of a band-gap at the bottom of the spectrum.
