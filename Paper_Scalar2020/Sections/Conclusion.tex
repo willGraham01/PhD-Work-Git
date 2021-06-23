@@ -1,19 +1,10 @@
 \section{Closing Remarks} \label{sec:Conclusion}
-To conclude, we discussions directions of possible future work, motivated by the results and method we have seen.
-These include the use of the $M$-matrix in determining the composition (or structure) of the spectrum of a periodic quantum graph, open questions concerning generalised resolvents and the application of the theory in section \ref{ssec:MMatrix}, and the utility of singular structure problems in advancing the connections between quantum graphs and thin structure problems.
-
-\tstk{putting words onto a page... start with bullet point 1, two possible paragraphs. First let's try the ``here's what's known, and how we'd get it"...}
-Section \ref{sec:Examples} demonstrates the practical utility of the $M$-matrix in determining the spectrum of \eqref{eq:QGFullSystem}.
-However the $M$-matrix, and methodology of section \ref{sec:Discussion}, also offers routes for pursuing general insights into the spectra of quantum graphs.
-It can be shown that \tstk{insert proof into appendix? Also check that proof is legit?}
-\begin{align*}
-	\det\mathfrak{M}_{\qm} &= \bracs{ H^{(2)} }^{\abs{\vertSet}-2}\omega^{\abs{\vertSet}} F_{\qm}\bracs{\omega}
-	%\sum_{s\in S_{\abs{\vertSet}}} F_{s, \qm}\bracs{\omega},
-\end{align*}
-where $F_{\qm}$ is analytic in $\omega$ --- the examples of section \ref{sec:Examples} suggest that an additional factor of $H^{(2)}$ can be removed from $F_{\qm}$.
-In light of the discussion of section \ref{ssec:MMatrixConsequences}, the properties of the function $F_{\qm}$ dictate the structure/composition of the spectrum of \eqref{eq:QGFullSystem} --- whether the spectrum is purely absolutely continuous, or contains a pure-point part, for example.
-Since the function $F_{\qm}$ is determined by the underlying graph $\graph$, the $M$-matrix directly relates the structure of $\graph$ to the characteristics of the spectrum of \eqref{eq:QGFullSystem}..
-\tstk{known results for periodic quantum graphs, B\& K seems to have a lot of relevant stuff here - like where the extrema of the spectral bands lie. This, in conjunction with the conjectured form for the determinant, speed up a lot of the stuff we need to do!}
+To conclude, we summarise the work presented and discuss directions of possible future work, motivated by what we have seen.
+Through the work of section \ref{sec:SystemDerivation} and the analysis in the appendices \ref{app:SingularMeasures}-\ref{app:SumMeasureAnalysis}, a link between the singular structure problem \eqref{eq:WholeSpaceLaplaceEqn} and the field of quantum graphs has been established.
+This in turn has allowed us to solve the otherwise intractable problem \eqref{eq:WholeSpaceLaplaceEqn}, through the study of the problem \eqref{eq:QGFullSystem} and the use of the $M$-matrix.
+Section \ref{sec:Discussion} provides an explicit expression for the $M$-matrix of \eqref{eq:QGFullSystem} on any graph topology, and outlines a number of considerations one might wish to take on board when using the $M$-matrix to analyse the spectrum.
+We build on this discussion with the examples of section \ref{sec:Examples}, highlighting how the $M$-matrix provides an explicit description of the spectrum.
+In what follows, we expand on two topics previously mentioned; open questions concerning generalised resolvents and the application to the theory in section \ref{ssec:MMatrix}, and the use of singular structure problems in advancing results on the connections between quantum graphs and thin structure problems.
 
 As was highlighted in sections \ref{ssec:DiffOpsOnGraphs} and \ref{ssec:MMatrixConsequences}, the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
 In section \ref{ssec:MMatrix} we introduced the $M$-matrix in a more familiar setting (with no $\omega^2$-dependence in the vertex conditions) and remarked that the analysis of the spectrum of \eqref{eq:QGFullSystem} can be carried by replacing the matrix $B$ in section \ref{ssec:MMatrix} with $\omega^2 B$ in section \ref{ssec:MMatrixConsequences}.
@@ -30,4 +21,5 @@ The operator in \eqref{eq:WholeSpaceLaplaceEqn} is motivated by those in \eqref{
 Additionally, the derivation of \eqref{eq:QGFullSystem} (section \ref{sec:SystemDerivation}) and the supporting analysis (appendices \ref{app:MeasureTheory}-\ref{app:SumMeasureAnalysis}) provides a route from our singular structure problem to a quantum graph.
 This has provided us with a means of ``translating" the 2D gradient operator in \eqref{eq:NonDimensionalWaveEqn} into its 1D analogue in the resulting quantum graph problem.
 Importantly, this method of analysis admits generalisation to other differential operators acting on vector-valued functions, such as curl or divergence in 3D.
-As a result one can obtain candidates for  the ``approximate" quantum graphs of these differential operators on thin structures, opening routes for estabishing links between thin structures and quantum graphs in the spirit of \cite{exner2005convergence, kuchment2001convergence}.
+In turn, this would provide candidates for  the ``approximate" quantum graphs of these differential operators on thin structures, opening routes for estabishing links between thin structures and quantum graphs in the spirit of the analysis in \cite{exner2005convergence, kuchment2001convergence}.
+\tstk{kind of what to put a ``dibs" phrase here, like ``this work is currently being carried out for equations involving the curl operator" so that people don't try and do it before I write my thesis up!}

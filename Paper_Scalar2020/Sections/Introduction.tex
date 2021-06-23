@@ -44,7 +44,7 @@ Consider a (periodic) domain $D_{l,r}$ in $\reals^2$ whose unit cell consists of
 	\caption{\label{fig:Diagram_ThinToSingular} Illustration of the (period cell of a) domain $D_{l,r}$, broken into ``tube"- and ``junction"-regions. As $l,r\rightarrow0$, visually the 2D structure in \ref{fig:Diagram_ThinStructurePeriodCell} shrinks to that in \ref{fig:Diagram_SingularStructurePeriodCell}. One then asks whether there is a quantum graph that makes this ``visual limit" $l,r\rightarrow0$ formal, which is the work of \cite{exner2005convergence, kuchment2001convergence}.}
 \end{figure}
 The domain $D_{l,r}$ represents a (periodic) structure similar to that of a 2D photonic crystal, or the cross-section of a (photonic crystal) optical fibre.
-Now consider a differential operator such as \eqref{eq:NonDimensionalWaveEqn} (but in general of the form $-\grad\bracs{A\grad u}$ for elliptic $A$) complimented by suitable boundary conditions on $D_{l,r}$.
+Now consider a differential operator such as \eqref{eq:NonDimensionalWaveEqn} \tstk{(but in general of the form $-\grad\bracs{A\grad u}$ for elliptic $A$?)} on $D_{l,r}$, complimented by suitable boundary conditions.
 For each $l$ and $r$, this operator has a spectrum $\sigma_{l,r}$, and one can ask what happens to $\sigma_{l,r}$ as $l,r\rightarrow0$.
 The result of $\lim_{l,r\rightarrow0}\sigma_{l,r}$ can be obtained from studying a quantum graph that mimics the geometry of $D_{l,r}$ --- replacing the ``tubes" with edges and ``junctions" with vertices.
 The appropriate coupling constants for said quantum graph depends on how the area of the ``tube regions" scales with that of the ``junction regions".
@@ -94,4 +94,7 @@ Problems like \eqref{eq:QGFullSystem} belong to the class of problems with gener
 The coupling constants $\alpha_j$ may be complex-valued, are typically chosen retain links to physical applications.
 Our interest lies in those problems for which $\Re\bracs{\alpha_j}>0$ (ensuring causality in physical settings) and $\Im\bracs{\alpha_j}=0$.
 Taking $\Im\bracs{\alpha_j}>0$ (respectively $\Im\bracs{\alpha_j}<0$) would correspond to placing an energy sink (respectively source) at the vertex $v_j$.
-We provide an overview of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} in section \ref{sec:SystemDerivation}, and precise details of the objects involved can be found in appendices \ref{app:muAnalysis}-\ref{app:SumMeasureAnalysis}.
+
+In the work which follows we provide an overview of how \eqref{eq:QGFullSystem} can be obtained from \eqref{eq:PeriodCellLaplaceStrongForm} in section \ref{sec:SystemDerivation}, with details in appendices \ref{app:muAnalysis}-\ref{app:SumMeasureAnalysis}.
+We then provide an explicit expression for the $M$-matrix of \eqref{eq:QGFullSystem} in section \ref{sec:Discussion}, and discuss the methodology and some considerations for using it to analyse the spectrum of of \eqref{eq:QGFullSystem}.
+These methods and considerations are then explored in a selection of examples in section \ref{sec:Examples}, before concluding with a discussion of some of the open questions touched on by this work.

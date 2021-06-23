@@ -37,12 +37,12 @@ As such, we can write
 Using corollary \ref{cory:M-MatrixEntriesNoPoles}, and with $s\in S_\graph$ with $s_j = k$, we have that
 \begin{align*}
 	\mathfrak{M}_{jk} &= \omega H^{(2)} \bracs{ \sum_{j\conLeft k}e_{jk}^+ s_{jk}^{-1} + \sum_{j\conRight k}e_{kj}^- s_{kj}^{-1} }, \quad j\neq k, \\
-	\mathfrak{M}_{jj} &= -\omega H^{(2)} \bracs{ \sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j }, \quad j=k.
+	\mathfrak{M}_{jj} &= \omega H^{(2)} \bracs{ -\sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j }, \quad j=k.
 \end{align*}
 For $s\in S_\graph$, define
 \begin{align*}
 	C\bracs{s} &= \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \mathfrak{M}_{j s_j} \prod_{\substack{j=1,...,N, \\ j = s_j}} \mathfrak{M}_{jj} \\
-	&= \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \bracs{ \sum_{j\conLeft k}e_{jk}^+ s_{jk}^{-1} + \sum_{j\conRight k}e_{kj}^- s_{kj}^{-1} } \prod_{\substack{j=1,...,N, \\ j = s_j}} -\bracs{ \sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j },
+	&= \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \bracs{ \sum_{j\conLeft k}e_{jk}^+ s_{jk}^{-1} + \sum_{j\conRight k}e_{kj}^- s_{kj}^{-1} } \prod_{\substack{j=1,...,N, \\ j = s_j}} \bracs{ -\sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j },
 \end{align*}
 so that 
 \begin{align*}

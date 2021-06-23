@@ -10,7 +10,7 @@ Consider the graph $\graph$ periodic in one direction in $\reals\times\sqbracs{0
 Since $\graph$ is only periodic in the $x_1$-direction, the period cell lies in $S^1\times\sqbracs{0,1}$ rather than the 2D-torus, and the quasi-momentum $\qm\in\left[-\pi,\pi\right)$ is scalar (one can set $\qm_2=0$ in \eqref{eq:QGFullSystem} when constructing the $\qm_{jk}$ to account for the lack of periodicity in $x_2$).
 Place identical coupling constants at each vertex, with $\alpha_j = \alpha_1 \ \forall j$.
 The quantum graph that corresponds to the period graph of $\graph$ consists of a single vertex $v$ with a looping edge $I$ of length 1, with quasi-momentum $\qm$ on $I$ and coupling constant $\alpha_1$ at $v$.
-We must introduce an artificial vertex (section \ref{ssec:ArtificalVertices}) to break the loop $I$ into two edges with irrationally-related edge lengths, producing a new quantum graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ with
+We must introduce an artificial vertex (section \ref{ssec:ArtificialVertices}) to break the loop $I$ into two edges with irrationally-related edge lengths, producing a new quantum graph $\graph_{\mathcal{P}}=\bracs{\vertSet, \edgeSet}$ with
 \begin{align*}
 	\vertSet = \clbracs{ v_1 , v_2 }, \quad \edgeSet = \clbracs{ I_{12}, I_{21} },
 	&\qquad \abs{I_{12}} = a, \quad \abs{I_{21}} = 1-a, \quad \qm_{12} = \qm_{21} = \qm, 
@@ -204,7 +204,7 @@ Solving \eqref{eq:QGDetSolveCondition} yields
 	\sqbracs{ \cos\qm + \recip{2} - \frac{3}{2}\cos\omega + \frac{\alpha_1\omega}{2}\sin\omega }.
 \end{align}
 Set $\Xi\bracs{\omega} = \frac{3}{2}\cos\omega - \frac{\alpha_1\omega}{2}\sin\omega$.
-We find ourselves in a similar situation to example \ref{ssec:Example1DLoop}: the factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition} is $2\omega^2 H^{(2)}\bracs{\omega^2}$, so is zero at precisely the roots of $H^{(2)}\bracs{\omega^2}$, whilst the rest of the spectrum is those $\omega$ for which there exists at least one $\qm$ such that $\Xi\bracs{\omega} = \cos\theta + \recip{2}$.
+We find ourselves in a similar situation to example \ref{ssec:Example1DLoop}: the factor in front of the brackets in \eqref{eq:EmbeddedGraphDetSolveCondition} is $2\bracs{ \omega H^{(2)}\bracs{\omega^2} }^2$, so is zero at the roots of $H^{(2)}\bracs{\omega^2}$, whilst the rest of the spectrum is those $\omega$ for which there exists at least one $\qm$ such that $\Xi\bracs{\omega} = \cos\theta + \recip{2}$.
 Thus, the remainder of the spectrum is those $\omega$ such that
 \begin{align*}
 	\min_{\qm\in\left[-\pi,\pi\right)}\bracs{\cos\theta + \recip{2}} &\leq \Xi\bracs{\omega} 
@@ -317,14 +317,14 @@ For ease, we define
 	\Xi\bracs{\omega} := \cos\omega - \frac{\alpha_3\omega}{4}\sin\omega.
 \end{align*}
 From here, the analysis is similar to that of example \ref{ssec:EmbeddingDependentExample} --- any root of $H^{(2)}$ solves \eqref{eq:ExampleThickVertexSolution}, in addition to those $\omega$ for which $-1\leq\Xi\bracs{\omega}\leq 1$.
-Examination of the eigenvalue branches then produces a familiar conclusion; if $H^{(2)}\bracs{\omega_0^2}=0$, $\omega_0$ forms part of the spectrum of \eqref{eq:QGFullSystem} on $\graph$ if and only if there exists a $\qm_0$ such that the bracket in \eqref{eq:EmbeddedGraphDetSolveCondition} is zero at $\bracs{\omega_0,\qm_0}$.
+Examination of the eigenvalue branches then produces a familiar conclusion; if $H^{(2)}\bracs{\omega_0^2}=0$, $\omega_0$ forms part of the spectrum of \eqref{eq:QGFullSystem} on $\graph$ if and only if there exists a $\qm_0$ such that the bracket in \eqref{eq:ExampleThickVertexSolution} is zero at $\bracs{\omega_0,\qm_0}$ -- that is if $\Xi\bracs{\omega_0} = \cos\bracs{\frac{\bracs{\qm_0}_1+\bracs{\qm_0}_2}{2}}\cos\bracs{\frac{\bracs{\qm_0}_1-\bracs{\qm_0}_2}{2}}$.
 As a result, the spectrum consists of exactly those $\omega$ such that
 \begin{align*}
 	-1 \leq \cos\omega - \frac{\alpha_3\omega}{4}\sin\omega \leq 1.
 \end{align*}
 To round off the analysis, quantities such as the integrated density of states (IDoS) and density of states (DoS) can also be estimated from \eqref{eq:ExampleThickVertexSolution}, which demonstrating that the spectrum ``concentrates" at the center of each spectral band.
 Examples are shown in figure \ref{fig:CrossInPlane_ScalarDoS}.
-\begin{figure}[t!]
+\begin{figure}[b!]
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[scale=0.5]{CrossInPlane_ScalarDoS_alpha1-00.pdf}
