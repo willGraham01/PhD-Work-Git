@@ -3,10 +3,10 @@ In this section we provide an overview of a system of the form \eqref{eq:QGFullS
 To reiterate what was said at the end of section \ref{sec:QuantumGraphs}, assumption \ref{ass:MeasTheoryProblemSetup} is adopted throughout this section and the rest of this work. 
 
 Precise definition and analysis of the ``Sobolev spaces" used here can be found in appendix (\ref{app:MeasureTheory}), although we provide a short intuitive idea of the object $\tgrad_{\ddmes}u$ here.
-The central idea behind understanding $\tgrad_{\ddmes}u$ is that the singular measure $\ddmes$ only supports the edges of $\graph$, and so cannot ``see" any changes in the function $u$ ``across" (or in the direction perpendicular) to the edge $I_{jk}$.
+The central idea behind understanding $\tgrad_{\ddmes}u$ is that the singular measure $\ddmes$ only supports the edges of $\graph$, and so cannot ``see" any changes in the function $u$ ``across" (in the direction perpendicular to) the edge $I_{jk}$.
 So at any point $x\in I_{jk}$, the ``gradient" $\tgrad_{\ddmes}u$ encapsulates the rate of change of the function $u$ \emph{only} in the direction along the edge $I_{jk}$.
 As a result, it is not inaccurate to think of $\tgrad_{\ddmes}u(x) = u_{jk}'(x)e_{jk}$ for $x\in I_{jk}$, where $u_{jk}' = \pdiff{u_{jk}}{e_{jk}}$.
-This also means that $\tgrad_{\ddmes}u$ can be characterised by its form on each edge of the graph $\graph$, which is crucial for deriving the set of ``edge ODEs" \eqref{eq:QGEdgeODEs} and providing a meaning to the $\diff{}{t}$ operator that appears in those equations.
+This also means that $\tgrad_{\ddmes}u$ can be characterised by its form on each edge of the graph $\graph$, which is crucial for deriving the set of ``edge ODEs" \eqref{eq:QGEdgeODEs} and providing a meaning to the $\diff{}{x}$ operator that appears in those equations.
 As discussed in section \ref{ssec:FunctionSpaces}, the coupling constants attached to the vertices of the graph as well as the connectivity of the graph itself then dictate that these ``edge-wise" components $u_{jk}$ and $u'_{jk}$ adhere to certain matching conditions at the vertices.
 %These conditions transpire to be continuity of the function $u$ at all vertices of the graph, which one might expect given that we claim to be working with (some measure-theoretic notion of) differentiable functions and Sobolev spaces.
 %We also find that the ``gradient" of the function $u$ at the vertices vanishes at the vertices $v_j\in\vertSet$, however the incoming directional derivatives along the edges connecting to $v_j$ need not have limit zero as they approach $v_j$.
@@ -39,11 +39,11 @@ Combined with the fact that $\dddmes$ is a sum of the edge measures and point ma
 where $R_{jk}$ is the rotation introduced in assumption \ref{ass:MeasTheoryProblemSetup}.
 Now using the mapping $r_{jk}$ given by \eqref{eq:EdgeParameterisation} as a change of variables and denoting $\tilde{u} = u \circ r_{jk}$ and $\varphi = \psi\circ r_{jk}$ we arrive at
 \begin{align*}
-	0 &= \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + \rmi\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - \rmi\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md t .
+	0 &= \int_{0}^{\abs{I_{jk}}} \bracs{\tilde{u}_{jk}' + \rmi\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - \rmi\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} \ \md x .
 \end{align*}
 This holds for all smooth $\varphi$ with support contained in the interior of $\interval{I_{jk}}$, and can be thought of as the weak form of the equation
 \begin{align*}
-	-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} &= \omega^2 \tilde{u}_{jk}, \quad t\in\interval{I_{jk}},
+	-\bracs{\diff{}{x} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} &= \omega^2 \tilde{u}_{jk}, \quad x\in\interval{I_{jk}},
 \end{align*}
 where $\qm_{jk} := \bracs{R_{jk}\qm}_1$.
 
@@ -53,7 +53,7 @@ Then we can work from \eqref{eq:PeriodCellLaplaceWeakForm} to obtain
 \begin{align*}
 	0 &= \sum_{k: \ k\con j} \integral{I_{jk}}{ \bracs{ \tgrad_\ddmes u \cdot \overline{\tgrad\psi} - \omega^2 u\overline{\psi} } }{\lambda_{jk}} 
 	+ \integral{\ddom}{ \bracs{ \tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\psi}-\omega^2 u\overline{\psi} } }{\nu} \\
-	&= \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \clbracs{ \bracs{\tilde{u}_{jk}' + \rmi\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - \rmi\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} } \ \md t
+	&= \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \clbracs{ \bracs{\tilde{u}_{jk}' + \rmi\bracs{R_{jk}\qm}_1 \tilde{u}_{jk}}\bracs{\overline{\varphi}' - \rmi\bracs{R_{jk}\qm}_1 \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} } \ \md x
 	+ \alpha_j\left.\bracs{ \tgrad_{\dddmes}u\cdot\overline{\tgrad_{\dddmes}\psi}-\omega^2 u\overline{\psi} }\right\vert_{v_j} \\
 	&= \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \clbracs{ \bracs{\tilde{u}_{jk}' + \rmi\qm_{jk} \tilde{u}_{jk}}\bracs{\overline{\varphi}' - \rmi\qm_{jk} \overline{\varphi} } - \omega^2 \tilde{u}_{jk}\overline{\varphi} } \ \md t
 	 - \alpha_j \omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j}.
@@ -62,14 +62,14 @@ Here, we have again used $r_{jk}$ as a change of variables (and the same notatio
 Under the assumption that $\tilde{u}_{jk}$ can be differentiated again, this implies
 \begin{align*}
 	\alpha_j\omega^2 u\bracs{v_j}\overline{\psi}\bracs{v_j} 
-	&= - \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md t
+	&= - \sum_{k: \ k\con j} \int_{0}^{\abs{I_{jk}}} \bracs{ \bracs{\diff{}{x} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} +\omega^2 \tilde{u}_{jk} }\overline{\varphi} \ \md x
 	+ \sum_{k: \ k\con j}\overline{\varphi}\bracs{v_j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} \\
 	&= \overline{\varphi}\bracs{v_j}\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j}. \labelthis\label{eq:DerivationVertexConditionWeak}
 \end{align*}
 Here we use the notation for the ``shifted, signed derivative",
 \begin{align*}
-	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_j} &= -\bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_j} = -\lim_{t\rightarrow0} \bracs{ u_{jk}'(t)+\rmi\qm u_{jk}(t) }, \\
-	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{t\rightarrow l_{jk}} \bracs{ u_{jk}'(t)+\rmi\qm u_{jk}(t) },
+	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_j} &= -\bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_j} = -\lim_{x\rightarrow0} \bracs{ u_{jk}'(x)+\rmi\qm u_{jk}(x) }, \\
+	\bracs{\pdiff{}{n}+ \rmi\qm}u_{jk}\bracs{v_k} &= \bracs{u_{jk}' + \rmi\qm u_{jk}}\bracs{v_k} = \lim_{x\rightarrow l_{jk}} \bracs{ u_{jk}'(x)+\rmi\qm u_{jk}(x) },
 \end{align*}
 as is appropriate after use of the Gelfand transform.
 Given that \eqref{eq:DerivationVertexConditionWeak} holds for every smooth $\varphi$, and that $\overline{\varphi}\bracs{v_j}=\overline{\psi}\bracs{v_j}\neq 0$, we arrive at the condition that
@@ -80,7 +80,7 @@ Repeating the argument for each $v_j\in \vertSet$ then provides us with a condit
 One should note the presence of $\omega^2$ in this equation, so this is not a standard Robin condition on the derivatives of the edge-wise components of $u$, but rather indicates that our problem belongs to the class of problems with generalised resolvents, as mentioned in section \ref{sec:QuantumGraphs}.
 The result of theorem \ref{thm:CharOfGradSob} tells us that functions $u\in\gradSobQM{\ddom}{\dddmes}$ are also continuous at each vertex $v_j$, and thus the following problem (precisely \eqref{eq:QGFullSystem}) has been derived:
 \begin{align*}
-	-\bracs{\diff{}{t} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad t\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
+	-\bracs{\diff{}{x} + \rmi\qm_{jk}}^2 \tilde{u}_{jk} = \omega^2 \tilde{u}_{jk}, &\quad x\in\interval{I_{jk}}, \quad \forall I_{jk}\in \edgeSet, \\
 	u \text{ is continuous at each } &v_j \in \vertSet, \\
 	\sum_{k: \ k\con j}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}\tilde{u}_{jk}\bracs{v_j} &= \omega^2\alpha_{j}u\bracs{v_j},  \quad \forall v_j \in \vertSet.
 \end{align*}

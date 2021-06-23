@@ -62,9 +62,9 @@ We summarise our standing assumptions for the rest of this work below:
 	Let $e_{jk}$ be the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$.
 	Set
 	\begin{align} \label{eq:EdgeParameterisation}
-	r_{jk}:\sqbracs{0, l_{jk}} \ni t \mapsto v_j + te_{jk} \in I_{jk},
+	r_{jk}:\sqbracs{0, l_{jk}} \ni x \mapsto v_j + xe_{jk} \in I_{jk},
 	\end{align}
-	and note that $r_{jk}'(t) = e_{jk}$.
+	and note that $r_{jk}'(x) = e_{jk}$.
 	Finally, let $n_{jk}$ be the unit normal to $I_{jk}$ so the frame $y_{jk} := \bracs{e_{jk}, n_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$ (where no summation over $j,k$ is implied).
 \end{assumption}
 
@@ -83,8 +83,8 @@ If additionally $u$ is continuous at a vertex $v_j$, we will use the notation $u
 We also use a notion of ``signed derivative" at the endpoints of an edge:
 \begin{subequations} \label{eq:SignedDerivConvention}
 	\begin{align}
-		\pdiff{}{n}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{t\rightarrow0}u_{jk}'(t), \\
-		\pdiff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{t\rightarrow l_{jk}}u_{jk}'(t),
+		\pdiff{}{n}u_{jk}\bracs{v_j} &= -u_{jk}'\bracs{v_j} = -\lim_{x\rightarrow0}u_{jk}'(x), \\
+		\pdiff{}{n}u_{jk}\bracs{v_k} &= u_{jk}'\bracs{v_k} = \lim_{x\rightarrow l_{jk}}u_{jk}'(x),
 	\end{align}
 \end{subequations}
 for a differentiable function $u$ on $\graph$, where the prime notation denotes differentiation by $t$.
@@ -119,7 +119,7 @@ The domain of $\mathcal{A}$ is defined as
 \begin{align} \label{eq:GraphLaplacianExample}
 	\mathrm{dom}\bracs{\mathcal{A}} &= \clbracs{ u\in H^2\bracs{\graph_{\mathcal{P}}} \ \vert \ \forall j, \ u \text{ is continuous at } v_j, \sum_{j\con k}\pdiff{u_{jk}}{n}\bracs{v_j} = \alpha_j u\bracs{v_j} },
 \end{align}
-and the differential expression on each edge is $-\ddiff{}{t}$.
+and the differential expression on each edge is $-\ddiff{}{x}$.
 For a function $f\in L^2\bracs{\graph_{\mathcal{P}}}$ we pose the resolvent problem of finding $u\in\mathrm{dom}\bracs{\mathcal{A}}$ such that
 \begin{align*}
 	\mathcal{A}u &= f,
@@ -148,12 +148,7 @@ Each of these problems can be rewritten as a system of ODEs on the edge interval
 One will note that only $\alpha_j$ appears in the Robin-like condition in \eqref{eq:GraphLaplacianExample}, but $\alpha_j\omega^2$ is present on the right hand side of \eqref{eq:QGDerivCondition}.
 As mentioned in section \ref{ssec:OurSystem}, this means the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
 Rigorous setup is beyond the scope of this paper, but the central tool for analysis of the spectrum of \eqref{eq:QGFullSystem} (the $M$-matrix, see section \ref{ssec:MMatrix}) will be introduced in the more familiar setup with no explicit dependence on $\omega^2$ in the vertex conditions.
-\tstk{The discussion on GRs and why we can ``actually use" our method}
-As discussed in \cite[page 1846]{cherednichenko2018effective}, introducing an explicit dependence on $\omega^2$ in the vertex conditions (or in the domain of $\mathcal{A}$) does not affect the structure of the arguments that underpin the theory in section \ref{ssec:MMatrix}.
-\tstk{The paper we cite specifically refers to those arguments found in Ryzhov, V.: Weyl-Titchmarsh function of an abstract boundary value problem, operator colligations, and linear systems with boundary control. Complex Anal. Oper. Theory 3(1), 289–322 (2009)}
-Ultimately, the analysis of (the spectrum of) \eqref{eq:QGFullSystem} is carried out by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts, that is by replacing the matrix $\alpha$ with $B = \omega^2\alpha$ in section \ref{ssec:MMatrix}.
-An alternative to working with generalised resolvents directly is also highlighted in \cite[Section 6]{cherednichenko2017norm} --- one can look to transform a problem with $\omega^2$-dependent $\delta$-type vertex conditions into a problem with $\omega^2$-independent $\delta'$-type vertex conditions.
-Of course, one would have to find the appropriate (unitary) transform, but the theory of section \ref{ssec:MMatrix} would then directly apply to the transformed problem.
+The analysis of (the spectrum of) \eqref{eq:QGFullSystem} is then carried out by replacing the coupling constants $\alpha_j$ with their $\omega^2-$dependant counterparts --- the discussion in section \ref{sec:Conclusion} elaborates on the justification for doing so.
 
 \subsection{The $M$-Matrix} \label{ssec:MMatrix}
 We next provide a brief overview of the $M$-matrix, a tool for characterising the spectrum of $\mathcal{A}$, which we implement in section \ref{sec:SystemDerivation}.
@@ -178,13 +173,11 @@ One thing to be noted here is that $\mathcal{A}$ is required to be an extension 
 This can be guaranteed by ensuring $\graph$ contains no looping edges, and has all edge-lengths pairwise-irrationally related \cite{ashurova2014simplicity}.
 In section \ref{ssec:ArtificialVertices} we will see that this any graph can be manipulated to adhere to these specifications, through the use of ``artificial" vertices.
 
-\tstk{it should be $M+\alpha$ throughout due to the definition of our normal derivs and DN maps, no? Also needs addressing in section 4 and the examples of section 5 if true.
-Alternatively, put the $-$ sign into the BCs and change $\nu$ measure to be $-\alpha$ in it, and change accordingly in the derivation and appendices}
-It can be shown that $z_0\in\complex$ belongs to the spectrum of $\mathcal{A}$ if and only if $\bracs{M\bracs{z} - \alpha}^{-1}$ does \emph{not} admit analytic continuation into $z_0$ (see \cite[Theorem 2.1]{ershova2014isospectrality}).
-Equivalently, zero is an eigenvalue of $M\bracs{z_0}-\alpha$ if and only if $z_0$ is an eigenvalue of $\mathcal{A}$ (as presented in \cite[Proposition 1]{derkach1991generalized}, \cite[page 698]{cherednichenko2019time}).
-The eigenvalues of $\mathcal{A}$ can thus be found through analysis of the $M$-matrix, by solving for pairs $u\in\mathrm{dom}\bracs{\mathcal{A}}$, $z_0\in\complex$ such that
+It can be shown that $z_0\in\complex$ belongs to the spectrum of $\mathcal{A}$ if and only if $\bracs{M\bracs{z} - B}^{-1}$ does \emph{not} admit analytic continuation into $z_0$ (see \cite[Theorem 2.1]{ershova2014isospectrality}), where $B=-\alpha$.
+Equivalently, zero is an eigenvalue of $M\bracs{z_0}-B$ if and only if $z_0$ is an eigenvalue of $\mathcal{A}$ (as presented in \cite[Proposition 1]{derkach1991generalized}, \cite[page 698]{cherednichenko2019time}).
+The eigenvalues of $\mathcal{A}$ can thus be found through analysis of the $M$-matrix, by solving for pairs $u\in\mathrm{dom}\bracs{\mathcal{A}}\setminus\clbracs{0}$, $z_0\in\complex$ such that
 \begin{align*}
-	\bigl( M\bracs{z_0} - \alpha \bigr) \dmap u = 0.
+	\bigl( M\bracs{z_0} - B \bigr) \dmap u = 0.
 \end{align*}
 In section \ref{sec:Discussion} we will expand on how this result provides access to the spectrum of $\mathcal{A}$, and utilise these ideas in the examples of section \ref{sec:Examples}.
 

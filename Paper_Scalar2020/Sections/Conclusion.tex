@@ -1,13 +1,33 @@
 \section{Closing Remarks} \label{sec:Conclusion}
+To conclude, we discussions directions of possible future work, motivated by the results and method we have seen.
+These include the use of the $M$-matrix in determining the composition (or structure) of the spectrum of a periodic quantum graph, open questions concerning generalised resolvents and the application of the theory in section \ref{ssec:MMatrix}, and the utility of singular structure problems in advancing the connections between quantum graphs and thin structure problems.
 
-Concluding remarks, directions of future work.
-The usual outro sequence.
+\tstk{putting words onto a page... start with bullet point 1, two possible paragraphs. First let's try the ``here's what's known, and how we'd get it"...}
+Section \ref{sec:Examples} demonstrates the practical utility of the $M$-matrix in determining the spectrum of \eqref{eq:QGFullSystem}.
+However the $M$-matrix, and methodology of section \ref{sec:Discussion}, also offers routes for pursuing general insights into the spectra of quantum graphs.
+It can be shown that \tstk{insert proof into appendix? Also check that proof is legit?}
+\begin{align*}
+	\det\mathfrak{M}_{\qm} &= \bracs{ H^{(2)} }^{\abs{\vertSet}-2}\omega^{\abs{\vertSet}} F_{\qm}\bracs{\omega}
+	%\sum_{s\in S_{\abs{\vertSet}}} F_{s, \qm}\bracs{\omega},
+\end{align*}
+where $F_{\qm}$ is analytic in $\omega$ --- the examples of section \ref{sec:Examples} suggest that an additional factor of $H^{(2)}$ can be removed from $F_{\qm}$.
+In light of the discussion of section \ref{ssec:MMatrixConsequences}, the properties of the function $F_{\qm}$ dictate the structure/composition of the spectrum of \eqref{eq:QGFullSystem} --- whether the spectrum is purely absolutely continuous, or contains a pure-point part, for example.
+Since the function $F_{\qm}$ is determined by the underlying graph $\graph$, the $M$-matrix directly relates the structure of $\graph$ to the characteristics of the spectrum of \eqref{eq:QGFullSystem}..
+\tstk{known results for periodic quantum graphs, B\& K seems to have a lot of relevant stuff here - like where the extrema of the spectral bands lie. This, in conjunction with the conjectured form for the determinant, speed up a lot of the stuff we need to do!}
 
+As was highlighted in sections \ref{ssec:DiffOpsOnGraphs} and \ref{ssec:MMatrixConsequences}, the problem \eqref{eq:QGFullSystem} belongs to the class of problems with generalised resolvents.
+In section \ref{ssec:MMatrix} we introduced the $M$-matrix in a more familiar setting (with no $\omega^2$-dependence in the vertex conditions) and remarked that the analysis of the spectrum of \eqref{eq:QGFullSystem} can be carried by replacing the matrix $B$ in section \ref{ssec:MMatrix} with $\omega^2 B$ in section \ref{ssec:MMatrixConsequences}.
+Justification for doing so lies in observing that introducing explicit $\omega^2$-dependence will not affect the (structure of) the arguments in the supporting theory \tstk{refs to Ryzhov here?}, and consequentially is expected to give rise to the aforementioned alteration to $B$.
+However, a formal argument to justify methodology based on the $M$-matrix and boundary triples (in the context of generalised resolvents) has not been carried out in the literature.
+As such it remains open to investigation, but would closely follow and resemble arguments that are already available (and form the basis for the theory presented in section \ref{ssec:MMatrix}).
+This observation (and justification) is made in other works that analyse problems with generalised resolvents via use of the theory of boundary triples and the $M$-matrix --- see for example \cite[page 1846]{cherednichenko2018effective} concerning the results of \tstk{The paper \cite[page 1846]{cherednichenko2018effective} specifically refers to those arguments found in Ryzhov, V.: Weyl-Titchmarsh function of an abstract boundary value problem, operator colligations, and linear systems with boundary control. Complex Anal. Oper. Theory 3(1), 289–322 (2009)}.
+If one has reservations about this ``gap" in the theory, an alternative to analysing a problem with generalised resolvents directly is explored in \cite[Section 6]{cherednichenko2017norm}.
+One could look to transform a problem with $\omega^2$-dependent $\delta$-type vertex condition (like \eqref{eq:QGFullSystem}) into a problem with $\omega^2$-independent $\delta'$-type vertex conditions.
+This comes at the cost of having to determine the appropriate (unitary) transform to apply to \eqref{eq:QGFullSystem}; but the theory of section \ref{ssec:MMatrix} would apply to the transformed problem, could be used to analyse the spectrum, and then the inverse transform applied if desired.
 
-We want to elaborate on the following things:
-\begin{itemize}
-	\item Conjecture that $\det\mathfrak{M}_{\qm}$ has the form $\det\mathfrak{M}_{\qm} = \bracs{H^{(2)}}^{\abs{\vertSet}-1} F\bracs{\omega^2, \qm}$ for some function $F$. This has implications for the structure of the spectrum, being ``morally" equivalent to stating that the spectrum is absolutely continuous, or has singular-continuous part depending on the properties of $F$.
-	This needs to be contextualised with what's currently available on the structure of periodic quantum graphs, so a good place to start looking is Kuchment \& Berlenko's book, section 4.3.
-	\item Generalised resolvants and extensions - the formal arguments to justify our methodology involving the $M$-matrix and boundary triples (and operator extensions) have yet to be done in the case of generalised resolvants, IE with $\omega^2$ in the BCs. However, we expect that a direct approach, whilst novel, will follow essentially the same arguments as in work by Rhyzov. Alternatively, we can also appeal to the idea that we can always transform our problem with $\omega^2$-dependant BCs into a problem with $\omega^2$-independant BCs (although we'll obtain $\delta'$-type vertex conditions), use existing results (EKK say?) and then transform back, expecting the result of this process to be what we take for our method involving the $M$-matrix. Kirill has a couple of papers where this is touched upon, which might be a good place to start.
-	\item Reiterate the thin-structure $\rightarrow$ singular-structure $\rightarrow$ quantum graphs links again, and hint towards vector equations etc.
-\end{itemize}
+Our final thoughts concern the connection between thin structures, singular structures, and quantum graphs mentioned in section \ref{ssec:PhysMot}.
+The operator in \eqref{eq:WholeSpaceLaplaceEqn} is motivated by those in \eqref{eq:NonDimensionalWaveEqn} --- all that has been done is replacing the derivatives with their (measure theoretic) singular structure equivalents.
+Additionally, the derivation of \eqref{eq:QGFullSystem} (section \ref{sec:SystemDerivation}) and the supporting analysis (appendices \ref{app:MeasureTheory}-\ref{app:SumMeasureAnalysis}) provides a route from our singular structure problem to a quantum graph.
+This has provided us with a means of ``translating" the 2D gradient operator in \eqref{eq:NonDimensionalWaveEqn} into its 1D analogue in the resulting quantum graph problem.
+Importantly, this method of analysis admits generalisation to other differential operators acting on vector-valued functions, such as curl or divergence in 3D.
+As a result one can obtain candidates for  the ``approximate" quantum graphs of these differential operators on thin structures, opening routes for estabishing links between thin structures and quantum graphs in the spirit of \cite{exner2005convergence, kuchment2001convergence}.

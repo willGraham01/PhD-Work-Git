@@ -231,14 +231,14 @@ h2Roots = np.append(r2, np.append(bR, aR))
 
 if False:
 	fig, ax = plt.subplots(1)
-	ax.set_title(r'Dispersion Relation and Zeros of $H^{(2)}$, $\alpha=%.3f$' % (alpha))
+	ax.set_title(r'Spectrum and Zeros of $H^{(2)}$, $\alpha=%.3f$' % (alpha))
 	ax.set_xlabel(r'$\frac{\omega}{\pi}$')
-	ax.plot(wRange/np.pi, drVals, 'b', label=r'Dispersion Relation')
+	ax.plot(wRange/np.pi, drVals, 'b', label=r'$3\cos\omega - \omega\alpha_1\sin\omega + 1$')
 	ax.axhline(2., c='k')
 	ax.axhline(-2., c='k')
 	ax.set_xlim(0, wRange[-1]/np.pi)
-	ax.scatter(wRange[eVals]/np.pi, np.zeros_like(wRange[eVals]), c='r', marker='x', s=3, label=r'Solutions to DR')
-	ax.scatter(h2Roots/np.pi, np.zeros_like(h2Roots), c='g', marker='x', s=3, label=r'$H^{(2)}(\omega)=0$')
+	ax.scatter(wRange[eVals]/np.pi, np.zeros_like(wRange[eVals]), c='r', marker='x', s=3, label=r'Eigenvalues')
+	ax.scatter(h2Roots/np.pi, np.zeros_like(h2Roots), c='g', marker='x', s=3, label=r'$H^{(2)}(\omega^2)=0$')
 	#ax.scatter(aR/np.pi, np.zeros_like(aR), facecolors='none', edgecolors='g', marker='x', s=3, label=r'$H^{(2)}(\omega)=0$')
 	ax.legend()
 	saveStr = 'DR+H2-alpha%.3f.pdf' % (alpha)
@@ -368,12 +368,12 @@ if True:
 	#create plots...
 	tFig, tAx = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=False, figsize=(10.,5.))
 	# main title
-	tFig.suptitle(r'Eigenvalue branches near $\omega_0=%.3f\pi, \alpha=%.2f$' % (w0/np.pi, alpha))
+	tFig.suptitle(r'Eigenvalue branches near $\omega_0=%.3f\pi, \alpha_1=%.2f$' % (w0/np.pi, alpha))
 	# (shared) axis labels, and column titles
 	tAx[1,0].set_xlabel(r'$\frac{\omega}{\pi}$')
 	tAx[1,1].set_xlabel(r'$\frac{\omega}{\pi}$')
-	tAx[0,0].set_ylabel(r'$\widetilde{\beta}_{j}$')
-	tAx[1,0].set_ylabel(r'$\left(H^{(2)}\right)^{-1}\widetilde{\beta}_{j}$')
+	tAx[0,0].set_ylabel(r'$\widetilde{\beta}_{j}\left(\omega^2\right)$')
+	tAx[1,0].set_ylabel(r'$\left(H^{(2)}\left(\omega^2\right)\right)^{-1}\widetilde{\beta}_{j}\left(\omega^2\right)$')
 	tAx[0,0].set_title(r'$\theta=%.3f\pi$' % (t0/np.pi))
 	tAx[0,1].set_title(r'$\theta=%.3f\pi$' % (theta/np.pi))
 	# axis limits 
@@ -406,5 +406,5 @@ if True:
 	tAx[1,1].plot(wR/np.pi, b1Bad/h2, 'b')
 	tAx[1,1].plot(wR/np.pi, b2Bad/h2, 'r')
 	#save result before I forget to
-	saveStr = 'EvalBranches-Thetas.pdf'
-	tFig.savefig(saveStr, bbox_inches='tight')
+	#saveStr = 'EvalBranches-Thetas.pdf'
+	#tFig.savefig(saveStr, bbox_inches='tight')

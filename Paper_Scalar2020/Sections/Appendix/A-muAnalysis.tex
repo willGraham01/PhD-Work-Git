@@ -42,7 +42,7 @@ The following characterisation of $\gradZero{\ddom}{\ddmes}$ follows immediately
 		\norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 = \sum_{j\con k}\norm{\cdot}_{\ltwo{\ddom}{\lambda_{jk}}}^2,
 	\end{align}
 	so if one has convergence in the $\ltwo{\ddom}{\ddmes}$-norm then we have convergence in each $\ltwo{\ddom}{\lambda_{jk}}$-norm.
-	The opposite set inclusion involves a number of technical steps, and is given in full in section \ref{appS:ProofOfGradZeroChar}
+	The opposite set inclusion involves a number of technical steps, and is given in full in section \ref{appS:ProofOfGradZeroChar}.
 	The gist of the argument involves demonstrating that if $g$ is a member of the set on the right-had-side of \eqref{eq:GradZeroSetRHS}, then $g_{jk}\in\gradZero{\ddom}{\ddmes}$.
 	Then by writing $g = \sum_{j\con k} g_{jk}$ and noticing that $\gradZero{\ddom}{\ddmes}$ is a closed, linear subspace, membership of $g$ in $\gradZero{\ddom}{\ddmes}$ is obtained.
 
@@ -172,8 +172,8 @@ Propositions \ref{prop:BIncGrad0} and \ref{prop:Grad0IncB} complete the proof of
 \subsection{The ``Non-Classical" Sobolev Space} \label{appS:SobSpacesTheory}
 Establishing an understanding of $\gradZero{\ddom}{\ddmes}$  affords us greater insight into the tangential gradient $\tgrad_\ddmes u$ of functions $u\in\gradSobQM{\ddom}{\ddmes}$, and enables us to obtain an edge-wise ``form" for the tangential gradient, as follows:
 \begin{prop} \label{prop:GraphTangGrad}
-	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{t}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the (1 dimensional) Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
-	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{t}$ for each $I_{jk}\in \edgeSet$, and that
+	For each $I_{jk}\in \edgeSet$ write $\gradSob{\interval{I_{jk}}}{x}$ for the (``classical") Sobolev space on the interval $\interval{I_{jk}}$ with respect to the (1 dimensional) Lebesgue measure, and let $\tilde{u}_{jk} = u_{jk} \circ r_{jk}$.
+	Then for $u\in\gradSobQM{\ddom}{\ddmes}$ we have that $\tilde{u}_{jk}\in\gradSob{\interval{I_{jk}}}{x}$ for each $I_{jk}\in \edgeSet$, and that
 	\begin{align*}
 		\bracs{ \tgrad_\ddmes u }_{jk} 
 		&= R_{jk}^\top \begin{pmatrix} u_{jk}' + \rmi\bracs{R_{jk}\qm}_1 u_{jk} \\ 0	\end{pmatrix}
@@ -193,8 +193,8 @@ Note that the prime notation on $u_{jk}'$ does \emph{not} imply the existence of
 	Clearly any such sequence also converges to $u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as well (see \eqref{eq:GraphMeasNormEdgeBreakdown}), and $\partial_1\phi_n\rightarrow v_1\vert_{I_{jk}}-\rmi\qm_{1}u_{jk}$ in $\ltwo{\ddom}{\lambda_{jk}}$.
 	Considering the composition $\tilde{\phi}_n = \phi_n \circ r_{jk}$ we find that
 	\begin{align*}
-		\tilde{\phi}_n \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{u}_{jk},
-		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{t}} \tilde{v}_1\vert_{jk} - \rmi\qm_1 \tilde{u}_{jk},
+		\tilde{\phi}_n \lconv{\ltwo{\interval{I_{jk}}}{x}} \tilde{u}_{jk},
+		&\quad \diff{\tilde{\phi}_n}{t} \lconv{\ltwo{\interval{I_{jk}}}{x}} \tilde{v}_1\vert_{jk} - \rmi\qm_1 \tilde{u}_{jk},
 	\end{align*}
 	from which we can deduce that $\tilde{u}_{jk}' = \tilde{v}_1\vert_{I_{jk}} - i\qm_1\tilde{u}$, and hence obtain the result for an edge parallel to the $x_1$-axis ($R_{jk}$ being the identity).
 	Then to deal with edges that are not parallel to the $x_1$-axis, we can first apply a rotation (using $R_{jk}$) to lie in a co-ordinate system with $I_{jk}$ parallel to an axis, apply the above argument, and then rotate back --- the process of which introducing the various $R_{jk}$ pre-multipliers.
@@ -231,13 +231,13 @@ Notably, the converse is claimed in \cite[Section~4]{zhikov2002homogenization} f
 	For each such $k$, to reduce the notational load denote composition with $r_{jk}$ (see assumption \ref{ass:MeasTheoryProblemSetup}) by an overhead tilde.
 	Since we have shown $u\in\gradSob{\ddom}{\lambda_{jk}}$, we conclude that 
 	\begin{align*}
-		\widetilde{\phi}_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}, 
-		&\quad \widetilde{\phi}'_l \lconv{\ltwo{\interval{I_{jk}}}{t}} \widetilde{u}',
+		\widetilde{\phi}_l \lconv{\ltwo{\interval{I_{jk}}}{x}} \widetilde{u}, 
+		&\quad \widetilde{\phi}'_l \lconv{\ltwo{\interval{I_{jk}}}{x}} \widetilde{u}',
 	\end{align*}
 	and hence $u\in\gradSob{\interval{I_{jk}}}{t}$.
 	As the embedding 
 	\begin{align*}
-		W^{1,2}\bracs{\interval{I_{jk}}, \md t} = \gradSob{\interval{I_{jk}}}{t} \ &\hookrightarrow \ C^{0,\recip{2}}\interval{I_{jk}}
+		W^{1,2}\bracs{\interval{I_{jk}}, \md x} = \gradSob{\interval{I_{jk}}}{x} \ &\hookrightarrow \ C^{0,\recip{2}}\interval{I_{jk}}
 	\end{align*}
 	is compact, we can conclude that $\phi_l$ is a Cauchy sequence in the $C^{0,\recip{2}}$-norm, and hence is also Cauchy in the uniform norm,
 	\begin{align*}

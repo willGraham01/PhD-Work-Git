@@ -1,0 +1,85 @@
+\section{Appendix: Proof of Proposition \ref{prop:MMatrixDetForm}} \label{app:ProofOfProp}
+The objective of this section is to prove proposition \ref{prop:MMatrixDetForm}, restated below for reference. \newline
+\textit{ Given a graph $\graph = \bracs{\vertSet, \edgeSet}$, with the lengths of the edges of $\graph$ pairwise-irrationally related, there exists a function $F\bracs{\qm,\omega}$ such that
+\begin{align*}
+	\det\mathfrak{M}_\qm\bracs{\omega^2} = \bracs{ \omega H^{(2)}\bracs{\omega^2} }^{\abs{\vertSet}-2} F\bracs{\qm,\omega}.
+\end{align*}
+Furthermore, $F\bracs{\qm,\omega}$ is analytic in both its arguments. } \newline
+
+Throughout this section, let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph with pairwise irrationally-related edge lengths and no loops (edges of the form $I_{jj}$), set $N=\abs{\vertSet}$, and adopt the notation of sections \ref{sec:QuantumGraphs} and \ref{ssec:MMatrixConsequences}.
+Interpret empty sums as evaluating to zero, and empty products as evaluating to one.
+For each $j\conLeft k$, let
+\begin{align*}
+	s_{jk}\bracs{\omega} = \sin\bracs{l_{jk}\omega}, \quad
+	c_{jk}\bracs{\omega} = \cos\bracs{l_{jk}\omega}, \quad
+	e_{jk}^+\bracs{\qm} = \e^{\rmi\qm_{jk}l_{jk}}, \quad
+	e_{jk}^-\bracs{\qm} = \e^{-\rmi\qm_{jk}l_{jk}},
+\end{align*}
+and given $n\in\naturals$, let $S_n$ denote the symmetric group --- that is the group whose elements are the permutations of the integers $1, ..., n$.
+In the interest of brevity, we will suppress explicit dependencies on $\omega$ and $\qm$ throughout this section.
+Additionally, for $s\in S_n$ we use the notation $s_j := s(j), \ j=1,...,n$, and write $\mathrm{sgn}(s)$ for the signature of $s$.
+Let $S_{\graph}$ denote the subset of $S_N$ defined as follows,
+\begin{align*}
+	S_{\graph} &= \clbracs{ s\in S_N \setVert j\con s_j \text{ or } j=s_j \ \forall j=1,...,N}.
+\end{align*}
+That is, an element $s\in S_\graph$ sends all integers $j$ to the index of another vertex $v_{s_j}$ that (directly) connects to $v_j$, or sends $j$ to itself.
+
+Using the Leibniz formula for the determinant, we have that
+\begin{align*}
+	\det\mathfrak{M} &= \sum_{s\in S_N} \bracs{ \mathrm{sgn}(s) \prod_{j=1}^N \mathfrak{M}_{j s_j} },
+\end{align*}
+however if $s\not\in S_\graph$, then there exists at least one $\mathfrak{M}_{j s_j}=0$, so this term contributes nothing to the sum.
+As such, we can write
+\begin{align*}
+	\det\mathfrak{M} &= \sum_{s\in S_\graph} \bracs{ \mathrm{sgn}(s) \prod_{j=1}^N \mathfrak{M}_{j s_j} }, \\
+	&= \sum_{s\in S_\graph} \bracs{ \mathrm{sgn}(s) \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \mathfrak{M}_{j s_j} \prod_{\substack{j=1,...,N, \\ j = s_j}} \mathfrak{M}_{jj} }.
+\end{align*}
+Using corollary \ref{cory:M-MatrixEntriesNoPoles}, and with $s\in S_\graph$ with $s_j = k$, we have that
+\begin{align*}
+	\mathfrak{M}_{jk} &= \omega H^{(2)} \bracs{ \sum_{j\conLeft k}e_{jk}^+ s_{jk}^{-1} + \sum_{j\conRight k}e_{kj}^- s_{kj}^{-1} }, \quad j\neq k, \\
+	\mathfrak{M}_{jj} &= -\omega H^{(2)} \bracs{ \sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j }, \quad j=k.
+\end{align*}
+For $s\in S_\graph$, define
+\begin{align*}
+	C\bracs{s} &= \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \mathfrak{M}_{j s_j} \prod_{\substack{j=1,...,N, \\ j = s_j}} \mathfrak{M}_{jj} \\
+	&= \prod_{\substack{j=1,...,N, \\ j\neq s_j}} \bracs{ \sum_{j\conLeft k}e_{jk}^+ s_{jk}^{-1} + \sum_{j\conRight k}e_{kj}^- s_{kj}^{-1} } \prod_{\substack{j=1,...,N, \\ j = s_j}} -\bracs{ \sum_{j\con l}c_{jl}s_{jl}^{-1} + \omega\alpha_j },
+\end{align*}
+so that 
+\begin{align*}
+	\det\mathfrak{M} &= \sum_{s\in S_\graph} \mathrm{sgn}(s) \bracs{ \omega H^{(2)} }^N  C(s)
+\end{align*}
+We refer to the product over $j\neq s_j$ as the ``connection product" and the product over $j=s_j$ as the ``diagonal product".
+
+The following result can be shown to hold, concerning the number of occurrences of the terms $s_{jk}$ in $C(s)$.
+\begin{lemma} \label{lem:DetFormProofLemmaLess3}
+	Suppose that $j\con k$, and that $s\in S_\graph$ with $s_j = k$.
+	Then the term $s_{jk}^{-1}$ appears a combined total of strictly less than three terms in the terms of the two products in $C(s)$.
+	Similarly, $s_{kj}^{-1}$ appears a combined total of strictly less than three times in the terms of the two products in $C(s)$.
+\end{lemma}
+\begin{proof}
+	Suppose for contradiction that $s_{jk}^{-1}$ appears a combined total of 3 times in the terms of the two products.
+	Note that $j\con k$ implies that $j\neq k$ since $\graph$ is assumed to have no loops.
+	Also note that $s_{jk}^{-1}$ can only appear in at most 2 terms in the diagonal product (when $s_j=j$ and  $s_k=k$), and likewise can only appear in at most 2 terms in the connection product (when $s_j=k$ and $s_k=j$).
+	There are two possibilities:
+	\begin{enumerate}
+		\item $s_{jk}^{-1}$ appears in 2 terms in the connection product and 1 term in the diagonal product.
+		Appearing twice in the connection product requires that $s_j=k$ and $s_k=j$.
+		But appearing in the diagonal product requires one of $s_j=j$ or $s_k=k$, which cannot happen simultaneously with $s_j=k$ and $s_k=j$ as $j\neq k$, so we have a contradiction.
+		\item $s_{jk}^{-1}$ appears in 1 term in the connection product and 2 terms in the diagonal product.
+		Appearing twice in the diagonal product requires that $s_j=j$ and $s_k=k$.
+		But appearing in the connection product requires one of $s_j=k$ or $s_k=j$, which cannot happen simultaneously with $s_j=j$ and $s_k=k$, so we have a contradiction.
+	\end{enumerate}
+	Similar reasoning holds for $s_{jk}^{-1}$.
+\end{proof}
+Lemma \ref{lem:DetFormProofLemmaLess3} demonstrates that, if one were to expand out the sums and products of $C(s)$, each term would have a factor of $s_{jk}^{0}, s_{jk}^{-1}$, or $s_{jk}^{-2}$.
+This allows us to notice that the least power of $s_{jk}$ that appears in the terms of the expression $\bracs{ \omega H^{(2)} }^2 C(s)$ is zero (and the greatest is $2$).
+Given the formulae for $C(s), H^{(2)}, s_{jk}, c_{jk}, e_{jk}^+$, and $e_{jk}^-$, we can see that the function $\bracs{\qm, \omega}\rightarrow\bracs{ \omega H^{(2)} }^2 C(s)$ is analytic in $\qm$ and $\omega$.
+Therefore, we can write
+\begin{align*}
+	\det\mathfrak{M} &= \bracs{ \omega H^{(2)} }^{N-2} \sum_{s\in S_\graph} \bracs{ \mathrm{sgn}(s) \bracs{ \omega H^{(2)} }^2 C(s) },
+\end{align*}
+and identifying
+\begin{align*}
+	F\bracs{\qm, \omega} &= \sum_{s\in S_\graph} \bracs{ \mathrm{sgn}(s) \bracs{ \omega H^{(2)} }^2 C(s) },
+\end{align*}
+proposition \ref{prop:MMatrixDetForm} is proved.
