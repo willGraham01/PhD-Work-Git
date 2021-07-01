@@ -21,6 +21,7 @@ The system of Maxwell equations are the typical starting point for describing th
 \end{subequations}
 where $E, H$ are the electric and magnetic fields respectively, $\rho_{f}$ is the free charge density, and $J_f$ the current density. 
 The parameters $\epsilon$ and $\mu$ are the electric permittivity and magnetic permeability of the material waves are propagating in, and $c$ the speed of light in vacuum.
+\tstk{can also derive this in a more general way right? Using gauges and potentials - should probably give this derivation if possible, Jackson or Cassent might have it in full}
 In the absence of external currents and charges, and under the assumption that $\epsilon$ and $\mu$ are constant, one can take the curl of \eqref{eq:E-curlEqn} (alternatively \eqref{eq:H-curlEqn}), interchange the order of the resulting time-derivative and curl-operation on the right hand side, and then substitute \eqref{eq:H-curlEqn} (respectively \eqref{eq:E-curlEqn}) the to obtain the ``curl-of-the-curl" equation
 \begin{align*}
 	- \curl{}\bracs{ \curl{} u } &= \frac{\epsilon\mu}{c^2}\pddiff{u}{t}.
@@ -46,7 +47,7 @@ The graph $\graph$ is then ``extruded" into 3 dimensions to form a domain that c
 For the singular structure above define the gradient operator $\grad_{\dddmes}$, and consider the ``spectral problem"
 \begin{subequations} \label{eq:WholeSpaceCurlCurl}
 	\begin{align} 
-		-\curl{\dddmes} \bracs{ \curl{\dddmes}u } = \omega^2 u &, \\
+		\curl{\dddmes} \bracs{ \curl{\dddmes}u } = \omega^2 u &, \\
 		u \text{ is divergence-free} &.
 	\end{align}
 \end{subequations}
@@ -54,7 +55,7 @@ Here the subscript $\dddmes$ stands for the sum of the singular measure supporte
 It is convenient to take a Fourier transform along in the $x_3$ direction, and replace \eqref{eq:WholeSpaceCurlCurl} with a family of problems on $\ddom$ parametrised by $\wavenumber$ (the Fourier variable, representing a ``wavenumber"), and $\qm$ (the ``quasi-momentum") which varies over the dual-cell of $\ddom$.
 This provides us with a family of problems involving ``$\kt$-shifted" gradients $\ktgrad_{\dddmes}$ (see \tstk{section reference},
 \begin{align} \label{eq:PeriodCellCurlCurlStrongForm}
-	- \ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom.
+	\ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom.
 \end{align}
 The link between \eqref{eq:WholeSpaceCurlCurl} and \eqref{eq:PeriodCellCurlCurlStrongForm} is established by means of a version of the so-called Gelfand transform \cite{gelfand1950expansion}
 \begin{align*}

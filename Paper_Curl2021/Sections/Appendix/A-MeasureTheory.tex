@@ -1,0 +1,107 @@
+\section{Appendix: Key Measure-Theoretic Concepts} \label{app:MeasureTheory}
+In this section we address the question of how one understands the equations \eqref{eq:WholeSpaceLaplaceEqn} and \eqref{eq:PeriodCellLaplaceStrongForm}, by introducing the relevant differential operators and function spaces.
+Attempting to pose a boundary-value problem on a singular-structure, by drawing analogy to the ``ingredients" of a boundary-value problem on a thin structure, runs into problems.
+These are due to the singular structure lacking a domain interior from the perspective of the space it is embedded in, so the notion of boundary values ceases to make sense.
+This issue is resolved by not abandoning what we believe are the ingredients of a boundary-value problem, but rather by reworking our concepts of integration and differentiation so that they respect the fact that we are looking at a problem on the singular structure itself.
+As we will be working with each of the measures $\dddmes, \ddmes$, and $\nu$ above individually before combining our knowledge of each, what we present here is stated in terms of a generic measure $\rho$.
+
+Define
+\begin{align*}
+	W^{\kt}_{\mathrm{grad}} &:= \overline{\clbracs{ \bracs{\phi, \ktgrad\phi} \setVert \phi\in\smooth{\ddom} }},
+\end{align*}
+where the closure is taken in $\ltwo{\ddom}{\rho}\times\ltwo{\ddom}{\rho}^3$, and 
+\begin{align*}
+	W^{\kt}_{\mathrm{curl}} &:= \overline{\clbracs{ \bracs{\Phi, \ktcurl{}\Phi} \setVert \Phi\in\bracs{\smooth{\ddom}}^3 }},
+\end{align*}
+where the closure is taken in $\ltwo{\ddom}{\rho}^3\times\ltwo{\ddom}{\rho}^3$.
+The idea is to construct an analogy to a Sobolev space for the measure $\rho$, and hence obtain a concept of (weak) derivative.
+However notice that if $\bracs{u,g_1}, \bracs{0, g_2}\in W^{\kt}_{\mathrm{grad}}$ then we also have that $\bracs{u, g_1+g_2}\in W^{\kt}_{\mathrm{grad}}$, so ``gradients" (in reference to the second element of a pair in $W^{\kt}_{\mathrm{grad}}$) are not unique --- both $g_1$ and $g_1+g_2$ are ``gradients" of $u$.
+A similar result holds for the elements of $W^{\kt}_{\mathrm{curl}}$.
+As such, we define the set of ``$\rho$ gradients of zero" as
+\begin{align*}
+	\gradZero{\ddom}{\rho} &= \clbracs{ g\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,g}\in W^{\kt}_\mathrm{grad}}, \\
+	&= \clbracs{ g\in\ltwo{\ddom}{\rho}^3 \setVert \exists\phi_n\in\smooth{\ddom} \text{ s.t. } \phi_n \lconv{\ltwo{\ddom}{\rho}}0, \ktgrad\phi_n\lconv{\ltwo{\ddom}{\rho}^3} g }, \labelthis\label{eq:GradZeroSequenceDef}
+\end{align*}
+and analogously define the set of ``$\rho$ curls of zero" as
+\begin{align*}
+	\curlZero{\ddom}{\rho} &= \clbracs{ c\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,c}\in W^{\kt}_\mathrm{curl}}, \\
+	&= \clbracs{ c\in\ltwo{\ddom}{\rho}^3 \setVert \exists\Phi^n\in\smooth{\ddom}^3 \text{ s.t. } \Phi^n\lconv{\ltwo{\ddom}{\rho}^3}0, \ \ktcurl{}\Phi\lconv{\ltwo{\ddom}{\rho}^3} c}. \labelthis\label{eq:CurlZeroSequenceDef}
+\end{align*}
+The sets $\gradZero{\ddom}{\rho}$ and $\curlZero{\ddom}{\rho}$ do not depend on $\kt$, as the following proposition demonstrates.
+
+\begin{prop} \label{prop:ZeroInvariantUnderQM-Wavenumber}
+	Fix $\wavenumber$ and a quasi-momentum $\qm$, and let
+	\begin{align*}
+		\gradZero{\ddom}{\rho}^{\kt} &:= \clbracs{ g\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,g}\in W^{\kt}_\mathrm{grad} }, \\
+		\gradZero{\ddom}{\rho} &:= \clbracs{ g\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,g}\in W^{\bracs{0, 0}}_\mathrm{grad} }, \\
+		\curlZero{\ddom}{\rho}^{\kt} &:= \clbracs{ c\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,c}\in W^{\kt}_\mathrm{curl} }, \\
+		\curlZero{\ddom}{\rho} &:= \clbracs{ g\in \ltwo{\ddom}{\rho}^3 \setVert \bracs{0,g}\in W^{\bracs{0, 0}}_\mathrm{curl} }.
+	\end{align*}
+	Then the following sets are equal:
+	\begin{align*}
+		\gradZero{\ddom}{\rho}^{\kt} &= \gradZero{\ddom}{\rho}, \\
+		\curlZero{\ddom}{\rho}^{\kt} &= \curlZero{\ddom}{\rho}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	This is seen by observing that for $\phi\in\smooth{\ddom}$ and $\Phi\in\smooth{\ddom}^3$,
+	\begin{align*}
+		\grad^{\kt}\phi &= \grad^{\bracs{0, 0}}\phi + \rmi\wavenumber\begin{pmatrix} 0 \\ 0 \\ \phi \end{pmatrix} + \rmi\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix}\phi, \\
+		\grad^{\kt}\wedge\Phi &= \grad^{\bracs{0, 0}}\wedge\Phi + \rmi\wavenumber\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}\wedge\Phi + \rmi\begin{pmatrix} \qm_1 \\ \qm_2 \\ 0 \end{pmatrix} \wedge \Phi.
+	\end{align*}
+	Thus, if $g\in \gradZero{\ddom}{\rho}^{\kt}$ there exists a sequence $\phi_n\in\smooth{\ddom}$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\rho}} 0, &\quad \ktgrad\phi_n \lconv{ \ltwo{\ddom}{\rho}^3 } g,
+	\end{align*}
+	(as in \eqref{eq:GradZeroSequenceDef}).
+	But $\rmi\bracs{\qm_1, \qm_2, 0}^{\top}\phi_n\rightarrow 0$, as does $\rmi\wavenumber\phi_n$.
+	Given the formulae above, we must also have that $\grad^{\bracs{0, 0}}\phi_n\rightarrow g$, so $g\in \gradZero{\ddom}{\rho}^{\bracs{0, 0}}$.
+	The reverse implication, and the proof for $\rho$-curls of zero, is similar.
+\end{proof}
+
+Clearly $\gradZero{\ddom}{\rho}$ is a closed, linear subspace of $\ltwo{\ddom}{\rho}^3$ and thus we can decompose 
+\begin{align*}
+	\ltwo{\ddom}{\rho}^3 = \gradZero{\ddom}{\rho}^{\perp} \oplus \gradZero{\ddom}{\rho}.
+\end{align*}
+Now suppose that we have $\bracs{u,g_1}, \bracs{u,g_2}\in W^{\kt}_{\mathrm{grad}}$ with $g_1, g_2\in\gradZero{\ddom}{\rho}^\perp$.
+This implies there exist smooth functions $\phi_n, \psi_n$ such that
+\begin{align*}
+	\phi_n \lconv{\ltwo{\ddom}{\rho}} u, &\quad \psi_n \lconv{\ltwo{\ddom}{\rho}} u, \\
+	\ktgrad\phi_n \lconv{\ltwo{\ddom}{\rho}^3} g_1, &\quad \ktgrad\psi_n \lconv{\ltwo{\ddom}{\rho}^3} g_2.
+\end{align*}
+Since $g_1, g_2\in \gradZero{\ddom}{\rho}^{\perp}$, we have that $g_1-g_2\in \gradZero{\ddom}{\rho}^{\perp}$ too.
+However, 
+\begin{align*}
+	\phi_n - \psi_n \lconv{\ltwo{\ddom}{\rho}} 0, &\quad \ktgrad\bracs{\phi_n-\psi_n} \lconv{\ltwo{\ddom}{\rho}^3} g_1 - g_2,
+\end{align*}
+so $g_1 - g_2\in \gradZero{\ddom}{\rho}$ too --- therefore we must have that $g_1=g_2$.
+With this in mind, we see that each $u$ possesses a unique gradient \emph{that is orthogonal to} $\gradZero{\ddom}{\rho}$.
+This allows construction of the ``Sobolev space" of gradients with respect to the measure $\rho$,
+\begin{align*}
+	\ktgradSob{\ddom}{\rho} &= \clbracs{ \bracs{u, \ktgrad_{\rho}u}\in W^{\kt}_{\mathrm{grad}} \setVert \ktgrad_{\rho}u \perp \gradZero{\ddom}{\rho} },
+\end{align*}
+where we call the member $\ktgrad_{\rho}u$ of the pair $\bracs{u, \ktgrad_{\rho}u}$ the $\kt$-tangential gradient of $u$ with respect to $\rho$.
+It is enough to specify the first member $u$ of the pair $\bracs{u, \ktgrad_{\rho}u}$ due to the uniqueness of $\kt$-tangential gradients, so we will often write $u\in\ktgradSob{\ddom}{\rho}$ as shorthand.
+We can also perform analogous steps for $\curlZero{\ddom}{\rho}$, which allows us to define the ``Sobolev space" of curls with respect to the measure $\rho$ as
+\begin{align*}
+	\ktcurlSob{\ddom}{\rho} &= \clbracs{ \bracs{u, \ktcurl{\rho}u}\in W^{\kt}_{\mathrm{curl}} \setVert \ktcurl{\rho}u \perp \curlZero{\ddom}{\rho} },
+\end{align*}
+since each $u$ has a unique $\ktcurl{\rho}u$ that is orthogonal to $\curlZero{\ddom}{\rho}$.
+Again, we will often use $u\in\ktcurlSob{\ddom}{\rho}$ to refer to the element $\bracs{u, \ktcurl{\rho}u}\in\ktcurlSob{\ddom}{\rho}$.
+Having obtained a notion of ($\kt$-) curl and gradient for the measure $\rho$, we can assign a meaning to the term ``divergence-free".
+We say a function $u\in\ltwo{\ddom}{\rho}^3$ is $\kt$-divergence free if 
+\begin{align*}
+	0 &= \integral{\ddom}{ u\cdot\overline{g} }{\rho}, \qquad\forall \bracs{v,g}\in W^{\kt}_{\mathrm{grad}}.
+\end{align*}
+That is, $u$ is $\kt$-divergence free if $u$ is orthogonal to all $\kt$-gradients.
+
+Given the definitions of $\ktcurl{\rho}u$, we can now state precisely what is meant by a solution to an equation such as 
+\begin{align} \label{eq:GeneralCurlCurlStrongForm}
+	\ktcurl{\rho} \bracs{ \ktcurl{\rho} u } = \omega^2 u.
+\end{align}
+The statement ``a function $u\in\ktcurlSob{\ddom}{\rho}$ is a solution to the equation \eqref{eq:GeneralCurlCurlStrongForm}" is interpreted as meaning $u\in\ktcurlSob{\ddom}{\rho}$ satisfies
+\begin{align*}
+	\integral{\ddom}{ \ktcurl{\rho}u \cdot \overline{\ktcurl{\rho}\Phi} }{\rho} &= \omega^2\integral{\ddom}{ u\cdot\overline{\Phi}}{\rho}, \quad\forall\Phi\in\smooth{\ddom}^3.
+\end{align*}
+To understand how to move from equations such as \eqref{eq:PeriodCellCurlCurlStrongForm} to the formulation \eqref{eq:QGFullSystem}, we must understand the properties of the functions, their gradients, and curls with respect to the measure $\rho$.
+This is the focus of appendices \tstk{refs!}, where we concern ourselves with the measures $\ddmes, \nu$, and $\dddmes$.

@@ -51,9 +51,10 @@ As a result, we introduce the quasi-momentum
 \end{align*}
 define the ``shifted" gradient operator $\ktgrad$ on smooth functions $\phi\in\smooth{\ddom}$ by
 \begin{align*}
-	\ktgrad\phi &= \begin{pmatrix} \partial_1\phi + \rmi\qm_1\phi \\ \partial_2\phi + \rmi\qm_2\phi \\ \rmi\wavenumber\phi \end{pmatrix}.
+	\ktgrad\phi &= \begin{pmatrix} \partial_1\phi + \rmi\qm_1\phi \\ \partial_2\phi + \rmi\qm_2\phi \\ \rmi\wavenumber\phi \end{pmatrix},
 \end{align*}
-Note that this is an operator on functions of two variables $\phi\bracs{x_1,x_2}\in\smooth{\ddom}$, since the Fourier transform removes the dependence on the variable $x_3$.
-This is the reason why \eqref{eq:PeriodCellCurlCurlStrongForm} is posed on the period cell of an embedded graph, rather than on the ``extrusion" of the period graph.
-
-
+and the ``shifted" curl operator $\ktcurl{}$ which acts on smooth functions $\Phi=\bracs{\phi_1, \phi_2, \phi_3}^{\top}\in\smooth{\ddom}^3$ as
+\begin{align*}
+	\ktcurl{}\Phi &= \begin{pmatrix} \bracs{\partial_2 + \rmi\qm_2}\phi_3 - i\wavenumber\phi_2 \\ i\wavenumber\phi_1 - \bracs{\partial_1 + \rmi\qm_1}\phi_3 \\ \bracs{\partial_1 + \rmi\qm_1}\phi_2 - \bracs{\partial_2 + \rmi\qm_2}\phi_1 \end{pmatrix}.
+\end{align*}
+Note that $\phi$ and $\Phi$ are functions of two variables $\bracs{x_1,x_2}\in\ddom$ --- a Fourier transform removes the dependence on the variable $x_3$, allowing us to work on an embedded graph in the $\bracs{x_1,x_2}$-plane rather than on planes in 3 dimensions corresponding to the ``extrusion" of the graph.
