@@ -241,12 +241,196 @@ Of course, we can now determine what the set $\curlZero{\ddom}{\lambda_I}$ looks
 	This is another rotation argument applied to the result of proposition \ref{prop:CurlZeroSegment}, in the same vein as that of corollary \ref{cory:3DGradSegmentRotated} to proposition \ref{prop:3DGradZeroSegment} and corollary \ref{cory:3DTangGradRotated} to proposition \ref{prop:3DTangGradSegment}.
 \end{proof}
 
-At this point it is helpful to provide a geometric interpretation of $\ddmes$-curls of zero (and consequently, the tangential curls).
-The conventional interpretation of the curl 
-\begin{figure}[h!]
+At this point it can be helpful to provide a geometric interpretation of $\ddmes$-curls of zero (and consequently, the tangential curls).
+The conventional interpretation of the curl $c$ of a vector field $u$ is that $c(x)$ is the axis of rotation that an (infinitesimally small) spherical body would undergo if placed in the field $u$ at position $x$.
+Next recall that (the edges of a) graph $\graph$ induce a set of planes when extruded into the $x_3$ direction, and the operator $\kgrad$ is the result of applying a Fourier transform in $x_3$.
+As such, the ``view" of the measure $\ddmes$ is limited to these planes (through the Fourier transform in $x_3$, plus being the singular measure on edges of the graph).
+Now consider what the rotation of a spherical body would look like from the perspective of $\ddmes$ --- place the centre of the sphere at a position $x$ in one of these planes, and mark a point $p$ on the intersection between the surface of the sphere and the plane. 
+If $c(x)$ is normal to the plane induced by an edge, the measure will see the point $p$ tracing out a (closed, connected) path in the plane, and thus is able to determine that the field $u$ is undergoing a change.
+However if $c(x)$ is tangent to the plane, the path of the point $p$ under this rotation leaves the plane (only returning to the plane at two disconnected points) and the measure $\ddmes$ is unable to follow it, so determines that the field $u$ isn't changing.
+One can also envision this in terms of the area of the region that the path of $p$ encloses, illustrated in figure \ref{fig:Diagram_CurlZeroPlane}.
+\begin{figure}[b!]
 	\centering
 	\includegraphics[scale=1.0]{Diagram_CurlZeroPlane.pdf}
-	\caption{\label{fig:Diagram_CurlZeroPlane}}
+	\caption{\label{fig:Diagram_CurlZeroPlane} An illustration of how one interprets $\ddmes$-curls. When the curl $c$ is normal to the plane, rotations enclose regions of non-zero $\ddmes$ area, and changes can be ``seen". By contrast, when $c$ is tangent to the plane, rotations enclose regions of zero $\ddmes$ area, and thus are curls of zero.}
 \end{figure}
+For the path of $p$ under the rotation about $c(x)$ to project into a region of non-zero ($\ddmes$) measure, $c(x)$ cannot lie entirely tangent to the plane.
+So similarly to how the measure $\ddmes$ cannot see changes in functions across the edges of $\graph$, which gives rise to the gradients of zero being normal to each edge, $\ddmes$ cannot see rotations taking points ``outside" the planes and thus these form the set of curls of zero.
+
+Naturally, the behaviour of curls of zero on $\graph$ can be characterised by the behaviour on the individual edges, as was the case with gradients.
+\begin{theorem} \label{thm:CurlZeroCharacterisation}
+	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$, and $\ddmes$ the singular measure supported on $\graph$.
+	Assume convention \ref{ass:MeasTheoryProblemSetup}.
+	Then
+	\begin{align*}
+		\curlZero{\ddom}{\ddmes} &= 
+		\clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\in\curlZero{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet }
+	\end{align*}
+\end{theorem}
+For ease we set $B = \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\in\curlZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet }$ in what follows.
+Also, given corollary \ref{cory:CurlZeroRotated}, we can write $B$ as
+\begin{align*}
+	B &= \clbracs{ \bracs{c_1, c_2, c_3}^\top\in\ltwo{\ddom}{\ddmes}^3 \setVert \bracs{c_1(x), c_2(x)}^\top n_{jk}=0, \ \forall x\in I_{jk}, \ \forall I_{jk}\in\edgeSet } \\
+	&= \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\vert_{I_{jk}} = \begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ c_2 \\ c_3 \end{pmatrix}, \ c_2, c_3\in\ltwo{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet }.
+\end{align*}
+The method of proof proceeds in much the same way as for gradients of zero, in proving proposition \ref{prop:3DGradZeroCharacterisation} --- the inclusion $\curlZero{\ddom}{\ddmes}\subset B$ is immediate from a simple observation of the norms.
+The reverse inclusion requires us to select an approximating sequence for an element of $B$ and use smooth cut-off functions to produce a sequence which is converging in $\ltwo{\ddom}{\ddmes}$.
+We break the proof of theorem \ref{thm:CurlZeroCharacterisation} into smaller results \tstk{which should bear similarity to the gradients of zero case!}, and assume the hypothesis of the theorem throughout.
+
+We first prove the easier of the two inclusions.
+\begin{lemma} \label{lem:CurlZeroInB}
+	\begin{align*}
+		\curlZero{\ddom}{\ddmes}\subset B.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $c\in\curlZero{\ddom}{\ddmes}$, and take an approximating sequence $\Phi^n$.
+	Since $\norm{ \cdot }_{\ltwo{\ddom}{\lambda_{jk}}^3} \leq \norm{ \cdot }_{\ltwo{\ddom}{\ddmes}^3}$ for every $I_{jk}\in\edgeSet$, we have that
+	\begin{align*}
+		\norm{ \Phi^n }_{\ltwo{\ddom}{\lambda_{jk}}^3} &\leq \norm{ \Phi^n }_{\ltwo{\ddom}{\ddmes}^3} \rightarrow 0, \\
+		\norm{ \grad^{(0)}\wedge\Phi^n - c }_{\ltwo{\ddom}{\lambda_{jk}}^3} & \leq \norm{ \grad^{(0)}\wedge\Phi^n - c }_{\ltwo{\ddom}{\ddmes}^3} \rightarrow 0,
+	\end{align*}
+	and so $c\in B$.
+\end{proof}
+
+Next, we derive an ``extension lemma" for curls of zero, similarly to how such a result was also derived for gradients of zero.
+\tstk{actually, we should state the stronger conclusion here that these functions will also be in $\dddmes$ spaces too when extended by zero the the vertices.}
+\begin{lemma}[Extension lemma for $\curlZero{\ddom}{\lambda_{jk}}$] \label{lem:CurlZeroExtensionLemma}
+	Fix $n\in\naturals$, $I_{jk}\in\edgeSet$, and let 
+	\begin{align*}
+		I_{jk}^n &= \clbracs{x\in I_{jk} \setVert \mathrm{dist}\bracs{x, \partial_I} \leq \recip{n}}.
+	\end{align*}
+	Suppose that $c\in\curlZero{\ddom}{\lambda_{jk}}$ with $c=0$ on $I_{jk}\setminus I_{jk}^n$.
+	Then
+	\begin{align*}
+		c\in\curlZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $\Phi^l$ be an approximating sequence for $c$ as in \eqref{eq:CurlZeroSequenceDef}.
+	Take $\chi_{jk}^n\in\smooth{\ddom}$ to be a smooth function with the properties
+	\begin{align*}
+		\chi_{jk}^n(x) &\in\sqbracs{0,1}, \\
+		\chi_{jk}^n(x) = 1 \ &\text{whenever} \ \mathrm{dist}\bracs{x, I_{jk}^n} \leq \recip{3n}, \\
+		\chi_{jk}^n(x) = 0 \ &\text{whenever} \ \mathrm{dist}\bracs{x, I_{jk}^n} \geq \frac{2}{3n}.
+	\end{align*}
+	This function is illustrated in figure \ref{fig:Diagram_ChiFunctionI-n}, and we have that $\chi_{jk}^n\rightarrow \charFunc{I_{jk}}$ in $\ltwo{\ddom}{\ddmes}$, and that $\abs{\grad\chi_{jk}^n}\leq cn$ for some constant $c$ independent of $n$.
+	\begin{figure}[t]
+		\centering
+		\includegraphics[scale=1.0]{Diagram_ChiFunctionI-n.pdf}
+		\caption{\label{fig:Diagram_ChiFunctionI-n} The function $\chi_{jk}^n$ in the proximity of the edge $I_{jk}$. If another edge lies in the support of $\chi_{jk}^n$, we can apply a scaling to produce a similar function whose support does not intersect any edges other than $I_{jk}$.}
+	\end{figure}
+	Now consider the sequence $\Psi^l := \chi_{jk}^n \Phi^l$, by construction we have that
+	\begin{align*}
+		\integral{\ddom}{ \abs{\Psi^l}^2 }{\ddmes} \leq \integral{I_{jk}}{ \abs{\Phi^l}^2 }{\lambda_{jk}} \rightarrow 0 \toInfty{l}.
+	\end{align*}
+	Since the following identity holds,
+	\begin{align*}
+		\grad^{(0)}\wedge\Psi^l &= \grad^{(0)}\chi_{jk}^n\wedge\Phi^l + \chi_{jk}^n\grad^{(0)}\wedge\Phi^l,
+	\end{align*}
+	we can deduce
+	\begin{align*}
+		\integral{\ddom}{ \abs{ \grad^{(0)}\wedge\Psi^l - c }^2 }{\ddmes}
+		&\leq 2\integral{I_{jk}}{ \abs{ \chi_{jk}^n\grad^{(0)}\wedge\Phi^l - c }^2 }{\lambda_{jk}}
+		+ 2\sup\abs{\grad^{(0)}\chi_{jk}^n}^2 \integral{I_{jk}}{ \abs{ \Phi^l }^2 }{\lambda_{jk}} \\
+		&\leq2\integral{I_{jk}}{ \abs{ \grad^{(0)}\wedge\Phi^l - c }^2 }{\lambda_{jk}}
+		+ 2(cn)^2 \integral{I_{jk}}{ \abs{ \Phi^l }^2 }{\lambda_{jk}} \\
+		&\rightarrow 0+0 = 0 \toInfty{l}.
+	\end{align*}
+	The sequence $\Psi^l$ now serves as the required approximating sequence, giving us that $c\in\curlZero{\ddom}{\ddmes}$.
+\end{proof}
+\tstk{again, mention here that we've actually proved that $c\in\curlZero{\ddom}{\dddmes}$ since $\Psi^l=0$ and $\grad^{(0)}\wedge\Psi^l=0$ at any vertices.}
+
+This extension lemma \ref{lem:CurlZeroExtensionLemma} now allows us to demonstrate the inclusion $B\subset\curlZero{\ddom}{\ddmes}$.
+\begin{lemma} \label{lem:BInCurlZero}
+	\begin{align*}
+		B \subset \curlZero{\ddom}{\ddmes}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	First let $\eta\in\smooth{\ddom}$ be such that
+	\begin{align*}
+		\eta(x) &\in\sqbracs{0,1}, \\
+		\eta(x) = 0 \ &\text{whenever } \abs{x} \leq 1, \\
+		\eta(x) = 1 \ &\text{whenever } \abs{x} \geq 2,
+	\end{align*}
+	and for each $v_j\in\vertSet$ and $n\in\naturals$ set
+	\begin{align*}
+		\eta_j(x) = \eta\bracs{x - v_j} &\qquad \eta_j^n(x) = \eta_j\bracs{nx}.
+	\end{align*}
+	It can be seen that $\eta_j^n\rightarrow 1$ in $\ltwo{\ddom}{\ddmes}$ since
+	\begin{align*}
+		\integral{\ddom}{ \abs{\eta_j^n - 1}^2 }{\ddmes} 
+		&\leq \integral{ B_{\recip{2}{n}}(v_j)}{ }{\ddmes} \leq \frac{4\abs{\edgeSet}}{n} \rightarrow 0.
+	\end{align*}
+	Take $c\in B$, and define a family of functions $c_n$ by
+	\begin{align*}
+		c_n &= \sum_{v_j\in\vertSet}\sum_{j\conLeft k} \eta_j^n \eta_k^n c_{jk}.
+	\end{align*}
+	For each $n\in\naturals$ and $j\conLeft k$, the function $\eta_j^n \eta_k^n c_{jk}$ satisfies the hypothesis of the extension lemma \ref{lem:CurlZeroExtensionLemma}, and so is an element of $\curlZero{\ddom}{\ddmes}$.
+	As $\curlZero{\ddom}{\ddmes}$ is a linear subspace, $c_n\in\curlZero{\ddom}{\ddmes}$ for every $n\in\naturals$.
+	Since $\eta_j^n\rightarrow 1$ in $\ltwo{\ddom}{\ddmes}$, we conclude that $c_n\rightarrow c$ in $\ltwo{\ddom}{\ddmes}^3$, and since $\curlZero{\ddom}{\ddmes}$ is closed, we have that $c\in\curlZero{\ddom}{\ddmes}$.
+\end{proof}
+Lemmas \ref{lem:CurlZeroInB}, \ref{lem:CurlZeroExtensionLemma}, and \ref{lem:BInCurlZero} then form the proof of theorem \ref{thm:CurlZeroCharacterisation}.
 
 \subsection{Tangential $\kt$-Curls with respect to $\ddmes$} \label{apps:TangentialCurls}
+With curls of zero now understood, we look to understand $\kt$-tangential curls with respect to $\ddmes$ in much the same way as we did with tangential gradients --- with theorem \ref{thm:CurlZeroCharacterisation} allowing us to obtain an edge-wise characterisation.
+As usual, we begin by studying tangential curls on a segment aligned to the $x_2$-axis.
+
+\begin{prop} \label{prop:TangCurlsSegment}
+	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
+	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space of functions on $\interval{I}$ with respect to the Lebesgue measure.
+	Suppose that $u=\bracs{u_1, u_2, u_3}^\top\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u}_j = u_j \circ r_I$ for $j\in\clbracs{1,2,3}$.
+	Then $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ and
+	\begin{align*}
+		\ktcurl{\lambda_I} u &= 
+		\begin{pmatrix} u_3' + \rmi\qm_2 u_3 - \rmi\wavenumber u_2 \\ 0 \\ 0 \end{pmatrix},
+	\end{align*}
+	where $u_3'(x) = \bracs{\widetilde{u}'_3\circ r_I^{-1}}(x)$.
+\end{prop}
+\begin{proof}
+	Write $\ktcurl{\lambda_I}u = \bracs{v_1, v_2, v_3}^\top$.
+	As we know that $\ktcurl{\lambda_I}u \perp \curlZero{\ddom}{\lambda_I}$, given theorem \ref{thm:CurlZeroCharacterisation} we conclude that $v_2 = v_3 = 0$.
+	Now take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi^n_2, \phi^n_3}^\top$ for $u$, so we have that
+	\begin{align*}
+		\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } u, \qquad \ktcurl{}\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } \bracs{v_1, v_2, v_3}^\top.
+	\end{align*}
+	Using an overhead tilde to denote composition with $r_I$, we notice that in particular,
+	\begin{align*}
+		\int_0^{\abs{I}} \abs{\widetilde{\phi}^n_j - \widetilde{u}_j}^2 \ \md t
+		&= \integral{\ddom}{ \abs{\phi^n_j - u_j}^2 }{\lambda_I} 
+		\rightarrow 0, \\
+		\int_0^{\abs{I}} \abs{ \bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 - \widetilde{v}_1 }^2 \ \md t
+		&= \integral{\ddom}{ \abs{ \partial_2\phi^n_3 + \rmi\qm_2\phi^n_3 - \rmi\wavenumber\phi^n_2 - v_1 }^2 }{\lambda_I}
+		\rightarrow 0,
+	\end{align*}
+	for $j\in\clbracs{2,3}$.
+	This provides us with the following convergences in $\ltwo{\interval{I}}{t}$;
+	\begin{align*}
+		\widetilde{\phi}^l_2 \rightarrow \widetilde{u}_2, \quad
+		\widetilde{\phi}^l_3 \rightarrow \widetilde{u}_3, \quad
+		\bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 \rightarrow \widetilde{v}_1.
+	\end{align*}
+	By the algebra of limits we have that
+	\begin{align*}
+		\bracs{\widetilde{\phi}^n_3}' \rightarrow -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1,
+	\end{align*}
+	in $\ltwo{\interval{I}}{t}$ and thus $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ with $\widetilde{u}_3' = -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1$.
+	Rearranging and undoing the change of variables $r_I$ then gives the desired result.
+\end{proof}
+
+As we expect from our interpretation of the $\ddmes$-curl (see section \ref{apps:CurlsOfZero}), the $\kt$-tangential curl is directed normal to the segment $I$.
+We can derive the form of the tangential curl on an edge at an arbitrary angle to the segment simply by applying a rotation to the result of proposition \ref{prop:TangCurlsSegment}.
+\begin{cory} \label{cory:TangCurlRotated}
+	\tstk{need to check the form of this! Seems REALLY cumbersome in the way it's currently written... there's got to be a better way! Also, check the quasi-momentum formula on the edge, seems interesting...}
+\end{cory}
+
+\begin{theorem} \label{thm:TangCurlGraph}
+	\tstk{adopt notation of the above once worked through.}
+\end{theorem}
+
+Now we give the theorem on continuity of the 3rd component because it lines in the gradient Sob-space, and this wraps up this section quite nicely.
+
+\subsection{The Divergence-Free Condition} \label{apps:DivFreeEdge}
+Having established the behaviour of (the curl of) functions $u\in\ktcurlSob{\ddom}{\ddmes}$, and knowing what $\kt$-gradients with respect to $\ddmes$ look like through proposition \ref{prop:3DGradZeroCharacterisation} and corollary \ref{cory:3DTangGradGraph}, we can examine what it means for a vector field to be divergence free.
+Again, we begin with an examination of the divergence-free condition on an individual edge, and build up to the study of this condition on the whole graph.

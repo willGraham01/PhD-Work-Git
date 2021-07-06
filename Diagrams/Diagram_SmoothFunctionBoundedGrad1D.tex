@@ -1,0 +1,43 @@
+\documentclass[crop, tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+	%define variables in case we want some scale changes...
+	\def\maxX{1.5}
+	\def\suppW{3.0}
+	\def\maxY{1.0}
+
+	%axes and labels
+	\draw[->, thick] (-\suppW-1,0) -- (\suppW+1,0) node[anchor=west] {$x\cdot g$};
+	\draw[->, thick] (0,-1.75*\maxY) -- (0,1.75*\maxY) node[anchor=south] {$\phi_n(x)$};
+
+	%define plot coordinates to draw "smooth" function
+	\coordinate (suppLeftEnd) at (-\suppW,0);
+	\coordinate (suppRightEnd) at (\suppW,0);
+	\coordinate (origin) at (0,0);
+	\coordinate (leftMax) at (-\maxX,-\maxY);
+	\coordinate (rightMax) at (\maxX,\maxY);
+
+	\draw plot [smooth, tension=0.5] coordinates {(suppLeftEnd) (-2.5,-0.1) (leftMax) (origin) (rightMax) (2.5,0.1) (suppRightEnd)};
+
+	%annotations
+	\draw[dashed, black!45!white] (leftMax) -- (0,-\maxY) node[anchor=west, color=black] {$\frac{1}{n}$};
+	\draw[dashed, black!45!white] (rightMax) -- (0,\maxY) node[anchor=east, color=black] {$\frac{1}{n}$};
+
+	\draw[<->, black!75!white] (0,0.1*\maxY) -- (-\maxX, 0.1*\maxY);
+	\draw[<->, black!75!white] (-\suppW, 0.1*\maxY) -- (-\maxX, 0.1*\maxY);
+	\node[anchor=south] at (-0.5*\suppW-0.5*\maxX, 0.1*\maxY) {$\frac{1}{n}$};
+	\node[anchor=south] at (-0.5*\maxX, 0.1*\maxY) {$\frac{1}{n}$};
+
+\end{tikzpicture}
+
+\end{document}
