@@ -1,0 +1,123 @@
+\section{Appendix: Sobolev spaces associated with the measure $\nu$} \label{app:3DVertexAnalysis}
+Our analysis of the various Sobolev spaces associated to the measure $\ddmes$ and $\ktgrad$ operator in the previous section (\ref{app:3DMuAnalysis}) has provided us with an understanding of how our ``Sobolev functions" behave on the edges of a graph.
+However, the effect of introducing coupling constants $\alpha_j$ to the vertices in $\graph$ is not captured by $\ddmes$, but rather by the ``vertex part" $\nu$ of our measure $\dddmes$ and the Sobolev spaces associated with it.
+Throughout this section we have a graph $\graph=\bracs{\vertSet, \edgeSet}$ with coupling constants $\alpha_j\neq0$ for all $v_j$ --- allowing some (or all) of the $\alpha_j=0$ does not have any major impact on the analysis which follows, with the net affect being that the vertices with zero coupling constant are ignored.
+\tstk{from scalar case, we already understand gradients of zero, so it remains for us to understand curls of zero on a vertex, and the divergence free condition...}
+
+\subsection{Analysis of $\kt$-Gradients with respect to $\nu$} \label{apps:3DVertexGrads}
+Given \tstk{scalar paper, grads of zero wrt $\nu$ analysis}, we can infer a lot about $\kt$-gradients of zero with respect to $\nu$ and the Sobolev space $\ktgradSob{\ddom}{\nu}$.
+Unsurprisingly, gradients of zero with respect to $\nu$ encompass almost the entirety of $\ltwo{\ddom}{\nu}^3$.
+\begin{cory} \label{cory:3DGradZeroVertex}
+	\begin{align*}
+		\gradZero{\ddom}{\nu} &= \clbracs{ \bracs{g_1, g_2, 0}^\top \setVert g_1, g_2\in\ltwo{\ddom}{\nu}}.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	This is a direct consequence of \tstk{Scalar paper, Proposition D.2}, and observing the fact that $\bracs{0,0,g_3}^\top\in\gradZero{\ddom}{\nu}$ if and only if $g_3=0$.
+\end{proof}
+
+As a consequence, the form of $\kt$-tangential gradients are easily deduced.
+\begin{cory} \label{cory:3DTangGradVertex}
+	\begin{align*}
+		\ktgradSob{\ddom}{\nu} &=
+		 \clbracs{ \bracs{ u, \bracs{0,0, i\wavenumber u}^\top} \setVert u\in\ltwo{\ddom}{\nu} }.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	($\subset$) Suppose $u\in\ktgradSob{\ddom}{\nu}$ with $\ktgrad_{\nu}u=\bracs{v_1,v_2,v_3}^\top$, and let $\phi_n$ be a usual approximating sequence for $u$.
+	The requirement $\ktgrad_{\nu}u \perp \gradZero{\ddom}{\nu}$ implies that $v_1 = v_2 = 0$.
+	Since $\phi_n\lconv{\ltwo{\ddom}{\nu}}u$ we have that $i\wavenumber\phi_n\lconv{\ltwo{\ddom}{\nu}} \rmi\wavenumber u$, but $\ktgrad\phi_n\lconv{\ltwo{\ddom}{\nu}^3}\ktgrad_{\nu}u$ so $\rmi\wavenumber\phi_n\lconv{\ltwo{\ddom}{\nu}} v_3$ too.
+	Thus, $v_3 = \rmi\wavenumber u$, and the implication is shown.
+
+	($\supset$) If $u\in\ltwo{\ddom}{\nu}$, for each $v_j\in\vertSet$ let $\psi_j$ denote the smooth ``bump" function centred on $v_j$ with
+	\begin{align*}
+		\psi_j\bracs{v_j} = 1, \quad
+		\supp\bracs{\psi_j} \subset B_d\bracs{v_j},
+	\end{align*}
+	where $d=\min_{\edgeSet}\abs{I_{jk}}$.
+	Setting $\phi(x) = \sum_{v_j\in\vertSet}u\bracs{v_j}\psi_j\bracs{x}$, we have that $\phi=u$ in $\ltwo{\ddom}{\nu}$ so $\bracs{u,\ktgrad\phi}\in W^{\kt}_{\mathrm{grad}}$.
+	Therefore, there exists some $g\in\gradZero{\ddom}{\nu}^{\perp}$ such that $\bracs{u,g}\in\ktgradSob{\ddom}{\nu}$, however from the first implication we can then conclude that $g = \bracs{0,0, i\wavenumber u}^\top$.
+\end{proof}
+Note that the result of corollary \ref{cory:3DTangGradVertex} essentially informs us that the $\kt$-tangential gradient with respect to $\nu$ is zero --- the third component of the ``gradient" vector is just a repetition of the function itself.
+
+\subsection{Analysis of $\kt$-Curls with respect to $\nu$} \label{apps:VertexCurls}
+As one might expect upon learning that $\kt$-tangential gradients with respect to $\nu$ are essentially zero, studying $\kt$-curls of zero will lead us to the conclusion that there are no non-zero $\kt$-tangential curls with respect to the measure $\nu$.
+Given the interpretation of the curl in section \ref{apps:CurlsOfZero}, and since the measure $\nu$ can only ``see" the vertices $v_j$ (or strictly speaking, the lines extruding into the $x_3$ direction from the vertices), there is no axis about which a rotation will lie entirely ``within" an extruded edge.
+As such, all curls must be curls of zero, because they cannot be distinguished by $\nu$.
+We formalise this understanding with the following results, where we argue in similar fashion to corollaries \ref{cory:3DGradZeroVertex} and \ref{cory:3DTangGradVertex}.
+
+\begin{prop} \label{prop:VertexCurlZero}
+	\begin{align*}
+		\curlZero{\ddom}{\nu} &= \ltwo{\ddom}{\nu}^3.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	For each $j\in\vertSet$ and $k\in\clbracs{1,2,3}$, let $c^k_1\in\ltwo{\ddom}{\nu}^3$ be the function
+	\begin{align*}
+		c^j_k\bracs{x} &= \begin{cases} e_k & x=v_j, \\ 0 & x\neq v_j, \end{cases}
+	\end{align*}
+	where $e_k$ is the $k$\textsuperscript{th} canonical unit vector in $\complex^3$.
+	Note that the collection $\mathcal{B} = \clbracs{c^j_k \ \setVert v_j\in\vertSet, k\in\clbracs{1,2,3}}$ is a basis for $\ltwo{\ddom}{\nu}^3$, so it is sufficient to show that $\mathcal{B}\subset\curlZero{\ddom}{\nu}$, since $\curlZero{\ddom}{\nu}$ is a closed linear subspace of $\ltwo{\ddom}{\nu}^3$.
+	To this end, let $d=\min_\edgeSet\abs{I_{jk}}$ and $\psi:\reals\rightarrow\reals$ be a smooth function with 
+	\begin{align*}
+		\psi(0) = 0, \quad \psi'(0) = 1, \quad \supp\bracs{\psi} \subset \bracs{-d,d}.
+	\end{align*}
+	Then for each $v_j\in\vertSet$, the function $\Phi_j\in\smooth{\ddom}$ via 
+	\begin{itemize}
+		\item $\Phi_j(x) = \bracs{0, 0, \psi\bracs{x_2 - v_j^{(2)}}}^\top$ is such that $\Phi_j = 0, \ \grad^{(0)}\wedge\Phi_j = c^j_1$ in $\ltwo{\ddom}{\nu}^3$,
+		\item $\Phi_j(x) = \bracs{0, 0, \psi\bracs{v_j^{(1)} - x_1}}^\top$ is such that $\Phi_j = 0, \ \grad^{(0)}\wedge\Phi_j = c^j_2$ in $\ltwo{\ddom}{\nu}^3$,
+		\item $\Phi_j(x) = \bracs{0, \psi\bracs{x_1 - v_j^{(1)}}, 0}^\top$ is such that $\Phi_j = 0, \ \grad^{(0)}\wedge\Phi_j = c^j_3$ in $\ltwo{\ddom}{\nu}^3$,
+	\end{itemize}
+	and thus $\mathcal{B}\subset\curlZero{\ddom}{\nu}$, and the result follows.
+\end{proof}
+
+\begin{cory} \label{cory:VertexCurlSob}
+	\begin{align*}
+		\ktcurlSob{\ddom}{\nu} &= \clbracs{ \bracs{u,0} \setVert u\in\ltwo{\ddom}{\nu}^3 }.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	($\subset$) If $u\in\ktcurlSob{\ddom}{\nu}$ with $\ktcurl{\nu}u=\bracs{v_1,v_2,v_3}^\top$ then the requirement that $\ktcurl{\nu}u \perp \curlZero{\ddom}{\nu}$ and proposition \ref{prop:VertexCurlZero} imply that $v_1=v_2=v_3=0$.
+	
+	($\supset$) Conversely if $u\in\ltwo{\ddom}{\nu}^3$, for each $v_j\in\vertSet$ let $\psi_j$ denote the smooth ``bump" function centred on $v_j$ with
+	\begin{align*}
+		\psi_j\bracs{v_j} = 1, \quad
+		\supp\bracs{\psi_j} \subset B_d\bracs{v_j},
+	\end{align*}
+	where $d=\min_{\edgeSet}\abs{I_{jk}}$.
+	Setting $\phi(x) = \sum_{v_j\in\vertSet}u\bracs{v_j}\psi_j\bracs{x}$, we have that $\phi=u$ in $\ltwo{\ddom}{\nu}$ so $\bracs{u,\ktcurl{}\phi}\in W^{\kt}_{\mathrm{curl}}$.
+	Therefore, there exists some $c\in\curlZero{\ddom}{\nu}^{\perp}$ such that $\bracs{u,c}\in\ktcurlSob{\ddom}{\nu}$, however from the ``$\subset$" inclusion we can then conclude that $c = 0$.
+\end{proof}
+
+\subsection{The Divergence-Free Condition} \label{apps:DivFreeVertex}
+\tstk{div free condition forces all vector fields to be zero at the vertices... problematic!}
+
+\begin{prop} \label{prop:DivFreeVertex}
+	A function $u\in\ktcurlSob{\ddom}{\nu}$ is $\kt$-divergence free if and only if $u=0$.
+\end{prop}
+\begin{proof}
+	Clearly if $u=0$, it satisfies the divergence-free condition.
+	
+	If instead $u=\bracs{u_1,u_2,u_3}^\top$ is divergence free, then we have that
+	\begin{align*}
+		0 &= \integral{\ddom}{ u\cdot \overline{g} }{\nu}, \quad\forall g\in\gradZero{\ddom}{\nu}.
+	\end{align*}
+	Choosing $g=\bracs{g_1,g_2,0}^\top$ that is non-zero only at one particular vertex $v_j$ implies that
+	\begin{align*}
+		0 &= \alpha_j \bracs{ u_1\bracs{v_j}\overline{g}_1\bracs{v_j} + u_2\bracs{v_j}\overline{g}_2\bracs{v_j} },
+	\end{align*}
+	which (given corollary \ref{cory:3DGradZeroVertex}) holds for all $g_1\bracs{v_j}, g_2\bracs{v_j}\in\complex$.
+	Therefore, $u_1\bracs{v_j}=u_2\bracs{v_j}=0$ for every $v_j\in\vertSet$.
+	The divergence free condition also requires that
+	\begin{align*}
+		0 &= \integral{\ddom}{ u\cdot\overline{\ktgrad_{\nu}v} }{\nu} &\quad\forall v\in\ktgradSob{\ddom}{\nu}, \\
+		&= \integral{\ddom}{ -\rmi\wavenumber u_3\overline{v} }{\nu}
+		= -\rmi\wavenumber \sum_{v_j\in\vertSet} \alpha_j u_3\bracs{v_j}\overline{v}\bracs{v_j}.
+	\end{align*}
+	Given corollary \ref{cory:3DTangGradVertex}, for each $v_j\in\vertSet$ (by considering those $v\in\ltwo{\ddom}{\nu}$ which only support the vertex $v_j$) we have that
+	\begin{align*}
+		0 &= -\rmi\wavenumber \alpha_j u_3\bracs{v_j}\overline{v}\bracs{v_j},
+	\end{align*}
+	for all $\overline{v}\bracs{v_j}\in\complex$.
+	Therefore, $u_3\bracs{v_j}=0$ and we are done.
+\end{proof}

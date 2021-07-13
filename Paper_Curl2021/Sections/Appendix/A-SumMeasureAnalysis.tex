@@ -1,0 +1,183 @@
+\section{Appendix: Sobolev Spaces associated with the measure $\dddmes$} \label{app:SumMeasureAnalysis}
+Now that the analysis of sections \ref{app:3DMuAnalysis} and \ref{app:3DVertexAnalysis} is complete, we turn out attention to the notion of $\kt$-gradients, curls, and divergence free with respect to the measure $\dddmes$.
+Needless to say, our reason for previously considering the two measures $\ddmes$ and $\nu$ individually is because we expect a link back to the properties that these measures bestowed upon functions.
+Indeed, our first result informs us that gradients of zero with respect to $\dddmes$ are formed from combinations of gradients of zero with respect to the measures $\ddmes$ and $\nu$.
+\begin{prop} \label{prop:3DThickVertexGradZeroCharacterisation}
+	Let $g\in\ltwo{\ddom}{\dddmes}^3$ and let 
+	\begin{align*}
+		g_{\ddmes}(x) = \begin{cases} g(x) & x\neq v_j \ \forall v_j\in\vertSet, \\ 0 & x=v_j, \ v_j\in\vertSet, \end{cases} 
+		&\qquad
+		g_{\nu}(x) = \begin{cases} 0 & x\neq v_j \ \forall v_j\in\vertSet, \\ g(x) & x=v_j, \ v_j\in\vertSet. \end{cases}
+	\end{align*}		
+	Then we have that
+	\begin{align*}
+		g\in\gradZero{\ddom}{\dddmes} \quad\Leftrightarrow\quad 
+		& g_{\ddmes}\in\gradZero{\ddom}{\ddmes} \text{ and } g_{\nu}\in\gradZero{\ddom}{\nu}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	\tstk{this is simply a restatement of the result E1 from the scalar paper - there is literally no difference to the argument when we carry around an additional component that is always 0 anyway.
+	I can put the whole proof in, but I just don't think it's necessary here.}
+\end{proof}
+
+Knowing the correspondence between the various gradients of zero with respect to the measures $\dddmes$, $\ddmes$, and $\nu$, we can deduce the following about the $\kt$-tangential gradients of functions in $\ktgradSob{\ddom}{\dddmes}$.
+\begin{theorem} \label{thm:3DThickVertexTangGradImplication}
+	\begin{align*}
+		\bracs{u, \ktgrad_{\dddmes}u}\in\ktgradSob{\ddom}{\dddmes} \quad\Rightarrow\quad
+		& \ \mathrm{(i)} \ \bracs{u, \ktgrad_{\dddmes}u}\in\ktgradSob{\ddom}{\ddmes}, \\
+		& \ \mathrm{(ii)} \ \bracs{u, \ktgrad_{\dddmes}u}\in\ktgradSob{\ddom}{\nu}. \\
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	Taking an approximating sequence $\phi_n$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} u, \quad \ktgrad\phi_n\lconv{\ltwo{\ddom}{\dddmes}^2}\grad_{\dddmes}u,
+	\end{align*}
+	then using the fact that
+	\begin{align*}
+		\norm{\cdot}_{\ltwo{\ddom}{\dddmes}}^2 &= \norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 + \norm{\cdot}_{\ltwo{\ddom}{\nu}}^2,
+	\end{align*}
+	we infer that $\phi_n$ also converges in $\ltwo{\ddom}{\ddmes}$ and $\ltwo{\ddom}{\nu}$, as do its gradients in $\ltwo{\ddom}{\ddmes}^2$ and $\ltwo{\ddom}{\nu}^2$.
+	Furthermore, since $\ktgrad_{\dddmes}u \perp \gradZero{\ddom}{\dddmes}$ and given proposition \ref{prop:3DThickVertexGradZeroCharacterisation}, we have that $\ktgrad_{\dddmes}u$ is orthogonal to $\gradZero{\ddom}{\ddmes}$ (in $\ltwo{\ddom}{\ddmes}^2$) and to $\gradZero{\ddom}{\nu}$ (in $\ltwo{\ddom}{\nu}^2$), and we are done. 
+\end{proof}
+From our analysis of $\ktgradSob{\ddom}{\ddmes}$ we know that the conditions (i) and (ii) in theorem \ref{thm:3DThickVertexTangGradImplication} are sufficient for the following to hold;
+\begin{align*}
+		\text{(a)} \ & \bracs{u, \ktgrad_{\dddmes}u}\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet, \\
+		\text{(b)} \ & u \text{ is continuous across the vertices} \ v_j\in\vertSet, \\
+		\text{(c)} \ & \ktgrad_{\dddmes}u\vert_{v_j} = 0 \ \forall v_j\in\vertSet.
+\end{align*}
+If the converse to theorem \ref{thm:CharOfGradSob} is true, as implied from results in \cite{zhikov2002homogenization}, then (i)-(ii) are necessary and sufficient for (a)-(c).
+Understanding the space $\ktgradSob{\ddom}{\dddmes}$ through the properties of $\ktgradSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\nu}$ will allow us to understand the $\kt$-divergence-free condition with respect to $\dddmes$.
+However, before proceeding we also deduce results similar to proposition \ref{prop:3DThickVertexGradZeroCharacterisation} and theorem \ref{thm:3DThickVertexTangGradImplication}, but concerning curls with respect to $\dddmes$.
+
+\begin{prop} \label{prop:ThickVertexCurlZeroCharacterisation}
+	Let $c\in\ltwo{\ddom}{\dddmes}^3$ and set
+	\begin{align*}
+		c_{\ddmes}(x) = \begin{cases} c(x) & x\neq v_j \ \forall v_j\in\vertSet, \\ 0 & x=v_j, \ v_j\in\vertSet, \end{cases} 
+		&\qquad
+		c_{\nu}(x) = \begin{cases} 0 & x\neq v_j \ \forall v_j\in\vertSet, \\ c(x) & x=v_j, \ v_j\in\vertSet. \end{cases}
+	\end{align*}		
+	Then we have that
+	\begin{align*}
+		c\in\curlZero{\ddom}{\dddmes} \quad\Leftrightarrow\quad 
+		& c_{\ddmes}\in\curlZero{\ddom}{\ddmes} \text{ and } c_{\nu}\in\curlZero{\ddom}{\nu}.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	For the right-directed implication ($\Rightarrow$), it is sufficient to notice that 
+	\begin{align*}
+		\norm{\cdot}_{\ltwo{\ddom}{\dddmes}}^2 &= \norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 + \norm{\cdot}_{\ltwo{\ddom}{\nu}}^2,
+	\end{align*}
+	so any approximating sequence for $c$ that converges in $\ltwo{\ddom}{\dddmes}^3$ also converges in $\ltwo{\ddom}{\ddmes}^3$ to $c_{\ddmes}$ and in $\ltwo{\ddom}{\nu}^3$ to $c_{\nu}$.
+	
+	For the left-directed implication ($\Leftarrow$), it is sufficient for us to demonstrate the implication holds for the case when $c_{\nu}=0$, and the case that $c_{\ddmes}=0$ with $c_{\nu}\neq0$ at precisely one vertex $v$.
+	Having shown the implication in these cases, linearity of $\curlZero{\ddom}{\dddmes}$ will then complete the implication.
+	As such, first consider the case when $c_{\nu}=0$.
+	Notice that the conclusion of lemma \ref{lem:CurlZeroExtensionLemma} can be strengthened to membership of $\curlZero{\ddom}{\dddmes}$, as the approximating sequence $\psi_l$ that is constructed satisfies $\psi_l\bracs{v_j}=0, \grad^{(0)}\wedge\psi_l\bracs{v_j}=0$. \tstk{we should make this observation in appendix C too)}
+	With this, the argument of proposition \ref{prop:lem:BInCurlZero} can be recycled to conclude that $c_{\ddmes}\in\curlZero{\ddom}{\dddmes}$, and hence $c\in\curlZero{\ddom}{\dddmes}$ too.
+	
+	Next, consider the case when $c_{\ddmes}=0$, and when $c_{\nu}=0$ at all vertices except $v\in\vertSet$, with $v=\bracs{v_1, v_2}\in\ddom$ and with $c_{\nu}(v) = \bracs{c_1, c_2, c_3}^\top$.
+	For each $n\in\naturals$ consider the smooth function $\phi_n:\reals\rightarrow\sqbracs{-1,1}$ as illustrated in figure \ref{fig:Diagram_SmoothFunctionBoundedGrad1D}, with the properties
+	\begin{align*}
+		\phi_n(t) &= 0, &\quad t\not\in B_{\frac{2}{n}}(0), \\
+		\abs{\phi_n(t)} &\leq \recip{n} &\quad t\in B_{\frac{2}{n}}(0), \\
+		\phi_n(0) &= 0, \\
+		\phi'_n(0) &= 1.
+	\end{align*}
+	\begin{figure}[b]
+		\centering
+		\includegraphics[scale=1.0]{Diagram_SmoothFunctionBoundedGrad1D.pdf}
+		\caption{\label{fig:Diagram_SmoothFunctionBoundedGrad1DAltAxisLabels} The profile of the functions $\phi_n$ \tstk{$x$-axis label should be $t$, and so should argument of $y$-axis!}.}
+	\end{figure}
+	Since $\abs{\phi_n(t)} \leq \recip{n}$ when $\abs{t}\leq\recip{n}$, $\phi_n$ can be chosen so that exists a constant $K$ independent of $n$ such that $\abs{\grad\phi_n} \leq K$ when $\recip{n} \leq \abs{x-v} \leq \frac{2}{n}$.
+	Define the functions $\Phi^n\in\smooth{\ddom}$ (and compute their curls) as follows;
+	\begin{align*}
+		\Phi^n(x) = 
+		\begin{pmatrix} 
+			0 \\ 
+			c_3\phi_n\bracs{x_1 - v_1} \\ 
+			c_1\phi_n\bracs{x_2-v_2} + c_2\phi_n\bracs{v_1-x_1} 
+		\end{pmatrix},
+		&\qquad
+		\grad^{(0)}\wedge\Phi_n(x) =
+		\begin{pmatrix}
+			c_1\phi'_n\bracs{x_2-v_2} \\
+			c_2\phi'_n\bracs{v_1-x_1} \\
+			c_3\phi'_n\bracs{x_1-v_1}
+		\end{pmatrix}.
+	\end{align*}
+	Then we have the following:
+	\begin{align*}
+		\integral{\ddom}{ \abs{ \Phi^n }^2 }{\dddmes}
+		&\leq \bracs{c_3^2 + \bracs{c_1 + c_2}^2} \bracs{ \integral{B_{\frac{2}{n}}(v)}{ \recip{n^2} }{\ddmes}
+		+ \alpha_v\abs{\phi_n(0)}^2 } \\
+		&= \frac{2\mathrm{deg}(v)}{n^3}\bracs{\abs{c_3}^2 + \abs{c_1 + c_2}^2} \rightarrow 0 \toInfty{n}, \\
+		\integral{\ddom}{ \abs{ \grad^{(0)}\wedge\Phi^n - c }^2 }{\dddmes}
+		&= \integral{\ddom}{ \abs{ \grad^{(0)}\wedge\Phi^n}^2 }{\ddmes}
+		+ \integral{\ddom}{ \abs{ \grad^{(0)}\wedge\Phi^n - c_{\nu} }^2 }{\nu} \\
+		&= \abs{c_1}^2\integral{\ddom}{ \abs{\phi'_n\bracs{x_2-v_2}}^2 }{\ddmes}
+		+ \abs{c_2}^2\integral{\ddom}{ \abs{\phi'_n\bracs{v_1-x_1}}^2 }{\ddmes} \\
+		&\quad + \abs{c_3}^2\integral{\ddom}{ \abs{\phi'_n\bracs{x_1-v_1}}^2 }{\ddmes}
+		+ \alpha_v\abs{c(v)}^2\abs{\phi'_n(0)-1}^2 \\
+		&\leq \abs{c(v)}^2 \bracs{ K^2\integral{B_{\frac{2}{n}}(v)}{ }{\ddmes}
+		+ \alpha_v\abs{\phi'_n(0)-1}^2 } \\
+		&= \frac{2\mathrm{deg}(v)}{n}\abs{c(v)}^2 K^2 \rightarrow 0 \toInfty{n},
+	\end{align*}
+	where $\mathrm{\deg}(v)$ is the degree of the vertex $v$.
+	We thus conclude that $c\in\curlZero{\ddom}{\dddmes}$, and given the linearity of $\curlZero{\ddom}{\dddmes}$, the proof is complete.
+\end{proof}
+
+\begin{theorem} \label{thm:ThickVertexTangCurlImplication}
+	\begin{align*}
+		\bracs{u, \ktcurl{\dddmes}u}\in\ktcurlSob{\ddom}{\dddmes}
+		\quad\Rightarrow\quad
+		\mathrm{(i)} &\ \bracs{u, \ktcurl{\dddmes}u}\in\ktcurlSob{\ddom}{\ddmes} \\
+		\mathrm{(ii)} &\ \bracs{u, \ktcurl{\dddmes}u}\in\ktcurlSob{\ddom}{\nu}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	Taking an approximating sequence $\phi_n$ such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\dddmes}} u, \quad \ktcurl{}\phi_n\lconv{\ltwo{\ddom}{\dddmes}^3}\ktcurl{\dddmes}u,
+	\end{align*}
+	then using the fact that
+	\begin{align*}
+		\norm{\cdot}_{\ltwo{\ddom}{\dddmes}}^2 &= \norm{\cdot}_{\ltwo{\ddom}{\ddmes}}^2 + \norm{\cdot}_{\ltwo{\ddom}{\nu}}^2,
+	\end{align*}
+	we infer that $\phi_n$ also converges in $\ltwo{\ddom}{\ddmes}$ and $\ltwo{\ddom}{\nu}$, as do its $\kt$-curls in $\ltwo{\ddom}{\ddmes}^3$ and $\ltwo{\ddom}{\nu}^3$.
+	Furthermore, since $\ktcurl{\dddmes}u \perp \curlZero{\ddom}{\dddmes}$ and given proposition \ref{prop:ThickVertexCurlZeroCharacterisation}, we have that $\ktcurl{\dddmes}u$ is orthogonal to $\curlZero{\ddom}{\ddmes}$ (in $\ltwo{\ddom}{\ddmes}^3$) and to $\curlZero{\ddom}{\nu}$ (in $\ltwo{\ddom}{\nu}^3$), and we are done. 
+\end{proof}
+
+Theorem \ref{thm:ThickVertexTangCurlImplication} provides us with a description of the space $\ktcurlSob{\ddom}{\dddmes}$.
+When combined with the $\kt$-divergence-free condition, we will have enough information to derive the system \eqref{eq:QGFullSystem} from \eqref{eq:PeriodCellCurlCurlStrongForm}.
+Of course, given that we have proposition \ref{prop:3DThickVertexGradZeroCharacterisation} and theorem \ref{thm:3DThickVertexTangGradImplication}, we can look to understand the divergence-free condition.
+
+\begin{prop} \label{prop:ThickVertexDivFree}
+	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$.
+	Give each $I_{jk}\in\edgeSet$ local coordinate system $y_{jk}=\bracs{y_{1, jk},y_{2, jk}}$ with $y_{2,jk}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of coordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
+	Write $r_{jk}$ for the usual parametrisation of the edge $I_{jk}$, and suppose $u=\bracs{u_1, u_2, u_3}^\top\in\ktcurlSob{\ddom}{\dddmes}$, and write $u_{jk}=\bracs{u_{1,jk}, u_{2,jk}, u_{3,jk}}^\top$ for the restriction of $u$ to the edge $I_{jk}$.
+	Also define
+	\begin{align*}
+		U_{jk}(x) = R_{jk}\begin{pmatrix} u_{1, jk}(x) \\ u_{2, jk}(x) \end{pmatrix},
+		\qquad \qm_{jk} = \bracs{ R_{jk}\qm }_2,
+		\qquad \widetilde{U}_{jk} = U_{jk} \circ r_{jk},
+	\end{align*}
+	for each edge $I_{jk}$.
+	Then
+	\begin{align*}
+		u \text{ is divergence free } \quad\Leftrightarrow\quad
+		\begin{cases}
+			\mathrm{(i)} & U_{1, jk} = 0, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(ii)} & \widetilde{U}_{2,jk} \in\gradSob{\ddom}{\lambda_I}, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(iii)} & U_{2,jk}' + \rmi\qm_{jk} U_{2,jk} + \rmi\wavenumber U_{3,jk} = 0 \text{ on } I_{jk}, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(iv)} & \sum_{j\conRight k} U_{2,jk}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} = 0, \ \forall v_j\in\vertSet, \\
+			\mathrm{(v)} & u\bracs{v_j}=0, \ \forall v_j\in\vertSet,
+		\end{cases}
+	\end{align*}
+	where $U_{2,jk}' = \widetilde{U}_{2,jk}'\circ r_{jk}^{-1}$.
+\end{prop}
+\begin{proof}
+	This is a direct consequence of proposition \ref{prop:3DThickVertexGradZeroCharacterisation} and theorem \ref{thm:3DThickVertexTangGradImplication}.
+\end{proof}
+
+With theorem \ref{thm:ThickVertexTangCurlImplication} and proposition \ref{prop:ThickVertexDivFree}, we have the necessary properties of $\kt$-divergence-free functions $u\in\ktcurlSob{\ddom}{\dddmes}$ to derive the system \eqref{eq:QGFullSystem}.

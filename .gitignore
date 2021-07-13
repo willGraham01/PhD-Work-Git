@@ -13,9 +13,9 @@
 !/Diagrams/Numerical_Results/*.pdf
 !/TFR_Chapters/William_Graham_ThesisFormulationReport.pdf
 */__pycache__
-/PhD-QuantumGraphNumerics/*Results*.csv
-/PhD-QuantumGraphNumerics/TFR_*.csv
 /QG_Code/*.csv
+/QG_Code/*/images/
+/QG_Code/IdentityCheckingScript.py
 *.xopp~
 *.xopp
 *.npz
