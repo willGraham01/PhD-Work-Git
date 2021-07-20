@@ -54,19 +54,22 @@ For the singular structure above define the gradient operator $\grad_{\dddmes}$,
 Here the subscript $\dddmes$ stands for the sum of the singular measure supported by the planes induced by $\graph$ and point mass measures at centred at the vertices of $\graph$, the details of which are available in the appendix (section \ref{app:SingularMeasures}).
 It is convenient to take a Fourier transform along in the $x_3$ direction, and replace \eqref{eq:WholeSpaceCurlCurl} with a family of problems on $\ddom$ parametrised by $\wavenumber$ (the Fourier variable, representing a ``wavenumber"), and $\qm$ (the ``quasi-momentum") which varies over the dual-cell of $\ddom$.
 This provides us with a family of problems involving ``$\kt$-shifted" gradients $\ktgrad_{\dddmes}$ (see \tstk{section reference},
-\begin{align} \label{eq:PeriodCellCurlCurlStrongForm}
-	\ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } &= \omega^2 u, \quad\text{in } \ddom.
-\end{align}
+\begin{subequations} \label{eq:PeriodCellCurlCurlStrongForm}
+	\begin{align} 
+		\ktcurl{\dddmes} \bracs{ \ktcurl{\dddmes} u } = \omega^2 u, & \quad\text{in } \ddom, \\
+		u \text{ is divergence-free} &.
+	\end{align}
+\end{subequations}
 The link between \eqref{eq:WholeSpaceCurlCurl} and \eqref{eq:PeriodCellCurlCurlStrongForm} is established by means of a version of the so-called Gelfand transform \cite{gelfand1950expansion}
 \begin{align*}
 	\hat{u}\bracs{x} &= \sum_{z_1,z_2\in\integers^2}u\bracs{x+zp_1+zp_2}\e^{-\rmi\qm\bracs{x+zp_1+zp_2}}.
 \end{align*}
 It can then be shown that the spectrum of the problem \eqref{eq:PeriodCellCurlCurlStrongForm} can be determined from the spectra of the following family of problems (see section \ref{sec:SystemDerivation}):
-\begin{subequations} \label{eq:QGFullSystem}
+\begin{subequations} \label{eq:3DQGFullSystem}
 	\begin{align}
-		- \bracs{ \diff{}{t} + \rmi\qm_{jk} }^2 u_{3,jk} - \bracs{\omega^2-\wavenumber^2}u_{3,jk} = 0, &\quad t\in\interval{\abs{I_{jk}}}, \quad\forall I_{jk}\in\edgeSet, \\
+		- \bracs{ \diff{}{t} + \rmi\qm_{jk} }^2 u_{3,jk} - \bracs{\omega^2-\wavenumber^2}u_{3,jk} = 0, &\quad t\in\interval{I_{jk}}, \quad\forall I_{jk}\in\edgeSet, \\
 		u_3 \text{ is continuous at each } & v_j\in\vertSet, \\
-		\sum_{j\con k}\bracs{ \pdiff{}{n} + \rmi\qm_{jk} }u_{3,jk} = \omega^2\alpha_j u\bracs{v_j}, &\quad\forall v_j\in\vertSet.
+		\sum_{j\con k}\bracs{ \pdiff{}{n} + \rmi\qm_{jk} }u_{3,jk} = \bracs{\omega^2-\wavenumber^2}\alpha_j u\bracs{v_j}, &\quad\forall v_j\in\vertSet.
 	\end{align}
 \end{subequations}
 The $\alpha_j\in\complex$ are suitable ``coupling constants" at the vertices, and $\qm_{jk}$ are effectively rotations of $\qm$ which can be computed if one knows the orientation of the edge $I_{jk}\in\vertSet$.

@@ -456,7 +456,7 @@ We can derive the form of the tangential curl on an edge at an arbitrary angle t
 	\begin{align*}
 		\bracs{ \ktcurl{\ddmes} u }\big\vert_{I_{jk}} &= 
 		\begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix}
-		\begin{pmatrix} u_{3,jk}' + \rmi\qm_I u_{3,jk} - \rmi\wavenumber U_{2,jk} \\ 0 \\ 0 \end{pmatrix}
+		\begin{pmatrix} u_{3,jk}' + \rmi\qm_{jk} u_{3,jk} - \rmi\wavenumber U_{2,jk} \\ 0 \\ 0 \end{pmatrix}
 	\end{align*}
 	where $u_{3,jk}' = \widetilde{u}_{3,jk}' \circ r_{jk}^{-1}$.
 \end{theorem}
@@ -610,9 +610,9 @@ Note that the condition (iv) differs from its counterparts in the single-segment
 		u \text{ is divergence free } \quad\Leftrightarrow\quad
 		\begin{cases}
 			\mathrm{(i)} & U_{1, jk} = 0, \ \forall I_{jk}\in\edgeSet, \\
-			\mathrm{(ii)} & \widetilde{U}_{2,jk} \in\gradSob{\ddom}{\lambda_I}, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(ii)} & \widetilde{U}_{2,jk} \in\gradSob{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet, \\
 			\mathrm{(iii)} & U_{2,jk}' + \rmi\qm_{jk} U_{2,jk} + \rmi\wavenumber U_{3,jk} = 0 \text{ on } I_{jk}, \ \forall I_{jk}\in\edgeSet, \\
-			\mathrm{(iv)} & \sum_{j\conRight k} U_{2,jk}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} = 0, \ \forall v_j\in\vertSet,
+			\mathrm{(iv)} & \sum_{j\conRight k} U_{2,kj}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} = 0, \ \forall v_j\in\vertSet,
 		\end{cases}
 	\end{align*}
 	where $U_{2,jk}' = \widetilde{U}_{2,jk}'\circ r_{jk}^{-1}$.
@@ -626,7 +626,7 @@ Note that the condition (iv) differs from its counterparts in the single-segment
 		0
 		&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \widetilde{U}_{2,jk}\overline{\widetilde{\varphi}}' - \rmi\qm_2\widetilde{U}_{2,jk}\overline{\widetilde{\varphi}} - \rmi\wavenumber\widetilde{u}_{3,jk}\overline{\widetilde{\varphi}} \ \md t  \\
 		&= \sum_{j\con k}\sqbracs{ \widetilde{U}_{2,jk}\overline{\widetilde{\varphi}} }_0^{\abs{I_{jk}}}
-		= \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_{2,jk}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} },
+		= \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_{2,kj}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} },
 	\end{align*}
 	from which (iv) can be inferred.
 	
