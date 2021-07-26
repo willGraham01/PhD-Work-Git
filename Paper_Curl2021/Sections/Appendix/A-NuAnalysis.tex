@@ -35,10 +35,10 @@ As a consequence, the form of $\kt$-tangential gradients are easily deduced.
 		\supp\bracs{\psi_j} \subset B_d\bracs{v_j},
 	\end{align*}
 	where $d=\min_{\edgeSet}\abs{I_{jk}}$.
-	Setting $\phi(x) = \sum_{v_j\in\vertSet}u\bracs{v_j}\psi_j\bracs{x}$, we have that $\phi=u$ in $\ltwo{\ddom}{\nu}$ so $\bracs{u,\ktgrad\phi}\in W^{\kt}_{\mathrm{grad}}$.
+	Setting $\phi(x) = \sum_{v_j\in\vertSet}u\bracs{v_j}\psi_j\bracs{x}$, we have that $\phi=u$ in $\ltwo{\ddom}{\nu}$ so $\bracs{u,\ktgrad\phi}\in W^{\kt}_{\nu,\mathrm{grad}}$.
 	Therefore, there exists some $g\in\gradZero{\ddom}{\nu}^{\perp}$ such that $\bracs{u,g}\in\ktgradSob{\ddom}{\nu}$, however from the first implication we can then conclude that $g = \bracs{0,0, i\wavenumber u}^\top$.
 \end{proof}
-Note that the result of corollary \ref{cory:3DTangGradVertex} essentially informs us that the $\kt$-tangential gradient with respect to $\nu$ is zero --- the third component of the ``gradient" vector is just a repetition of the function itself.
+Note that the result of corollary \ref{cory:3DTangGradVertex} essentially informs us that the $\kt$-tangential gradient with respect to $\nu$ is zero --- the third component of the ``gradient" is just a (scaled) repetition of the function itself.
 
 \subsection{Analysis of $\kt$-Curls with respect to $\nu$} \label{apps:VertexCurls}
 As one might expect upon learning that $\kt$-tangential gradients with respect to $\nu$ are essentially zero, studying $\kt$-curls of zero will lead us to the conclusion that there are no non-zero $\kt$-tangential curls with respect to the measure $\nu$.
@@ -90,7 +90,8 @@ We formalise this understanding with the following results, where we argue in si
 \end{proof}
 
 \subsection{The Divergence-Free Condition} \label{apps:DivFreeVertex}
-\tstk{div free condition forces all vector fields to be zero at the vertices... problematic!}
+For the sake of completion, we briefly examine what it means for a vector field $u$ to be $\kt$-divergence free with respect to $\nu$.
+However, given that $\gradZero{\ddom}{\nu}$ encompasses all $\ltwo{\ddom}{\nu}^3$ functions, it is unsurprising to learn that the only divergence-free field is the zero field.
 
 \begin{prop} \label{prop:DivFreeVertex}
 	A function $u\in\ktcurlSob{\ddom}{\nu}$ is $\kt$-divergence free if and only if $u=0$.

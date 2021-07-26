@@ -3,7 +3,7 @@ In what follows, we describe the sets $\gradZero{\ddom}{\lambda_{jk}}$ and $\cur
 From this understanding, we will then be able to infer various properties of the functions in $\ktgradSob{\ddom}{\ddmes}$ and $\ktcurlSob{\ddom}{\ddmes}$.
 Throughout this section, we will write $\grad^{(0)}$ for the operator $\ktgrad$ with $\kt=\bracs{0,0}$.
 Since we have proposition \ref{prop:ZeroInvariantUnderQM-Wavenumber}, it is sufficient for us to only consider this operator when determining the form of gradients (or curls) of zero with respect to $\ddmes$.
-\tstk{Throughout this section, assumption \ref{ass:MeasTheoryProblemSetup} is adopted?? Ideally yes, but this assumption has $y=\bracs{e,n}$ and here we always set $y=\bracs{n,e}$ in our examples - so I guess it's time to reconcile the two! This will trim down some of the hypotheses of the results which follow}
+In addition, assumption \ref{ass:MeasTheoryProblemSetup} is adopted henceforth.
 
 \subsection{Gradients of zero with respect to $\ddmes$} \label{apps:3DGradientsOfZero}
 We begin by examining the set of gradients of zero on a graph consisting of a single edge parallel to the $x_2$ axis.
@@ -55,7 +55,7 @@ We begin by examining the set of gradients of zero on a graph consisting of a si
 Note that the result of corollary \ref{cory:3DGradSegmentRotated} also implies that
 \begin{align*}
 	\gradZero{\ddom}{\lambda_I} &= 
-		\clbracs{ \begin{pmatrix} g_1 \\ g_2 \\ 0 \end{pmatrix}\in\ltwo{\ddom}{\lambda_I}^3 \setVert \bracs{g_1, g_2}^\top e_I = 0 },
+		\clbracs{ \begin{pmatrix} g_1 \\ g_2 \\ 0 \end{pmatrix}\in\ltwo{\ddom}{\lambda_I}^3 \setVert \begin{pmatrix} g_1 \\ g_2 \end{pmatrix} \cdot e_I = 0 },
 \end{align*}
 where $e_I$ is the unit (tangent) vector to $I$.
 We now have the following characterisation for gradients of zero on a graph $\graph$.
@@ -176,7 +176,7 @@ In addition to this understanding of the tangential gradients, we can also demon
 	\end{align*}
 \end{prop}
 \begin{proof}
-	The implication of (i) is immediate from proposition \ref{prop:3DTangGradGraph}, whilst the proof of the implication of (ii) is identical to that in the scalar case \tstk{should this proof be inserted anyway? If this document is standalone, it probably should. If this is forming part of the thesis, then no, since we'll have the proof to hand in the previous chapter.}
+	The implication of (i) is immediate from corollary \ref{cory:3DTangGradGraph}, whilst the proof of the implication of (ii) is identical to that in the scalar case \tstk{should this proof be inserted anyway? If this document is standalone, it probably should. If this is forming part of the thesis, then no, since we'll have the proof to hand in the previous chapter.}
 \end{proof}
 \tstk{mention here that Zhikov's work appears to claim that the converse is true, but this hinges on his ``proposition 5.5" which we don't think is true, or if it is seems to go against his chosen setup of his Sobolev spaces.}
 
@@ -294,7 +294,6 @@ We first prove the easier of the two inclusions.
 \end{proof}
 
 Next, we derive an ``extension lemma" for curls of zero, similarly to how such a result was also derived for gradients of zero.
-\tstk{actually, we should state the stronger conclusion here that these functions will also be in $\dddmes$ spaces too when extended by zero the the vertices.}
 \begin{lemma}[Extension lemma for $\curlZero{\ddom}{\lambda_{jk}}$] \label{lem:CurlZeroExtensionLemma}
 	Fix $n\in\naturals$, $I_{jk}\in\edgeSet$, and let 
 	\begin{align*}
@@ -339,9 +338,10 @@ Next, we derive an ``extension lemma" for curls of zero, similarly to how such a
 	\end{align*}
 	The sequence $\Psi^l$ now serves as the required approximating sequence, giving us that $c\in\curlZero{\ddom}{\ddmes}$.
 \end{proof}
-\tstk{again, mention here that we've actually proved that $c\in\curlZero{\ddom}{\dddmes}$ since $\Psi^l=0$ and $\grad^{(0)}\wedge\Psi^l=0$ at any vertices.}
+In fact, the argument above proves that $c\in\curlZero{\ddom}{\dddmes}$ since $\Psi^l=0$ and $\grad^{(0)}\wedge\Psi^l=0$ at any vertices of $\graph$.
+This fact will be useful when we come to consider the measure $\dddmes$ in appendix \ref{app:SumMeasureAnalysis}.
 
-This extension lemma \ref{lem:CurlZeroExtensionLemma} now allows us to demonstrate the inclusion $B\subset\curlZero{\ddom}{\ddmes}$.
+For now though, the extension lemma \ref{lem:CurlZeroExtensionLemma} now allows us to demonstrate the inclusion $B\subset\curlZero{\ddom}{\ddmes}$.
 \begin{lemma} \label{lem:BInCurlZero}
 	\begin{align*}
 		B \subset \curlZero{\ddom}{\ddmes}.
@@ -372,6 +372,7 @@ This extension lemma \ref{lem:CurlZeroExtensionLemma} now allows us to demonstra
 	Since $\eta_j^n\rightarrow 1$ in $\ltwo{\ddom}{\ddmes}$, we conclude that $c_n\rightarrow c$ in $\ltwo{\ddom}{\ddmes}^3$, and since $\curlZero{\ddom}{\ddmes}$ is closed, we have that $c\in\curlZero{\ddom}{\ddmes}$.
 \end{proof}
 Lemmas \ref{lem:CurlZeroInB}, \ref{lem:CurlZeroExtensionLemma}, and \ref{lem:BInCurlZero} then form the proof of theorem \ref{thm:CurlZeroCharacterisation}.
+Again, we highlight that the argument of lemma \ref{lem:BInCurlZero} can be recycled to demonstrate that if $c\in B$, then $\widetilde{c}\in\curlZero{\ddom}{\dddmes}$ where $\widetilde{c}=c$ on $\graph$, except at the vertices where $\widetilde{c}=0$.
 
 \subsection{Tangential $\kt$-Curls with respect to $\ddmes$} \label{apps:TangentialCurls}
 With curls of zero now understood, we look to understand $\kt$-tangential curls with respect to $\ddmes$ in much the same way as we did with tangential gradients --- with theorem \ref{thm:CurlZeroCharacterisation} allowing us to obtain an edge-wise characterisation.
@@ -380,7 +381,7 @@ As usual, we begin by studying tangential curls on a segment aligned to the $x_2
 \begin{prop} \label{prop:TangCurlsSegment}
 	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
 	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space of functions on $\interval{I}$ with respect to the Lebesgue measure.
-	Suppose that $u=\bracs{u_1, u_2, u_3}^\top\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u}_j = u_j \circ r_I$ for $j\in\clbracs{1,2,3}$.
+	Suppose that $u=\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r_I$.
 	Then $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ and
 	\begin{align*}
 		\ktcurl{\lambda_I} u &= 
@@ -399,12 +400,11 @@ As usual, we begin by studying tangential curls on a segment aligned to the $x_2
 	\begin{align*}
 		\int_0^{\abs{I}} \abs{\widetilde{\phi}^n_j - \widetilde{u}_j}^2 \ \md t
 		&= \integral{\ddom}{ \abs{\phi^n_j - u_j}^2 }{\lambda_I} 
-		\rightarrow 0, \\
+		\rightarrow 0, &\quad j\in\clbracs{2,3}, \\
 		\int_0^{\abs{I}} \abs{ \bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 - \widetilde{v}_1 }^2 \ \md t
 		&= \integral{\ddom}{ \abs{ \partial_2\phi^n_3 + \rmi\qm_2\phi^n_3 - \rmi\wavenumber\phi^n_2 - v_1 }^2 }{\lambda_I}
-		\rightarrow 0,
+		\rightarrow 0.
 	\end{align*}
-	for $j\in\clbracs{2,3}$.
 	This provides us with the following convergences in $\ltwo{\interval{I}}{t}$;
 	\begin{align*}
 		\widetilde{\phi}^l_2 \rightarrow \widetilde{u}_2, \quad
@@ -425,7 +425,7 @@ We can derive the form of the tangential curl on an edge at an arbitrary angle t
 \begin{cory} \label{cory:TangCurlRotated}
 	Let $I$ be a segment in $\ddom$ with singular measure $\lambda_I$, and local coordinate system $y=\bracs{y_1, y_2}$ with $y_2$ parallel to $I$.
 	Suppose $R\in\mathrm{SO}(2)$ is the rotation $x=Ry$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
-	Write $r_I$ for the usual parametrisation of $I$ (convention \ref{ass:MeasTheoryProblemSetup}), and let $u=\bracs{u_1,u_2,u_3}\in\ktcurlSob{\ddom}{\lambda_I}$.
+	Write $r_I$ for the usual parametrisation of $I$ (assumption \ref{ass:MeasTheoryProblemSetup}), and let $u=\in\ktcurlSob{\ddom}{\lambda_I}$.
 	Set
 	\begin{align*}
 		U(x) = R \begin{pmatrix} u_1(x) \\ u_2(x) \end{pmatrix}, 
@@ -442,30 +442,28 @@ We can derive the form of the tangential curl on an edge at an arbitrary angle t
 
 \tstk{Again, might have $\top$'s everywhere once work through the above results}
 \begin{theorem} \label{thm:TangCurlGraph}
-	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$ with singular measure $\ddmes$.
-	Give each $I_{jk}\in\edgeSet$ local coordinate system $y_{jk}=\bracs{y_{1, jk},y_{2, jk}}$ with $y_{2,jk}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of coordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
-	Write $r_{jk}$ for the usual parametrisation of the edge $I_{jk}$, and suppose $u=\bracs{u_1, u_2, u_3}^\top\in\ktcurlSob{\ddom}{\ddmes}$, and write $u_{jk}=\bracs{u_{1,jk}, u_{2,jk}, u_{3,jk}}^\top$ for the restriction of $u$ to the edge $I_{jk}$.
-	Also define
+	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$ with singular measure $\ddmes$, and recall assumption \ref{ass:MeasTheoryProblemSetup}.
+	Suppose $u\in\ktcurlSob{\ddom}{\ddmes}$, and define
 	\begin{align*}
-		U_{jk}(x) = R_{jk}\begin{pmatrix} u_{1, jk}(x) \\ u_{2, jk}(x) \end{pmatrix},
+		U^{(jk)}(x) = R_{jk}\begin{pmatrix} u_1^{(jk)}(x) \\ u_2^{(jk)}(x) \end{pmatrix},
 		\qquad \qm_{jk} = \bracs{ R_{jk}\qm }_2,
-		\qquad \widetilde{u}_{3,jk} = u_{3,jk} \circ r_{jk},
+		\qquad \widetilde{u}_3^{(jk)} = u_3^{(jk)} \circ r_{jk},
 	\end{align*}
 	for each edge $I_{jk}$.
-	Then for every $I_{jk}\in\edgeSet$, we have that $\widetilde{u}_{3,jk}\in\ktgradSob{\ddom}{\lambda_{jk}}$ and
+	Then for every $I_{jk}\in\edgeSet$, we have that $\widetilde{u}_3^{(jk)}\in\ktgradSob{\ddom}{\lambda_{jk}}$ and
 	\begin{align*}
 		\bracs{ \ktcurl{\ddmes} u }\big\vert_{I_{jk}} &= 
 		\begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix}
-		\begin{pmatrix} u_{3,jk}' + \rmi\qm_{jk} u_{3,jk} - \rmi\wavenumber U_{2,jk} \\ 0 \\ 0 \end{pmatrix}
+		\begin{pmatrix} \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} \\ 0 \\ 0 \end{pmatrix}
 	\end{align*}
-	where $u_{3,jk}' = \widetilde{u}_{3,jk}' \circ r_{jk}^{-1}$.
+	where $\bracs{u_3^{(jk)}}' = \bracs{\widetilde{u}_3^{(jk)}}' \circ r_{jk}^{-1}$.
 \end{theorem}
 \begin{proof}
 	Given theorem \ref{thm:CurlZeroCharacterisation}, we know that $\ktcurl{\ddmes}u$ must have the same form as $\ktcurl{\lambda_{jk}}u$ on the edge $I_{jk}$.
 	Thus by using corollary \ref{cory:TangCurlRotated}, the result follows.
 \end{proof}
 
-This concludes our investigation into the form of the $kt$-tangential curl, however we can infer some further properties about the component $u_3$ of a vector field $u\in\ktgradSob{\ddom}{\ddmes}$.
+This concludes our investigation into the form of the $\kt$-tangential curl, however we can infer some further properties about the component $u_3$ of a vector field $u\in\ktgradSob{\ddom}{\ddmes}$.
 \begin{prop} \label{prop:CurlImpliesThirdCompGradient}
 	We have that
 	\begin{align*}
@@ -486,8 +484,7 @@ This concludes our investigation into the form of the $kt$-tangential curl, howe
 		\ktcurl{}\Phi^n = \begin{pmatrix} \partial_2\phi_n + \rmi\qm_2\phi_n \\ -\partial_1\phi_n - \rmi\qm_1\phi_n \\ 0 \end{pmatrix} 
 		\lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} \bracs{\ktgrad_{\ddmes}u_3}_2 \\ -\bracs{\ktgrad_{\ddmes}u_3}_1 \\ 0	\end{pmatrix} =: c.
 	\end{align*}
-	\tstk{could try to prove that this sequence really is converging to the tangential gradient here, but it's not necessary.}
-	Thus, $\bracs{u, c}\in W^{\kt}_{\mathrm{curl}}$ and hence $u$ possess a $\kt$-tangential curl, so $u\in\ktcurlSob{\ddom}{\ddmes}$.
+	Thus, $\bracs{u, c}\in W^{\kt}_{\ddmes,\mathrm{curl}}$ and hence $u$ possess a $\kt$-tangential curl, so $u\in\ktcurlSob{\ddom}{\ddmes}$.
 	
 	($\Rightarrow$) Now suppose that $u=\bracs{0,0,u_3}^\top\in\ktcurlSob{\ddom}{\ddmes}$, and again take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi^n_2, \phi^n_3}^\top$ for $u$.
 	Then it can be shown that
@@ -495,17 +492,18 @@ This concludes our investigation into the form of the $kt$-tangential curl, howe
 		\phi^n_3 \lconv{\ltwo{\ddom}{\ddmes}} u_3
 		\quad \ktgrad\phi^n_3 \lconv{\ltwo{\ddom}{\ddmes}^3} \begin{pmatrix} -\bracs{ \ktcurl{\ddmes}u}_2 \\ \bracs{ \ktcurl{\ddmes}u}_1 \\ 0 \end{pmatrix} =: g,
 	\end{align*}
-	which implies that $\bracs{u_3,g}\in W^{\kt}_{\mathrm{grad}}$ and hence that $u_3$ possesses a $\kt$-tangential gradient, and thus $u_3\in\ktgradSob{\ddom}{\ddmes}$.
+	which implies that $\bracs{u_3,g}\in W^{\kt}_{\ddmes,\mathrm{grad}}$ and hence that $u_3$ possesses a $\kt$-tangential gradient, and thus $u_3\in\ktgradSob{\ddom}{\ddmes}$.
 \end{proof}
 In particular, note that since functions in $\ktgradSob{\ddom}{\ddmes}$ are continuous at the vertices of $\graph$, the component $u_3$ of a vector field $u\in\ktcurlSob{\ddom}{\ddmes}$ is thus continuous at the vertices.
 
 \subsection{The Divergence-Free Condition} \label{apps:DivFreeEdge}
-Having established the behaviour of (the curl of) functions $u\in\ktcurlSob{\ddom}{\ddmes}$, and knowing what $\kt$-gradients with respect to $\ddmes$ look like through proposition \ref{prop:3DGradZeroCharacterisation} and corollary \ref{cory:3DTangGradGraph}, we can examine what it means for a vector field to be divergence free.
-Again, we begin with an examination of the divergence-free condition on an individual edge, and build up to the study of this condition on the whole graph.
+Having established the behaviour of (the curl of) functions $u\in\ktcurlSob{\ddom}{\ddmes}$, and knowing what $\kt$-gradients with respect to $\ddmes$ look like through proposition \ref{prop:3DGradZeroCharacterisation} and corollary \ref{cory:3DTangGradGraph}, we can examine what it means for a vector field to be $\kt$-divergence free with respect to $\ddmes$.
+In this section, ``divergence-free" means ``$\kt$-divergence free with respect to $\ddmes$" --- there should be minimal confusion since we only consider the measure $\ddmes$ here.
+We begin with an examination of the divergence-free condition on an individual edge, and build up to the study of this condition on the whole graph.
 
 \begin{prop} \label{prop:DivFreeSegment}
 	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
-	Suppose that $u\bracs{u_1, u_2, u_3}^\top\in\ktcurlSob{\ddom}{\lambda_I}$.
+	Suppose that $u\in\ktcurlSob{\ddom}{\lambda_I}$.
 	Then
 	\begin{align*}
 		u \text{ is divergence free } \quad\Leftrightarrow\quad 
@@ -557,7 +555,7 @@ Again, we begin with an examination of the divergence-free condition on an indiv
 	\end{align*}
 	Since this holds for all such $\varphi$, we must conclude that $\widetilde{u}_2(0)=0$ which provides (iv).
 	
-	($\Leftarrow$) For the reverse implication, the conditions (i) ensures that $u$ is orthogonal to all gradients of zero.
+	($\Leftarrow$) For the reverse implication, (i) ensures that $u$ is orthogonal to all gradients of zero.
 	Conditions (ii)-(iv) imply that $0 = \integral{I}{ u\cdot\overline{\ktgrad_{\lambda_I}\varphi} }{\lambda_I}$ for all smooth functions $\varphi\in\smooth{\ddom}$, and so by density imply that
 	\begin{align*}
 		0 = \integral{I}{ u\cdot\overline{\ktgrad_{\lambda_I}v} }{\lambda_I} \quad\forall v\in\ktgradSob{\ddom}{\lambda_I},
@@ -569,7 +567,7 @@ Again, we begin with an examination of the divergence-free condition on an indiv
 \begin{cory} \label{cory:DivFreeRotated}
 	Let $I$ be a segment in $\ddom$ with singular measure $\lambda_I$, and local coordinate system $y=\bracs{y_1, y_2}$ with $y_2$ parallel to $I$.
 	Suppose $R\in\mathrm{SO}(2)$ is the rotation $x=Ry$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
-	Write $r_I$ for the usual parametrisation of $I$ (convention \ref{ass:MeasTheoryProblemSetup}), and let $u=\bracs{u_1,u_2,u_3}\in\ktcurlSob{\ddom}{\lambda_I}$.
+	Write $r_I$ for the usual parametrisation of $I$ (assumption \ref{ass:MeasTheoryProblemSetup}), and let $u=\in\ktcurlSob{\ddom}{\lambda_I}$.
 	Set
 	\begin{align*}
 		U(x) = R \begin{pmatrix} u_1(x) \\ u_2(x) \end{pmatrix}, 
@@ -592,30 +590,28 @@ Again, we begin with an examination of the divergence-free condition on an indiv
 	The proof is just a repeat of that in proposition \ref{prop:DivFreeSegment}; the segment now being at an angle to the coordinate axes resulting in different forms of the tangential gradient and gradients of zero, in turn affecting the divergence free condition.
 \end{proof}
 
-Characterising the $\kt$-divergence free condition on a graph can then be done as follows.
-Note that the condition (iv) differs from its counterparts in the single-segment cases of proposition \ref{prop:DivFreeSegment} and corollary \ref{cory:DivFreeRotated} in that it involves the sum of function values from the edges totalling zero at the vertices, rather than imposing that the function $U$ be zero.
+Characterising the divergence-free condition on a graph can now be completed.
+Note that the condition (iv) in the following result differs from its counterparts in proposition \ref{prop:DivFreeSegment} and corollary \ref{cory:DivFreeRotated}, in that it involves the sum of function values from the edges totalling zero at the vertices, rather than imposing that the function $U_2$ take the value zero at the vertices.
 \begin{theorem} \label{thm:DivFreeEdgesCharacterisation}
-	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$ with singular measure $\ddmes$.
-	Give each $I_{jk}\in\edgeSet$ local coordinate system $y_{jk}=\bracs{y_{1, jk},y_{2, jk}}$ with $y_{2,jk}$ parallel to $I_{jk}$, and let $R_{jk}\in\mathrm{SO}(2)$ be the change of coordinates $x=R_{jk}y_{jk}$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
-	Write $r_{jk}$ for the usual parametrisation of the edge $I_{jk}$, and suppose $u=\bracs{u_1, u_2, u_3}^\top\in\ktcurlSob{\ddom}{\ddmes}$, and write $u_{jk}=\bracs{u_{1,jk}, u_{2,jk}, u_{3,jk}}^\top$ for the restriction of $u$ to the edge $I_{jk}$.
-	Also define
+	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$ with singular measure $\ddmes$, and recall assumption \ref{ass:MeasTheoryProblemSetup}.
+	Suppose $u\in\ktcurlSob{\ddom}{\ddmes}$ and define
 	\begin{align*}
-		U_{jk}(x) = R_{jk}\begin{pmatrix} u_{1, jk}(x) \\ u_{2, jk}(x) \end{pmatrix},
+		U^{(jk)}(x) = R_{jk}\begin{pmatrix} u_1^{(jk)}(x) \\ u_2^{(jk)}(x) \end{pmatrix},
 		\qquad \qm_{jk} = \bracs{ R_{jk}\qm }_2,
-		\qquad \widetilde{U}_{jk} = U_{jk} \circ r_{jk},
+		\qquad \widetilde{U}^{(jk)} = U^{(jk)} \circ r_{jk},
 	\end{align*}
 	for each edge $I_{jk}$.
 	Then
 	\begin{align*}
-		u \text{ is divergence free } \quad\Leftrightarrow\quad
+		u \text{ is divergence-free } \quad\Leftrightarrow\quad
 		\begin{cases}
-			\mathrm{(i)} & U_{1, jk} = 0, \ \forall I_{jk}\in\edgeSet, \\
-			\mathrm{(ii)} & \widetilde{U}_{2,jk} \in\gradSob{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet, \\
-			\mathrm{(iii)} & U_{2,jk}' + \rmi\qm_{jk} U_{2,jk} + \rmi\wavenumber U_{3,jk} = 0 \text{ on } I_{jk}, \ \forall I_{jk}\in\edgeSet, \\
-			\mathrm{(iv)} & \sum_{j\conRight k} U_{2,kj}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} = 0, \ \forall v_j\in\vertSet,
+			\mathrm{(i)} & U_1^{(jk)} = 0, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(ii)} & \widetilde{U}_2^{(jk)} \in\gradSob{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(iii)} & \bracs{U_2^{(jk)}}' + \rmi\qm_{jk} U_2^{(jk)} + \rmi\wavenumber u_3^{(jk)} = 0 \text{ on } I_{jk}, \ \forall I_{jk}\in\edgeSet, \\
+			\mathrm{(iv)} & \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} = 0, \ \forall v_j\in\vertSet,
 		\end{cases}
 	\end{align*}
-	where $U_{2,jk}' = \widetilde{U}_{2,jk}'\circ r_{jk}^{-1}$.
+	where $\bracs{U_2^{(jk)}}' = \bracs{\widetilde{U}_2^{(jk)}}'\circ r_{jk}^{-1}$.
 \end{theorem}
 \begin{proof}
 	($\Rightarrow$) The proof follows the same arguments as corollary \ref{cory:DivFreeRotated} and proposition \ref{prop:DivFreeSegment} when showing (i)-(iii) hold.
@@ -624,9 +620,9 @@ Note that the condition (iv) differs from its counterparts in the single-segment
 	Then we will have that
 	\begin{align*}
 		0
-		&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \widetilde{U}_{2,jk}\overline{\widetilde{\varphi}}' - \rmi\qm_2\widetilde{U}_{2,jk}\overline{\widetilde{\varphi}} - \rmi\wavenumber\widetilde{u}_{3,jk}\overline{\widetilde{\varphi}} \ \md t  \\
-		&= \sum_{j\con k}\sqbracs{ \widetilde{U}_{2,jk}\overline{\widetilde{\varphi}} }_0^{\abs{I_{jk}}}
-		= \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_{2,kj}\bracs{v_j} - \sum_{j\conLeft k} U_{2,jk}\bracs{v_j} },
+		&= \sum_{j\con k}\int_0^{\abs{I_{jk}}} \widetilde{U}_2^{(jk)}\overline{\widetilde{\varphi}}' - \rmi\qm_2\widetilde{U}_2^{(jk)}\overline{\widetilde{\varphi}} - \rmi\wavenumber\widetilde{u}_3^{(jk)}\overline{\widetilde{\varphi}} \ \md t  \\
+		&= \sum_{j\con k}\sqbracs{ \widetilde{U}_2^{(jk)}\overline{\widetilde{\varphi}} }_0^{\abs{I_{jk}}}
+		= \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} },
 	\end{align*}
 	from which (iv) can be inferred.
 	
