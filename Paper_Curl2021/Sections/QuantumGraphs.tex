@@ -54,13 +54,15 @@ Before proceeding onto function spaces for quantum graphs, we summarise our stan
 \begin{assumption} \label{ass:MeasTheoryProblemSetup}
 	Let $\graph=\bracs{\vertSet,\edgeSet}$ be the period graph of an embedded graph in $\reals^2$ with period cell $\ddom$, so $\graph\subset\ddom$.
 	We consider straight edges between vertices, so each $I_{jk}\in \edgeSet$ is the line segment joining the vertices at either end, with lengths $l_{jk} = \abs{I_{jk}} = \norm{v_j-v_k}$, where $\norm{\cdot}$ denotes Euclidean distance.
-	Let $e_{jk}$ be the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$.
+	Let $e_{jk} = \bracs{e_1^{(jk)}, e_2^{(jk)}}^\top$ be the unit vector parallel to $I_{jk}$ and directed from $v_j$ to $v_k$.
 	Set
 	\begin{align} \label{eq:EdgeParameterisation}
 	r_{jk}:\sqbracs{0, l_{jk}} \ni x \mapsto v_j + xe_{jk} \in I_{jk},
 	\end{align}
 	and note that $r_{jk}'(x) = e_{jk}$.
-	Finally, let $n_{jk}$ be the unit normal to $I_{jk}$ so the frame $y_{jk} := \bracs{n_{jk}, e_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$ (where no summation over $j,k$ is implied).
+	Let $n_{jk} = \bracs{n_1^{(jk)}, n_2^{(jk)}}^\top$ be the unit normal to $I_{jk}$ so the frame $y_{jk} := \bracs{n_{jk}, e_{jk}}$ can be obtained by an orthonormal rotation $R_{jk}\in\mathrm{SO}(2)$ of the (canonical) axis vectors $x = \bracs{x_1, x_2}$, formally by $x = R_{jk}y_{jk}$ (where no summation over $j,k$ is implied).
+	Note that, under this setup, we have that $e_1^{(jk)} = - n_2^{(jk)}$ and $e_2^{(jk)} = n_1^{(jk)}$.
+	Finally, write $\widehat{n}_{jk} = \bracs{ n_{jk}, 0 }^\top\in\reals^3$ and $\widehat{e}_{jk} = \bracs{ e_{jk}, 0 }^\top\in\reals^3$, and $\widehat{x}_3 = \bracs{0,0,1}^\top$.
 \end{assumption}
 
 \subsection{Function spaces} \label{ssec:FunctionSpaces}

@@ -7,60 +7,72 @@ In addition, assumption \ref{ass:MeasTheoryProblemSetup} is adopted henceforth.
 
 \subsection{Gradients of zero with respect to $\ddmes$} \label{apps:3DGradientsOfZero}
 We begin by examining the set of gradients of zero on a graph consisting of a single edge parallel to the $x_2$ axis.
-\tstk{this is similar to when we just had regular gradients... in fact it's identical basically...}
+Although this is the first step towards understanding gradients of zero, the proof has a simple generalisation to when an edge is at an angle to the $x_2$-axis, and so we provide the general argument in corollary \ref{cory:3DGradSegmentRotated}.
 
 \begin{prop} \label{prop:3DGradZeroSegment}
-	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$.
+	Let $I_{jk}$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_{jk}$.
 	Then 
 	\begin{align*}
-		\gradZero{\ddom}{\lambda_I} &= \clbracs{ \bracs{g_1, 0, 0}^{\top} \setVert g_1\in\ltwo{\ddom}{\lambda_I} }.
+		\gradZero{\ddom}{\lambda_{jk}} &= \clbracs{ \bracs{g_1, 0, 0}^{\top} \setVert g_1\in\ltwo{\ddom}{\lambda_I} }.
 	\end{align*}
 \end{prop}
-\begin{proof}
-	Without loss of generality we assume $x_1=0$ on $I$.
-	If $\bracs{0,0,g_3}^\top\in\gradZero{\ddom}{\ddmes}$, we can find an approximating sequence $\phi_n$ as in \eqref{eq:GradZeroSequenceDef}, and since $\phi_n\rightarrow 0$ we have that $\rmi\wavenumber\phi_n\rightarrow0$ and hence $g_3=0$.
-	
-	Now suppose that $g_1\in\smooth{\ddom}$.
-	Set $\phi(x) = x_1 g_1(x)$, so that 
-	\begin{align*}
-		\grad^{(0)}\phi(x) = \bracs{g_1(x) + x_1 \partial_1 g_1(x), x_1 \partial_2 g_1(x), \rmi\wavenumber\phi(x)}^\top.
-	\end{align*}
-	Then $\phi = 0$ on $I$, and $\grad^{(0)}\phi = \bracs{g_1, 0, 0}^\top$ on $I$, so the constant sequence $\phi$ serves as the approximating sequence in \eqref{eq:GradZeroSequenceDef}, and thus $\bracs{g_1, 0, 0}^{\top}\in\gradZero{\ddom}{\lambda_I}$.
-	Given the definition of $\gradZero{\ddom}{\lambda_I}$, we conclude by a density that $\bracs{g_1, 0, 0}^{\top}\in\gradZero{\ddom}{\lambda_I}$ for $g_1\in\ltwo{\ddom}{\lambda_I}$.
-	
-	Finally, suppose that $\bracs{0, g_2, 0}\in\gradZero{\ddom}{\lambda_I}$ and let $\phi_n$ be an approximating sequence as in \eqref{eq:GradZeroSequenceDef}.
-	Consider the change of variables $r_I$ (analogous to $r_{jk}$ in \ref{ass:MeasTheoryProblemSetup}) for $I$, and notice that
-	\begin{align*}
-		\int_0^{\abs{I}} \abs{\phi_n\bracs{r_I(t)}}^2 \ \md t &= \integral{\ddom}{ \abs{\phi_n}^2 }{\lambda_I} \rightarrow 0, \\
-		\int_0^{\abs{I}} \abs{ \phi_n'\bracs{r_I(t)} - g_2\bracs{r_I(t)} }^2 \ \md t &= \integral{\ddom}{ \abs{\grad^{(0)}\phi_n - g_2}^2 }{\lambda_I} \rightarrow 0.		
-	\end{align*}
-	Thus, the function $\tilde{\phi}_n = \phi_n\circ r_I \in\smooth{I}$ is such that $\tilde{\phi}_n\rightarrow 0, \tilde{\phi}_n'\rightarrow g_2\circ r_I$ in $\ltwo{\interval{I}}{t}$.
-	Therefore, $g_2\circ r_I$ is the derivative of $0$ in the $\gradSob{\interval{I}}{t}$-sense, and so $g_2\circ r_I = 0$, and hence $g_2 = 0$.
-\end{proof}
-
-\tstk{remark here about how these gradients are essentially the same as in the 2D (non-$\wavenumber$) case?}
+%\begin{proof}
+%	Without loss of generality we assume $x_1=0$ on $I_{jk}$.
+%	If $\bracs{0,0,g_3}^\top\in\gradZero{\ddom}{\lambda_{jk}}$, we can find an approximating sequence $\phi_n$ as in \eqref{eq:GradZeroSequenceDef}, and since $\phi_n\rightarrow 0$ we have that $\rmi\wavenumber\phi_n\rightarrow0$ and hence $g_3=0$.
+%	
+%	Now suppose that $g_1\in\smooth{\ddom}$.
+%	Set $\phi(x) = x_1 g_1(x)$, so that 
+%	\begin{align*}
+%		\grad^{(0)}\phi(x) = \bracs{g_1(x) + x_1 \partial_1 g_1(x), x_1 \partial_2 g_1(x), \rmi\wavenumber\phi(x)}^\top.
+%	\end{align*}
+%	Then $\phi = 0$ on $I_{jk}$, and $\grad^{(0)}\phi = \bracs{g_1, 0, 0}^\top$ on $I$, so the constant sequence $\phi$ serves as the approximating sequence in \eqref{eq:GradZeroSequenceDef}, and thus $\bracs{g_1, 0, 0}^{\top}\in\gradZero{\ddom}{\lambda_{jk}}$.
+%	Given the definition of $\gradZero{\ddom}{\lambda_{jk}}$, we conclude by a density that $\bracs{g_1, 0, 0}^{\top}\in\gradZero{\ddom}{\lambda_{jk}}$ for $g_1\in\ltwo{\ddom}{\lambda_{jk}}$.
+%	
+%	Finally, suppose that $\bracs{0, g_2, 0}\in\gradZero{\ddom}{\lambda_{jk}}$ and let $\phi_n$ be an approximating sequence as in \eqref{eq:GradZeroSequenceDef}.
+%	Consider the change of variables $r_{jk}$ and notice that
+%	\begin{align*}
+%		\int_0^{\abs{I_{jk}}} \abs{\phi_n\bracs{r_{jk}(y)}}^2 \ \md y &= \integral{\ddom}{ \abs{\phi_n}^2 }{\lambda_{jk}} \rightarrow 0, \\
+%		\int_0^{\abs{I_{jk}}} \abs{ \phi_n'\bracs{r_{jk}(y)} - g_2\bracs{r_{jk}(y)} }^2 \ \md y &= \integral{\ddom}{ \abs{\grad^{(0)}\phi_n - g_2}^2 }{\lambda_{jk}} \rightarrow 0.		
+%	\end{align*}
+%	Thus, the function $\tilde{\phi}_n = \phi_n\circ r_{jk} \in\smooth{I_{jk}}$ is such that $\tilde{\phi}_n\rightarrow 0, \tilde{\phi}_n'\rightarrow g_2\circ r_{jk}$ in $\ltwo{\interval{I_{jk}}}{y}$.
+%	Therefore, $g_2\circ r_{jk}$ is the derivative of $0$ in the $\gradSob{\interval{I_{jk}}}{y}$-sense, and so $g_2\circ r_{jk} = 0$, and hence $g_2 = 0$.
+%\end{proof}
 
 \begin{cory} \label{cory:3DGradSegmentRotated}
-	Let $I$ be a segment in $\ddom$ with local orthogonal co-ordinate system  $y=\bracs{y_1,y_2}$ with $y_2$ parallel to $I$, and let $\lambda_I$ be the singular measure supported on $I$.
-	Suppose $R\in\mathrm{SO}(2)$ is the change of co-ordinates $x=Ry$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system.
+	Let $I_{jk}$ be an edge of $\graph$, and set $\hat{e}_{I} = \bracs{e_{I}, 0}^\top\in\reals^3, \hat{n}_{I} := \bracs{n_{I}, 0}^\top\in\reals^3$.
 	Then
 	\begin{align*}
-		\gradZero{\ddom}{\lambda_I} &= 
-		\clbracs{ \begin{pmatrix} R^\top & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} g_1 \\ 0 \\ 0 \end{pmatrix} }
+		\gradZero{\ddom}{\lambda_{jk}} &= 
+		\clbracs{ g \hat{n}_{jk} \setVert g\in\ltwo{\ddom}{\lambda_{jk}} }.
 	\end{align*}
 \end{cory}
 \begin{proof}
-	This is simply an application of the rotation $R$ to the result of proposition \ref{prop:3DGradZeroSegment}.
+	Clearly, if $g = \bracs{0,0,g_3}^\top\in\gradZero{\ddom}{\lambda_{jk}}$, then \eqref{eq:GradZeroSequenceDef} immediately implies that $g_3=0$.
+	Now suppose that $g\hat{e}_{jk}\in\gradZero{\ddom}{\lambda_{jk}}$, and take an approximating sequence $\varphi_n$ as in \eqref{eq:GradZeroSequenceDef}.
+	Then we have that $\grad\varphi_n\cdot e_{jk} \rightarrow g$ in $\ltwo{\ddom}{\lambda_{jk}}$, and thus
+	\begin{align*}
+		\int_0^{\abs{I_{jk}}} \abs{ \diff{\varphi_n}{y}\bracs{r_{jk}(y)} - g\bracs{r_{jk}(y)} }^2 \md y
+		&= \integral{I_{jk}}{ \abs{ \grad\varphi_n\cdot e_{jk} - g }^2 }{\lambda_{jk}}
+		\rightarrow 0 \toInfty{n}. \\
+		\implies \diff{\varphi_n}{y}\bracs{r_{jk}(y)} &\lconv{\ltwo{\interval{I_{jk}}}{y}} g\bracs{r_{jk}(y)}.
+	\end{align*}
+	We also observe that $\varphi_n\bracs{r_{jk}(y)}\lconv{\ltwo{\interval{I_{jk}}}{y}} 0$, and thus we have that $g\bracs{r_{jk}(y)}$ is the derivative (in the $\gradSob{\interval{I_{jk}}}{y}$-sense) of the zero function, and hence $g=0$.
+	
+	Finally, let $g\in\smooth{\ddom}$ and consider the smooth function $\varphi(x) = \bracs{\bracs{x - v_j}\cdot n_{jk}}g(x)$.
+	Then $\grad\varphi = \bracs{\bracs{x - v_j}\cdot n_{jk}}\grad g + g n_{jk}$, and notice that $\bracs{x - v_j}\cdot n_{jk} = 0$ when $x\in I_{jk}$.
+	It is easy to see that $\varphi=0$ and $\grad\varphi = g n_{jk}$ on $I$, and thus $g \hat{n_{jk}}\in\gradZero{\ddom}{\lambda_{jk}}$.
+	By a density argument, we can then conclude that $g\hat{n}_{jk}\in\gradZero{\ddom}{\lambda_{jk}}$ too, for any $g\in\ltwo{\ddom}{\lambda_{jk}}$.
+	This completes the proof.
 \end{proof}
 Note that the result of corollary \ref{cory:3DGradSegmentRotated} also implies that
 \begin{align*}
-	\gradZero{\ddom}{\lambda_I} &= 
-		\clbracs{ \begin{pmatrix} g_1 \\ g_2 \\ 0 \end{pmatrix}\in\ltwo{\ddom}{\lambda_I}^3 \setVert \begin{pmatrix} g_1 \\ g_2 \end{pmatrix} \cdot e_I = 0 },
+	\gradZero{\ddom}{\lambda_{jk}} &= 
+		\clbracs{ \begin{pmatrix} g_1 \\ g_2 \\ 0 \end{pmatrix}\in\ltwo{\ddom}{\lambda_{jk}}^3 \setVert \begin{pmatrix} g_1 \\ g_2 \end{pmatrix} \cdot e_{jk} = 0 }.
 \end{align*}
-where $e_I$ is the unit (tangent) vector to $I$.
-We now have the following characterisation for gradients of zero on a graph $\graph$.
+As previously mentioned, the proof of corollary \ref{cory:3DGradSegmentRotated} is generalised from the proof of proposition \ref{prop:3DGradZeroSegment} (one can set $R_{jk}$ to be the identity matrix to recover it).
+This approach will be thematic throughout our analysis; determine the form of a function/gradient/curl on an edge parallel to an axis, then the same object on a ``rotated edge" $I_{jk}$ will have the same form in the local coordinate system $y_{jk}$, which we can then utilise to generalise the argument from the case of a parallel edge.
 
-\tstk{what "name" does this deserve - theorem? prop? cory? It's not revolutionary given the scalar work}
+For now though, we have the following characterisation for gradients of zero on a graph $\graph$.
 \begin{prop} \label{prop:3DGradZeroCharacterisation}
 	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$, and $\ddmes$ the singular measure on $\graph$.
 	Assume convention \ref{ass:MeasTheoryProblemSetup}.
@@ -78,72 +90,103 @@ Now that we have established the form of the functions which live in $\gradZero{
 \subsection{Tangential $\kt$-Gradients with respect to $\ddmes$} \label{apps:3DTangentialGradients}
 Whilst $\gradZero{\ddom}{\ddmes}$ is invariant under changes in $\kt$, the gradients of functions in $\ktgradSob{\ddom}{\ddmes}$ are not.
 However given proposition \ref{prop:3DGradZeroCharacterisation}, we can understand these gradients on a graph $\graph$ by understanding their form on each edge $I_{jk}$, and so our analysis flows in much the same way as in section \ref{apps:3DGradientsOfZero}.
-First, we seek to understand the behaviour of a gradient on a single edge parallel to the $x_2$ axis.
+First, we seek to understand the behaviour of a gradient on a single edge parallel to the $x_2$ axis (proposition \ref{prop:3DTangGradSegment}, and then generalise our argument in corollary \ref{cory:3DTangGradRotated}.
 
 \begin{prop} \label{prop:3DTangGradSegment}
-	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
-	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space of functions on $\interval{I}$ with respect to the Lebesgue measure.
-	Suppose that $u\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r_I$.
-	Then $\widetilde{u}\in\gradSob{\interval{I}}{t}$ and
+	Let $I_{jk}$ be a segment in $\ddom$ parallel to the $x_2$ axis.
+	Write $\gradSob{\interval{I_{jk}}}{y}$ for the ``classical" Sobolev space of functions on $\interval{I_{jk}}$ with respect to the Lebesgue measure.
+	Suppose that $u\in\ktgradSob{\ddom}{\lambda_{jk}}$ and set $\widetilde{u} = u \circ r_{jk}$.
+	Then $\widetilde{u}\in\gradSob{\interval{I_{jk}}}{y}$ and
 	\begin{align*}
-		\ktgrad_{\lambda_I} u &= 
+		\ktgrad_{\lambda_{jk}} u &= 
 		\begin{pmatrix} 0 \\ u' + \rmi\qm_2 u \\ \rmi\wavenumber u \end{pmatrix},
 	\end{align*}
-	where $u'(x) = \bracs{\widetilde{u}'\circ r_I^{-1}}(x)$.
+	where $u'(x) = \bracs{\widetilde{u}'\circ r_{jk}^{-1}}(x)$.
 \end{prop}
-\begin{proof}
-	Write $\ktgrad_{\lambda_I} u = \bracs{v_1, v_2, v_3}^\top$, and let $\phi_n\in\smooth{\ddom}$ be an approximating sequence for $\bracs{u, \ktgrad_{\lambda_I}u}$, so
-	\begin{align*}
-		\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} u, &\qquad \ktgrad\phi_n \lconv{\ltwo{\ddom}{\lambda_I}^3}\ktgrad_{\lambda_I}u.
-	\end{align*}
-	The requirement that $\ktgrad_{\lambda_I} u \perp \gradZero{\ddom}{\lambda_I}$ and proposition \ref{prop:3DGradZeroSegment} implies that $v_1=0$, as $v_1$ must be orthogonal to all functions in $\ltwo{\ddom}{\lambda_I}$.
-	Since $\rmi\wavenumber\phi_n\lconv{\ltwo{\ddom}{\lambda_I}} v_3$ and $\phi_n\lconv{\ltwo{\ddom}{\lambda_I}}u$, we have that $v_3 = \rmi\wavenumber u$.
-	
-	This leaves the form of the second component to be determined.
-	Set $\widetilde{\phi}_n = \phi_n \circ r_I$, and use the change of variables $r_I$ to obtain
-	\begin{align*}
-		\int_0^{\abs{I}} \abs{ \widetilde{\phi}_n - \widetilde{u} }^2 \ \md t 
-		&= \integral{\ddom}{ \abs{ \phi_n - u }^2 }{\lambda_I} \rightarrow 0, \\
-		\int_0^{\abs{I}} \abs{ \widetilde{\phi}'_n + \rmi\qm_2\widetilde{\phi}_n - \widetilde{v}_2 }^2 \ \md t 
-		&= \integral{\ddom}{ \abs{ \partial_2\phi_n + \rmi\qm_2\phi_n - v_2 }^2 }{\lambda_I} \rightarrow 0,
-	\end{align*}
-	where $\widetilde{v}_2 = v_2\circ r_I$.
-	Thus, $\widetilde{\phi}_n\in\smooth{\interval{I}}$ is such that
-	\begin{align*}
-		\widetilde{\phi}_n \rightarrow \widetilde{u}, \quad
-		\widetilde{\phi}'_n - \rmi\qm_2\widetilde{\phi}_n \rightarrow \widetilde{v}_2, \quad
-		\text{in } \ltwo{\interval{I}}{t}.
-	\end{align*}
-	As a result, we have that $\widetilde{\phi}'_n \rightarrow  \widetilde{v}_2 - \rmi\qm_2\widetilde{u}$, and thus $\widetilde{u}' = \widetilde{v}_2 - \rmi\qm_2\widetilde{u}$ in the $\gradSob{\interval{I}}{t}$ sense.
-	Undoing the change of variables $r_I$ and rearranging for $v_2$ then gives the desired expression.
-\end{proof}
-
+For the proof, see the general argument in the following corollary.
+%\begin{proof}
+%	Write $\ktgrad_{\lambda_{jk}} u = \bracs{v_1, v_2, v_3}^\top$, and let $\phi_n\in\smooth{\ddom}$ be an approximating sequence for $\bracs{u, \ktgrad_{\lambda_{jk}}u}$, so \tstk{change I to I_{jk}s everywhere}
+%	\begin{align*}
+%		\phi_n \lconv{\ltwo{\ddom}{\lambda_I}} u, &\qquad \ktgrad\phi_n \lconv{\ltwo{\ddom}{\lambda_I}^3}\ktgrad_{\lambda_I}u.
+%	\end{align*}
+%	The requirement that $\ktgrad_{\lambda_I} u \perp \gradZero{\ddom}{\lambda_I}$ and proposition \ref{prop:3DGradZeroSegment} implies that $v_1=0$, as $v_1$ must be orthogonal to all functions in $\ltwo{\ddom}{\lambda_I}$.
+%	Since $\rmi\wavenumber\phi_n\lconv{\ltwo{\ddom}{\lambda_I}} v_3$ and $\phi_n\lconv{\ltwo{\ddom}{\lambda_I}}u$, we have that $v_3 = \rmi\wavenumber u$.
+%	
+%	This leaves the form of the second component to be determined.
+%	Set $\widetilde{\phi}_n = \phi_n \circ r_I$, and use the change of variables $r_I$ to obtain
+%	\begin{align*}
+%		\int_0^{\abs{I}} \abs{ \widetilde{\phi}_n - \widetilde{u} }^2 \ \md t 
+%		&= \integral{\ddom}{ \abs{ \phi_n - u }^2 }{\lambda_I} \rightarrow 0, \\
+%		\int_0^{\abs{I}} \abs{ \widetilde{\phi}'_n + \rmi\qm_2\widetilde{\phi}_n - \widetilde{v}_2 }^2 \ \md t 
+%		&= \integral{\ddom}{ \abs{ \partial_2\phi_n + \rmi\qm_2\phi_n - v_2 }^2 }{\lambda_I} \rightarrow 0,
+%	\end{align*}
+%	where $\widetilde{v}_2 = v_2\circ r_I$.
+%	Thus, $\widetilde{\phi}_n\in\smooth{\interval{I}}$ is such that
+%	\begin{align*}
+%		\widetilde{\phi}_n \rightarrow \widetilde{u}, \quad
+%		\widetilde{\phi}'_n - \rmi\qm_2\widetilde{\phi}_n \rightarrow \widetilde{v}_2, \quad
+%		\text{in } \ltwo{\interval{I}}{t}.
+%	\end{align*}
+%	As a result, we have that $\widetilde{\phi}'_n \rightarrow  \widetilde{v}_2 - \rmi\qm_2\widetilde{u}$, and thus $\widetilde{u}' = \widetilde{v}_2 - \rmi\qm_2\widetilde{u}$ in the $\gradSob{\interval{I}}{t}$ sense.
+%	Undoing the change of variables $r_I$ and rearranging for $v_2$ then gives the desired expression.
+%\end{proof}
 As before when we handled $\gradZero{\ddom}{\lambda_{jk}}$, we can use a rotation argument to determine the form of the tangential gradient on an edge oriented at an angle to the co-ordinate axes.
 \begin{cory} \label{cory:3DTangGradRotated}
-	Let $I$ be a segment in $\ddom$ with local orthogonal co-ordinate system  $y=\bracs{y_1,y_2}$ with $y_2$ parallel to $I$, and let $\lambda_I$ be the singular measure supported on $I$.
-	Suppose $R\in\mathrm{SO}(2)$ is the change of co-ordinates $x=Ry$ where $x=\bracs{x_1,x_2}$ is the axis co-ordinate system, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
-	Write $\gradSob{\interval{I}}{t}$ for the Sobolev space of functions on $\interval{I}$ with respect to the Lebesgue measure.
-	Suppose that $u\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r_I$.
-	Then $\widetilde{u}\in\gradSob{\interval{I}}{t}$ and
+	Let $I_{jk}$ be an edge of $\graph$ and write $\gradSob{\interval{I_{jk}}}{y}$ for the Sobolev space of functions on $\interval{I_{jk}}$ with respect to the Lebesgue measure.
+	Suppose that $u\in\ktgradSob{\ddom}{\lambda_{jk}}$ and set $\widetilde{u} = u \circ r_{jk}$.
+	Then $\widetilde{u}\in\gradSob{\interval{I_{jk}}}{y}$ and
 	\begin{align*}
-		\ktgrad_{\lambda_I} u &= 
-		\begin{pmatrix} R^{\top} & 0 \\ 0 & 1	\end{pmatrix}
-		\begin{pmatrix} 0 \\ u' + \rmi\qm_{I}u \\ \rmi\wavenumber u \end{pmatrix},
+		\ktgrad_{\lambda_{jk}} u &= \bracs{u'+\rmi\qm_{jk} u}\widehat{e}_{jk} + \rmi\wavenumber u \hat{x}_3,
+%		\begin{pmatrix} R^{\top} & 0 \\ 0 & 1	\end{pmatrix}
+%		\begin{pmatrix} 0 \\ u' + \rmi\qm_{I}u \\ \rmi\wavenumber u \end{pmatrix},
 	\end{align*}
-	where $\qm_I = \bracs{R_I\qm}_2$ and $u'(x) = \bracs{\widetilde{u}'\circ r_I^{-1}}(x)$.
+	where $\qm_{jk} := \qm\cdot e_{jk} = \bracs{R_{jk}\qm}_2$ and $u'(x) = \bracs{\widetilde{u}'\circ r_{jk}^{-1}}(x)$.
 \end{cory}
+\begin{proof}
+	Since $\ktgrad_{\lambda_{jk}}u \perp \gradZero{\ddom}{\lambda_{jk}}$, given corollary \ref{cory:3DGradSegmentRotated} we have that
+	\begin{align*}
+		0 &= \integral{I_{jk}}{ \ktgrad_{\lambda_{jk}}u\cdot\bracs{g\widehat{n}_{jk}} }{\lambda_{jk}} \\
+		&= \integral{I_{jk}}{ \overline{g}\bracs{\ktgrad_{\lambda_{jk}}u\cdot\widehat{n}_{jk}} }{\lambda_{jk}}, \qquad \forall g\in\ltwo{\ddom}{\lambda_{jk}},
+\end{align*}
+	and so we deduce that $\ktgrad_{\lambda_{jk}}u\cdot\widehat{n}_{jk} = 0$.
+	This enables us to write
+	\begin{align*}
+		\ktgrad_{\lambda_{jk}}u = v_{jk}\widehat{e}_{jk} + v_3\widehat{x}_3,
+	\end{align*}
+	for some $v_{jk},v_3\in\ltwo{\ddom}{\lambda_{jk}}$.
+	Now take an approximating sequence $\phi_n$ for $u$ as in corollary \ref{cory:SobSpaceApproxSequences}, which means that the following convergences hold:
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom}{\lambda_{jk}}} 0, \qquad \ktgrad\phi_n \lconv{\ltwo{\ddom}{\lambda_{jk}}^2} v_{jk}\widehat{e}_{jk} + v_3\widehat{x}_3.
+	\end{align*}
+	Clearly, we must have that $v_3 = \rmi\wavenumber u$.
+	Furthermore, we also have that
+	\begin{align*}
+		\tgrad\phi_n &\lconv{\ltwo{\ddom}{\lambda_{jk}}^2} v_{jk}e_{jk}, \\
+		\implies \grad\phi_n\cdot e_{jk} &\lconv{\ltwo{\ddom}{\lambda_{jk}}} v_{jk} - \rmi u \qm\cdot e_{jk},
+	\end{align*}
+	and thus
+	\begin{align*}
+		\int_0^{I_{jk}} \diff{\bracs{\phi_n\circ r_{jk}}}{y}(y) - \bracs{v_{jk}\circ r_{jk}}(y) + \rmi\qm\cdot e_{jk}\widetilde{u}(y) \ \md y
+		&= \integral{I_{jk}}{ \abs{ \grad\phi_n\cdot e_{jk} - v_{jk} + \rmi u \qm\cdot e_{jk} }^2 }{y}, \\
+		&\rightarrow 0 \toInfty{n},
+	\end{align*}
+	where we have made use of the change of variables $r_{jk}$.
+	Similarly, we can also deduce that $\phi_n\circ r_{jk} \rightarrow \widetilde{u}$ in $\ltwo{\interval{I_{jk}}}{y}$, and thus $\widetilde{u}\in\gradSob{\interval{I_{jk}}}{y}$ with $\widetilde{u}' = \bracs{v_{jk}\circ r_{jk}} - \rmi\widetilde{u}\qm\cdot e_{jk}$.
+	Rearranging for $v_{jk}\circ r_{jk}$ and undoing the change of variables $r_{jk}$ then provides the desired result.
+\end{proof}
 
 Now that we understand the form of the tangential gradient of a function on an edge of a graph, we can determine the form of the tangential gradient for a function $u\in\ktgradSob{\ddom}{\ddmes}$.
 \begin{cory} \label{cory:3DTangGradGraph}
-	Let $\graph=\bracs{\vertSet \edgeSet}$ be an embedded graph in $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$.
+	Let $\graph=\bracs{\vertSet, \edgeSet}$ be an embedded graph in $\ddom$ and let $\ddmes$ be the singular measure supported on $\graph$.
 	Then if $u\in\ktgradSob{\ddom}{\ddmes}$, then for each $I_{jk}\in\edgeSet$ we have that
 	\begin{align*}
 		\widetilde{u}_{jk} &:= u_{jk} \circ r_{jk} \in \gradSob{\interval{I_{jk}}}{t}, \\
 		\bracs{ \ktgrad_{\ddmes} u }\vert_{I_{jk}} &= 
-		\begin{pmatrix} R^{\top}_{jk} & 0 \\ 0 & 1	\end{pmatrix}
-		\begin{pmatrix} 0 \\ u_{jk}' + \rmi\qm_{jk}u_{jk} \\ \rmi\wavenumber u_{jk} \end{pmatrix},
+		\bracs{ u_{jk}' + \rmi\qm_{jk}u_{jk} }\widehat{e}_{jk} + \rmi\wavenumber u_{jk}\widehat{x}_3,
+%		\begin{pmatrix} R^{\top}_{jk} & 0 \\ 0 & 1	\end{pmatrix}
+%		\begin{pmatrix} 0 \\ u_{jk}' + \rmi\qm_{jk}u_{jk} \\ \rmi\wavenumber u_{jk} \end{pmatrix},
 	\end{align*}
-	where $\qm_{jk} = \bracs{ R_{jk}\qm }_2$ and $u_{jk}' = \widetilde{u}_{jk}' \circ r_{jk}^{-1}$.
+	where $\qm_{jk} := \qm\cdot e_{jk} = \bracs{ R_{jk}\qm }_2$ and $u_{jk}' = \widetilde{u}_{jk}' \circ r_{jk}^{-1}$.
 \end{cory}
 \begin{proof}
 	Since $u\in\ktgradSob{\ddom}{\ddmes}$, we have that $\ktgrad_{\ddmes} u \perp \gradZero{\ddom}{\ddmes}$.
@@ -184,61 +227,97 @@ In addition to this understanding of the tangential gradients, we can also demon
 With our description of $\ktgradSob{\ddom}{\ddmes}$ complete, we move onto investigating functions with $\kt$-curls with respect to the measure $\ddmes$.
 Our investigation proceeds almost identically to that for gradients; we first examine the set $\curlZero{\ddom}{\lambda_{jk}}$ for an edge $I_{jk}$, and use this to build-up an understanding of $\curlZero{\ddom}{\ddmes}$.
 The objective being to establish a result similar to proposition \ref{prop:3DGradZeroCharacterisation} for curls of zero, which is then used to describe the functions that live in $\ktcurlSob{\ddom}{\ddmes}$.
-To that end, we begin by examining curls of zero on a segment parallel to the $x_2$-axis.
+To that end, we begin by examining curls of zero on a single edge $I_{jk}$ of $\graph$.
 
 \begin{prop} \label{prop:CurlZeroSegment}
-	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, and let $\lambda_I$ be the singular measure supported on $I$.
+	Let $I_{jk}$ be an edge parallel to the $x_2$ axis.
 	Then
 	\begin{align*}
-		\curlZero{\ddom}{\lambda_I} &= 
-		\clbracs{ \bracs{0, c_2, c_3}^\top \setVert c_2, c_3\in\ltwo{\ddom}{\lambda_I} }.
+		\curlZero{\ddom}{\lambda_{jk}} &= 
+		\clbracs{ \bracs{0, c_2, c_3}^\top \setVert c_2, c_3\in\ltwo{\ddom}{\lambda_{jk}} }.
 	\end{align*}
 \end{prop}
-\begin{proof}
-	We first show that if $c = \bracs{c_1, 0, 0}^\top\in\curlZero{\ddom}{\lambda_I}$, then $c_1=0$.
-	To this end, take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi_2^n, \phi_3^n}$ as in \eqref{eq:CurlZeroSequenceDef}.
-	This provides us with the following convergences in $\ltwo{\ddom}{\lambda_I}$;
-	\begin{align*}
-		\phi_1^n \rightarrow 0, \quad
-		\phi_2^n \rightarrow 0, \quad
-		\phi_3^n \rightarrow 0, \quad
-		\partial_1\phi_3^n \rightarrow 0, \quad
-		\partial_2\phi_3^n \rightarrow c_1.
-	\end{align*}
-	In particular, we have that
-	\begin{align*}
-		\phi_3^n \lconv{\ltwo{\ddom}{\lambda_I}} 0, \quad
-		\grad^{(0)}\phi_3^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } \bracs{0, c_1, 0}^\top.
-	\end{align*}
-	Therefore, $\bracs{0, c_1, 0}^\top\in\gradZero{\ddom}{\lambda_I}$ but by proposition \ref{prop:3DGradZeroSegment} we have that $c_1=0$.
-	
-	Now we demonstrate that the second and third components of $c\in\curlZero{\ddom}{\lambda_I}$ can be any functions in $\ltwo{\ddom}{\lambda_I}$.
-	Without loss of generality we assume that $x_1=0$ on $I$, and let $c_2\in\smooth{\ddom}$.
-	Consider the function $\Phi = \bracs{0, x_1 c_2, 0 }^\top$, and set $c=\bracs{0,c_2,0}^\top$.
-	Then
-	\begin{align*}
-		\integral{\ddom}{ \abs{\Phi}^2 }{\lambda_I} &= \integral{I}{ x_1^2 c_2^2 }{\lambda_I} = 0, \\
-		\integral{\ddom}{ \abs{\grad^{(0)}\wedge\Phi - c}^2 }{\lambda_I} &= \integral{I}{ \abs{ x_1\partial_1 c_2}^2 }{\lambda_I} = 0,
-	\end{align*}
-	so we have that $c\in\curlZero{\ddom}{\lambda_I}$.
-	By density, we have that $c=\bracs{0,c_2,0}^\top\in\curlZero{\ddom}{\lambda_I}$ for any $c_2\in\ltwo{\ddom}{\lambda_I}$.
-	Similarly, the function $\Psi = \bracs{0, 0, -x_1 c_3}^\top$ for $c_3\in\smooth{\ddom}$ leads us to the conclusion that $\bracs{0,0,c_3}^\top\in\curlZero{\ddom}{\lambda_I}$, and thus that $c=\bracs{0,0, c_3}^\top\in\curlZero{\ddom}{\lambda_I}$ for any $c_3\in\ltwo{\ddom}{\lambda_I}$, which completes the proof.
-\end{proof}
+%\begin{proof}
+%	We first show that if $c = \bracs{c_1, 0, 0}^\top\in\curlZero{\ddom}{\lambda_I}$, then $c_1=0$.
+%	To this end, take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi_2^n, \phi_3^n}$ as in \eqref{eq:CurlZeroSequenceDef}.
+%	This provides us with the following convergences in $\ltwo{\ddom}{\lambda_I}$;
+%	\begin{align*}
+%		\phi_1^n \rightarrow 0, \quad
+%		\phi_2^n \rightarrow 0, \quad
+%		\phi_3^n \rightarrow 0, \quad
+%		\partial_1\phi_3^n \rightarrow 0, \quad
+%		\partial_2\phi_3^n \rightarrow c_1.
+%	\end{align*}
+%	In particular, we have that
+%	\begin{align*}
+%		\phi_3^n \lconv{\ltwo{\ddom}{\lambda_I}} 0, \quad
+%		\grad^{(0)}\phi_3^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } \bracs{0, c_1, 0}^\top.
+%	\end{align*}
+%	Therefore, $\bracs{0, c_1, 0}^\top\in\gradZero{\ddom}{\lambda_I}$ but by proposition \ref{prop:3DGradZeroSegment} we have that $c_1=0$.
+%	
+%	Now we demonstrate that the second and third components of $c\in\curlZero{\ddom}{\lambda_I}$ can be any functions in $\ltwo{\ddom}{\lambda_I}$.
+%	Without loss of generality we assume that $x_1=0$ on $I$, and let $c_2\in\smooth{\ddom}$.
+%	Consider the function $\Phi = \bracs{0, x_1 c_2, 0 }^\top$, and set $c=\bracs{0,c_2,0}^\top$.
+%	Then
+%	\begin{align*}
+%		\integral{\ddom}{ \abs{\Phi}^2 }{\lambda_I} &= \integral{I}{ x_1^2 c_2^2 }{\lambda_I} = 0, \\
+%		\integral{\ddom}{ \abs{\grad^{(0)}\wedge\Phi - c}^2 }{\lambda_I} &= \integral{I}{ \abs{ x_1\partial_1 c_2}^2 }{\lambda_I} = 0,
+%	\end{align*}
+%	so we have that $c\in\curlZero{\ddom}{\lambda_I}$.
+%	By density, we have that $c=\bracs{0,c_2,0}^\top\in\curlZero{\ddom}{\lambda_I}$ for any $c_2\in\ltwo{\ddom}{\lambda_I}$.
+%	Similarly, the function $\Psi = \bracs{0, 0, -x_1 c_3}^\top$ for $c_3\in\smooth{\ddom}$ leads us to the conclusion that $\bracs{0,0,c_3}^\top\in\curlZero{\ddom}{\lambda_I}$, and thus that $c=\bracs{0,0, c_3}^\top\in\curlZero{\ddom}{\lambda_I}$ for any $c_3\in\ltwo{\ddom}{\lambda_I}$, which completes the proof.
+%\end{proof}
 
-Of course, we can now determine what the set $\curlZero{\ddom}{\lambda_I}$ looks like for an edge $I$ at an arbitrary angle to the co-ordinate axes.
+We can now determine what the set $\curlZero{\ddom}{\lambda_{jk}}$ looks like for an edge $I_{jk}$ at an arbitrary angle to the co-ordinate axes, using proposition \ref{prop:CurlZeroSegment}.
 \begin{cory} \label{cory:CurlZeroRotated}
-	Suppose $I$ is a segment in $\ddom$ with orthogonal co-ordinate system $y = \bracs{y_1, y_2}$ with $y_2$ parallel to $I$, and let $\lambda_I$ be the singular measure supporting $I$. 
-	Let $R\in\mathrm{SO}(2)$ be the change of co-ordinates $x = Ry$, where $x = \bracs{x_1, x_2}$ is the axis co-ordinate system. 
-	Finally, let $e_I$ be the unit vector directed along $I$ and $n_I$ the unit normal vector to $I$(directed as $y_1$ is). 
+	Let $I_{jk}$ be an edge of $\graph$.
 	Then
 	\begin{align*}
-		\curlZero{\ddom}{\lambda_I} &= 
-		\clbracs{ \begin{pmatrix} R & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ c_2 \\ c_3 \end{pmatrix} \setVert c_2,c_3\in\ltwo{\ddom}{\lambda_I} } \\
-		&= \clbracs{ \begin{pmatrix} c_1 \\ c_2 \\ c_3 \end{pmatrix}\in\ltwo{\ddom}{\lambda_I}^3 \setVert \begin{pmatrix} c_1 \\ c_2 \end{pmatrix} \cdot n_I = 0 \text{ on } I }
+		\curlZero{\ddom}{\lambda_{jk}} &= 
+		\clbracs{ c_{jk}\widehat{e}_{jk} + c_3\widehat{x}_3 \setVert c_{jk}, c_3\in\ltwo{\ddom}{\lambda_{jk}} }.
+%		\clbracs{ \begin{pmatrix} R & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ c_2 \\ c_3 \end{pmatrix} \setVert c_2,c_3\in\ltwo{\ddom}{\lambda_I} } \\
+%		&= \clbracs{ \begin{pmatrix} c_1 \\ c_2 \\ c_3 \end{pmatrix}\in\ltwo{\ddom}{\lambda_I}^3 \setVert \begin{pmatrix} c_1 \\ c_2 \end{pmatrix} \cdot n_I = 0 \text{ on } I }
 	\end{align*}
 \end{cory}
 \begin{proof}
 	This is another rotation argument applied to the result of proposition \ref{prop:CurlZeroSegment}, in the same vein as that of corollary \ref{cory:3DGradSegmentRotated} to proposition \ref{prop:3DGradZeroSegment} and corollary \ref{cory:3DTangGradRotated} to proposition \ref{prop:3DTangGradSegment}.
+	
+	First, suppose that $c\widehat{n}_{jk}\in\curlZero{\ddom}{\lambda_{jk}}$ and take an approximating sequence $\phi^n$ as in corollary \ref{cory:SobSpaceApproxSequences}.
+	This means that we have the following convergences in $\ltwo{\ddom}{\lambda_{jk}}$:
+	\begin{align*}
+		\phi^n_1 \rightarrow 0, \quad
+		\phi^n_2 &\rightarrow 0, \quad
+		\phi^n_3 \rightarrow 0, \\
+		\partial_2\phi^n_3 - \rmi\wavenumber\phi^n_2 \rightarrow c n_1^{(jk)} = c e_2^{(jk)}, \quad
+		\partial_1\phi^n_3 - \rmi\wavenumber\phi^n_1 &\rightarrow -c n_2^{(jk)} = c e_1^{(jk)}, \quad
+		\partial_1\phi^n_2 - \partial_2\phi^n_1 \rightarrow 0.
+	\end{align*}
+	Therefore, we have that
+	\begin{align*}
+		\grad^{(0)}\phi^n_3 \lconv{\ltwo{\ddom}{\lambda_{jk}}^2} c \widehat{e}_{jk},
+	\end{align*}
+	and $\phi^n_3\rightarrow 0$ in $\ltwo{\ddom}{\lambda_{jk}}$.
+	As such, $c\widehat{e}_{jk}\in\gradZero{\ddom}{\lambda_{jk}}$, and then corollary \ref{cory:3DGradSegmentRotated} implies that $c=0$.
+	
+	Now, let $c\in\smooth{\ddom}$.
+	Consider the smooth functions
+	\begin{align*}
+		\phi = \begin{pmatrix} 0 \\ 0 \\ \bracs{v_j - x}\cdot n_{jk} c \end{pmatrix}, &\quad
+		\psi = \begin{pmatrix} \bracs{x - v_j}\cdot n_{jk} n_2^{(jk)}c \\ \bracs{v_j - x}\cdot n_{jk} n_1^{(jk)}c \\ 0 \end{pmatrix}.
+	\end{align*}
+	We have that
+	\begin{align*}
+		\grad\wedge\phi &= \begin{pmatrix} \bracs{v_j-x}\cdot n_{jk} \partial_2 c - c n_2^{(jk)} \\ -\bracs{v_j-x}\cdot n_{jk} \partial_1 c + c n_1^{(jk)} \\ 0 \end{pmatrix}
+		= \begin{pmatrix} \bracs{v_j-x}\cdot n_{jk} \partial_2 c + c e_1^{(jk)} \\ -\bracs{v_j-x}\cdot n_{jk} \partial_1 c + c e_2^{(jk)} \\ 0 \end{pmatrix}, \\
+		\grad\wedge\psi &= \begin{pmatrix} 0 \\ 0 \\ \bracs{\partial_1 c + \partial_2 c}\bracs{x-v_j}\cdot n_{jk} + c\norm{n_{jk}}_2 \end{pmatrix}
+		= \begin{pmatrix} 0 \\ 0 \\ \bracs{\partial_1 c + \partial_2 c}\bracs{x-v_j}\cdot n_{jk} + c \end{pmatrix}
+	\end{align*}
+	Noting that $\bracs{v_j - x}\cdot n_{jk}=0$ for $x\in I_{jk}$, we have that
+	\begin{align*}
+		\phi = 0, \qquad \psi = 0, \qquad \grad\wedge\phi = c\widehat{e}_{jk}, \qquad \grad\wedge\psi = c\widehat{x}_3,
+	\end{align*}
+	whenever $x\in I_{jk}$, and thus $c\widehat{e}_{jk}, c\widehat{x}_3\in\curlZero{\ddom}{\lambda_{jk}}$.
+	A density argument then completes the proof.
 \end{proof}
 
 At this point it can be helpful to provide a geometric interpretation of $\ddmes$-curls of zero (and consequently, the tangential curls).
@@ -249,7 +328,7 @@ Now consider what the rotation of a spherical body would look like from the pers
 If $c(x)$ is normal to the plane induced by an edge, the measure will see the point $p$ tracing out a (closed, connected) path in the plane, and thus is able to determine that the field $u$ is undergoing a change.
 However if $c(x)$ is tangent to the plane, the path of the point $p$ under this rotation leaves the plane (only returning to the plane at two disconnected points) and the measure $\ddmes$ is unable to follow it, so determines that the field $u$ isn't changing.
 One can also envision this in terms of the area of the region that the path of $p$ encloses, illustrated in figure \ref{fig:Diagram_CurlZeroPlane}.
-\begin{figure}[b!]
+\begin{figure}[t!]
 	\centering
 	\includegraphics[scale=1.0]{Diagram_CurlZeroPlane.pdf}
 	\caption{\label{fig:Diagram_CurlZeroPlane} An illustration of how one interprets $\ddmes$-curls. When the curl $c$ is normal to the plane, rotations enclose regions of non-zero $\ddmes$ area, and changes can be ``seen". By contrast, when $c$ is tangent to the plane, rotations enclose regions of zero $\ddmes$ area, and thus are curls of zero.}
@@ -270,8 +349,8 @@ Naturally, the behaviour of curls of zero on $\graph$ can be characterised by th
 For ease we set $B = \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\in\curlZero{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet }$ in what follows.
 Also, given corollary \ref{cory:CurlZeroRotated}, we can write $B$ as
 \begin{align*}
-	B &= \clbracs{ \bracs{c_1, c_2, c_3}^\top\in\ltwo{\ddom}{\ddmes}^3 \setVert \bracs{c_1(x), c_2(x)}^\top n_{jk}=0, \ \forall x\in I_{jk}, \ \forall I_{jk}\in\edgeSet } \\
-	&= \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\vert_{I_{jk}} = \begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ c_2 \\ c_3 \end{pmatrix}, \ c_2, c_3\in\ltwo{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet }.
+	B &= \clbracs{ \bracs{c_1, c_2, c_3}^\top\in\ltwo{\ddom}{\ddmes}^3 \setVert \bracs{c_1(x), c_2(x)}^\top n_{jk}=0, \ \forall x\in I_{jk}, \ \forall I_{jk}\in\edgeSet }.
+%	&= \clbracs{ c\in\ltwo{\ddom}{\ddmes}^3 \setVert c\vert_{I_{jk}} = \begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ c_2 \\ c_3 \end{pmatrix}, \ c_2, c_3\in\ltwo{\ddom}{\lambda_{jk}}, \ \forall I_{jk}\in\edgeSet }.
 \end{align*}
 The method of proof proceeds in much the same way as for gradients of zero, in proving proposition \ref{prop:3DGradZeroCharacterisation} --- the inclusion $\curlZero{\ddom}{\ddmes}\subset B$ is immediate from a simple observation of the norms.
 The reverse inclusion requires us to select an approximating sequence for an element of $B$ and use smooth cut-off functions to produce a sequence which is converging in $\ltwo{\ddom}{\ddmes}$.
@@ -376,93 +455,125 @@ Again, we highlight that the argument of lemma \ref{lem:BInCurlZero} can be recy
 
 \subsection{Tangential $\kt$-Curls with respect to $\ddmes$} \label{apps:TangentialCurls}
 With curls of zero now understood, we look to understand $\kt$-tangential curls with respect to $\ddmes$ in much the same way as we did with tangential gradients --- with theorem \ref{thm:CurlZeroCharacterisation} allowing us to obtain an edge-wise characterisation.
-As usual, we begin by studying tangential curls on a segment aligned to the $x_2$-axis.
+As usual, we begin by studying tangential curls on a segment aligned to the $x_2$-axis in proposition \ref{prop:CurlZeroSegment} and generalise the argument to general edges in the $\bracs{x_1,x_2}$-plane.
 
 \begin{prop} \label{prop:TangCurlsSegment}
-	Let $I$ be a segment in $\ddom$ parallel to the $x_2$ axis, with singular measure $\lambda_I$, and take $r_I$ as in convention \ref{ass:MeasTheoryProblemSetup} for the edge $I$.
-	Write $\gradSob{\interval{I}}{t}$ for the ``classical" Sobolev space of functions on $\interval{I}$ with respect to the Lebesgue measure.
-	Suppose that $u=\in\ktgradSob{\ddom}{\lambda_I}$ and set $\widetilde{u} = u \circ r_I$.
-	Then $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ and
+	Let $I_{jk}$ be an edge parallel to the $x_2$ axis, and write $\gradSob{\interval{I_{jk}}}{y}$ for the ``classical" Sobolev space of functions on $\interval{I_{jk}}$ with respect to the Lebesgue measure.
+	Suppose that $u=\in\ktgradSob{\ddom}{\lambda_{jk}}$ and set $\widetilde{u} = u \circ r_{jk}$.
+	Then $\widetilde{u}_3\in\gradSob{\interval{I_{jk}}}{y}$ and
 	\begin{align*}
-		\ktcurl{\lambda_I} u &= 
+		\ktcurl{\lambda_{jk}} u &= 
 		\begin{pmatrix} u_3' + \rmi\qm_2 u_3 - \rmi\wavenumber u_2 \\ 0 \\ 0 \end{pmatrix},
 	\end{align*}
-	where $u_3'(x) = \bracs{\widetilde{u}'_3\circ r_I^{-1}}(x)$.
+	where $u_3'(x) = \bracs{\widetilde{u}'_3\circ r_{jk}^{-1}}(x)$.
 \end{prop}
-\begin{proof}
-	Write $\ktcurl{\lambda_I}u = \bracs{v_1, v_2, v_3}^\top$.
-	As we know that $\ktcurl{\lambda_I}u \perp \curlZero{\ddom}{\lambda_I}$, given theorem \ref{thm:CurlZeroCharacterisation} we conclude that $v_2 = v_3 = 0$.
-	Now take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi^n_2, \phi^n_3}^\top$ for $u$, so we have that
-	\begin{align*}
-		\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } u, \qquad \ktcurl{}\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } \bracs{v_1, v_2, v_3}^\top.
-	\end{align*}
-	Using an overhead tilde to denote composition with $r_I$, we notice that in particular,
-	\begin{align*}
-		\int_0^{\abs{I}} \abs{\widetilde{\phi}^n_j - \widetilde{u}_j}^2 \ \md t
-		&= \integral{\ddom}{ \abs{\phi^n_j - u_j}^2 }{\lambda_I} 
-		\rightarrow 0, &\quad j\in\clbracs{2,3}, \\
-		\int_0^{\abs{I}} \abs{ \bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 - \widetilde{v}_1 }^2 \ \md t
-		&= \integral{\ddom}{ \abs{ \partial_2\phi^n_3 + \rmi\qm_2\phi^n_3 - \rmi\wavenumber\phi^n_2 - v_1 }^2 }{\lambda_I}
-		\rightarrow 0.
-	\end{align*}
-	This provides us with the following convergences in $\ltwo{\interval{I}}{t}$;
-	\begin{align*}
-		\widetilde{\phi}^l_2 \rightarrow \widetilde{u}_2, \quad
-		\widetilde{\phi}^l_3 \rightarrow \widetilde{u}_3, \quad
-		\bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 \rightarrow \widetilde{v}_1.
-	\end{align*}
-	By the algebra of limits we have that
-	\begin{align*}
-		\bracs{\widetilde{\phi}^n_3}' \rightarrow -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1,
-	\end{align*}
-	in $\ltwo{\interval{I}}{t}$ and thus $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ with $\widetilde{u}_3' = -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1$.
-	Rearranging and undoing the change of variables $r_I$ then gives the desired result.
-\end{proof}
+We will present the general version of this proof in the following corollary.
+%\begin{proof}
+%	Write $\ktcurl{\lambda_I}u = \bracs{v_1, v_2, v_3}^\top$.
+%	As we know that $\ktcurl{\lambda_I}u \perp \curlZero{\ddom}{\lambda_I}$, given theorem \ref{thm:CurlZeroCharacterisation} we conclude that $v_2 = v_3 = 0$.
+%	Now take an approximating sequence $\Phi^n = \bracs{\phi^n_1, \phi^n_2, \phi^n_3}^\top$ for $u$, so we have that
+%	\begin{align*}
+%		\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } u, \qquad \ktcurl{}\Phi^n \lconv{ \ltwo{\ddom}{\lambda_I}^3 } \bracs{v_1, v_2, v_3}^\top.
+%	\end{align*}
+%	Using an overhead tilde to denote composition with $r_I$, we notice that in particular,
+%	\begin{align*}
+%		\int_0^{\abs{I}} \abs{\widetilde{\phi}^n_j - \widetilde{u}_j}^2 \ \md t
+%		&= \integral{\ddom}{ \abs{\phi^n_j - u_j}^2 }{\lambda_I} 
+%		\rightarrow 0, &\quad j\in\clbracs{2,3}, \\
+%		\int_0^{\abs{I}} \abs{ \bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 - \widetilde{v}_1 }^2 \ \md t
+%		&= \integral{\ddom}{ \abs{ \partial_2\phi^n_3 + \rmi\qm_2\phi^n_3 - \rmi\wavenumber\phi^n_2 - v_1 }^2 }{\lambda_I}
+%		\rightarrow 0.
+%	\end{align*}
+%	This provides us with the following convergences in $\ltwo{\interval{I}}{t}$;
+%	\begin{align*}
+%		\widetilde{\phi}^l_2 \rightarrow \widetilde{u}_2, \quad
+%		\widetilde{\phi}^l_3 \rightarrow \widetilde{u}_3, \quad
+%		\bracs{\widetilde{\phi}^n_3}' + \rmi\qm_2\widetilde{\phi}^n_3 - \rmi\wavenumber\widetilde{\phi}^n_2 \rightarrow \widetilde{v}_1.
+%	\end{align*}
+%	By the algebra of limits we have that
+%	\begin{align*}
+%		\bracs{\widetilde{\phi}^n_3}' \rightarrow -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1,
+%	\end{align*}
+%	in $\ltwo{\interval{I}}{t}$ and thus $\widetilde{u}_3\in\gradSob{\interval{I}}{t}$ with $\widetilde{u}_3' = -\rmi\qm_2\widetilde{u}_3 + \rmi\wavenumber\widetilde{u}_2 + \widetilde{v}_1$.
+%	Rearranging and undoing the change of variables $r_I$ then gives the desired result.
+%\end{proof}
 
-As we expect from our interpretation of the $\ddmes$-curl (see section \ref{apps:CurlsOfZero}), the $\kt$-tangential curl is directed normal to the segment $I$.
-We can derive the form of the tangential curl on an edge at an arbitrary angle to the segment simply by applying a rotation to the result of proposition \ref{prop:TangCurlsSegment}.
-\tstk{need to check the form of this! Seems REALLY cumbersome in the way it's currently written... there's got to be a better way! Also, check the quasi-momentum formula on the edge, and the $U$ form - have a feeling this should be $R^\top$ rather than just $R$ here...}
 \begin{cory} \label{cory:TangCurlRotated}
-	Let $I$ be a segment in $\ddom$ with singular measure $\lambda_I$, and local coordinate system $y=\bracs{y_1, y_2}$ with $y_2$ parallel to $I$.
-	Suppose $R\in\mathrm{SO}(2)$ is the rotation $x=Ry$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
-	Write $r_I$ for the usual parametrisation of $I$ (assumption \ref{ass:MeasTheoryProblemSetup}), and let $u=\in\ktcurlSob{\ddom}{\lambda_I}$.
+	Let $I_{jk}$ be an edge of $\graph$, and let $u=\in\ktcurlSob{\ddom}{\lambda_{jk}}$.
 	Set
 	\begin{align*}
-		U(x) = R \begin{pmatrix} u_1(x) \\ u_2(x) \end{pmatrix}, 
-		\qquad \qm_I = \bracs{ R\qm }_2,
-		\qquad \tilde{u}_3 = u_3 \circ r_I.
+		U(x) = R_{jk} \begin{pmatrix} u_1(x) \\ u_2(x) \end{pmatrix}, 
+		\qquad \qm_{jk} = \qm\cdot e_{jk} = \bracs{ R_{jk}\qm }_2,
+		\qquad \tilde{u}_3 = u_3 \circ r_{jk}.
 	\end{align*}
-	Then $\widetilde{u}_3\in\ktgradSob{\ddom}{\lambda_I}$ and 
+	Then $\widetilde{u}_3\in\ktgradSob{\interval{I_{jk}}}{y}$ and 
 	\begin{align*}
-		\ktcurl{\lambda_I}u &= \begin{pmatrix} R & 0 \\ 0 & 1	\end{pmatrix}
-		\begin{pmatrix} u_3' + \rmi\qm_I u_3 - \rmi\wavenumber U_2 \\ 0 \\ 0 \end{pmatrix},
+		\ktcurl{\lambda_I}u &= \bracs{ u_3' + \rmi\qm_{jk}u_3 - \rmi\wavenumber U_2 }\widetilde{n}_{jk}
+%		\begin{pmatrix} R^\top & 0 \\ 0 & 1	\end{pmatrix}
+%		\begin{pmatrix} u_3' + \rmi\qm_I u_3 - \rmi\wavenumber U_2 \\ 0 \\ 0 \end{pmatrix},
 	\end{align*}
-	where $u_3' = \widetilde{u}'_3 \circ r_I^{-1}$.
+	where $u_3' = \widetilde{u}'_3 \circ r_{jk}^{-1}$.
 \end{cory}
+\begin{proof}
+	The requirement that $\ktcurl{\lambda_{jk}}u \perp \curlZero{\ddom}{\lambda_{jk}}$ implies that $\ktcurl{\lambda_{jk}}u\cdot \widehat{e}_{jk} = 0$ and $\ktcurl{\lambda_{jk}}u\cdot \widehat{x}_3 = 0$.
+	As such, we can write
+	\begin{align*}
+		\ktcurl{\lambda_{jk}}u &= c_{jk}\widehat{n}_{jk},
+	\end{align*}
+	for some $c_{jk}\in\ltwo{\ddom}{\lambda_{jk}}$ to be determined.
+	To this end, take an approximating sequence $\Phi^n$ as in \ref{cory:SobSpaceApproxSequences}, which provides us with the following convergences in $\ltwo{\ddom}{\lambda_{jk}}$:
+	\begin{align*}
+		\Phi^n_1 \rightarrow u_1, \qquad \Phi^n_2 \rightarrow u_2, \qquad \Phi^n_3 \rightarrow u_3,
+	\end{align*}
+	\begin{align*}
+		\partial_2\Phi^n_3 + \rmi\qm_2\Phi^n_3 - \rmi\wavenumber\Phi^n_2 \rightarrow c n_1^{(jk)} &= c e_2^{(jk)}, \\
+		\partial_1\Phi^n_3 + \rmi\qm_1\Phi^n_3 - \rmi\wavenumber\Phi^n_1 \rightarrow -c n_2^{(jk)} &= c e_1^{(jk)}, \\
+		\bracs{\partial_1 + \rmi\qm_1}\Phi^n_2 - \bracs{\partial_2 + \rmi\qm_2}\Phi^n_1 &\rightarrow 0.
+	\end{align*}
+	In particular, we find that
+	\begin{align*}
+		\partial_2\Phi^n_3 &\rightarrow ce_2^{(jk)} + \rmi\wavenumber u_2 - \rmi\qm_2 u_3, \\
+		\partial_1\Phi^n_3 &\rightarrow ce_1^{(jk)} + \rmi\wavenumber u_1 - \rmi\qm_1 u_3,
+	\end{align*}
+	and thus
+	\begin{align*}
+		\grad\Phi^n_3\cdot e_{jk} \rightarrow c + \rmi\wavenumber U\cdot e_{jk} - \rmi u_3 \qm\cdot e_{jk}.
+	\end{align*}
+	Therefore, we have that the (smooth) sequence $\varphi^n_3 := \Phi^n_3 \circ r_{jk}$ is such that
+	\begin{align*}
+		\varphi^n_3 \rightarrow \widetilde{u}_3, \quad \bracs{\varphi^n_3}' \rightarrow \bracs{c\circ r_{jk}} + \rmi\wavenumber \bracs{U\circ r_{jk}}\cdot e_{jk} - \rmi \widetilde{u}_3\qm\cdot e_{jk}, \qquad\text{in } \ltwo{\interval{I_{jk}}}{y}.
+	\end{align*}
+	As such, we have that $\widetilde{u}_3\in\ktgradSob{\interval{I_{jk}}}{y}$ with 
+	\begin{align*}
+		\widetilde{u}_3' &= \bracs{c\circ r_{jk}} + \rmi\wavenumber \bracs{U\circ r_{jk}}\cdot e_{jk} - \rmi \widetilde{u}_3\qm\cdot e_{jk}.
+	\end{align*}
+	Rearranging for $c$ and undoing the change of variables $r_{jk}$ then provides the result.
+\end{proof}
 
-\tstk{Again, might have $\top$'s everywhere once work through the above results}
 \begin{theorem} \label{thm:TangCurlGraph}
 	Let $\graph=\bracs{\vertSet, \edgeSet}$ be a graph embedded into $\ddom$ with singular measure $\ddmes$, and recall assumption \ref{ass:MeasTheoryProblemSetup}.
 	Suppose $u\in\ktcurlSob{\ddom}{\ddmes}$, and define
 	\begin{align*}
 		U^{(jk)}(x) = R_{jk}\begin{pmatrix} u_1^{(jk)}(x) \\ u_2^{(jk)}(x) \end{pmatrix},
-		\qquad \qm_{jk} = \bracs{ R_{jk}\qm }_2,
+		\qquad \qm_{jk} := \qm\cdot e_{jk} = \bracs{ R_{jk}\qm }_2,
 		\qquad \widetilde{u}_3^{(jk)} = u_3^{(jk)} \circ r_{jk},
 	\end{align*}
 	for each edge $I_{jk}$.
 	Then for every $I_{jk}\in\edgeSet$, we have that $\widetilde{u}_3^{(jk)}\in\ktgradSob{\ddom}{\lambda_{jk}}$ and
 	\begin{align*}
 		\bracs{ \ktcurl{\ddmes} u }\big\vert_{I_{jk}} &= 
-		\begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix}
-		\begin{pmatrix} \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} \\ 0 \\ 0 \end{pmatrix}
+		\bracs{ \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} }\widehat{n}_{jk},
+%		\begin{pmatrix} R_{jk} & 0 \\ 0 & 1 \end{pmatrix}
+%		\begin{pmatrix} \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} \\ 0 \\ 0 \end{pmatrix}
 	\end{align*}
 	where $\bracs{u_3^{(jk)}}' = \bracs{\widetilde{u}_3^{(jk)}}' \circ r_{jk}^{-1}$.
 \end{theorem}
 \begin{proof}
-	Given theorem \ref{thm:CurlZeroCharacterisation}, we know that $\ktcurl{\ddmes}u$ must have the same form as $\ktcurl{\lambda_{jk}}u$ on the edge $I_{jk}$.
+	The argument is analogous to that in corollary \ref{cory:3DTangGradGraph} --- given theorem \ref{thm:CurlZeroCharacterisation}, we know that $\ktcurl{\ddmes}u$ must have the same form as $\ktcurl{\lambda_{jk}}u$ on the edge $I_{jk}$.
 	Thus by using corollary \ref{cory:TangCurlRotated}, the result follows.
 \end{proof}
 
+As we expect from our interpretation of the $\ddmes$-curl (see section \ref{apps:CurlsOfZero}), the $\kt$-tangential curl is directed normal to the segment $I_{jk}$.
 This concludes our investigation into the form of the $\kt$-tangential curl, however we can infer some further properties about the component $u_3$ of a vector field $u\in\ktgradSob{\ddom}{\ddmes}$.
 \begin{prop} \label{prop:CurlImpliesThirdCompGradient}
 	We have that
@@ -563,7 +674,6 @@ We begin with an examination of the divergence-free condition on an individual e
 	which shows that $u$ is orthogonal to all tangential gradients, completing the proof.
 \end{proof}
 
-\tstk{again, this might need checking. It'll be the same form as whatever the previous proposition comes out to be, but there might be $R^\top$ rather than $R$s everywhere, and the method of proof might change.}
 \begin{cory} \label{cory:DivFreeRotated}
 	Let $I$ be a segment in $\ddom$ with singular measure $\lambda_I$, and local coordinate system $y=\bracs{y_1, y_2}$ with $y_2$ parallel to $I$.
 	Suppose $R\in\mathrm{SO}(2)$ is the rotation $x=Ry$ where $x=\bracs{x_1, x_2}$ is the axis coordinate system.
