@@ -1,0 +1,146 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Throughout, write $\Phi = \bracs{\phi_1, \phi_2, \phi_3}^\top$ and define 
+\begin{align*}
+	\Psi^{(jk)} &= R_{jk} \begin{pmatrix} \phi_1^{(jk)} \\ \phi_2^{(jk)} \end{pmatrix}.
+\end{align*}
+Seek functions $u\in\ktcurlSob{\ddom}{\dddmes}$ such that
+\begin{align} \label{eq:PeriodCellCurlCurlWeakForm}
+	\integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktcurl{\dddmes}\Phi} }{\dddmes} &= \omega^2 \integral{\ddom}{ u\cdot\overline{\Phi} }{\dddmes},
+	\quad\forall \Phi\in\smooth{\ddom}^3.
+\end{align}
+Notice that we immediately have that $u$ is $\kt$-divergence free, since we can choose $\Phi = \ktgrad\phi$ for any smooth $\phi$. \newline
+
+The equality in \eqref{eq:PeriodCellCurlCurlWeakForm} holds (in particular) whenever we take $\Phi$ to be a smooth function whose support only intersects (the interior of) an edge $I_{jk}$, and no other parts of the graph $\graph$.
+In this case, \eqref{eq:PeriodCellCurlCurlWeakForm} reduces to
+\begin{align*}
+	\integral{I_{jk}}{ \ktcurl{\ddmes}u\cdot\overline{\ktcurl{\ddmes}\Phi} }{\lambda_{jk}} &= \omega^2 \integral{I_{jk}}{ u\cdot\overline{\Phi} }{\lambda_{jk}},
+\end{align*}
+since the contribution at the vertices is zero due to the choice of $\Phi$.
+Using our knowledge of $\kt$-tangential curls, we obtain
+\begin{align*}
+	\integral{I_{jk}}{ \bracs{ \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} }\overline{\bracs{ \bracs{\phi_3^{(jk)}}' + \rmi\qm_{jk} \phi_3^{(jk)} - \rmi\wavenumber \Psi_2^{(jk)} }} }{\lambda_{jk}}
+	&= \omega^2 \integral{I_{jk}}{ u\cdot\overline{\Phi} }{\lambda_{jk}},
+\end{align*}
+and then using the change of variables $r_{jk}$ this implies
+\begin{align*} 
+	\int_0^{\abs{I_{jk}}} \bracs{ \bracs{\widetilde{u}_3^{(jk)}}' + \rmi\qm_{jk} \widetilde{u}_3^{(jk)} - \rmi\wavenumber \widetilde{U}_2^{(jk)} } 
+	& \bracs{ \bracs{\overline{\widetilde{\phi}}_3^{(jk)}}' - \rmi\qm_{jk} \overline{\widetilde{\phi}}_3^{(jk)} + \rmi\wavenumber \overline{\widetilde{\Psi}}_2^{(jk)} } \ \md y 
+	\\
+	&= \omega^2 \int_0^{\abs{I_{jk}}} \widetilde{U}_1^{(jk)}\overline{\widetilde{\Psi}}_1^{(jk)} + \widetilde{U}_2^{(jk)}\overline{\widetilde{\Psi}}_2^{(jk)} + \widetilde{u}_3^{(jk)}\overline{\widetilde{\phi}}_3^{(jk)} \ \md y,
+\end{align*}
+which holds for all $\widetilde{\Psi}_1^{(jk)}, \widetilde{\Psi}_2^{(jk)}, \widetilde{\phi}_3^{(jk)}\in\smooth{\interval{I_{jk}}}$ with compact support in $\bracs{0,\abs{I_{jk}}}$.
+Therefore, for all $\psi\in\smooth{\interval{I_{jk}}}$ with compact support in $\bracs{0,\abs{I_{jk}}}$ we have that
+\begin{subequations}
+	\begin{align*}
+		0 &= \widetilde{U}_1^{(jk)}, \labelthis\label{eq:CurlCurlStrongFormPhi1} \\
+		0 &= \int_0^{\abs{I_{jk}}} \overline{\psi} \bracs{ \rmi\wavenumber\bracs{\widetilde{u}_3^{(jk)}}' + \bracs{\wavenumber^2 - \omega^2}\widetilde{U}_2^{(jk)} - \wavenumber\qm_{jk}\widetilde{u}_3^{(jk)}  } \ \md y, \labelthis\label{eq:CurlCurlWeakFormPhi2} \\
+		0 &= \int_0^{\abs{I_{jk}}} \overline{\psi}' \bracs{ \bracs{\widetilde{u}_3^{(jk)}}'
+		- \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} } \\
+		&\qquad -\rmi\qm_{jk}\overline{\psi}\bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\bracs{\widetilde{U}_2^{(jk)}}' + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} }
+		- \omega^2 \widetilde{u}_3^{(jk)}\overline{\psi} \ \md y. \labelthis\label{eq:CurlCurlWeakFormPhi3}
+	\end{align*}
+\end{subequations}
+The equation \eqref{eq:CurlCurlWeakFormPhi3} can be manipulated to demonstrate that
+\begin{align*}
+	-\int_0^{\abs{I_{jk}}} \overline{\psi}' \widetilde{u}'_{3,jk} \ \md y
+	&= \int_0^{\abs{I_{jk}}} \overline{\psi} \bracs{ \rmi\wavenumber\widetilde{U}'_{2,jk} - \wavenumber\qm_{jk}\widetilde{U}_{2,jk} - 2\rmi\qm_{jk}\widetilde{u}'_{3,jk} + \qm_{jk}^2\widetilde{u}_{3,jk} - \omega^2\widetilde{u}_{3,jk} } \ \md y.
+\end{align*}
+This holds for all such $\psi$, so $\bracs{\widetilde{u}_3^{(jk)}}'\in\gradSob{\interval{I_{jk}}}{y}$  --- that is, $\widetilde{u}$ is twice (weakly) differentiable.
+As such, \eqref{eq:CurlCurlWeakFormPhi3} implies
+\begin{align*}
+	0 &= \int_0^{\abs{I_{jk}}} \overline{\psi} \bracs{ \rmi\wavenumber\bracs{\widetilde{U}_2^{(jk)}}' - \wavenumber\qm_{jk}\widetilde{U}_2^{(jk)} - \bracs{\widetilde{u}_3^{(jk)}}'' - 2\rmi\qm_{jk}\bracs{\widetilde{u}_3^{(jk)}}' + \qm_{jk}^2\widetilde{u}_3^{(jk)} - \omega^2\widetilde{u}_3^{(jk)} } \ \md y,
+\end{align*}
+and since \eqref{eq:CurlCurlWeakFormPhi2} and the equation above hold for all smooth $\psi$ with compact support, (after some rearranging) we have
+\begin{subequations} \label{eq:QGPhiStandalone}
+	\begin{align}
+		i\wavenumber \bracs{ \diff{}{y} + \rmi\qm_{jk} }\widetilde{u}_3^{(jk)} + \wavenumber^2\widetilde{U}_2^{(jk)} &= \omega^2\widetilde{U}_2^{(jk)}, \label{eq:QGPhi2Standalone} \\
+		-\bracs{ \diff{}{y} + \rmi\qm_{jk} }^2\widetilde{u}_3^{(jk)} + \rmi\wavenumber\bracs{ \diff{}{y} + \rmi\qm_{jk} }\widetilde{U}_2^{(jk)} &= \omega^2 \widetilde{u}_3^{(jk)}, \label{eq:QGPhi3Standalone}
+	\end{align}
+\end{subequations}
+on each $I_{jk}$. \newline
+
+Now we return to \eqref{eq:PeriodCellCurlCurlWeakForm}, and fix a vertex $v_j\in\vertSet$.
+Consider smooth $\Phi$ with whose support contains the vertex $v_j$ in its interior, and no other vertices of $\graph$.
+In which case, we have that
+\begin{align*}
+	\integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktcurl{\dddmes}\Phi} - \omega^2 u\cdot\overline{\Phi} }{\nu}
+	&= - \omega^2 \alpha_j u\bracs{v_j}\cdot\overline{\Phi}\bracs{v_j},
+\end{align*}
+since tangential curls are zero at the vertices, and
+\begin{align*}
+	& \integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktcurl{\dddmes}\Phi} - \omega^2 u\cdot\overline{\Phi} }{\ddmes} \\
+	&= \sum_{j\con k}\integral{I_{jk}}{ \bracs{ \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} }\overline{\bracs{ \bracs{\phi_3^{(jk)}}' + \rmi\qm_{jk} \phi_3^{(jk)} - \rmi\wavenumber \Psi_2^{(jk)} }} - \omega^2 u\cdot\overline{\Phi} }{\lambda_{jk}} \\
+	&= \sum_{j\con k}\integral{I_{jk}}{ \bracs{ \bracs{u_3^{(jk)}}' + \rmi\qm_{jk} u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} }\overline{\bracs{ \bracs{\phi_3^{(jk)}}' + \rmi\qm_{jk} \phi_3^{(jk)} }} - \omega^2 u_3^{(jk)}\overline{\phi}_3^{(jk)} }{\lambda_{jk}},
+\end{align*}
+upon using \eqref{eq:CurlCurlStrongFormPhi1} and \eqref{eq:CurlCurlWeakFormPhi2}.
+Then changing variables via $r_{jk}$ and using \eqref{eq:QGPhi2Standalone} on each connecting edge, we find that (with $\widetilde{\phi}_3^{(jk)} = \psi^{(jk)}$),
+\begin{align*}
+	& \integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktcurl{\dddmes}\Phi} - \omega^2 u\cdot\overline{\Phi} }{\ddmes} \\
+	&= \sum_{j\con k} \int_0^{\abs{I_{jk}}} 	\overline{\psi^{(jk)}}' \bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} } \\
+		&\qquad -\rmi\qm_{jk}\overline{\psi^{(jk)}}\bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} }
+		- \omega^2 \widetilde{u}_3^{(jk)}\overline{\psi^{(jk)}} \ \md y \\
+	&= \sum_{j\con k}\sqbracs{ \overline{\psi^{(jk)}}\bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} } }_{v_j} \\
+	&\quad + \sum_{j\con k}\int_0^{\abs{I_{jk}}} \overline{\psi^{(jk)}} \bracs{ -\bracs{\widetilde{u}_3^{(jk)}}'' + \rmi\wavenumber\bracs{\widetilde{U}_2^{(jk)}}' - \rmi\qm_{jk}\bracs{\widetilde{u}_3^{(jk)}}' } \ \md y \\
+	&\quad + \sum_{j\con k}\int_0^{\abs{I_{jk}}} \overline{\psi^{(jk)}} \bracs{ - \rmi\qm_{jk}\bracs{\widetilde{u}_3^{(jk)}}' - \wavenumber\qm_{jk}\widetilde{U}_2^{(jk)} + \qm_{jk}^2\widetilde{u}_3^{(jk)} - \omega^2\widetilde{u}_3^{(jk)} } \ \md y \\
+	&= \sum_{j\con k}\sqbracs{ \overline{\psi^{(jk)}}\bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} } }_{v_j},
+\end{align*}
+where we have used \eqref{eq:CurlCurlWeakFormPhi3} for the final step.
+Inserting these into \eqref{eq:PeriodCellCurlCurlWeakForm}, we have that
+\begin{align*}
+	& \alpha_j \omega^2 \bracs{ u_1\bracs{v_j} \overline{\phi}_1\bracs{v_j} + u_2\bracs{v_j} \overline{\phi}_2\bracs{v_j} + u_3\bracs{v_j} \overline{\phi}_3\bracs{v_j} } \\
+	&= \sum_{j\con k}\sqbracs{ \overline{\psi^{(jk)}}\bracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} } }_{v_j} \\
+	&= \overline{\phi}_3\bracs{v_j}\sum_{j\con k}\sqbracs{ \bracs{\widetilde{u}_3^{(jk)}}' - \rmi\wavenumber\widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{u}_3^{(jk)} }_{v_j},
+\end{align*}
+after recalling the map $r_{jk}$, and that $\phi_3$ is continuous at the vertex $v_j$.
+Given that this holds for all $\Phi$, we have the following conditions for each $v_j\in\vertSet$: 
+\begin{align*}
+	u_1\bracs{v_j}\overline{\phi}_1\bracs{v_j} &= 0, \\
+	u_2\bracs{v_j}\overline{\phi}_2\bracs{v_j} &= 0, \\
+	\alpha_j \omega^2 u_3\bracs{v_j} \overline{\phi}_3\bracs{v_j} 
+	&= \overline{\phi}_3\bracs{v_j} \bracs{ \sum_{j\con k} \bracs{ \pdiff{}{n} + \rmi\qm_{jk} }\widetilde{u}_3^{(jk)}\bracs{v_j} - \rmi\wavenumber\bracs{ \sum_{j\conRight k} \widetilde{U}_2^{(jk)} - \sum_{j\conLeft k} \widetilde{U}_2^{(jk)} } }.
+\end{align*}
+Note that we recover the conditions of $u_1=u_2=0$ at the vertices, as we had from the divergence-free condition.
+Given what we have deduced holds for every such smooth $\phi$, and combined with \eqref{eq:QGPhiStandalone}, we arrive at the following system of equations;
+\begin{subequations} \label{eq:QGRawSystem}
+	\begin{align}
+		\rmi\wavenumber \bracs{ \diff{}{y} + \rmi\qm_{jk} }\widetilde{u}_3^{(jk)} + \wavenumber^2\widetilde{U}_2^{(jk)} &= \omega^2\widetilde{U}_2^{(jk)}, \label{eq:QGPhi2} \\
+		-\bracs{ \diff{}{y} + \rmi\qm_{jk} }^2\widetilde{u}_3^{(jk)} + \rmi\wavenumber\bracs{ \diff{}{y} + \rmi\qm_{jk} }\widetilde{U}_2^{(jk)} &= \omega^2 \widetilde{u}_3^{(jk)}, \label{eq:QGPhi3} \\
+		\widetilde{u}_3 \text{ is continuous at } v_j &\quad\forall v_j\in\vertSet, \label{eq:QGContinuity} \\
+		\sum_{j\con k} \bracs{ \pdiff{}{n} + \rmi\qm_{jk} }\widetilde{u}_3^{(jk)}\bracs{v_j} - \rmi\wavenumber\bracs{ \sum_{j\conRight k} \widetilde{U}_2^{(jk)} - \sum_{j\conLeft k} \widetilde{U}_2^{(jk)} } 
+		&= \alpha_j \omega^2 u_3\bracs{v_j}. \label{eq:QGVertexCondition}
+	\end{align}
+\end{subequations}
+Note that we have neglected to explicitly include equation \eqref{eq:CurlCurlStrongFormPhi1} and conditions $u_1(v_j)=u_2(v_j)=0$ in \eqref{eq:QGRawSystem}.
+These are implicitly still there, but do not influence $\widetilde{u}_3^{(jk)}, \widetilde{U}_2^{(jk)}$, so we don't bother to write them down.
+
+\end{document}

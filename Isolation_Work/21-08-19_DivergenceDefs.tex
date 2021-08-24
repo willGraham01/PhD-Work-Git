@@ -1,0 +1,191 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\diver}{\mathrm{div}}
+\newcommand{\ktdiv}[1]{\ktgrad_{#1}\cdot}
+\newcommand{\divZero}[2]{\mathcal{D}_{#1, \md #2}\bracs{0}}
+\newcommand{\dist}{\mathrm{dist}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Choosing how to define the notion of divergence for our $\ltwo{\ddom}{\dddmes}^3$-functions presents two possible options.
+This document contains a summary of each, and some results and musings about which one seems like the ``correct" notion to use.
+We'll begin with the less promising notion, since it's fairly easy to see why the ``divergence" we end up with is undesirable!
+Then, we will move onto the alternative notion.
+
+Throughout, let $\ddom$ be our usual domain with an embedded graph $\graph$.
+Use our standard notation on $\graph$, and for the singular measures $\dddmes, \ddmes, \nu$.
+
+\section{Via Smooth Approximations}
+We could choose to follow a similar definition of divergence-free that is motivated by our previous definitions for curl and gradient, which we do here.
+\begin{definition}[$W^{\kt}_{\diver}$]
+	For a Borel measure $\rho$, define the set
+	\begin{align*}
+		W^{\kt}_{\diver} &= \overline{\clbracs{ \bracs{\phi, \ktdiv{}\phi} \setVert \phi\in\smooth{\ddom}^3 }}.
+	\end{align*}
+	where the closure is taken in $\ltwo{\ddom}{\rho}^3\times\ltwo{\ddom}{\rho}$.
+	Next, define the set of ``divergences of zero" with respect to $\rho$ as
+	\begin{align*}
+		\divZero{\ddom}{\rho} &= \clbracs{ d \setVert \bracs{0,d}\in W^{\kt}_{\diver}}.
+	\end{align*}
+\end{definition}
+We can quickly deduce that the definition of $\divZero{\ddom}{\rho}$ does not depend on the value of $\kt$.
+It is also not hard to deduce that $\divZero{\ddom}{\rho}$ is a closed linear subspace of $\ltwo{\ddom}{\rho}$, and so we can decompose
+\begin{align*}
+	\ltwo{\ddom}{\rho} &= \divZero{\ddom}{\rho} \oplus \divZero{\ddom}{\rho}^\perp.
+\end{align*}
+We can then deduce (akin to how we do so for gradients and curls) that a function $u$ will have only one unique ``$\kt$-tangential divergence".
+As such, we can define the ``$\kt$-tangential divergence" of a function $u$ as being the unique element $d$ of the pair $\bracs{u,d}\in W^{\kt}_{\diver}$ such that $d\perp\divZero{\ddom}{\rho}$.
+
+The trouble with these definitions is that, very quickly, we see that our divergences are going to be trivial.
+\begin{lemma}
+	For an edge $I_{jk}$, we have that $\divZero{\ddom}{\lambda_{jk}} = \ltwo{\ddom}{\lambda_{jk}}$.
+\end{lemma}
+\begin{proof}
+	Given any smooth function $f\in\smooth{\ddom}$, set $\phi = \bracs{x\cdot n_{jk}}f\hat{n}_{jk}$.
+	It can clearly be seen that $\phi=0$ on $I_{jk}$ and that $\ktdiv{}\phi = f$ on $I_{jk}$, and so we have that $f\in\divZero{ddom}{\lambda_{jk}}$.
+	By a density argument, the result follows.
+\end{proof}
+
+This essentially kills off any interesting behaviour an individual edge might have, and the story gets worse once we realise the extension lemma holds.
+\begin{lemma}[Extension lemma for divergences]
+	Suppose that $d\in\ltwo{\ddom}{\lambda_{jk}}$ is such that $d=0$ whenever $\dist\bracs{x,\partial I_{jk}}\leq\recip{n}$, for some $n\in\naturals$.
+	Then the function
+	\begin{align*}
+		\tilde{d} &= \begin{cases} d & x\in I_{jk}, \\ 0 & x\not\in I_{jk}, \end{cases}
+	\end{align*}
+	is an element of both $\divZero{\ddom}{\ddmes}$ and $\divZero{\ddom}{\dddmes}$.
+\end{lemma}
+\begin{proof}
+	Take the usual function $\chi_{jk}^n$ that we used in the other two extension lemmas, and an approximating sequence $\phi^l$ for $d$.
+	Setting $\varphi = \chi_{jk}^n\phi^l$ will enable us to deduce the result --- note that this approximating sequence is 0 at every vertex of the graph, for every $l$ (and every $n$, which matters later) so the convergence with respect to $\dddmes$ is obtained since the contribution from the measure $\nu$ is zero.
+\end{proof}
+As such, we now have that we can elevate any divergence of zero on an edge to the whole graph, including when we care about the vertices.
+By linearity (and the trivial opposite implication), we thus have that
+\begin{align*}
+	\divZero{\ddom}{\ddmes} = \clbracs{ d \setVert d_{jk}\in\divZero{\ddom}{\lambda_{jk}} }.
+\end{align*}
+
+At the vertices, we also have a similar story.
+\begin{lemma}
+	We have that
+	\begin{align*}
+		\divZero{\ddom}{\nu} &= \ltwo{\ddom}{\nu}.
+	\end{align*}
+	Furthermore, if $d\in\divZero{\ddom}{\nu}$ then we have that the function
+	\begin{align*}
+		\tilde{d} = \begin{cases} d & x\in\vertSet, \\ 0 & x\not\in\vertSet, \end{cases}
+	\end{align*}
+	is an element of $\divZero{\ddom}{\dddmes}$.
+\end{lemma}
+\begin{proof}
+	In both cases it suffices to show the result for when $d$ supports only a single vertex, and then apply linearity.
+	For the first result: take smooth functions $\phi$ where, on a suitably small ball around the vertex $v_j$, we have that $\phi = \frac{d(v_j)}{2}\bracs{x - v_j}$.
+	For the second result: use smooth functions $\phi_n$ like in Proposition E.3 of the curl paper and then use the approximating sequence $\Phi^n = \bracs{\phi_n\bracs{x_1-v_j^{(1)}}, 0, 0}^\top$, starting the sequence at suitably large $n$.
+\end{proof}
+
+This forces us to deduce that $\divZero{\ddom}{\dddmes} = \ltwo{\ddom}{\dddmes}$, and thus for any function $u$ we have that $\ktdiv{\dddmes}u = 0$.
+This is not ideal --- not least because it would imply that all functions are divergence free.
+
+\section{Via ``Integration by Parts"}
+An alternative definition of ``$\kt$-divergence" can be given as below.
+\begin{definition}
+	Let $u\in\ltwo{\ddom}{\rho}^3$ and suppose that there exists a function $d\in\ltwo{\ddom}{\rho}$ such that
+	\begin{align*}
+		\integral{\ddom}{ u\cdot\overline{\ktgrad_{\rho}\phi} }{\rho}
+		&= -\integral{\ddom}{ d\overline{\phi} }{\rho}
+		\qquad \forall\phi\in\smooth{\ddom}.
+	\end{align*}
+	Then we call $d =: \ktdiv{\rho}u$ the ``$\kt$-divergence of $u$ with respect to $\rho$.
+	If $\ktdiv{\rho}u=0$, we say that $u$ is ``$\kt$-divergence-free".
+\end{definition}
+
+This alternative definition immediately coincides with the notion of ``divergence-free" that we have been using thus far in the curl-curl problem.
+However, it is not clear whether $\ktdiv{\rho}u$ is unique for all Borel measures $\rho$\footnote{For this to be true, we would need a version of the Fundamental Lemma of the Calculus of Variations to hold for the measure $\rho$, or to know that smooth functions are dense in $\ltwo{\ddom}{\rho}$.}, however we can safely deduce that when $\rho=\dddmes, \ddmes$, or $\nu$, it is.
+\begin{lemma}
+	$\ktdiv{\rho}u$ is unique when $\rho=\dddmes, \ddmes$, or $\nu$.
+\end{lemma}
+\begin{proof}
+	Suppose $u$ has two divergences and form the difference $d=d_1-d_2$, and we'll see that $d$ integrated against $\phi$ is zero for any smooth function $\phi$.
+	Choose the smooth functions $\phi$ in the definition to first support only the interior of one edge, which by the (normal!) FTC gives us that $d=0$ on the edges.
+	Then use smooth functions that support balls around each vertex to deduce that $d=0$ at the vertices too, so $d=0$ and thus the original two divergences were equal.
+\end{proof}
+
+Now we can ask questions about what $\ktdiv{\dddmes}u$ is (when it exists).
+\begin{prop}
+	Suppose that $u\in\ltwo{\ddom}{\dddmes}$ has divergence $\ktdiv{\dddmes}u$.
+	Then,
+	\begin{align*}
+		(i) \ & U_2^{(jk)} \in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet, \\
+		(ii) \ & \ktdiv{\dddmes}u = \bracs{U_2^{(jk)}}' + \rmi\qm_{jk}U_2^{(jk)} + \rmi\wavenumber u_3 \ \text{on each } I_{jk}, \\
+		(iii) \ & \bracs{\ktdiv{\dddmes}u}(v_j) = -\recip{\alpha_j}\bracs{ \sum_{j\conRight k}U_2^{(kj)}(v_j) - \sum_{j\conLeft k}U_2^{(jk)}(v_j) } + \rmi\wavenumber u_3(v_j), \ \forall v_j\in\vertSet.
+	\end{align*}
+\end{prop}
+Note that a converse of this theorem holds; provided that condition $(i)$ is assumed, one can show that the divergence of $u$ exists (and it will be defined by $(ii)$ and $(iii)$).
+\begin{proof}
+	Again, this is just the standard choice of smooth functions to consider.
+	First on the edges with interior support, which'll give the weak derivative for $U_2^{(jk)}$ and the condition $(ii)$.
+	Then for smooth functions that support the vertices, which'll provide us with the condition $(iii)$ given our knowledge of $\dddmes$-tangential gradients.
+\end{proof}
+
+Using this definition provides us with a form of divergence that also matches our intuitive expectations, like for gradient and curl.
+Divergence should indicate how much a vector field is ``spreading out" from a given point, or rather how much of a source/sink a given point is in a vector field.
+On the edges, condition $(ii)$ indicates that the ``spread" of a function is given by the rate of change of it's components along the edge $I_{jk}$ (that is, $U_2^{(jk)}$) and into the planes that have been Fourier-transformed out ($u_3$).
+Then at each of the vertices, the ``spread" is again dictated by $u_3$ (into the direction of travel) and the incoming contributions of the $U_2^{(jk)}$ to the vertex.
+If $u_1, u_2$ happen to be continuous, then one can determine whether there is any ``spread" in the plane by simply looking at the unit normals at the vertex $v_j$ and the value $u_3(v_j)$.
+
+This notion of divergence also plays well with our knowledge of regular calculus --- the divergence of a curl is always zero.
+\begin{prop}
+Let $u\in\ktcurlSob{\ddom}{\dddmes}$.
+Then $\ktdiv{\dddmes}u$ exists and is zero.
+\end{prop}
+\begin{proof}
+	Let $\phi\in\smooth{\ddom}{\dddmes}$, and recall that we know that
+	\begin{align*}
+		\overline{\ktgrad_{\dddmes}\phi} &= 
+		\begin{cases}
+			\bracs{ \overline{\phi}' - \rmi\qm_{jk}\overline{\phi} }\hat{e}_{jk} - \rmi\wavenumber\overline{\phi}\hat{x}_3 & x\in I_{jk}, \\
+			-\rmi\wavenumber\overline{\phi}\bracs{v_j}\hat{x}_3 & x=v_j, \ v_j\in\vertSet.
+		\end{cases}
+	\end{align*}
+	We also know that
+	\begin{align*}
+		\ktcurl{\dddmes}u &= 
+		\begin{cases}
+			\bracs{ u_3' + \rmi\qm_{jk}u_3 - \rmi\wavenumber U_2^{(jk)} }\hat{n}_{jk} & x\in I_{jk}, \\
+			0 & x = v_j, \ v_j\in\vertSet.
+		\end{cases}
+	\end{align*}
+	As such, we observe that for any $\phi\in\smooth{\ddom}$,
+	\begin{align*}
+		\integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktgrad_{\dddmes}\phi} }{\dddmes}
+		&= \integral{\ddom}{ \ktcurl{\dddmes}u\cdot\overline{\ktgrad_{\dddmes}\phi} }{\ddmes} + 0 \\
+		&= \integral{\ddom}{ \bracs{ u_3' + \rmi\qm_{jk}u_3 - \rmi\wavenumber U_2^{(jk)} }n_{jk} \cdot \bracs{ \overline{\phi}' - \rmi\qm_{jk}\overline{\phi} }e_{jk} }{\ddmes} \\
+		&= 0.
+	\end{align*}
+	Therefore, we conclude that $\ktdiv{\dddmes}u = 0$.
+\end{proof}
+
+\end{document}

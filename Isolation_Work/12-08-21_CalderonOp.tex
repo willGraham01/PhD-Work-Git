@@ -1,0 +1,218 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+\renewcommand{\curl}[1]{\mathrm{curl}\bracs{#1}}
+\renewcommand{\ktcurl}[1]{\mathrm{curl}^{\kt}\bracs{#1}}
+\newcommand{\ktdcurl}[2]{\mathrm{curl}^{\kt}_{#1}\bracs{#2}}
+\newcommand{\dgmap}{\dmap^{\graph}}
+\newcommand{\ngmap}{\nmap^{\graph}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\ag}{\mathcal{A}_\graph}
+\newcommand{\ip}[2]{\left\langle #1 , #2 \right\rangle}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Throughout, let $\curl{u}$ denote the classical curl of a $C^1$ function, let $\ktcurl{u}$ denote the operation $\nabla^{\kt}\wedge u$ for $\nabla^{\kt} = \bracs{ \partial_1 + \rmi\qm_1, \partial_2 + \rmi\qm_2, \rmi\wavenumber}^\top$, and let $\ktdcurl{\rho}{u}$ denote the $\kt$-tangential curl of $u$ with respect to the measure $\rho$.
+
+\section*{The Calderon Operator (2nd order, curl-of-the-curl)}
+
+\subsection*{PDE problem}
+Let $\dddom\subset\reals^3$ be a domain, and let $\mathcal{A}$ be the operator which acts as
+\begin{align*}
+	\mathcal{A}u = \curl{\curl{u}},
+\end{align*}
+on some appropriate domain of functions.
+Then consider the problem
+\begin{subequations} \label{eq:Maxwell3D}
+\begin{align} 
+	\mathcal{A}u - \beta u &= 0 \qquad\text{in } \dddom, \\
+	\hat{n}\wedge\curl{u} &= m \qquad\text{on } \partial\dddom,
+\end{align}
+\end{subequations}
+where $\beta>0$ and $m$ is a given function, and $\hat{n}$ is the exterior normal to the surface $\partial\dddom$.
+The Calderon operator for (associated with?) the problem \eqref{eq:Maxwell3D} is then the operator $\mathcal{C}$ that acting on solutions $u$ to \eqref{eq:Maxwell3D}, sending
+\begin{align*}
+	u \rightarrow \hat{n}\wedge\curl{u},
+\end{align*}
+(so in general $\mathcal{C}$ depends on both $\beta$ and $m$?).
+
+We can validate Green's identity for the triple $\bracs{\mathcal{A}, \dmap, \nmap}$ where
+\begin{align*}
+	\dmap u = u\vert_{\partial\dddom}, \qquad
+	\nmap u = \hat{n}\wedge\curl{u}\vert_{\partial\dddom},
+\end{align*}
+since
+\begin{align*}
+	\integral{\dddom}{ \mathcal{A}u \cdot \overline{v} - u \cdot \overline{\mathcal{A}v} }{x}
+	&= \integral{\dddom}{ \curl{\curl{u}}\cdot\overline{v} - u\cdot\overline{\curl{\curl{v}}} }{x} \\
+	&= \integral{\dddom}{ \curl{u}\cdot\overline{\curl{v}} - \curl{u}\cdot\overline{\curl{v}} }{x} \\
+	&\quad + \integral{\partial\dddom}{ \hat{n}\wedge\curl{u}\cdot\overline{v} - u\cdot\hat{n}\wedge\overline{\curl{v}} }{S} \\
+	&= \integral{\partial\dddom}{ \nmap u \cdot \overline{\dmap v} - \dmap u \cdot \overline{\nmap v} }{S}.
+\end{align*}
+
+\subsection*{Graph Problem}
+Now let's transition to our graph problem, on $\graph$ inside $\ddom\subset\reals^2$.
+We expect that the boundary condition that we obtain from the problem
+\begin{align} \label{eq:SingStrucCurlCurl}
+	\ktdcurl{\dddmes}{\ktdcurl{\dddmes}{u}} &= \omega^2 u \qquad\text{in } \ddom,
+\end{align}
+by which we mean
+\begin{align*}
+	\integral{\ddom}{ \ktdcurl{\dddmes}{u}\cdot\overline{\ktdcurl{\dddmes}{\phi}} -\omega^2 u\cdot\overline{\phi} }{\dddmes},
+	\quad\forall\phi\in\smooth{\ddom},
+\end{align*}
+to be of the form
+\begin{align} \label{eq:DispersiveBC}
+	\dgmap u &= -\omega^2 \alpha \ngmap u.
+\end{align}
+Here $\alpha$ is (akin to) the diagonal matrix of coupling constants and $\dgmap, \ngmap$ play the role of our Dirichlet and Neumann maps.
+Note that in the scalar paper, our vertex conditions also appeared in the form \eqref{eq:DispersiveBC} due to our conventions on exterior normals and signs of the coupling constants $\alpha_j$.
+Given the definitions for the PDE problem, we should expect that
+\begin{align} \label{eq:DGMapDef}
+	\dgmap u &= 
+	\begin{pmatrix}
+		u\bracs{v_1} \\ u\bracs{v_2} \\ \vdots \\ u\bracs{v_N}
+	\end{pmatrix}
+	\in\complex^{3N},
+\end{align}
+(where we have stacked the 3-vectors on top of each other), whilst $\ngmap u$ should bear resemblance to $\hat{n}\wedge\curl{u}\vert_{\partial\graph}$ --- the boundary ``$\partial\graph$" is the vertices of $\graph$.
+For each edge $I_{jk}$, let $e_{jk}$ be the unit vector directed along $I_{jk}$ and $n_{jk}$ the unit normal (use the standard convention from the scalar and curl papers), and set $\widehat{e}_{jk} = \bracs{e_{jk}, 0}^\top\in\reals^3$, $\widehat{n}_{jk} = \bracs{n_{jk}, 0}^\top\in\reals^3$.
+Define the function
+\begin{align*}
+	\sgn_{jk}: \clbracs{v_j, v_k} \rightarrow \clbracs{-1,0,1}, 
+	&\qquad
+	\sgn_{jk}(x) = \begin{cases} -1 & x=v_j, \\ 1 & x=v_k. \end{cases}
+\end{align*}
+and 
+\begin{align*}
+	\hat{\sigma}_{jk} &= \sgn_{jk}\widehat{e}_{jk},
+\end{align*}
+so $\hat{\sigma}_{jk}$ is playing the role of the ``exterior normal" for the edge $I_{jk}$.
+The natural candidate for $\ngmap$ is then 
+\begin{align} \label{eq:NGMapDef}
+	\ngmap u &= 
+	\begin{pmatrix}
+		\sum_{1\con k} \hat{\sigma}_{1k}\wedge\ktdcurl{\dddmes}{u}\vert_{v_1} \\
+		\sum_{2\con k} \hat{\sigma}_{2k}\wedge\ktdcurl{\dddmes}{u}\vert_{v_2} \\
+		\vdots \\
+		\sum_{N\con k} \hat{\sigma}_{Nk}\wedge\ktdcurl{\dddmes}{u}\vert_{v_N}
+	\end{pmatrix}
+	\in\complex^{3N}.
+\end{align}
+We know from our analysis that
+\begin{align*}
+	\ktdcurl{\dddmes}{u} &= \bracs{ \bracs{ u_3^{(jk)} }' + \rmi\qm_{jk}u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)} }\widehat{n}_{jk},
+\end{align*}
+on each edge $I_{jk}$.
+So we can deduce that
+\begin{align*}
+	\widehat{e}_{jk}\wedge\ktdcurl{\dddmes}{u} &= -
+	\begin{pmatrix} 
+	0 \\
+	0 \\
+	\bracs{ u_3^{(jk)} }' + \rmi\qm_{jk}u_3^{(jk)} - \rmi\wavenumber U_2^{(jk)}
+	\end{pmatrix},
+\end{align*}
+on $I_{jk}$, and hence that (for a fixed $v_j\in\vertSet$)
+\begin{align*}
+	\sum_{j\con k} \hat{\sigma}_{jk} \ \wedge \ &\ktdcurl{\dddmes}{u}\vert_{v_j} = \\ 
+	&\begin{pmatrix}
+	0 \\
+	0 \\	
+	- \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_3^{(jk)}\bracs{v_j}
+	+ \rmi\wavenumber\bracs{ \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} }
+	\end{pmatrix}.
+\end{align*}
+
+In the curl paper, we derive the vertex conditions
+\begin{align} \label{eq:VertConditionExplicit}
+	\alpha_j\omega^2 u\bracs{v_j} &=
+	\begin{pmatrix}
+	0 \\
+	0 \\	
+	\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_3^{(jk)}\bracs{v_j}
+	- \rmi\wavenumber\bracs{ \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} }
+	\end{pmatrix},
+\end{align}
+at each $v_j\in\vertSet$ (now expressed in vector form).
+We can identify \eqref{eq:VertConditionExplicit} as being of the form \eqref{eq:DispersiveBC} where
+\begin{align*}
+	\alpha = 
+	\mathrm{diag}\bracs{\alpha_1, \alpha_1, \alpha_1, \alpha_2, \alpha_2, \alpha_2, ..., \alpha_N, \alpha_N, \alpha_N} \in \complex^{3N\times 3N},
+\end{align*}
+and $\dgmap, \ngmap$ are as in \eqref{eq:DGMapDef}, \eqref{eq:NGMapDef}.
+This implies that we have already found the ``correct" (or at least, expected) analogue of the Calderon operator for the problem \eqref{eq:SingStrucCurlCurl}, and the following section demonstrates that we indeed have a suitable boundary triple for the resulting quantum graph problem.
+
+\subsection*{Current Curl-Curl Quantum Graph Problem}
+Let $\graph$ be (an embedded) metric graph, and recall that for a function $u=\bracs{u_1,u_2,u_3}^\top$ and an edge $I_{jk}$ we define
+\begin{align*}
+	U = \bracs{u_1, u_2}^\top, \quad U_1^{(jk)} = U^{(jk)}\cdot n_{jk}, \quad U_2^{(jk)} = U^{(jk)}\cdot e_{jk}.
+\end{align*}
+Now define the operator $\ag$ via the action
+\begin{align*}
+	\ag u &= 
+	\begin{pmatrix}
+		\sqbracs{ \rmi\wavenumber\bracs{\diff{}{y} + \rmi\qm_{jk} }u_3^{(jk)} + \wavenumber^2 U_2^{(jk)} }e_{jk}
+		+ U_1^{(jk)} n_{jk} \\
+		- \bracs{\diff{}{y} + \rmi\qm_{jk} }^2 u_3^{(jk)} + \rmi\wavenumber \bracs{\diff{}{y} + \rmi\qm_{jk} }U_2^{(jk)}
+	\end{pmatrix}
+\end{align*}
+on each edge, where $\mathrm{dom}\bracs{\ag}$ consists of all functions $u$ with the following properties:
+\begin{align*}
+	u\in\mathrm{dom}\bracs{\ag} \quad\Leftrightarrow\quad &
+	\begin{cases}
+	u\in L^2\bracs{\graph}\times L^2\bracs{\graph}\times H^2\bracs{\graph}, \\
+	\begin{pmatrix} u_1 \\ u_2 \end{pmatrix}\cdot e_{jk}\in \gradSob{I_{jk}}{y}, & \forall I_{jk}\in\edgeSet, \\
+	u \text{ is continuous at } v_j, & \forall v_j\in\vertSet, \\
+	\text{\eqref{eq:VertConditionExplicit} is satisfied at } v_j, & \forall v_j\in\vertSet.
+	\end{cases}
+\end{align*}
+Let $\dgmap, \ngmap$ be as defined in \eqref{eq:DGMapDef}, \eqref{eq:NGMapDef}.
+Then we have that
+\begin{align*}
+	\integral{I_{jk}}{ \ag u \cdot \overline{v} }{y} - \integral{I_{jk}}{ u \cdot \overline{\ag v} }{y}
+	&= \sqbracs{ -u'_3 v_3 + u_3 v_3' - 2\rmi\qm_{jk}u_3 v_3 + \rmi\wavenumber\bracs{U_2 v_3 + u_3 V_2} }_{v_j}^{v_k} \\
+	&= -\sqbracs{ \overline{v}_3\bracs{ \bracs{\diff{}{y} + \rmi\qm_{jk} }u_3 - \rmi\wavenumber U_2 } }_{v_j}^{v_k} \\
+	&\qquad + \sqbracs{ u_3\overline{\bracs{ \bracs{\diff{}{y} + \rmi\qm_{jk} }v_3 - \rmi\wavenumber V_2 }} }_{v_j}^{v_k}.
+\end{align*}
+Ergo,
+\begin{align*}
+	&\ip{\ag u}{v}_{L^2\bracs{\graph}^3} - \ip{u}{\ag v}_{L^2\bracs{\graph}^3}
+	= \sum_{v_j\in\vertSet}\sum_{j\conLeft k} \integral{I_{jk}}{ \ag u \cdot \overline{v} - u \cdot \overline{\ag v} }{y} \\
+	&\quad = \sum_{v_j\in\vertSet}\sum_{j\conLeft k} -\sqbracs{ \overline{v}_3\bracs{ \bracs{\diff{}{y} + \rmi\qm_{jk} }u_3 - \rmi\wavenumber U_2 } }_{v_j}^{v_k}
+	+ \sqbracs{ u_3\overline{\bracs{ \bracs{\diff{}{y} + \rmi\qm_{jk} }v_3 - \rmi\wavenumber V_2 }} }_{v_j}^{v_k} \\
+	&\quad = \sum_{v_j\in\vertSet} u_3\bracs{v_j}\overline{\bracs{ \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}v_3 - \rmi\wavenumber\bracs{ \sum_{j\conRight k} V_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} V_2^{(jk)}\bracs{v_j} } }} \\
+	&\quad + \sum_{v_j\in\vertSet} \overline{v}_3\bracs{v_j}\bracs{ \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_3 - \rmi\wavenumber\bracs{ \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} } } \\
+	&\quad = \ngmap u \cdot \overline{\dgmap v} - \dgmap u \cdot \overline{\ngmap v}
+	= \ip{\ngmap u}{\dgmap v}_{\complex^{3N}} - \ip{\dgmap u}{\ngmap v}_{\complex^{3N}},
+\end{align*}
+and so Green's identity holds.
+As such, $\bracs{\complex^{3N}, \dgmap, \ngmap}$ is a boundary triple for the operator $\ag$.
+
+\end{document}

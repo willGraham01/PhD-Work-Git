@@ -1,0 +1,93 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+\renewcommand{\curl}[1]{\mathrm{curl}\bracs{#1}}
+\renewcommand{\ktcurl}[1]{\mathrm{curl}^{\kt}_{\dddmes}\bracs{#1}}
+\newcommand{\hone}{\mathcal{H}}
+\newcommand{\ip}[2]{\left\langle #1 , #2 \right\rangle}
+\newcommand{\aop}{\mathcal{A}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\graph$ be a graph embedded into $\ddom$ with the usual singular measure $\dddmes = \ddmes + \nu$.
+Use $\ktcurl{u}$ to denote the $\kt$-tangential curl (wrt $\dddmes$) of $u\in\ltwo{\ddom}{\dddmes}$, and use $\curl{v}$ to denote the (classical) curl of a $C^1$ function $v$.
+
+The (classical) Maxwell system is
+\begin{subequations} \label{eq:MaxwellSystem}
+	\begin{align} 
+		- \curl{E} &= \rmi\omega\mu H, \\
+		\curl{H} &= \rmi\omega\epsilon E,
+	\end{align}
+\end{subequations}
+where I've moved the $-1$ in the equation for $E$ in \eqref{eq:MaxwellSystem} across for notational ease in what follows.
+Also (as a reminder to myself): if $b$ is a symmetric, non-negative bilinear form on $D\times D$ where $D$ is a dense subspace of a Hilbert space $\hone$, then there exists a self-adjoint operator $B$ where
+\begin{align*}
+	\mathrm{dom}B &= \clbracs{u\in D \setVert \exists v\in\hone \ \forall w\in D \ : \ \ip{v}{w} = b(u,w)}, 
+\end{align*}
+and $B(u)= v$, where $u,v$ are as in the definition of the domain of $B$.
+
+\section*{Maxwell in the Operator Sense}
+We have a well-defined notion of $\ktcurl{u}$, providing us with the space $\hone := \ktcurlSob{\ddom}{\dddmes}$ --- we will write $\hone^2 := \hone\times\hone$.
+Our candidate for ``Maxwell's equations" on our singular structures, given \eqref{eq:MaxwellSystem}, should be something like
+\begin{subequations} \label{eq:SingularMaxwell}
+	\begin{align} 
+		- \ktcurl{E} &= \rmi\omega\mu H, \\
+		\ktcurl{H} &= \rmi\omega\epsilon E.
+	\end{align}
+\end{subequations}
+Indeed, if we define the operator $\aop: \hone^2 \rightarrow \hone^2$ via
+\begin{align*}
+	\aop \begin{pmatrix} E \\ H \end{pmatrix} 
+	&= \begin{pmatrix} \ktcurl{\frac{H}{\epsilon}} \\ -\ktcurl{\frac{E}{\mu}} \end{pmatrix},
+\end{align*}
+we can even write \eqref{eq:SingularMaxwell} as the (eigenvalue) problem $\aop u = \rmi\omega u$, where $u\in\hone^2$.
+I guess this is ``jumping the gun" --- assuming that \eqref{eq:SingularMaxwell} is precisely the strong form which we are seeking in the first place? \newline
+
+Instead, I could start by looking at the problem of finding $\bracs{E,H}\in\hone^2$ such that
+\begin{align*}
+	\rmi\omega\integral{\ddom}{ E\cdot\overline{\phi} + H\cdot\overline{\psi} }{\dddmes}
+	&= \integral{\ddom}{ \overline{\phi}\cdot\ktcurl{\frac{H}{\epsilon}} - \overline{\psi}\cdot\ktcurl{\frac{E}{\mu}} }{\dddmes},
+	\quad\forall \bracs{\phi, \psi}\in\sqbracs{ \smooth{\ddom}^3 }^2.
+\end{align*}
+Now, we can write the above equation as
+\begin{align*}
+	\rmi\omega\ip{ \begin{pmatrix} E \\ H \end{pmatrix} }{ \begin{pmatrix} \phi \\ \psi \end{pmatrix} }_{\ltwo{\ddom}{\dddmes}^3}
+	&= \ip{ \aop\begin{pmatrix} E \\ H \end{pmatrix} }{ \begin{pmatrix} \phi \\ \psi \end{pmatrix} }_{\ltwo{\ddom}{\dddmes}^3}.
+\end{align*}
+Normally, at this point we would ``label" the right hand side as
+\begin{align} \label{eq:BilinearForm}
+	b\bracs{u,v} &= \ip{ \aop u }{ v }_{\ltwo{\ddom}{\dddmes}^3},
+\end{align}
+and would attempt to demonstrate that $b$ is a symmetric, bilinear form.
+This would imply the existence of a self-adjoint operator $B$ (using the reminder at the top of the document), which in turn would provide us with the strong formulation $Bu = \rmi\omega u$.
+The domain of this operator $B$ is defined in the result, but it doesn't seem particularly tractable to analysis.
+
+However, $b$ as in \eqref{eq:BilinearForm} is not symmetric: so either I have the wrong starting position in \eqref{eq:SingularMaxwell} and need to figure out what to add (or manipulate to obtain a symmetric form), or my interpretation of understanding the problem in the ``operator sense" is off?
+
+\end{document}
