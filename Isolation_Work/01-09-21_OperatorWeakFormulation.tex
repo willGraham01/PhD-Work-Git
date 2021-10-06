@@ -1,0 +1,246 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\DeclareMathOperator*{\dw}{width}
+\newcommand{\dirWidth}[2]{\dw_{#2}\bracs{#1}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+
+\renewcommand{\curl}[1]{\mathrm{curl}\bracs{#1}}
+\renewcommand{\ktcurl}[1]{\mathrm{curl}^{\kt}_{\dddmes}\bracs{#1}}
+\newcommand{\hone}{\mathcal{H}}
+\newcommand{\aop}{\mathcal{A}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\graph$ be a graph embedded into $\ddom$ with the usual singular measure $\dddmes = \ddmes + \nu$.
+Use $\ktcurl{u}$ to denote the $\kt$-tangential curl (wrt $\dddmes$) of $u\in\ltwo{\ddom}{\dddmes}$, and use $\curl{v}$ to denote the (classical) curl of a $C^1$ function $v$.
+
+The (classical) Maxwell system is
+\begin{subequations} \label{eq:MaxwellSystem}
+	\begin{align} 
+		- \curl{E} &= \rmi\omega\mu H, \\
+		\curl{H} &= \rmi\omega\epsilon E,
+	\end{align}
+\end{subequations}
+we will use as our basis the ``weak formulation"
+\begin{align*}
+	\integral{\ddom}{ \recip{\epsilon}H\cdot\overline{\ktcurl{\phi}} - \recip{\mu}E\cdot\overline{\ktcurl{\psi}} + \rmi\omega\bracs{H\cdot\overline{\psi} + E\cdot\overline{\phi}} }{\dddmes}
+	&= 0.
+\end{align*}
+
+So let's define the ``Maxwell operator" $\aop$ as the operator with domain
+\begin{align*}
+	\mathrm{dom}\aop = \clbracs{ u = \bracs{E,H}\in\sqbracs{\ltwo{\ddom}{\dddmes}^3}^2 \setVert \exists f=\bracs{f^E, f^H}\in\sqbracs{\ltwo{\ddom}{\dddmes}^3}^2, \right. \\
+	\left. \ktgrad_{\dddmes}\cdot f^E = 0, \ \ktgrad_{\dddmes}\cdot f^H = 0, \right. \\
+	\left. \integral{\ddom}{ \recip{\epsilon}H\cdot\overline{\ktcurl{\phi}} - \recip{\mu}E\cdot\overline{\ktcurl{\psi}} + \rmi\omega\bracs{H\cdot\overline{\psi} + E\cdot\overline{\phi}} }{\dddmes}
+	= \integral{\ddom}{f^E\cdot\overline{\phi} + f^H\cdot\overline{\psi}}{\dddmes}, \right. \\
+	\left. \forall\phi,\psi\in\smooth{\ddom}^3.  },
+\end{align*}
+with action $\aop u = f - \rmi\omega u$, where $u,f$ are as in the definition of the domain of $\aop$.
+
+\section*{Problems with this ``weak form"}
+The manner in which we define the concept of divergence-free greatly impacts whether we obtain an interesting problem, at least in this context.
+For explicit clarity, we (currently) define divergence-free as follows:
+\begin{definition}
+	A vector field $u\in\ltwo{\ddom}{\dddmes}^3$ is $\kt$-divergence-free (with respect to $\dddmes$) if
+	\begin{align*}
+		\integral{\ddom}{ u\cdot\overline{g} }{\dddmes} &=0 \quad\forall\bracs{v,g}\in W^{\kt}_{\dddmes, \mathrm{grad}},
+	\end{align*}
+	and we write $\ktgrad_{\dddmes}\cdot u = 0$.
+\end{definition}
+Notice that it is actually sufficient to simply test the condition
+\begin{align*}
+	\integral{\ddom}{ u\cdot\overline{\ktgrad\phi} }{\dddmes} &=0 , \quad\forall\phi\in\smooth{\ddom},
+\end{align*}
+to show that $u$ is divergence free (under this definition), by the definition of $W^{\kt}_{\dddmes, \mathrm{grad}}$.
+
+This results in the following conclusion:
+\begin{prop}
+	Suppose that $u$ is $\kt$-divergence-free with respect to $\dddmes$.
+	Then for every $v\in\ktcurlSob{\ddom}{\dddmes}$, we have that $u$ is orthogonal to $\ktcurl{v}$.
+\end{prop}
+\begin{proof}
+	Since $u$ is divergence-free, Proposition E.5 of Paper\_Curl2021 implies that $U^{(jk)}_1=0$ on every edge $I_{jk}$.
+	Furthermore for any $v\in\ktcurlSob{\ddom}{\dddmes}$, 
+	\begin{align*}
+		\ktcurl{v} &= 
+		\begin{cases} 
+			\bracs{v_3' +\rmi\qm_{jk} v_3 - \rmi\wavenumber V_2^{(jk)}}\hat{n}_{jk} & x\in I_{jk}, \\
+			0 & x\in\vertSet.
+		\end{cases}
+	\end{align*}
+	As a result,
+	\begin{align*}
+		\integral{\ddom}{ u\cdot\overline{\ktcurl{v}} }{\dddmes}
+		&= \integral{\ddom}{u\cdot\overline{\ktcurl{v}} }{\ddmes} + 0 \\
+		&= \sum_{j\con k}\integral{I_{jk}}{ u\cdot\bracs{\overline{v}_3' +\rmi\qm_{jk} \overline{v}_3 - \rmi\wavenumber\overline{V}_2^{(jk)}}\hat{n}_{jk} }{\ddmes} \\
+		&= \sum_{j\con k}\integral{I_{jk}}{ \bracs{\overline{v}_3' +\rmi\qm_{jk} \overline{v}_3 - \rmi\wavenumber\overline{V}_2^{(jk)}}U_1^{(jk)} }{\ddmes} \\
+		&= \sum_{j\con k}\integral{I_{jk}}{ 0 }{\ddmes} = 0.
+	\end{align*}
+\end{proof}
+It is worth remarking here that this result is entirely due to the requirement that a divergence-free function $u$ be orthogonal to $\gradZero{\ddom}{\dddmes}$.
+Even though the definition of divergence-free requires that $u$ be orthogonal to both gradients of zero and tangential gradients, we only need this assumption to deduce that $u$ is orthogonal to tangential curls.
+
+We next observe that:
+\begin{prop}
+	Suppose $u=\bracs{E,H}\in\mathrm{dom}\aop$. 
+	Then $E$ and $H$ are $\kt$-divergence free with respect to $\dddmes$.
+\end{prop} 
+\begin{proof}
+	There exists some $f$ such that the function $u=\bracs{E,H}$ satisfies
+	\begin{align*}
+		\integral{\ddom}{ \recip{\epsilon}H\cdot\overline{\ktcurl{\phi}} - \recip{\mu}E\cdot\overline{\ktcurl{\psi}} + \rmi\omega\bracs{H\cdot\overline{\psi} + E\cdot\overline{\phi}} }{\dddmes}
+		= \integral{\ddom}{f^E\cdot\overline{\phi} + f^H\cdot\overline{\psi}}{\dddmes},
+	\end{align*}
+	for all $\phi,\psi\in\smooth{\ddom}^3$.
+	For the time being, let us set $\psi=0$.
+	Let $\varphi\in\smooth{\ddom}$ and set $\phi = \ktgrad\varphi$.
+	Then we have that
+	\begin{align*}
+		0 &= \integral{\ddom}{ \recip{\epsilon}H\cdot\overline{\ktcurl{\phi}} + \rmi\omega E\cdot\overline{\phi} - f^E\cdot\overline{\phi} }{\dddmes} \\
+		&= \integral{\ddom}{ \rmi\omega E\cdot\overline{\ktgrad\varphi} - f^E\cdot\overline{\ktgrad\varphi} }{\dddmes} \\
+		&= \integral{\ddom}{ \rmi\omega E\cdot\overline{\ktgrad\varphi} }{\dddmes},
+	\end{align*}	 
+	since $f^E$ is $\kt$-divergence-free.
+	Clearly, this forces us to conclude that $E$ is $\kt$-divergence-free too.
+	
+	The proof for $H$ is identical, just using $\phi=0$ and $\psi=\ktgrad\varphi$ instead.
+\end{proof}
+
+This means that $u\in\mathrm{dom}\aop$ implies that $E,H$ are divergence-free.
+Thus, they are orthogonal to all $\kt$-tangential curls by the preceding result.
+As such, the ``weak" form defining $\aop$ reduces (since the curl-parts vanish) and we just get that $\bracs{E,H}=\recip{\rmi\omega}\bracs{f^E,f^H}$.
+Thus, the operator $\aop u = f - \rmi\omega u = 0$ --- that is, everything in the domain is mapped to 0!
+
+\section*{Changing the notion of ``divergence-free"}
+Given that it is a part of the notion of divergence-free that results in any divergence-free function being orthogonal to $\kt$-tangential curls, we might have some luck in redefining the notion of divergence-free --- in particular, restricting it to orthogonality to $\kt$-gradients.
+Explicitly,
+\begin{definition}[Alternative Divergence-Free Notion:]
+	A vector field $u\in\ltwo{\ddom}{\dddmes}^3$ is $\kt$-divergence-free (with respect to $\dddmes$) if
+	\begin{align*}
+		\integral{\ddom}{ u\cdot\overline{\ktgrad_{\dddmes}v} }{\dddmes} &=0 \quad\forall v\in\ktgradSob{\ddom}{\dddmes},
+	\end{align*}
+	and we write $\ktgrad_{\dddmes}\cdot u = 0$.	
+\end{definition}
+This means that we loose the condition that $U_1^{(jk)}=0$ on the edges from Proposition E.5 in Paper\_Curl2021 (as well as one of the other vertex conditions).
+However, it does mean that a divergence-free function is no longer orthogonal to all tangential curls.
+We can also try to motivate this alternative definition by reasoning that the tangential gradients are really the only gradients we care about, whilst the gradients of zero are essentially redundant --- as such, being divergence free should only entail being orthogonal to the gradients that we will actually be considering in the first place.
+
+We are still able to deduce that $u=\bracs{E,H}\in\mathrm{dom}\aop$ implies that $E,H$ are divergence-free (in this new sense).
+Also, we can actually deduce the action of the operator $\aop$ again - and it has the potential to be non-trivial!
+Suppose that $u\in\mathrm{dom}\aop$ and let $f$ be the divergence-free function such that
+\begin{align*}
+	\integral{\ddom}{ \recip{\epsilon}H\cdot\overline{\ktcurl{\phi}} - \recip{\mu}E\cdot\overline{\ktcurl{\psi}} + \rmi\omega\bracs{H\cdot\overline{\psi} + E\cdot\overline{\phi}} }{\dddmes}
+	= \integral{\ddom}{f^E\cdot\overline{\phi} + f^H\cdot\overline{\psi}}{\dddmes}, \labelthis\label{eq:OperatorWeakForm} \\
+	\forall\phi,\psi\in\smooth{\ddom}^3.
+\end{align*}
+Now employ the usual trick --- first take smooth functions $\phi, \psi$ whose support only intersects the interior of one edge $I_{jk}$.
+This allows us to deduce that
+\begin{align*}
+	0 &= \integral{I_{jk}}{ \recip{\epsilon}\bracs{\overline{\phi}_3' - \rmi\qm_{jk}\overline{\phi}_3 + \rmi\wavenumber\Phi^{(jk)}_2}H\cdot\hat{n}_{jk} - \recip{\mu}\bracs{\overline{\psi}_3' - \rmi\qm_{jk}\overline{\psi}_3 + \rmi\wavenumber\Psi^{(jk)}_2}E\cdot\hat{n}_{jk} + \\
+	&\qquad \bracs{\rmi\omega E - f^E}\cdot\overline{\phi} + \bracs{\rmi\omega H - f^H}\cdot\overline{\psi} }{\lambda_{jk}},
+\end{align*}
+from which we can gather components, deducing that on each edge $I_{jk}$
+\begin{align*}
+	\bracs{\phi_1}: \quad & 0 = \frac{\rmi\wavenumber}{\epsilon}H\cdot\hat{n}_{jk} e^{(jk)}_1 + \rmi\omega E_1 - f^E_1, \\
+	\bracs{\phi_2}: \quad & 0 = \frac{\rmi\wavenumber}{\epsilon}H\cdot\hat{n}_{jk} e^{(jk)}_2 + \rmi\omega E_2 - f^E_2, \\
+	\bracs{\psi_1}: \quad & 0 = \frac{\rmi\wavenumber}{\mu}E\cdot\hat{n}_{jk} e^{(jk)}_1 + \rmi\omega H_1 - f^H_1, \\
+	\bracs{\psi_2}: \quad & 0 = \frac{\rmi\wavenumber}{\mu}E\cdot\hat{n}_{jk} e^{(jk)}_2 + \rmi\omega H_2 - f^H_2,
+\end{align*}
+using the fundamental lemma of variations.
+We can perform the following manipulations to the equations $\bracs{\phi_1}$ through $\bracs{\psi_2}$ to deduce that:
+\begin{align*}
+	\bracs{\phi_1}n^{(jk)}_1 + \bracs{\phi_2}n^{(jk)}_2
+	&\quad\implies\quad 0 = \bracs{\rmi\omega E - f^E}\cdot\hat{n}_{jk}, \\
+	\bracs{\phi_1}e^{(jk)}_1 + \bracs{\phi_2}e^{(jk)}_2
+	&\quad\implies\quad 0 = \bracs{\rmi\omega E - f^E}\cdot\hat{e}_{jk} + \frac{\rmi\wavenumber}{\epsilon}H\cdot\hat{n}_{jk}, \\
+	\bracs{\psi_1}n^{(jk)}_1 + \bracs{\psi_2}n^{(jk)}_2
+	&\quad\implies\quad 0 = \bracs{\rmi\omega H - f^H}\cdot\hat{n}_{jk}, \\
+	\bracs{\psi_1}e^{(jk)}_1 + \bracs{\psi_2}e^{(jk)}_2
+	&\quad\implies\quad 0 = \bracs{\rmi\omega H - f^H}\cdot\hat{e}_{jk} - \frac{\rmi\wavenumber}{\mu}E\cdot\hat{n}_{jk}.
+\end{align*}
+Incidently, the normal-components being zero is what we would deduce if we took $\phi,\psi$ as a sequence of smooth functions converging to a gradient of zero in \eqref{eq:OperatorWeakForm}.
+Then since we know that
+\begin{align*}
+	\cdot\begin{pmatrix} a_1 \\ a_2 \\ 0 \end{pmatrix}
+	&= \bracs{a\cdot\hat{e}_{jk}}\hat{e}_{jk} + \bracs{a\cdot\hat{n}_{jk}}\hat{n}_{jk},
+	\qquad\forall a\in\complex^3,
+\end{align*}
+we can deduce that
+\begin{align*}
+	\begin{pmatrix} f^E_1 - \rmi\omega E_1 \\ f^E_2 - \rmi\omega E_2 \\ 0 \end{pmatrix}
+	&= \bracs{\frac{\rmi\wavenumber}{\epsilon}H\cdot\hat{n}_{jk}}\hat{e}_{jk}, \\
+	\begin{pmatrix} f^H_1 - \rmi\omega H_1 \\ f^H_2 - \rmi\omega H_2 \\ 0 \end{pmatrix}
+	&= -\bracs{\frac{\rmi\wavenumber}{\mu}E\cdot\hat{n}_{jk}}\hat{e}_{jk}.
+\end{align*}
+
+The components $\phi_3$ and $\psi_3$ yield the relations
+\begin{align*}
+	0 &= \integral{I_{jk}}{ \recip{\epsilon}H\cdot\hat{n}_{jk}\overline{\phi}_3' - \frac{\rmi\qm_{jk}}{\epsilon}H\cdot\hat{n}_{jk}\overline{\phi}_3 + \bracs{\rmi\omega E_3 - f^E_3}\overline{\phi}_3 }{\lambda_{jk}}, \\
+	0 &= \integral{I_{jk}}{ -\recip{\mu}E\cdot\hat{n}_{jk}\overline{\psi}_3' - \frac{\rmi\qm_{jk}}{\mu}E\cdot\hat{n}_{jk}\overline{\psi}_3 + \bracs{\rmi\omega H_3 - f^H_3}\overline{\psi}_3 }{\lambda_{jk}},	
+\end{align*}
+which hold for every smooth $\phi, \psi$ with support intersecting the interior of the edge $I_{jk}$.
+As such, we can deduce that $\recip{\epsilon}H\cdot\hat{n}_{jk}$ and $\recip{\mu}E\cdot\hat{n}_{jk}$ are differentiable in the $\gradSob{\interval{I_{jk}}}{y}$-sense, and that
+\begin{align*}
+	\bracs{\recip{\epsilon}H\cdot\hat{n}_{jk}}' &= \rmi\omega E_3 - f^E_3 - \frac{\rmi\qm_{jk}}{\epsilon}H\cdot\hat{n}_{jk}, \\
+	\bracs{\recip{\mu}E\cdot\hat{n}_{jk}}' &= -\bracs{\rmi\omega H_3 - f^H_3} - \frac{\rmi\qm_{jk}}{\mu}E\cdot\hat{n}_{jk}.
+\end{align*}
+As such, we now know the form of the function $f-\rmi\omega u$ on the edge $I_{jk}$.
+
+To obtain the form of $f-\rmi\omega u$ at the vertices, we now take $\phi, \psi$ to be smooth functions supported on a ball centred on the vertex $v_j$ and containing no other vertices.
+Returning to \eqref{eq:OperatorWeakForm}, noting that the curls are zero at the vertices themselves, and the relations that hold on the edges that were just deduced, we obtain
+\begin{align*}
+	\alpha_j\begin{pmatrix} f^E - \rmi\omega E \\ f^H - \rmi\omega H \end{pmatrix} \cdot\begin{pmatrix} \overline{\phi} \\ \overline{\psi} \end{pmatrix}\big\vert_{v_j} &= 
+	\sum_{j\conRight k} \clbracs{\recip{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}\overline{\phi}_3\big\vert_{v_j}	 - \recip{\mu}E\cdot\hat{n}_{jk}\overline{\psi}_3\big\vert_{v_j}}	 \\
+	&\quad - \sum_{j\conLeft k} \clbracs{\recip{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}\overline{\phi}_3\big\vert_{v_j}	 - \recip{\mu}E\cdot\hat{n}_{jk}\overline{\psi}_3\big\vert_{v_j}}	.
+\end{align*}
+Matching components of $\phi$ and $\psi$ then provides us with the form of $f-\rmi\omega u$ at the vertices too.
+As such, we can deduce that
+\begin{align*}
+	\aop u = f - \rmi\omega u &=
+	\begin{cases}
+		\begin{pmatrix}
+			\bracs{\frac{\rmi\wavenumber}{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}}\hat{e}_{jk} \\
+			-\bracs{\recip{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}}' - \frac{\rmi\qm_{jk}}{\epsilon}H^{(jk)}\cdot\hat{n}_{jk} \\
+			-\bracs{\frac{\rmi\wavenumber}{\mu}E^{(jk)}\cdot\hat{n}_{jk}}\hat{e}_{jk} \\
+			\bracs{\recip{\mu}E^{(jk)}\cdot\hat{n}_{jk}}' + \frac{\rmi\qm_{jk}}{\mu}E^{(jk)}\cdot\hat{n}_{jk}
+		\end{pmatrix}
+		& x\in I_{jk}, \\
+		\begin{pmatrix}
+			0 \\
+			0 \\
+			\recip{\alpha_j}\clbracs{ \sum_{j\conRight k}\recip{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}\big\vert_{v_j} - \sum_{j\conLeft k}\recip{\epsilon}H^{(jk)}\cdot\hat{n}_{jk}\big\vert_{v_j} } \\
+			0 \\
+			0 \\
+			-\recip{\alpha_j}\clbracs{ \sum_{j\conRight k}\recip{\mu}E^{(jk)}\cdot\hat{n}_{jk}\big\vert_{v_j} - \sum_{j\conLeft k}\recip{\mu}E^{(jk)}\cdot\hat{n}_{jk}\big\vert_{v_j} }
+		\end{pmatrix}
+		& x=v_j\in\vertSet.
+	\end{cases}
+\end{align*}
+And now, we know what the action of $\aop$ is on functions in it's domain.
+This still seems off though --- notice how the components $E_3,H_3$ are essentially ignored by the operator $\aop$, as well as the parts $E\cdot\hat{e}_{jk}$ and $H\cdot\hat{e}_{jk}$.
+However, for a given (divergence-free) $g=\bracs{g^E,g^H}^\top\in\sqbracs{\ltwo{\ddom}{\dddmes}^3}^2$, the problem $\aop u = g$ does make sense now, and does define a quantum graph problem.
+
+\end{document}

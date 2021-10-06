@@ -47,6 +47,7 @@
 \newcommand{\interval}[1]{\sqbracs{0,\abs{#1}}}	%creates the closed interval from 0 to the length of the input #1, denoted by absolute value
 \newcommand{\eps}{\varepsilon}					%pretty epsilons
 \newcommand{\charFunc}[1]{\mathcal{I}_{#1}}%{\mathbb{1}_{#1}}		%characteristic function of a set
+\newcommand{\sgn}{\mathrm{sgn}}
 
 \newcommand{\dddom}{\widetilde{\Omega}}			%3D domain notation
 \newcommand{\ddom}{\Omega}						%2D domain notation
@@ -61,6 +62,9 @@
 \newcommand{\kt}{\bracs{\wavenumber, \qm}}		%(k, theta) pair
 \newcommand{\dmap}{\Gamma_0}					%Dirichlet map
 \newcommand{\nmap}{\Gamma_1}					%Neumann map
+\newcommand{\dgmap}{\dmap^{\graph}}			%Dirichlet and Neumann maps with graph script for distinction
+\newcommand{\ngmap}{\nmap^{\graph}}
+\newcommand{\ag}{\mathcal{A}_\graph}			%caligraphic A with graph script for distinction
 \newcommand{\effFreq}{\Lambda}					%Effective frequency sqrt(w^2-\wavenumber^2)
 \newcommand{\conLeft}{\stackrel{\rightarrow}{\smash{\sim}\rule{0pt}{0.4ex}}} %j connects to k, j left
 \newcommand{\conRight}{\stackrel{\leftarrow}{\smash{\sim}\rule{0pt}{0.4ex}}} %j connects to k, j right
@@ -84,6 +88,7 @@
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}					%absolute value
 \newcommand{\norm}[1]{\lvert\lvert #1 \rvert\rvert}		%norm 
 \newcommand{\setVert}{\ \middle\vert \ }					%vertical bar for the middle of sets
+\newcommand{\ip}[2]{\left\langle #1 , #2 \right\rangle}	%inner product
 
 %function sets
 \newcommand{\smooth}[1]{C^{\infty}\bracs{#1}}							%smooth functions

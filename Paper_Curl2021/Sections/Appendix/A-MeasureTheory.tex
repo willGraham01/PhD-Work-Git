@@ -97,7 +97,7 @@ We can also perform analogous steps for $\curlZero{\ddom}{\rho}$, which allows u
 	is called the ``Sobolev space of $\kt$-curls with respect to the measure $\rho$".
 	The member $\ktcurl{\rho}u$ of the pair $\bracs{u, \ktcurl{\rho}u}$ is the ``$kt$-tangential curl of $u$ with respect to $\rho$".
 \end{definition}
-Like with tangential gradients; we will use $u\in\ktcurlSob{\ddom}{\rho}$ to refer to the element $\bracs{u, \ktcurl{\rho}u}\in\ktcurlSob{\ddom}{\rho}$, since each $u$ has a unique $\ktcurl{\rho}u$ that is orthogonal to $\curlZero{\ddom}{\rho}$, and when the context is clear will refer to $\ktcurl{\rho}u$ as the ``tangential curl" or ``$kt$-tangential curl".
+Like with tangential gradients; we will use $u\in\ktcurlSob{\ddom}{\rho}$ to refer to the element $\bracs{u, \ktcurl{\rho}u}\in\ktcurlSob{\ddom}{\rho}$, since each $u$ has a unique $\ktcurl{\rho}u$ that is orthogonal to $\curlZero{\ddom}{\rho}$, and when the context is clear will refer to $\ktcurl{\rho}u$ as the ``tangential curl" or ``$\kt$-tangential curl".
 
 Having provided a notion of ($\kt$-)curl and gradient for the measure $\rho$, we can assign a meaning to the term ``divergence-free".
 \begin{definition}[$\kt$-Divergence free] \label{def:ktDivergenceFree}
@@ -132,12 +132,14 @@ First, it is useful to note that functions with tangential curls or gradients ca
 \end{proof}
 
 Additionally, the rule that ``the curl of a gradient is 0" translates into its natural analogue on $\kt$-tangential curls and gradients.
-\begin{prop} \label{prop:CurlOfGradIsZero}
-	Suppose that $\bracs{u,\ktgrad_{\rho}u}\in\ktgradSob{\ddom}{\rho}$.
-	Then $\bracs{\ktgrad_{\rho}u, 0}\in\ktcurlSob{\ddom}{\rho}$.
-\end{prop}
+\begin{lemma} \label{lem:CurlOfGradSmoothFunctions}
+	For $\phi\in\smooth{\ddom}$, we have that
+	\begin{align*}
+		\ktcurl{}\bracs{\ktgrad\phi} = 0.
+	\end{align*}
+\end{lemma}
 \begin{proof}
-	First, let $\phi\in\smooth{\ddom}$, $\Phi = \ktgrad\phi$, and set $\widetilde{\qm} = \bracs{\qm_1, \qm_2, 0}^\top$ throughout.
+	Let $\phi\in\smooth{\ddom}$, $\Phi = \ktgrad\phi$, and set $\widetilde{\qm} = \bracs{\qm_1, \qm_2, 0}^\top$ throughout.
 	Notice that
 	\begin{align*}
 		\Phi = \ktgrad\phi &= \e^{-\rmi\qm\cdot x}\kgrad\bracs{ \e^{\rmi\qm\cdot x}\phi },
@@ -156,17 +158,29 @@ Additionally, the rule that ``the curl of a gradient is 0" translates into its n
 		\end{pmatrix} \\
 		&= 0.
 	\end{align*}
-	So now suppose that $u\in\ktgradSob{\ddom}{\rho}$, and take an approximating sequence $\phi_n$ for $u$ as in corollary \ref{cory:SobSpaceApproxSequences}.
-	By the above calculation, we have that $\ktcurl{}\bracs{\ktgrad\phi_n}=0$ for every $n\in\naturals$, and thus
-	\begin{align*}
-		\ktgrad\phi_n \lconv{\ltwo{\ddom}{\rho}^3} \ktgrad_{\rho}u, \qquad
-		\ktcurl{}\bracs{\ktgrad\phi_n} \lconv{\ltwo{\ddom}{\rho}^3} 0.
-	\end{align*}
-	Since $0\in\curlZero{\ddom}{\rho}^\perp$, we must conclude that $\bracs{ \ktgrad_{\rho}u, 0 }\in\ktcurlSob{\ddom}{\rho}$.
 \end{proof}
-That is to say, proposition \ref{prop:CurlOfGradIsZero} informs us that the $\kt$-tangential curl of a $\kt$-tangential gradient is zero.
 
-Another remark that deserves to be made is that given the construction of $W^{\kt}_{\rho,\mathrm{grad}}$, it is of course sufficient to only test orthogonality of $u$ against smooth $\kt$-gradients when checking if a field is divergence free.
+Since our definitions of $\gradZero{\ddom}{\rho}, \curlZero{\ddom}{\rho}$ and tangential gradients and curls all depend on approximations by smooth functions, lemma \ref{lem:CurlOfGradSmoothFunctions} informs us that adding a ``gradient" to an existing vector field will not change the curl of said vector field.
+\begin{prop} \label{prop:CurlIgnoresGradients}
+	Suppose that $u\in\ktcurlSob{\ddom}{\rho}$, $g\in\gradZero{\ddom}{\rho}$, $w\in\ktgradSob{\ddom}{\rho}$ and set $v = u + g + w\in\ltwo{\ddom}{\rho}^3$. 
+	Then $\bracs{v, \ktcurl{\rho}u}\in\ktcurlSob{\ddom}{\rho}$ --- that is, $v$ has a tangential $\kt$-curl equal to that of $u$.
+\end{prop}
+\begin{proof}
+	Take an approximating sequence $\Phi^n$ for $u$ as in corollary \ref{cory:SobSpaceApproxSequences}, $\phi_n$ for $w$ as in  corollary \ref{cory:SobSpaceApproxSequences}, and $\psi_n$ for $g$ as in \eqref{eq:GradZeroSequenceDef}.
+	Define $\varphi^n := \Phi^n + \ktgrad\phi_n + \ktgrad\psi_n\in\smooth{\ddom}^3$ for each $n\in\naturals$.
+	Given lemma \ref{lem:CurlOfGradSmoothFunctions}, we have that $\ktcurl{}\varphi^n = \ktcurl{}\Phi^n$ for every $n\in\naturals$.
+	Therefore, we have that
+	\begin{align*}
+		\varphi^n &\lconv{\ltwo{\ddom}{\rho}^3} u + w + g = v, \\
+		\ktcurl{}\varphi^n &= \ktcurl{}\Phi^n 
+		\lconv{\ltwo{\ddom}{\rho}^3} \ktcurl{\rho}u.
+	\end{align*}
+	Thus, we conclude that $\bracs{v, \ktcurl{\rho}u}\in W^{\kt}_{\rho, \mathrm{curl}}$.
+	Since $\ktcurl{\rho}u\in\curlZero{\ddom}{\rho}^\perp$, we must conclude that $\bracs{ v, \ktcurl{\rho}u }\in\ktcurlSob{\ddom}{\rho}$ too.
+\end{proof}
+In particular, proposition \ref{prop:CurlOfGradIsZero} informs us that the $\kt$-tangential curl of either a $\kt$-tangential gradient, or a gradient of zero, is zero.
+
+Another remark that deserves to be made is that given the construction of $W^{\kt}_{\rho,\mathrm{grad}}$, it is sufficient to only test orthogonality of $u$ against smooth $\kt$-gradients when checking if a field is divergence free.
 \begin{cory} \label{cory:DivFreeSufficient}
 	If
 	\begin{align*}

@@ -44,7 +44,7 @@ From our analysis of $\ktgradSob{\ddom}{\ddmes}$ we know that the conditions (i)
 \begin{align*}
 		\text{(a)} \ & \bracs{u, \ktgrad_{\dddmes}u}\in\gradSob{\ddom}{\lambda_{jk}} \ \forall I_{jk}\in\edgeSet, \\
 		\text{(b)} \ & u \text{ is continuous across the vertices} \ v_j\in\vertSet, \\
-		\text{(c)} \ & \ktgrad_{\dddmes}u\vert_{v_j} = 0 \ \forall v_j\in\vertSet.
+		\text{(c)} \ & \ktgrad_{\dddmes}u\vert_{v_j} = \rmi\wavenumber u\bracs{v_j}\hat{x}_3 \ \forall v_j\in\vertSet.
 \end{align*}
 If the converse to theorem \ref{thm:3DThickVertexTangGradImplication} is true, as implied from results in \cite{zhikov2002homogenization}, then (i)-(ii) are necessary and sufficient for (a)-(c).
 Understanding the space $\ktgradSob{\ddom}{\dddmes}$ through the properties of $\ktgradSob{\ddom}{\ddmes}$ and $\ktgradSob{\ddom}{\nu}$ will allow us to understand the $\kt$-divergence-free condition with respect to $\dddmes$.
@@ -186,14 +186,14 @@ Of course, given that we have proposition \ref{prop:3DThickVertexGradZeroCharact
 	where we have used overhead tildes to denote composition with $r_{jk}$.
 	Rearranging and using (ii), we find that
 	\begin{align*}
-		\rmi\wavenumber u_3\bracs{v_j}\overline{\varphi}\bracs{v_j}
+		\rmi\wavenumber\alpha_j u_3\bracs{v_j}\overline{\varphi}\bracs{v_j}
 		&= - \sum_{j\con k}\int_0^{\abs{I_{jk}}} \overline{\widetilde{\varphi}}\bracs{ \widetilde{U}_2^{(jk)} + \rmi\qm_{jk}\widetilde{U}_2^{(jk)} + \rmi\wavenumber\widetilde{u}_3^{(jk)} } \ \md y \\
 		&\quad + \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_2^{(jk)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} } \\
 		&= \overline{\varphi}\bracs{v_j}\bracs{ \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j} }.
 	\end{align*}
 	This holds for every such smooth $\varphi$, and so we must have that
 	\begin{align*}
-		\rmi\wavenumber u_3\bracs{v_j} &= \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j},
+		\rmi\wavenumber\alpha_j u_3\bracs{v_j} &= \sum_{j\conRight k} U_2^{(kj)}\bracs{v_j} - \sum_{j\conLeft k} U_2^{(jk)}\bracs{v_j},
 	\end{align*}
 	which is condition (v).
 	

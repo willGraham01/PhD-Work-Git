@@ -1,0 +1,271 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\ograd}{\grad^{(0)}}
+\renewcommand{\ktcurl}[1]{\mathrm{curl}^{\kt}_{#1}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom$ be a domain and $\rho$ a Borel measure.
+For $\wavenumber>0, \qm\in[-\pi,\pi)^2$, define 
+\begin{align*}
+	W^{\kt}_\rho = \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \setVert \phi\in\smooth{\ddom} } },
+\end{align*}
+where the closure is taken in the $\ltwo{\ddom}{\rho}\times\ltwo{\ddom}{\rho}^3$-norm.
+Define the set of gradients of zero as $\gradZero{\ddom}{\rho}$ in the usual manner --- we know that this set is invariant under changes in $\kt$, and to this end we denote $\ograd = \grad^{(0,0)}$ as the $\kt$-gradient operator where $\kt=(0,0)$.
+
+\begin{prop}
+	$\gradZero{\ddom}{\rho}$ is a closed subspace of $\ltwo{\ddom}{\rho}^3$.
+\end{prop}
+\begin{proof}
+	The fact that $\gradZero{\ddom}{\rho}$ is a subspace follows from it's definition.
+	Indeed, if $g_1, g_2\in\gradZero{\ddom}{\rho}$ take approximating sequences $\phi^1_n, \phi^2_n$ for $g_1, g_2$ respectively.
+	Then for any $\alpha\in\complex$, we have that $\alpha\phi^1_n + \phi^2_n\in\smooth{\ddom}$ too, and clearly
+	\begin{align*}
+		\alpha\phi^1_n + \phi^2_n &\lconv{\ltwo{\ddom}{\rho}} \alpha\times 0 + 0 = 0, \\
+		\ograd\bracs{\alpha\phi^1_n + \phi^2_n} &= \alpha\ograd\phi^1_n + \ograd\phi^2_n
+		\lconv{\ltwo{\ddom}{\rho}^3} \alpha g_1 + g_2,
+	\end{align*}
+	so $\alpha g_1 + g_2\in\gradZero{\ddom}{\rho}$.
+	
+	Next we prove that $\gradZero{\ddom}{\rho}$ is closed.
+	To this end, let $g_n$ be a sequence in $\gradZero{\ddom}{\rho}$ that converges (in $\ltwo{\ddom}{\rho}^3$) to some function $g$.
+	For each $n\in\naturals$, there exists an approximating sequence of smooth functions $\phi_n^l$ for $g_n$ since each $g_n\in\gradZero{\ddom}{\rho}$.
+	Now, let $m\in\naturals$.
+	Since $g_n\rightarrow g$, there exists $N_m\in\naturals$ such that $\norm{g_n-g}<\recip{2m}$ for all $n\geq N_m$ --- in particular, $g_{N_m}$ satisfies this inequality.
+	Then, since $\phi_{N_m}^l$ is an approximating sequence for $g_{N_m}$, we have that there exist $L_{N_m}^{(1)}, L_{N_m}^{(2)}\in\naturals$ such that
+	\begin{align*}
+		\norm{\phi_{N_m}^l} < \recip{m}, &\quad\forall l\geq L_{N_m}^{(1)}, \\
+		\norm{\ograd\phi_{N_m}^l - g_{N_m}} < \recip{2m}, &\quad\forall l\geq L_{N_m}^{(2)}.
+	\end{align*}	 
+	Set $L_{N_m} = \max\clbracs{ L_{N_m}^{(1)}, L_{N_m}^{(2)} }$, and define $\psi_m = \phi^{L_{N_m}}_{N_m}$ for each $m$.
+	Then we have that
+	\begin{align*}
+		\norm{\psi_m} &= \norm{\phi_{N_m}^{L_{N_m}}} < \recip{m}, \\
+		\norm{\ograd\psi_m - g} &= \norm{\ograd\phi_{N_m}^{L_{N_m}} - g}
+		\leq \norm{\ograd\phi_{N_m}^{L_{N_m}} - g_{N_m}} + \norm{g_{N_m} - g} \\
+		&< \recip{2m} + \recip{2m} = \recip{m}.
+	\end{align*}
+	Therefore,
+	\begin{align*}
+		\psi_m \lconv{\ltwo{\ddom}{\rho}} 0, \quad \ograd\psi_m \lconv{\ltwo{\ddom}{\rho}^3} g,
+	\end{align*}
+	and each $\psi_m$ is smooth, and so $g\in\gradZero{\ddom}{\rho}$.
+\end{proof}
+
+Now define the set
+\begin{align*}
+	G_\rho &:= \clbracs{ \ktgrad_\rho v \setVert v\in\ktgradSob{\ddom}{\rho} },
+\end{align*}
+which is clearly a linear subspace of $\ltwo{\ddom}{\rho}^3$, and clearly $G_\rho \subset \gradZero{\ddom}{\rho}^\perp$ by definition.
+Also, due to the nature of our $\ktgrad$ operator, we actually know what the third component of any tangential gradient must be.
+\begin{lemma} \label{lem:3rdComponentOfTangGradient}
+	If $u\in\ktgradSob{\ddom}{\rho}$ then $\bracs{\ktgrad_\rho u}_3 = \rmi\wavenumber u$.
+\end{lemma}
+\begin{proof}
+	Take an approximating sequence $\phi_n$ for $u$, and notice that we have (in particular) $\bracs{\ktgrad\phi_n}_3\rightarrow\bracs{\ktgrad_\rho u}_3$ in $\ltwo{\ddom}{\rho}$.
+	Now $\bracs{\ktgrad\phi_n}_3 = \rmi\wavenumber\phi_n$ and $\phi_n\rightarrow u$ in $\ltwo{\ddom}{\rho}$, so by uniqueness of limits, we have that $\bracs{\ktgrad_\rho u}_3 = \rmi\wavenumber u$.
+\end{proof}
+Note that the fact that the third component of the operator $\ktgrad$ is being carried around is central to this result --- if we instead were only working in an (originally) 2D problem then we wouldn't have this benefit, and the following proposition wouldn't hold (or at least, would not hold so simply).
+\begin{prop} \label{prop:TangGradsClosedSubspace}
+	$G_\rho$ is closed in $\ltwo{\ddom}{\rho}^3$.
+\end{prop}
+\begin{proof}
+	Suppose that $g^n = \ktgrad_\rho v_n$ is a sequence in $G_\rho$ converging to some function $g\in\ltwo{\ddom}{\rho}^3$.
+	Now $g^n_3 = \rmi\wavenumber v_n$ by lemma \ref{lem:3rdComponentOfTangGradient}, and therefore we have that $v_n\rightarrow\recip{\rmi\wavenumber}g_3$ in $\ltwo{\ddom}{\rho}$.
+	For each $v_n$, let $\phi_n^l\in\smooth{\ddom}$ be an approximating sequence for $v_n$.
+	We now have the following converges;
+	\begin{align*}
+		\phi^l_n \lconv{\ltwo{\ddom}{\rho}} v_n \toInfty{l},
+		&\quad \ktgrad\phi^l_n \lconv{\ltwo{\ddom}{\rho}^3} g_n \toInfty{l}, \\
+		v_n \lconv{\ltwo{\ddom}{\rho}} \recip{\rmi\wavenumber}g_3 \toInfty{n},
+		&\quad g_n \lconv{\ltwo{\ddom}{\rho}^3} g \toInfty{n},
+	\end{align*}
+	so extracting a diagonal sequence will allow us to show that $\recip{\rmi\wavenumber}g_3\in\ktgradSob{\ddom}{\rho}$ with $\ktgrad_\rho\recip{\rmi\wavenumber}g_3 = g$.
+	
+	To this end, let $m\in\naturals$ --- in what follows, all norms are the $\ltwo{\ddom}{\rho}$ or $\ltwo{\ddom}{\rho}^3$ norms (as appropriate).
+	There exist $N_m^{(1)}, N_m^{(2)}\in\naturals$ such that
+	\begin{align*}
+		\norm{v_n - \recip{\rmi\wavenumber}g_3} < \recip{2m}, \ \forall n\geq N_m^{(1)},
+		\quad
+		\norm{g_n - g} < \recip{2m}, \ \forall n\geq N_m^{(2)},
+	\end{align*}
+	and we set $N_m = \max\clbracs{N_m^{(1)}, N_m^{(2)}}$.
+	Then there also exist $L_m^{(1)}, L_m^{(2)}\in\naturals$ such that
+	\begin{align*}
+		\norm{\phi^l_{N_m} - v_{N_m}} < \recip{2m} \ \forall l\geq L_m^{(1)},
+		\quad
+		\norm{\ktgrad\phi^l_{N_m} - g_{N_m}} < \recip{2m} \ \forall l\geq L_m^{(2)},
+	\end{align*}
+	and we set $L_m = \max\clbracs{L_m^{(1)}, L_m^{(2)}}$.
+	Take $\psi_m = \phi^{L_m}_{N_m}$, then for each $m\in\naturals$ we have that
+	\begin{align*}
+		\norm{\psi_m - \recip{\rmi\wavenumber}g_3} \leq \norm{\psi_m - v_{N_m}} + \norm{v_{N_m} - \recip{\rmi\wavenumber}g_3} < \recip{m}, \\
+		\norm{\ktgrad\psi_m - g} \leq \norm{\ktgrad\psi_m - g_{N_m}} + \norm{g_{N_m} - g} < \recip{m},
+	\end{align*}
+	and therefore
+	\begin{align*}
+		\psi_m \lconv{\ltwo{\ddom}{\rho}} \recip{\rmi\wavenumber}g_3, 
+		\quad
+		\ktgrad\psi_m \lconv{\ltwo{\ddom}{\rho}^3} g.
+	\end{align*}
+	Thus, $\recip{\rmi\wavenumber}g_3\in\ktgradSob{\ddom}{\rho}$ with $\ktgrad_\rho\recip{\rmi\wavenumber}g_3 = g$, so $g\in G_\rho$ and the proof is complete.
+\end{proof}
+Notice that lemma \ref{lem:3rdComponentOfTangGradient} is essential for the proof, as it provides the candidate $\recip{\rmi\wavenumber}g_3$ for the limit of the sequence of functions $v_n$.
+Without it, we are not guaranteed from the definition of $G_\rho$ and the sequence $g_n$ that the $v_n$ converge, as it may be possible for $\rho$-tangential gradients to get closer to one another without the functions themselves being close in the $L^2$-sense --- one lacks a ``fundamental theorem of calculus" for a general measure $\rho$, having an analogue of this would likely go far to bridge this gap.
+
+We now know that $G_\rho$ itself is a closed linear subspace of $\ltwo{\ddom}{\rho}^3$ and of $\gradZero{\ddom}{\rho}^\perp$.
+A quick check of the following result then provides us with a further decomposition.
+\begin{lemma} \label{lem:SubspaceOrthSums}
+	Let $H$ be a Hilbert space with inner product $\ip{\cdot}{\cdot}_H$, and let $G$ be a closed linear subspace of $H$.
+	Suppose that $J\subset G^{\perp}$ is a closed linear subspace of $G^\perp$ with respect to the subspace inner product (inherited from $H$), and let $K = J^\perp$ in the subspace $G^{\perp}$.
+	Then
+	\begin{align*}
+		H &= G \oplus J \oplus K.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Clearly $J$ is a closed linear subspace of $H$ (due to the inherited inner product).
+	Suppose $x\in J$.
+	Then if $y\in G$, we have that $\ip{x}{y}_H = 0$ since $x\in J\subset G^\perp$.
+	If $y\in K$, we have that $\ip{x}{y}_H = \ip{x}{y}_{G^\perp} = 0$ since $G^\perp$ inherits $H$'s inner product.
+	Thus, $J^{\perp_H} \supset G \oplus J^\perp$ where $J^{\perp_H}$ denotes the orthogonal compliment in $H$ with respect to the $H$ inner product.
+	Conversely, suppose that $g\in G, h\in K$.
+	Then for any $y\in J$,
+	\begin{align*}
+		\ip{g+h}{y}_H &= \ip{g}{y}_H + \ip{h}{y}_H 
+		= 0 + \ip{h}{y}_{G^\perp}
+		= 0.
+	\end{align*}
+	Therefore, $g,h\in J^{\perp_H}$ so $J^{\perp_H} = G \oplus K$, and we have the desired result,
+	\begin{align*}
+		H = G \oplus J \oplus K.
+	\end{align*}
+\end{proof}
+As such, since we know that
+\begin{align*}
+	\gradZero{\ddom}{\rho}^\perp &:= G_\rho \oplus J,
+\end{align*}
+we have by lemma \ref{lem:SubspaceOrthSums} that
+\begin{align*}
+	\ltwo{\ddom}{\rho}^3 &:= \gradZero{\ddom}{\rho} \oplus G_\rho \oplus J, \labelthis\label{eq:L2Decomp}
+\end{align*}
+where $J = G_\rho^\perp$ in $\gradZero{\ddom}{\rho}^\perp$ is another closed linear subspace.
+
+\textbf{Remark:} Our current definition of $u$ being $\kt$-divergence-free coincides with the requirement that $u\in J$.
+
+Now let's consider $\ktcurl{\rho}$ as an operator on (potentially a subspace) of $\ltwo{\ddom}{\rho}^3$.
+Define
+\begin{align*}
+	\mathrm{dom}\bracs{\ktcurl{\rho}} &= \clbracs{ u \setVert \bracs{u,c}\in\ktcurlSob{\ddom}{\rho} }, \\
+	\ktcurl{\rho}u &= c,
+\end{align*}
+of course, we agree to denote the component $c$ by $\ktcurl{\rho}u$, so the above definition is just for absolute clarity --- $\ktcurl{\rho}$ maps $\ltwo{\ddom}{\rho}^3$-functions that possess a tangential curl to their tangential curl.
+We can now discuss the kernel of $\ktcurl{\rho}$, and establish some kind of de Rham statement:
+\begin{prop} \label{prop:CurlOfGradientIsZero}
+	It holds that
+	\begin{align*}
+	\mathrm{ker}\bracs{\ktcurl{\rho}} = \gradZero{\ddom}{\rho} \oplus G_\rho.
+	\end{align*}
+\end{prop}
+\begin{proof}
+	We have already shown that if $g\in\gradZero{\ddom}{\rho}$ then $\ktcurl{\rho}g = 0$, and that if $v\in\ktgradSob{\ddom}{\rho}$ then $\ktcurl{\ktgrad_\rho v}=0$, which implies that
+	\begin{align*}
+		\mathrm{ker}\bracs{\ktcurl{\rho}} \supset \gradZero{\ddom}{\rho} \oplus G_\rho.
+	\end{align*}
+	
+	We now show that $\mathrm{ker}\bracs{\ktcurl{\rho}}\cap J = \clbracs{0}$, which will imply the reverse implication via the decomposition \eqref{eq:L2Decomp}.
+	Indeed, suppose that $u\in\mathrm{ker}\bracs{\ktcurl{\rho}}\cap J$.
+	Since $u\in\mathrm{dom}\bracs{\ktcurl{\rho}}$ we can take an approximating sequence $\phi^n$ for $u$, and we obtain the following convergences (in $\ltwo{\ddom}{\rho}$):
+	\begin{align*}
+		\phi^n_j \rightarrow u_j, 
+		\quad \bracs{\partial_1 + \rmi\qm_1}\phi^n_1 \rightarrow \rmi\wavenumber u_1,
+		\quad \bracs{\partial_2 + \rmi\qm_2}\phi^n_3 \rightarrow \rmi\wavenumber u_2.
+	\end{align*}
+	Therefore, we have that
+	\begin{align*}
+		\recip{\rmi\wavenumber}\phi^n_3 \rightarrow \recip{\rmi\wavenumber}u_3, 
+		\quad \ktgrad\bracs{ \recip{\rmi\wavenumber}\phi^n_3 } \rightarrow u.
+	\end{align*}
+	In the case that $u_3=0$, we then have that $u\in\gradZero{\ddom}{\rho}$, and if $u_3\neq0$, we have $u\in G_\rho$.
+	In any event, we have that $u\in J^\perp$ by the decomposition \eqref{eq:L2Decomp}, but we also have that $u\in J$, and so $u=0$.
+	Therefore,  $\mathrm{ker}\bracs{\ktcurl{\rho}}\cap J = \clbracs{0}$, which implies that
+	\begin{align*}
+		\mathrm{ker}\bracs{\ktcurl{\rho}} \subset \gradZero{\ddom}{\rho} \oplus G_\rho,
+	\end{align*}
+	providing the reverse inclusion and completing the proof.
+\end{proof}
+
+This completes a rather nice ``story" for us, as we now have the following corollary.
+\begin{cory}
+	Suppose that $u\in\ktcurlSob{\ddom}{\rho}$ with $\ktcurl{\rho}u = 0$.
+	Then there exist unique functions $g\in\gradZero{\ddom}{\rho}$ and $v\in\ktgradSob{\ddom}{\rho}$ such that
+	\begin{align*}
+		u &= g + \ktgrad_\rho v.
+	\end{align*}
+\end{cory}
+\begin{proof}
+	By proposition \ref{prop:CurlOfGradientIsZero} and uniqueness of the representation of a function in an orthogonal decomposition, the result is immediate.
+\end{proof}
+
+\textbf{Remark:} As a reality check, it's worth making sure that $J$ also contains some functions which have non-zero curls!
+However for our measure $\dddmes$, this is in fact the case.
+For example if $u_3\in\ktgradSob{\ddom}{\dddmes}$ with $u_3'+\rmi\qm_{jk}u_3\neq 0$ on at least one edge $I_{jk}$, then the function $u_3\hat{x}_3\in J$ and has non-zero tangential curl.
+
+\section*{The First Order System}
+For our measure $\dddmes$, we know the form of $\kt$-tangential curls with respect to $\dddmes$.
+In particular, we can see that $\curlZero{\ddom}{\dddmes}^{\perp} \subset \gradZero{\ddom}{\dddmes}$.
+Knowing that the decomposition \eqref{eq:L2Decomp} holds now presents us with the following dilemma: for any $\ltwo{\ddom}{\dddmes}^3$ field $u$ we can write
+\begin{align*}
+	u &= u^{G} + u^{\grad} + u^{J},
+\end{align*}
+(using the obviously suggestive notation for which subspace each function belongs to).
+However, we also know that $\ktcurl{\dddmes}u = \ktcurl{\dddmes}u^J$, by proposition \ref{prop:CurlOfGradientIsZero}.
+Now, let's come to analyse the Maxwell system
+\begin{align*}
+	-\ktcurl{\dddmes}E &= \rmi\omega\mu H + f^H, \\
+	\ktcurl{\dddmes}H &= \rmi\omega\epsilon E + f^E,
+\end{align*}
+where $f^E,f^H\in J = \bracs{ \gradZero{\ddom}{\dddmes} \oplus G_{\dddmes}}^\perp$.
+Note: the system is written in the $\ltwo{\ddom}{\dddmes}^3$-sense, but interpreting it in the operator sense yields the same conclusions.
+We quickly see that we cannot have that both $E,H\in J$ (that is, they are ``divergence-free") and $E,H\neq 0$ holding.
+Indeed, if $E,H\in J$ then the RHS of the Maxwell system lives entirely in $J$, forcing $E^G,E^H=E^\grad,H^\grad=0$.
+However, the LHS lives in $J^\perp$, and thus the only solution is for both sides to be 0.
+But the two curls being 0 force the projections (onto $J$) $E^J,H^J=0$ by proposition \ref{prop:CurlOfGradientIsZero}, and thus we end up with $E=H=0$.
+Conversely, if $E,H\neq 0$ then $\rmi\omega E + f^E, \rmi\omega H + f^H\in\gradZero{\ddom}{\dddmes}$ since the curls are in this subspace.
+But $f^E,f^H\in J$, so the projections $E^J,H^J$ onto $J$ are non-zero.
+Thus, the curls are non-zero, so the projections $E^G, H^G$ are also non-zero, so $E,H\not\in J$.
+
+As such, in our current framework it is impossible for us to provide a solution to our ``sensible" guess for Maxwell's equations that is divergence-free \emph{and} non-trivial.
+This changes if we relax the conditions on the functions $f^E,f^H$: now let's suppose that $f^E,f^H\in G_{\dddmes}^\perp$ rather than entirely in $J$.
+Now, it is possible for the Maxwell system to have a solution $E,H$ with $E,H\in G_{\dddmes}^\perp$ and $E,H\neq 0$ --- the extra freedom provided by allowing $E,H$ to have non-zero projection onto $\gradZero{\ddom}{\dddmes}$ solves the issues that we were having before.
+This change is equivalent to the proposed definition change of ``divergence-free".
+
+\textbf{Remark:} It seems that the resulting system we end up with (cf the other document on 1st order systems where changing the notion of divergence-free is suggested) tells us that we'll still need to pose this problem with $\rmi\omega\epsilon E^J = -\bracs{f^E}^J$, and similar for $H$, again because of the decomposition \eqref{eq:L2Decomp}.
+
+\textbf{Remark:} Even this proposed change might be overkill --- we know that $\curlZero{\ddom}{\dddmes}^\perp$ is a closed linear subspace of $\gradZero{\ddom}{\dddmes}$, so it is natural to ask whether the set of $\kt$-tangential curls forms a closed subspace of $\gradZero{\ddom}{\dddmes}$.
+If it does, there might be a further decomposition, and some ``leftovers" in $\gradZero{\ddom}{\dddmes}$ that aren't tangential $\kt$-curls, and so should still be considered divergence-free.
+However, there is no obvious method for obtaining a result similar to proposition \ref{prop:TangGradsClosedSubspace}, for much the same reasons as highlighted after the proof --- there is no way to ``reconstruct" a limit function from tangential curls like there is for tangential gradients.
+
+\end{document}

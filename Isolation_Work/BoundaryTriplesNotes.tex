@@ -1,0 +1,123 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+\usepackage{tikz}
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\dom}[1]{\mathrm{dom}\bracs{#1}}
+\newcommand{\amin}{A_{\mathrm{min}}}
+\newcommand{\amax}{A_{\mathrm{max}}}
+\newcommand{\ab}{A_B}
+\newcommand{\hilb}{\mathcal{H}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+\section{Notes on Boundary Triples, Operator Extensions, and the $M$-Operator}
+
+Let $H$ be a Hilbert space with inner product $\ip{\cdot}{\cdot}_H$.
+Let $A$ be an operator on $H$, with $A$ not necessarily bounded.
+\begin{definition}[Densely defined]
+	The operator $A$ is densely defined if $\dom{A}$ is a dense subset of $H$.
+\end{definition}
+\begin{definition}[(Operator) Graph]
+	The graph $G(A)$ of the operator $A$ is the set 
+	\begin{align*}
+		\clbracs{(x,Ax) \setVert x\in\dom{A}}.
+	\end{align*}
+\end{definition}
+\begin{definition}[Symmetric]
+	The operator $A$ is symmetric if $\ip{Ax}{y}_H = \ip{x}{Ay}_H$ for every $x,y\in\dom{A}$.
+\end{definition}
+\begin{definition}[Deficiency Indices]
+	The deficiency indices of $A$ are the dimensions of the orthogonal compliments of its range and domain, that is
+	\begin{align*}
+		n_+ := \mathrm{dim}\bracs{\dom{A}^\perp},  \qquad
+		n_- := \mathrm{dim}\bracs{\mathrm{range}\bracs{A}^\perp}.
+	\end{align*}
+\end{definition}
+\begin{definition}[Extension]
+	An operator $B$ is an extension of $A$, written $A\subset B$, if $G(A)\subset G(B)$.
+\end{definition}
+\begin{definition}[Adjoint, Self-adjoint]
+	The adjoint of $A$, written $A^*$, is the operator with domain
+	\begin{align*}
+		\dom{A^*} &= \clbracs{y\in H \setVert \exists z\in H \text{ s.t. } \ip{Ax}{y}_H = \ip{x}{z} },
+	\end{align*}
+	with $A^*y := z$. \newline
+	A is self-adjoint if $G(A) = G\bracs{A^*}$, that is if $\dom{A}=\dom{A^*}$ and (the actions of) $A=A^*$.
+\end{definition}
+\begin{definition}[Simple]
+	$A$ is simple if there does not exist a reducing subspace $H_0\subset H$ such that the restriction $A\vert_{H_0}$ is self-adjoint in $H_0$.
+\end{definition}
+Note that if $A$ is bounded, things get a lot nicer (think 4th year functional analysis course nicer).
+However, some results that are true in general are:
+\begin{itemize}
+	\item $A$ is self-adjoint $\implies$ $A$ is symmetric.
+	\item $A$ is symmetric with $\dom{A}=\dom{A^*}$ $\implies$ $A$ is self-adjoint.
+	\item In general, $A$ is symmetric $\Leftrightarrow$ $A \subset A^*$.
+\end{itemize}
+\begin{definition}[Closure]
+	If the closure of $G(A)$ is the graph of another operator $B$ on $H$, then the closure of $A$ is $B$.
+	Note that by definition, $B$ is an extension of $A$.
+\end{definition}
+\begin{itemize}
+	\item A symmetric operator $A$ is always closable --- that is, $A$ has some closure $B$.
+\end{itemize}
+\begin{definition}[Essentially self-adjoint]
+	A symmetric operator $A$ is essentially self-adjoint if its closure is self-adjoint.
+\end{definition}
+\begin{itemize}
+	\item A symmetric operator has a unique self-adjoint extension if and only if $n_+=n_-$.
+\end{itemize}
+
+We now have the terminology to describe boundary triples and the $M$-function.
+From here on out, the setups of the definitions are carried through, unless explicitly stated otherwise.
+\begin{definition}[Boundary Triple, Dirichlet and Neumann map, (Weyl-Titchmarsh) $M$-function]
+	Let $\amin$ be a symmetric, densely defined operator on $H$ with equal deficiency indices (so $\amin$ possesses a unique self-adjoint extension) and set $\amax = \amin^*$.
+	Suppose that $\hilb$ is a separable Hilbert space with inner product $\ip{\cdot}{\cdot}_\hilb$, and that $\dmap, \nmap:\dom{\amax}\rightarrow\hilb$ are linear maps.
+	Then the triple $\bracs{\hilb, \dmap, \nmap}$ is a boundary triple for the operator $\amax$ if
+	\begin{enumerate}[(i)]
+		\item The ``Green's identity"
+		\begin{align*}
+			\ip{\amax u}{v}_H - \ip{u}{\amax v}_H &= \ip{\nmap u}{\dmap v}_\hilb - \ip{\dmap u}{\nmap v}_\hilb,
+		\end{align*}
+		holds $\forall u,v\in\dom{\amax}$.
+		\item The map $u\in\dom{\amax}, \ u\mapsto\bracs{\dmap u, \nmap u}$ is surjective.
+		That is, $\forall u\in\dom{\amax}$ there exist $U_0, U_1\in\hilb$ such that $\dmap u = U_0$, $\nmap u = U_1$.
+	\end{enumerate}
+	We will refer to the map $\dmap$ as the Dirichlet map and $\nmap$ as the Neumann map. \newline
+	The operator-valued function $M=M(z)$ defined by
+	\begin{align*}
+		M(x)\dmap u &= \nmap u, \quad u\in\mathrm{ker}\bracs{\amax - z}, \ z\in\complex_+\cup\complex_-,
+	\end{align*}
+	is called the (Weyl-Titchmarsh) $M$-function of $\amax$ with respect to the triple $\bracs{\hilb, \dmap, \nmap}$.
+\end{definition}
+\begin{definition}[Almost-solvable]
+	A non-trivial extension $\ab$ of $\amin$ such that $\amin\subset\ab\subset\amax$ is called almost-solvable if there exists a boundary triple $\bracs{\hilb, \dmap, \nmap}$ for $\amax$ and a bounded linear operator $B$ on $\hilb$ such that
+	\begin{align*}
+		\forall u\in\dom{\amax}, \quad u\in\dom{\ab} \Leftrightarrow \nmap u = B\dmap u.
+	\end{align*}
+\end{definition}
+\begin{itemize}
+	\item If $\ab$ is an almost-solvable extension of a simple symmetric operator $\amin$, then we have that $z_0$ is in the spectrum of $\ab$ if and only if $\bracs{M(z)-B}^{-1}$ does not admit analytic continuation into $z_0$.
+\end{itemize}
+\end{document}

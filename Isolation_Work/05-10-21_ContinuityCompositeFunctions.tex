@@ -1,0 +1,128 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\tlambda}{\widetilde{\lambda}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom$ be a domain in which an embedded graph $\graph$ sits.
+The graph $\graph$ naturally separates $\ddom$ into disconnected regions $\ddom_i$ for some appropriate index $i$, where $\ddom = \bigcup_i \ddom_i \cup \graph$.
+Write $\tlambda_2 = \lambda_2 + \ddmes$ for the singular measure $\ddmes$ on $\graph$ and the 2D Lebesgue measure $\lambda_2$.
+
+\begin{prop}
+	Suppose that $u\in\ktgradSob{\ddom}{\tlambda_2}$, and write
+	\begin{align*}
+		u = \begin{cases} u_{\lambda} & x\in\ddom_i, \\ u_{jk} & x\in I_{jk}, \end{cases}
+		&\qquad
+		\tgrad_{\tlambda}u = \begin{cases} \tgrad u_{\lambda} & x\in\ddom_i, \\ \tgrad_{\lambda_{jk}}u_{jk} & x\in I_{jk}. \end{cases}
+	\end{align*}
+	Note that the form of the tangential gradient is guaranteed from our analysis of $\gradZero{\ddom}{\tlambda_{jk}}$.
+	Suppose further that for each $i$, $u\in H^2_{\mathrm{grad}}\bracs{\ddom_i,\md\lambda_2}$.
+	Then $u_{\lambda}$ is continuous (or precisely, has a continuous representative) across the edges $I_{jk}$ of $\graph$.
+\end{prop}
+\begin{proof}
+	It suffices for us to consider each edge in turn, so we fix some $I_{jk}$.
+	We then provide local labelling as shown in figure \ref{fig:EdgeLocalLabels}; the component $\ddom_i$ with boundary intersecting $I_{jk}$ with \emph{exterior} normal $n_{jk}$ we denote by $\ddom^-$, and the component with boundary intersecting $I_{jk}$ with exterior normal $-n_{jk}$ we denote by $\ddom^+$.
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\draw (-3,0) -- (3,0);
+			\filldraw (-3,0) circle (1pt) node[anchor=east] at (-3,0) {$v_j$};
+			\filldraw (3,0) circle (1pt) node[anchor=west] at (3,0) {$v_k$};
+			\begin{scope}[shift={(-0.5,0.5)}]
+				\draw[->] (-5,0) -- (-4,0) node[anchor=west] {$e_{jk}$};
+				\draw[->] (-5,0) -- (-5,-1) node[anchor=north] {$n_{jk}$};
+			\end{scope}
+			\node[anchor=south] at (2,0.5) {$\ddom^-$};
+			\node[anchor=north] at (2,-0.5) {$\ddom^+$};
+			\draw[dashed] (-2.5,-0.35) rectangle (2,0.35);
+			\node[anchor=north] at (-2,-0.35) {$\supp\bracs{\phi}$};
+		\end{tikzpicture}
+		\caption{\label{fig:EdgeLocalLabels} Local labels for the regions bordering the edge $I_{jk}$, and a schematic illustration of the support of the smooth functions $\phi$ that we consider.}
+	\end{figure}
+	(Note: the sign conventions are because $\ddom^+$ lies in the positive $n_{jk}$ direction from $I_{jk}$, and vice-versa for $\ddom^-$).
+	Now take a smooth function $\phi\in\smooth{\ddom}$ with support satisfying
+	\begin{align} \label{eq:PhiProperties}
+		\supp\bracs{\phi}\cap I_{jk}\subset I_{jk}^{\circ},
+		\quad \supp\bracs{\phi} \cap \ddom_i = \emptyset \text{ except when } \ddom_i = \ddom^+ \text{ or } \ddom^-,
+	\end{align}
+	that is, $\phi$ has compact support in $\ddom$ which only intersects the interior of $I_{jk}$ and the neighbouring regions $\ddom^+$ and $\ddom^-$.
+	
+	Now, for $l\in\clbracs{1,2}$ we consider the following integrals.
+	\begin{align*}
+		\integral{\ddom}{ u\overline{\bracs{\tgrad_{\tlambda_2}\phi}}_l + \overline{\phi}\bracs{\tgrad_{\tlambda_2}u}_l }{\lambda_{jk}}
+		&= \integral{I_{jk}}{ u_{jk}e^{(jk)}_l\bracs{\overline{\phi}' - \rmi\qm_{jk}\overline{\phi}} + \overline{\phi}e^{(jk)}_l\bracs{u_{jk}' + \rmi\qm_{jk}u_{jk}} }{\lambda_{jk}} \\
+		&= \int_0^{\abs{I_{jk}}} e^{(jk)}_l \bracs{ u_{jk}'\overline{\phi} + u_{jk}\overline{\phi}' } \ \md y \\
+		&= 0,
+	\end{align*}
+	which follows since $u\in\gradSob{\ddom}{\lambda_{jk}}$ and $\supp\bracs{\phi}\subset I_{jk}^\circ$.
+	Similarly, 
+	\begin{align*}
+		\integral{\ddom}{ u\overline{\bracs{\tgrad_{\tlambda_2}\phi}}_l + \overline{\phi}\bracs{\tgrad_{\tlambda_2}u}_l }{\lambda_2}
+		&= \integral{\ddom}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2}
+		= 0,
+	\end{align*}
+	since $u\in\gradSob{\ddom}{\lambda_2}$.
+	This implies that
+	\begin{align*}
+		0 &= \integral{\ddom}{ u\overline{\bracs{\tgrad_{\tlambda_2}\phi}}_l + \overline{\phi}\bracs{\tgrad_{\tlambda_2}u}_l }{\tlambda_2},
+	\end{align*}
+	for any $\phi$ with the properties \eqref{eq:PhiProperties}.
+	However, we can manipulate the integral as follows:
+	\begin{align*}
+		0 &= \integral{\ddom}{ u\overline{\bracs{\tgrad_{\tlambda_2}\phi}}_l + \overline{\phi}\bracs{\tgrad_{\tlambda_2}u}_l }{\tlambda_2}
+		= \integral{\ddom}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2} \\
+		&= \integral{\ddom^+}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2} 
+		+ \integral{\ddom^-}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2},
+	\end{align*}
+	and since $u\in H^2_{\mathrm{grad}}\bracs{\ddom^+,\md\lambda_2}$ and $u\in H^2_{\mathrm{grad}}\bracs{\ddom^-,\md\lambda_2}$, we find that
+	\begin{align*}
+		0 &= \integral{\ddom^+}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2} 
+		+ \integral{\ddom^-}{ u\partial_l\overline{\phi} + \overline{\phi}\partial_l u }{\lambda_2} \\
+		&= \integral{\partial\ddom^+}{ u^+\overline{\phi}n^+_l }{S}
+		+ \integral{\partial\ddom^-}{ u^-\overline{\phi}n^-_l }{S},
+	\end{align*}
+	where $u^{\pm}$ denotes the trace onto the boundary of $u_{\lambda}$ from the region $\ddom^{\pm}$, and $n^{\pm}$ is the exterior normal to $\ddom^{\pm}$.
+	Since $n^+ = -n_{jk}$ and $n^- = n_{jk}$, and \eqref{eq:PhiProperties}, we can further reduce the above to
+	\begin{align*}
+		0 &= \integral{I_{jk}}{ \overline{\phi}n^{(jk)}_l\bracs{u^- - u^+} }{S} \\
+		&= \int_0^{\abs{I_{jk}}} \overline{\phi}n^{(jk)}_l\bracs{u^- - u^+} \ \md y, \\
+		\implies 0 &= \int_0^{\abs{I_{jk}}} \overline{\varphi}n^{(jk)}_l\bracs{u^- - u^+} \ \md y, \quad\forall\varphi\in C^{\infty}_{0}\bracs{0, I_{jk}}.
+	\end{align*}
+	Therefore, we conclude that $u^- = u^+$ on $I_{jk}$ --- implying that $u$ has a continuous representative across the edge $I_{jk}$.
+	Repeating the argument for each edge $I_{jk}$ then completes the proof.
+\end{proof}
+
+Note that even though $u_\lambda$ has a representative that is continuous across each edge, there is no guarantee that it coincides with $u_{jk}$ on the edge.
+This also means that the system ``derived" on paper in 01-10-21\_SingularInclusionsProblemFormulation.pdf can be reduced to
+\begin{align*}
+	-\bracs{\tgrad}^2 u_{\lambda} &= \omega^2 u_{\lambda} \quad &\text{in each } \ddom_i, \\
+	-\bracs{\diff{}{y} + \rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \bracs{\grad u_{\lambda}^+ - \grad u_{\lambda}^-}\cdot n_{jk} &\quad \text{on each } I_{jk}, \\
+	0 &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &\quad\text{at each } v_j.
+\end{align*}
+The difference being that the $\rmi\qm u^{\pm}$ terms from the gradient traces are identical (by continuity of $u_{\lambda}$), and so cancel each other out.
+We can also make a further adjustment; let $\mathcal{D}_i$ denote the Dirichlet to Neumann map associated with the problem $\bracs{ \bracs{\tgrad}^2+\omega^2 }u=0$ in the region $\ddom_i$ (so $\bracs{\tgrad}^2+\omega^2$ is the Helmholtz operator).
+Then we can reformulate the above as
+\begin{align*}
+	-\bracs{\tgrad}^2 u_{\lambda} &= \omega^2 u_{\lambda} \quad &\text{in each } \ddom_i, \\
+	-\bracs{\diff{}{y} + \rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \bracs{\mathcal{D}_+ u_{\lambda} - \mathcal{D}_- u_{\lambda}} &\quad \text{on each } I_{jk}, \\
+	0 &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &\quad\text{at each } v_j,
+\end{align*}
+where $\mathcal{D}^{\pm}$ is the Dirichlet to Neumann map $\mathcal{D}_i$ when $\ddom_i = \ddom^{\pm}$.
+
+\end{document}
