@@ -108,21 +108,7 @@ Write $\tlambda_2 = \lambda_2 + \ddmes$ for the singular measure $\ddmes$ on $\g
 	Repeating the argument for each edge $I_{jk}$ then completes the proof.
 \end{proof}
 
-Note that even though $u_\lambda$ has a representative that is continuous across each edge, there is no guarantee that it coincides with $u_{jk}$ on the edge.
-This also means that the system ``derived" on paper in 01-10-21\_SingularInclusionsProblemFormulation.pdf can be reduced to
-\begin{align*}
-	-\bracs{\tgrad}^2 u_{\lambda} &= \omega^2 u_{\lambda} \quad &\text{in each } \ddom_i, \\
-	-\bracs{\diff{}{y} + \rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \bracs{\grad u_{\lambda}^+ - \grad u_{\lambda}^-}\cdot n_{jk} &\quad \text{on each } I_{jk}, \\
-	0 &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &\quad\text{at each } v_j.
-\end{align*}
-The difference being that the $\rmi\qm u^{\pm}$ terms from the gradient traces are identical (by continuity of $u_{\lambda}$), and so cancel each other out.
-We can also make a further adjustment; let $\mathcal{D}_i$ denote the Dirichlet to Neumann map associated with the problem $\bracs{ \bracs{\tgrad}^2+\omega^2 }u=0$ in the region $\ddom_i$ (so $\bracs{\tgrad}^2+\omega^2$ is the Helmholtz operator).
-Then we can reformulate the above as
-\begin{align*}
-	-\bracs{\tgrad}^2 u_{\lambda} &= \omega^2 u_{\lambda} \quad &\text{in each } \ddom_i, \\
-	-\bracs{\diff{}{y} + \rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \bracs{\mathcal{D}_+ u_{\lambda} - \mathcal{D}_- u_{\lambda}} &\quad \text{on each } I_{jk}, \\
-	0 &= \sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &\quad\text{at each } v_j,
-\end{align*}
-where $\mathcal{D}^{\pm}$ is the Dirichlet to Neumann map $\mathcal{D}_i$ when $\ddom_i = \ddom^{\pm}$.
+Note that even though $u_\lambda$ has a representative that is continuous across each edge, this argument doesn't guarantee that it coincides with $u_{jk}$ on the edge.
+That being said, it doesn't seem unreasonable to expect this to be the case: I'd be very surprised if the two ``parts" $u_\lambda$ and $u_{jk}$ were completely unrelated from each other, especially since they're approximated by the same smooth sequence in lieu of $u\in\ktgradSob{\ddom}{\tlambda_2}$.
 
 \end{document}

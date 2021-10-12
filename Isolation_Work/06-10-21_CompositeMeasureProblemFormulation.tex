@@ -1,0 +1,83 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+%for figures and graphics
+\usepackage{graphicx}
+\usepackage{subcaption} %allows subfigures
+\usepackage[bottom]{footmisc} %footnotes go below figures
+\usepackage{tikz}
+%\usepackage{parskip} %adds line space between paragraphs by default
+\usepackage{enumerate} %allows lower case roman numerials in enumerate environments
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{{../Diagrams/Diagram_PDFs/} {../Diagrams/Numerical_Results/}}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\dom}[1]{\mathrm{dom}\bracs{#1}}
+\newcommand{\dtn}{\mathcal{D}_\omega}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom\subset\reals^2$ be the unit cell of a periodic (embedded) metric graph with period graph $\graph$.
+The graph $\graph$ naturally separates $\ddom$ into a collection of (connected, Lipschitz) subdomains $\ddom_i$ for $i\in\Lambda$, for a suitable index set $\Lambda$.
+Let $\qm$ denote the quasi-momentum (taking values in the dual cell of $\ddom$), and for $\omega>0$, define the set
+\begin{align*}
+	D_{\omega}^i = \clbracs{(g,h)\in L^2\bracs{\partial\ddom_i}\times L^2\bracs{\partial\ddom_i} \setVert \exists u\in H^2_{\mathrm{grad}}\bracs{\ddom_i} \text{ s.t. } \bracs{\laplacian_\qm + \omega^2}u = 0, \ u\vert_{\partial\ddom_i} = g, \ \pdiff{u}{n}\vert_{\partial\ddom_i} = h.}
+\end{align*}
+Then define an operator (the Dirichlet-to-Neumann map) $\dtn^i$ via
+\begin{align*}
+	\dom{\dtn^i} = D_\omega^i, \quad
+	\dtn^i g = h,
+\end{align*}
+where $g,h$ are related as in $D_\omega^i$.
+\tstk{NB: $\dtn^i$ is only self-adjoint if 0 is not in the spectrum of $\laplacian_\qm+\omega^2$ right?}
+
+\emph{If} this definition is fine, and makes sense, let's proceed.
+Our proposed ``strong form" for our problem on a medium with singular inclusions is to find $u\in H^2_{\mathrm{grad}}\bracs{\ddom_i}$ for every $i\in\Lambda$ and $u\in\ktgradSob{\interval{I_{jk}}}{y}$ for each edge $I_{jk}$ such that:
+\begin{align*}
+	\bracs{\laplacian_\qm + \omega^2}u &= 0 \quad &\text{in each } \ddom_i, \\
+	-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \bracs{\grad u\vert_{\partial\ddom^+} - \grad u\vert_{\partial\ddom^-}}\cdot n_{jk}, \quad &\text{on each } I_{jk}, \\
+	\sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &= 0, \quad &\text{at each } v_j\in\vertSet, \\
+	u \text{ is continuous } & \text{at } v_j, \quad &\text{at each } v_j\in\vertSet.
+\end{align*}
+Note that $\ddom^+$ and $\ddom^-$ in these contexts refer to the two regions $\ddom_i$ whose boundary has non-empty intersection with $I_{jk}$, and vertical bars denote traces.
+Now we can show (subject to checking the ``derivation" of this problem, at the least assume) that $u$ is also continuous across the edges $I_{jk}$, so $u\vert_{\partial\ddom^{+}} = u\vert_{\partial\ddom^{-}}$ on $I_{jk} = \partial\ddom^{+} \cap \partial\ddom^{-}$.
+We can reformulate the above as
+\begin{align*}
+	\bracs{\laplacian_\qm + \omega^2}u &= 0 \quad &\text{in each } \ddom_i, \\
+	-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \dtn^+ \bracs{u\vert_{\partial\ddom^+}} - \dtn^- \bracs{u\vert_{\partial\ddom^-}}, \quad &\text{on each } I_{jk}, \\
+	\sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &= 0, \quad &\text{at each } v_j\in\vertSet, \\
+	u \text{ is continuous } & \text{at } v_j, \quad &\text{at each } v_j\in\vertSet.
+\end{align*}
+This is still not super accessible for us to solve, however if we further assume that the traces of $u$ onto the graph $\graph$ match the edge-functions $u_{jk}$, we can make some progress.
+That is, assume that for any $I_{jk}\in\edgeSet$ such that $\partial\ddom_i\cap I_{jk}\neq\emptyset$ we have that $u\vert_{\partial\ddom_i} = u_{jk}$ on $I_{jk}$.
+This allows us to replace the traces from either side of the edges, and drop the $\bracs{\laplacian_\qm + \omega^2}u = 0$ equation (since under our new assumptions this will automatically be satisfied by the solution for $u_{jk}$ that we find), giving
+\begin{align*}
+	-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} &= \omega^2 u_{jk} + \dtn^+ \bracs{u} - \dtn^- \bracs{u}, \quad &\text{on each } I_{jk}, \\
+	\sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}\bracs{v_j} &= 0, \quad &\text{at each } v_j\in\vertSet, \\
+	u \text{ is continuous } & \text{at } v_j, \quad &\text{at each } v_j\in\vertSet.
+\end{align*}
+Here, can now think of $u\in H^2\bracs{\graph}$; the terms $\dtn^{\pm}\bracs{u}$ require knowledge of the entire function $u$, rather than just the function on the edge $u_{jk}$, since $\dtn^{\pm}$ takes as an argument the Dirichlet data on all of $\partial\ddom^{\pm}$, not just $I_{jk}$.
+
+Provided all of these things are justifiable (or reasonable assumptions), we have a well-defined quantum graph problem of finding $\omega, u$ such that the above system is satisfied.
+The (action of the) maps $\dtn^i$ would need to be computed --- which is definitely non-trivial! 
+Otherwise, we have $2\abs{\edgeSet}$ unknown constants from the differential equation and $\sum_j\clbracs{ \mathrm{deg}(v_j)-1} + \abs{\vertSet}$ boundary conditions, which is an exact match by the handshake lemma.
+Ergo, the things that need to be checked/addressed for this to work are:
+\begin{itemize}
+	\item The $\dtn^i$ maps can be sensibly defined in this way.
+	\item The traces of $u$ match the values of the $u_{jk}$ --- this would have to involve going back to the ``weak formulation".
+	\item Can the action of the $\dtn^i$ maps actually be computed in the first place?
+\end{itemize}
+Then, we need to come up with a numerical scheme to handle this thing.
+
+\end{document}
