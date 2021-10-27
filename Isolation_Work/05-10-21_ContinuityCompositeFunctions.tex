@@ -111,4 +111,45 @@ Write $\tlambda_2 = \lambda_2 + \ddmes$ for the singular measure $\ddmes$ on $\g
 Note that even though $u_\lambda$ has a representative that is continuous across each edge, this argument doesn't guarantee that it coincides with $u_{jk}$ on the edge.
 That being said, it doesn't seem unreasonable to expect this to be the case: I'd be very surprised if the two ``parts" $u_\lambda$ and $u_{jk}$ were completely unrelated from each other, especially since they're approximated by the same smooth sequence in lieu of $u\in\ktgradSob{\ddom}{\tlambda_2}$.
 
+Indeed, we can do better than this with only the assumption that $u\in\ktgradSob{\ddom}{\tlambda_2}$.
+\begin{prop}
+	Let $u\in\ktgradSob{\ddom}{\tlambda_2}$ and take any $\ddom_i$ and $I_{jk}$ such that $\partial\ddom_i\cap I_{jk}\neq 0$.
+	Denote the trace of $u$ from the region $\ddom_i$ as $u_i := \mathrm{Tr}_{\ddom_i}u$, and let $u_{jk}$ be the usual component of $u$ on the edge $I_{jk}$.
+	Then $u_{jk} = u_i$ ($\lambda_{jk}$-almost-everywhere) on $I_{jk}$.
+\end{prop}
+\begin{proof}
+	Take an approximating sequence $\phi_n$ for $u$ in $\ktgradSob{\ddom}{\tlambda_2}$; clearly this sequence is also such that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom_i}{\lambda_2}} u, &\qquad \grad\phi_n \lconv{\ltwo{\ddom_i}{\lambda_2}^2} \grad u, \\
+		 \phi_n \lconv{\ltwo{\ddom}{\lambda_{jk}}} u, &\qquad \ktgrad\phi_n \lconv{\ltwo{\ddom}{\lambda_{jk}}^2} \ktgrad_{\lambda_{jk}} u.
+	\end{align*}
+	Note: we can drop the $\kt$ when handling Lebesgue measures since the only gradients of zero are zero!
+	Furthermore, since $\phi_n\in\smooth{\ddom}$ and both $\phi_n,\grad\phi_n$ converge on all edges $I_{lm}\in\edgeSet$ (so in particular on the edges $I_{lm}$ with non-empty intersection with $\partial\ddom_i$) we have $\phi_n\in C\bracs{\overline{\ddom}_i}$.
+	The region $\ddom_i$ is Lipschitz (as it is a polygonal region in the plane) and thus the trace operator from 
+	\begin{align*}
+		\gradSob{\ddom_i}{\lambda_2} \rightarrow \ltwo{\partial\ddom_i}{S},
+	\end{align*}
+	is (linear and) continuous.
+	Furthermore, since $\phi_n \rightarrow u$ in $\gradSob{\ddom_i}{\lambda_2}$ we have that
+	\begin{align*}
+		\phi_n \lconv{\ltwo{\ddom_i}{S}} u_i,
+	\end{align*}
+	by definition of the trace operator.
+	In particular, we have that $\phi_n \rightarrow u_i$ in $\ltwo{I_{jk}}{S}$ since $I_{jk}\subset\partial\ddom_i$.
+	However,
+	\begin{align*}
+		\norm{\phi_n - u_i}^2_{\ltwo{\ddom}{\lambda_{jk}}}
+		&= \integral{\ddom}{\abs{\phi_n - u_i}^2}{\lambda_{jk}}
+		= \int_0^{\abs{I_{jk}}} \abs{\phi_n - u_i}^2 \ \md y
+		= \integral{I_{jk}}{\abs{\phi_n - u_i}^2}{S} \\
+		&= \norm{\phi_n - u_i}^2_{\ltwo{I_{jk}}{S}}
+		\rightarrow 0 \toInfty{n},
+	\end{align*}
+	and thus we must have that $\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}u_i$ too.
+	But $\phi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}u_{jk}$ as well, and thus it must be the case that $u_{jk} = u_i$, and we are done.
+\end{proof}
+This implies that any function $u\in\ktgradSob{\ddom}{\tlambda_2}$ is ``continuous across the graph edges" --- that is, the traces of $u$ from any $\ddom_i$ onto a boundary edge $I_{jk}$ must coincide with the value of $u_{jk}$.
+This is invaluable information, as now we have a solid way of tying the function on the edges to the function in the larger inclusions.
+Furthermore, it also means that we can complete the reformulation of our derived problem into a quantum graph problem involving a non-local operator --- we now just have to read off the information from other edges rather than information about a function on the neighbouring inclusions!
+
 \end{document}

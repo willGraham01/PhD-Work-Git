@@ -1,0 +1,106 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\psmooth}[1]{C^{\infty}_{\#}\bracs{#1}}
+\newcommand{\csmooth}[1]{C^{\infty}_{\mathrm{c}}\bracs{#1}}
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom=\left[0,1\right)^2$ be our period cell, $\graph$ our usual period graph, and let $Q = \ddom^{\circ} = \bracs{0,1}^2$.
+To be precise in this document, we'll use:
+\begin{itemize}
+	\item $\psmooth{\ddom}$ to denote the set of smooth, $\ddom$-periodic functions on $\reals^2$.
+	\item $\csmooth{Q}$ to denote the set of smooth functions on $Q$ with compact support in $Q$.
+	\item $\smooth{\ddom}$ to denote the set of smooth functions on $\ddom$.
+\end{itemize}
+Let $\rho$ be a Borel measure on $\ddom$.
+We'll also be precise in our definitions:
+\begin{align*}
+	W^{\kt}_{\rho, \mathrm{grad}}\bracs{\ddom} &= \overline{ \clbracs{ \bracs{\phi, \ktgrad\phi} \setVert \phi\in\psmooth{\ddom} } },
+\end{align*}
+where the closure is taken in $\ltwo{\ddom}{\rho}\times\ltwo{\ddom}{\rho}^2$.
+Also then define
+\begin{align*}
+	\gradZero{\ddom}{\rho} &= \clbracs{ g \setVert \bracs{0,g}\in W^{\kt}_{\rho, \mathrm{grad}}\bracs{\ddom} } \\
+	&= \clbracs{ g \setVert \exists\phi_n\in\psmooth{\ddom} \text{ s.t. } \phi_n\lconv{\ltwo{\ddom}{\rho}}0, \ \ktgrad\phi_n\lconv{\ltwo{\ddom}{\rho}^2}g }, \\
+	\ktgradSob{\ddom}{\rho} &= \clbracs{ \bracs{u,\ktgrad_{\rho}u}\in W^{\kt}_{\rho, \mathrm{grad}}\bracs{\ddom} \setVert \ktgrad_{\rho}u\perp\gradZero{\ddom}{\rho} }.
+\end{align*}
+
+For the majority of our graph-only purposes (that is, the scalar and curl problems we've already considered) the measures we use are only concerned with the behaviour of functions on the edges of $\graph$, and what's going on ``off" the graph doesn't particularly matter.
+Indeed, if we have an edge that is entirely contained within the interior of the period cell, then that edge does not even feel the affect of the $\ddom$-periodicity:
+\begin{prop} \label{prop:p1}
+	Let $I_{jk}\subset\ddom$ be such that $d := \mathrm{dist}\bracs{I_{jk},\partial\ddom} >0$.
+	Then the following are all equivalent:
+	\begin{enumerate}
+		\item $\bracs{u,g}\in W^{\kt}_{\lambda_{jk}, \mathrm{grad}}\bracs{\ddom}$,
+		\item $\exists\psi_n\in\csmooth{Q} \text{ s.t. } \psi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}u, \ \ktgrad\psi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2}g$,
+		\item $\exists\varphi_n\in\smooth{\ddom} \text{ s.t. } \varphi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}}u, \ \ktgrad\varphi_n\lconv{\ltwo{\ddom}{\lambda_{jk}}^2}g$,
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	($1. \Rightarrow 2.$) Since there is positive distance between the edge $I_{jk}$ and the boundary of $\ddom$, we can multiply $\phi_n$ by a (bounded) smooth function that is 1 on the set $\clbracs{x\in\ddom \setVert \mathrm{dist}\bracs{x,I_{jk}}}\leq\frac{d}{3}$ and 0 on the set $\clbracs{x\in\ddom \setVert \mathrm{dist}\bracs{x,I_{jk}}}\geq\frac{2d}{3}$.
+	This then forms the sequence $\psi_n$, which is equal to $\phi_n$ on $I_{jk}$. \newline
+	($1. \Leftarrow 2.$) Extend $\psi_n$ by zero to $\ddom$, and then by periodicity to $\reals^2$.
+	The resulting sequence $\phi_n$ ensures that $\bracs{u,g}\in W^{\kt}_{\lambda_{jk}, \mathrm{grad}}\bracs{\ddom}$, since $\phi_n = \psi_n$ on $I_{jk}$ still. \newline
+	($2. \Rightarrow 3.$) Extending $\psi_n$ by zero suffices. \newline
+	($2. \Leftarrow 3.$) Multiplying $\varphi_n$ by a smooth function as described in the proof of $1. \Rightarrow 2.$ suffices.
+\end{proof}
+We can produce a similar result to proposition \ref{prop:p1}, but concerning $\ddmes$ when $\graph$ has positive distance to $\partial\ddom$.
+
+This result also means that, whenever one of the edges we come to consider is contained in $Q$, we have the option of looking for $\csmooth{Q}$-functions, or $\smooth{\ddom}$-functions to approximate $\bracs{u,g}$ rather than $\psmooth{\ddom}$ (then applying the proposition).
+
+We can also produce a similar result to proposition \ref{prop:p1} for when we have an edge with \emph{exactly} one of its vertices on the boundary of $\ddom$.
+In such a situation, apply a translation $T$ to $Q$ so that $I_{jk}\subset Q+T$ (which can be done since exactly one of $I_{jk}$'s edges lies on $\partial\ddom$).
+We then work in this translated cell $T+Q$, can use the above result, and then ``translate" the resulting smooth functions we find back to functions in $\psmooth{\ddom}$.
+So without loss of generality, we can consider graphs without any edges with exactly one vertex on the boundary of $\ddom$ (since the arguments above deal with this special case).
+
+The only remaining possibility is when $I_{jk}$ has both vertices on the boundary of $\ddom$, and we can't use the above proposition (edges like this are what I was referring to as ``long edges").
+However we do have some freedoms in our choice of approximating sequence, depending on the orientation of $I_{jk}$.
+\begin{itemize}
+	\item If $I_{jk}$ is horizontal, it is enough for us to approximate $\bracs{u,g}$ via smooth functions $\psi_n\in\smooth{\reals^2}$ that are $1$-periodic in $x_1$, IE are such that $\psi_n(x_1+1,x_2) = \psi_n(x_1,x_2)$ for any $x_1\in\reals$, to show that $\bracs{u,g}\in W^{\kt}_{\lambda_{jk}, \mathrm{grad}}\bracs{\ddom}$.
+	Indeed, suppose that we have such a sequence $\psi_n$.
+	Let $d$ be the distance between $I_{jk}$ and the horizontal boundaries of $\ddom$ --- if $d=0$ we can use the ``translation" trick above to circumnavigate this, so we assume $d>0$. 
+	Then let $\chi:\ddom\rightarrow\sqbracs{0,1}$ be a smooth function such that $\chi(x)=1$ whenever $\mathrm{dist}(x,I_{jk})<\frac{d}{3}$ and $\chi(x)=0$ whenever $\mathrm{dist}(x,I_{jk})>\frac{2d}{3}$.
+	This function $\chi$ can then be extended to a smooth function $\hat{\chi}$ that is $1$-periodic in $x_2$ and constant in $x_1$.
+	Then the sequence $\phi_n:=\psi_n\hat{\chi}\in\psmooth{\ddom}$ and approximates $\bracs{u,g}$ in $\ltwo{\ddom}{\lambda_{jk}}$ as required.
+	
+	A converse statement also holds --- if we have an approximating sequence $\phi_n\in\psmooth{\ddom}$ for $\bracs{u,g}\in W^{\kt}_{\lambda_{jk}, \mathrm{grad}}\bracs{\ddom}$ then without loss of generality can assume it has the form $\phi_n = \psi_n\hat{\chi}$ where $\psi_n$ and $\chi$ have the properties prescribed above.
+	\item If $I_{jk}$ is vertical, we can repeat the horizontal argument but interchange $x_1$ and $x_2$.
+	\item The only remaining possibility is when $I_{jk}$ is diagonal, so $\clbracs{v_j,v_k}=\clbracs{\bracs{0,0}^\top, \bracs{1,1}^\top}$ or $\clbracs{v_j,v_k}=\clbracs{\bracs{0,1}^\top, \bracs{1,0}^\top}$.
+	Suppose that we have a sequence of functions $\psi_n\in\smooth{\reals^2}$ with ``$\abs{I_{jk}}e_{jk}$"-periodicity, that is $\psi_n\bracs{x+\abs{I_{jk}}e_{jk}}=\psi_n(x)$ for any $x\in\reals^2$, and which approximates $\bracs{u,g}$.
+	Then we can form an approximating sequence $\phi_n\in\psmooth{\ddom}$ for $\bracs{u,g}$ from $\psi_n$.
+	Take $\hat{\psi}_n(x) = \psi_n\bracs{x - \bracs{x-v_j}\cdot n_{jk} n_{jk}}$, and let $\chi:\reals\rightarrow\sqbracs{0,1}$ be a smooth function such that $\chi(y)=1$ when $\abs{y}<\recip{8}$ and $\chi(x)=0$ when $\abs{y}>\recip{4}$.
+	Define $\hat{\chi}(x) = \chi\bracs{\bracs{x-v_j}\cdot n_{jk}}$.
+	By construction, the function $\hat{\psi}_n\hat{\chi}\in\smooth{\reals^2}$ and has support $\supp\bracs{\hat{\psi}_n\hat{\chi}}=\clbracs{x = v_j + \alpha e_{jk} + \beta n_{jk} \setVert \alpha\in\reals, \beta\in\sqbracs{-\recip{4},\recip{4}}}$ --- that is a ``strip" of width $\recip{2}$ whose centre is the line $L := \clbracs{v_j + \alpha e_{jk} \setVert \alpha\in\reals}$.
+	This construction ensures that $\hat{\psi}_n\hat{\chi} = \psi_n$ on $I_{jk}$, and we can define
+	\begin{align*}
+		\phi_n:\reals^2\rightarrow\complex, &\qquad \phi_n(x) = \hat{\psi}_n(y)\hat{\chi}(y) \\
+		\text{ where } x=y+Z, \ Z\in\integers^2, 
+		&\qquad y\in\clbracs{x = v_j + \alpha e_{jk} + \beta n_{jk} \setVert \alpha\in\reals, \beta\in\sqbracs{-\recip{2},\recip{2}}}
+	\end{align*}
+	The function $\phi_n$ is an element of $\psmooth{\ddom}$ by our construction, and since $\phi_n=\psi_n$ on $I_{jk}$, it will also approximate $\bracs{u,g}$.
+	
+	Again, a converse of sorts holds in that any approximating sequence $\phi_n\in\psmooth{\ddom}$ for $\bracs{u,g}$ can without loss of generality be assumed to have the form $\phi_n(x) = \hat{\psi}_n(y)\hat{\chi}(y)$ as above.
+\end{itemize}
+
+These arguments essentially tell us that the bulk of the work in finding approximating sequences lies in what the approximating sequence is doing \emph{on the edge $I_{jk}$}.
+Once we know the behaviour we need from our approximating sequences on an edge $I_{jk}$, the above results/remarks reduce our task to simply finding a smooth function on $\ddom$ which has these desired properties on $I_{jk}$, and from there we could follow the reasoning above to create our sequence in $\psmooth{\ddom}$.
+As such, for the majority of the scalar and curl chapters, I stuck to the notation ``$\smooth{\ddom}$" for the set that in this document is denoted as $\psmooth{\ddom}$ --- see the sections where $\ktgrad{\ddom}{\ddmes}$ and $\gradZero{\ddom}{\ddmes}$ are defined, for example.
+Some of the proofs in those chapters also implicitly assume the remarks and reasoning above; for example when examining gradients of zero on $I_{jk}$, we show that functions of the form $g(x)n_{jk}$ are gradients of zero via the approximating sequence $\phi(x) = \bracs{x\cdot n_{jk}}g(x)$.
+Obviously without qualification, $\phi$ here is not in $\psmooth{\ddom}$, but given the remarks above we know we \emph{can find} $\hat{\phi}\in\psmooth{\ddom}$ from $\phi$.
+
+\end{document}
