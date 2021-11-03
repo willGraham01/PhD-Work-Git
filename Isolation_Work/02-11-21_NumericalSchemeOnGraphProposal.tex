@@ -1,0 +1,183 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\input imports all commands from the target files
+\input{../Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\DtN}{\mathcal{D}}
+\newcommand{\di}{\DtN_{\qm, \omega}^i}
+\newcommand{\dplus}{\DtN_{\qm, \omega}^+}
+\newcommand{\dminus}{\DtN_{\qm, \omega}^-}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\gradgradSob}[1]{H^2\bracs{#1}}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom=\left[0,1\right)^2$ be our usual domain filled with a singular structure $\graph$, separated by $\graph$ into the pairwise-disjoint connected components $\ddom_i$.
+For each $\ddom_i$, $\qm\in\left[-\pi,\pi\right)^2$, $\omega^2>0$ define the ``Dirichlet to Neumann" (DtN) map $\di$ via
+\begin{align*}
+	\dom\bracs{\di} = \clbracs{ \bracs{g,h}\in\ltwo{\partial\ddom_i}{S}\times\ltwo{\partial\ddom_i}{S} \setVert \exists v\in \gradgradSob{\ddom_i} \text{ s.t. }  \laplacian_{\qm}v+\omega^2v=0, \right. \\
+	 \left. v\vert_{\partial\ddom_i}=g, \ \bracs{\tgrad v\cdot n}\vert_{\partial\ddom_i}=h }.
+\end{align*}
+Since the identity
+\begin{align*}
+	\integral{D}{\tgrad u\cdot\overline{\tgrad v}}{x} 
+	&= -\integral{D}{\overline{v}\laplacian_{\qm}u}{x}
+	+ \integral{\partial D}{\overline{v}\tgrad u\cdot n}{S},
+\end{align*}
+holds, $\di$ satisfies the Green formula and is the Dirichlet to Neumann map for the ``$\qm$-shifted Helmholtz" operator $\laplacian_{\qm}+\omega^2$ on $\ddom_i$.
+
+Our goal is to propose a numerical method which will solve
+\begin{align*}
+	-\bracs{\diff{}{y} + \rmi\qm_{jk}}^2 u + \bracs{\dplus u + \dminus u} &= \omega^2 u, &\qquad\text{on each } I_{jk}\in\edgeSet, \\
+	\sum_{j\con k} \bracs{\pdiff{}{n} + \rmi\qm_{jk}}u_{jk}(v_j) &= 0, &\qquad\text{at each } v_j\in\vertSet, \\
+	u \text{ is continuous at } & \text{each } v_j, &\qquad\forall v_j\in\vertSet,
+\end{align*}
+for $u\in\gradgradSob{\graph}$.
+Note: if we want to find $u,\omega^2$ simultaneously (that is, actually solve the eigenvalue problem) we just adapt the final form of our numerical scheme, see below).
+
+Let $V\subset\gradgradSob{\graph}$ be a finite-dimensional subspace with dimension $M$ and basis functions $\clbracs{\psi_m}_{m=1}^{M}$.
+In practice, we would choose these to be ``hat" functions on some nodes that we place along the edges of $\graph$.
+Write the approximate solution to the above problem
+\begin{align*}
+	u_V &= \sum_{m=1}^M u_m\psi_m, \qquad u_m\in\complex,
+\end{align*}
+for the basis coefficients $u_m$ to be determined.
+The operator $\di$ is self-adjoint and has compact resolvent (as its inverse is the Neumann to Dirichlet map), and thus possesses a sequence of eigenvalues $\lambda^i_n$ and eigenfunctions $\varphi_n^i$, where we list the $\lambda^i_n$ in ascending order (in $n$, for each $i$).
+These eigenfunctions also form a basis of the space $\ltwo{\partial\ddom_i}{S}$, and can be extended by zero to functions $\hat{\varphi}_n^i$ in $L^2\bracs{\graph}$.
+This means that we can represent each $\psi_m\vert_{\partial\ddom_i}$ as a sum of the $\varphi_n^i$ as
+\begin{align*}
+	\psi_m = \sum_{n=1}^{\infty} c_{m,n}^i \varphi_n^i, \quad c_{m,n}^i = \ip{\psi_m}{\varphi_n^i}_{\ltwo{\partial\ddom_i}{S}},
+\end{align*}
+and each of the $\hat{\varphi}_n^i$ as
+\begin{align*}
+	\hat{\varphi}_n^i = \sum_{n=1}^{\infty} \hat{c}_{n,m}^i \psi_m, \quad \hat{c}_{n,m}^i = \ip{\varphi_n^i}{\psi_m}_{L^2\bracs{\graph}}.
+\end{align*}
+However, extending $\varphi_n^i$ by zero implies that
+\begin{align*}
+	\hat{c}_{n,m}^i = \ip{\varphi_n^i}{\psi_m}_{L^2\bracs{\graph}} = \ip{\varphi_n^i}{\psi_m}_{\ltwo{\partial\ddom_i}{S}} = \overline{\ip{\psi_m}{\varphi_n^i}}_{\ltwo{\partial\ddom_i}{S}} = \overline{c}_{m,n}^i,
+\end{align*}
+which cuts down on the number of constants that need to be computed.
+Choose a ``truncation index" $N_i$ for each $\ddom_i$, and define the matrices $B, C, L$ via
+\begin{align*}
+	B_{n,m} &= \ip{\tgrad\psi_m}{\tgrad\psi_n}_{L^2\bracs{\graph}}, \\
+	C_{n,m} &= \ip{\psi_m}{\psi_n}_{L^2\bracs{\graph}}, \\
+	L_{n,m} &= \sum_{v_j\in\vertSet}\sum_{j\conLeft k}
+	\sqbracs{ \sum_{p=1}^{N_+}c_{m,p}^+\lambda^+_p \sum_{q=1}^M \hat{c}_{p,q}^+ \ip{\psi_q}{\psi_n}_{L^2\bracs{I_{jk}}} + \sum_{p=1}^{N_-}c_{m,p}^-\lambda^-_p \sum_{q=1}^M \hat{c}_{p,q}^- \ip{\psi_q}{\psi_n}_{L^2\bracs{I_{jk}}} },
+\end{align*}
+where we use our usual $\pm$ notation for the regions $\ddom^{\pm}$ adjacent to an edge $I_{jk}$.
+Setting $U = \bracs{u_1, ..., u_M}^\top$, our approximate solution $u_V$ can then be found by determining the solution to
+\begin{align*}
+	B U &= \bracs{\omega^2 C - L} U.
+\end{align*}
+Note that $B$ is the term in the above equation which does not depend on $\omega^2$ --- $L$ depends on $\omega^2$ through the Steklov eigenfunctions associated to $\laplacian_{\qm}-\omega^2$.
+This provides us with a system of $M$ algebraic equations in $M$ unknowns which we can solve for $U$, or if $\omega^2$ is unknown, we can solve as a generalised eigenvalue problem.
+However, at each step of the generalised eigenvalue problem, we will need to compute $L_{n,m}$ again, since $\omega$ will be iteratively updated, which in turn will require us to compute new Steklov eigenfunctions.
+Note that, if we are interested in the resolvent equation (replace $\omega^2 u$ with $f$ in the original formulation) then we just replace $omega^2 C$ with the column vector $F=\bracs{f_1,...,f_M}^\top$ where $f = \sum_{m=1}^M f_m\psi_m$.
+
+\section*{Computing the DtN eigenvalues and eigenfunctions}
+We can compute the DtN operator's eigenvalues (and eigenfunctions) via the ``max-min" principle;
+\begin{align*}
+	\lambda^i_n &= \max_{S_{n-1}}\min_{\varphi\in S_{n-1}}\clbracs{ \frac{\ip{\varphi}{\di\varphi}_{\ltwo{\partial\ddom_i}{S}}}{\norm{\varphi}_{\ltwo{\partial\ddom_i}{S}}} \setVert \varphi\perp S_{n-1}},
+\end{align*}
+where $S_{n-1}$ is a subspace of $\ltwo{\partial\ddom_i}{S}$ with dimension $n-1$.
+The eigenfunction $\varphi_n^i$ is the $\varphi$ for which the ``max-min" is attained.
+Given the domain of $\di$, we can demonstrate that
+\begin{align*}
+	\ip{\varphi}{\di\varphi}_{\ltwo{\partial\ddom_i}{S}}
+	&= \integral{\ddom_i}{ \tgrad \varphi\cdot\overline{\tgrad \varphi} + \varphi\overline{\laplacian_{\qm} \varphi} }{x} \\
+	&= \integral{\ddom_i}{ \tgrad \varphi\cdot\overline{\tgrad \varphi} - \omega^2 \varphi\overline{\varphi} }{x}
+	= \norm{\tgrad \varphi}_{\ltwo{\ddom_i}{x}} - \omega^2 \norm{\varphi}_{\ltwo{\ddom_i}{x}},
+\end{align*}
+and therefore
+\begin{align*}
+	\lambda^i_n 
+	&= \max_{S'_{n-1}}\min_{\varphi\in S'_{n-1}}\clbracs{ \frac{\norm{\tgrad \varphi}_{\ltwo{\ddom_i}{x}} - \omega^2 \norm{\varphi}_{\ltwo{\ddom_i}{x}}}{\norm{\varphi}_{\ltwo{\partial\ddom_i}{S}}} \setVert \varphi\perp S'_{n-1} }, \\
+	&= \max_{S'_{n-1}}\min_{\varphi\in S'_{n-1}}\clbracs{ \norm{\tgrad \varphi}_{\ltwo{\ddom_i}{x}} - \omega^2 \norm{\varphi}_{\ltwo{\ddom_i}{x}} \setVert \norm{\varphi}_{\ltwo{\partial\ddom_i}{S}}=1, \ \varphi\perp S'_{n-1} },
+\end{align*}
+where $S'_{n-1}$ is a subspace of $\gradgradSob{\ddom_i}$ with dimension $n-1$.
+We then have the following procedure available to extract the $\lambda_n^i, \varphi_n^i$:
+\begin{enumerate}
+	\item Solve
+	\begin{align*}
+		\lambda_1^i &= \min_{\substack{\varphi\in\gradgradSob{\ddom_i} \\ \norm{\varphi}_{\ltwo{\partial\ddom_i}{S}}=1}} \clbracs{ \norm{\tgrad \varphi}_{\ltwo{\ddom_i}{x}} - \omega^2 \norm{\varphi}_{\ltwo{\ddom_i}{x}} },
+	\end{align*}
+	to obtain $\lambda_1^i$.
+	The argmin of the above expression is the eigenfunction $\varphi_1^i$.
+	\item For $n>1$, the eigenfunctions $\varphi_k^i$ are known for $1\leq k\leq n-1$.
+	Furthermore, we also know that $\varphi_n^i$ is orthogonal to each of the $\varphi_k^i$, and so we know that the subspace in which the maximum will be attained is $S'_{n-1} = \mathrm{span}\clbracs{\varphi_k^i \setVert 1\leq k\leq n-1}$.
+	Thus, we solve
+	\begin{align*}
+		\lambda_n^i &= \min_{\substack{\varphi\in\gradgradSob{\ddom_i} \\ \norm{\varphi}_{\ltwo{\partial\ddom_i}{S}}=1}} \clbracs{ \norm{\tgrad \varphi}_{\ltwo{\ddom_i}{x}} - \omega^2 \norm{\varphi}_{\ltwo{\ddom_i}{x}} \setVert \varphi\perp\varphi_k^i, \text{ for each } 1\leq k\leq n-1 },
+	\end{align*}
+	with the argmin being the eigenfunction $\varphi_n^i$.
+\end{enumerate}
+
+We can numerically solve these minimisation problems via the method of Lagrange multipliers for example, but this would require us to settle for approximate $\varphi_n^i$ and eigenvalues.
+
+\section*{Theory Needed, and Cost Estimations/ Summary}
+We summarise here the overall algorithm that we are proposing and where the largest ``computational costs" will come from.
+
+The procedure is as follows:
+\begin{enumerate}
+	\item Choose a finite-dimensional subspace $V\subset\gradgradSob{\graph}$ and a basis $\clbracs{\psi_m}_{m=1}^M$.
+	Recommend a basis of locally-defined functions, like ``tent" or ``hat" functions placed on nodes along the edges of $\graph$.
+	\item For each region $i$, compute the first $N_i$ eigenvalues $\lambda_n^i$ and eigenfunctions $\varphi_n^i$ for the map $\di$.
+	The choice of $N_i$ will be important here --- too high might lead to heavy computational cost, whilst too small might lead to inaccuracy.
+	A happy medium might n\"iavely seem to be choosing $N_i = M$ for every region, given that we are already working in a finite dimensional subspace for $u$, its shouldn't hurt to throw away the higher eigenvalues, but having less than $M$ might cause issues for the change of basis calculations.
+	\item Compute the coefficients $c_{m,n}^i$ and the entries of the matrices $B, C, L$.
+	The entries of $B$ and $C$ can be computed immediately after step 1, or analytically to save on numerical approximation of integrals.
+	It is also worth noting that $c_{m,n}^i=0$ whenever $\supp\bracs{\psi_m}\cap\partial\ddom_i = \emptyset$, and that $\hat{c}_{m,n}^i=\overline{c}_{n,m}^i$.
+	\item Solve the system $B U = \bracs{\omega^2 C - L} U$.
+	Note that if we are solving for $\omega^2$ and $u_V$, $L$ will need to be recomputed at each iteration of the solve.
+	Also, $B, C$, and $L$ are Hermitian, as can be seen from their (and the basis coefficients') definitions in terms of inner products.
+\end{enumerate}
+
+The key idea here is that $B,C$ only need to be computed once, and are only $M\times M$ in size (although will in general be dense matrices).
+The two \emph{major} costs will come in from steps 2 and 4:
+\begin{itemize}
+	\item Step 4 requires a matrix solve.
+	If we are using $\omega$ as a constant, or are looking at the resolvent problem, then this cost is that of solving an $M\times M$ system.
+	If however we are trying to find $\omega^2$ and $u_V$, then this cost is multiplied by the cost of computing the Steklov functions in step 2.
+	\item Step 2 requires us to determine the first $N_i$ of the Steklov eigenfunctions (and eigenvalues), by solving $N_i$ constrained optimisation problems.
+	We also have to introduce a finite dimensional space $W\subset\gradgradSob{\ddom_i}$ to approximate the $\varphi_n^i$ in, which will affect the accuracy of the approximate solution $u_V$.
+	Let $W$ have dimension $p$ for the cost estimation that follows.
+	The cost for each optimisation problem should be of the order of another linear-system solve, but I'll need to double check.
+\end{itemize}
+Thus, I estimate the (major) cost of the numerical scheme to be (worst case, assuming we want to find $\omega^2$ too);
+\begin{align*}
+	\text{ cost } 
+	&= \bracs{ M\times M \text{ eigenvalue or linear system solve} } \\
+	& \quad\times \sum_{N_i}\bracs{ N_i \times (p\times p-\text{constrained optimisation problem solves}) }.
+\end{align*}
+The memory usage would be of the order of (worst case, assuming no $c_{m,n}^i$ are zero)
+\begin{align*}
+	\text{ memory }
+	&= (M+1)\sum_{i}N_i  &\qquad\text{for the } c_{m,n}^i \text{ and } \lambda_n^i, \\
+	& \ + 3M^2 &\qquad\text{for the entries of } B, C, L, \\
+	& \ + M^2\abs{\edgeSet} &\qquad\text{for each } \ip{\psi_q}{\psi_n}_{L^2\bracs{I_{jk}}},
+\end{align*}
+so would be of the order $M^2$ if we are choosing $N_i$ of the order $M$.
+There is also a memory cost accrued for the representation of the solution to each optimisation problem for the $\lambda_n^i$, however once we are done with computing the $\lambda_n^i$ for the region $\ddom_i$, we can compute any associated $c_{m,n}^i$ and then reuse the memory assigned to the representations.
+
+The theory that would then need to be filled in or investigated would be
+\begin{itemize}
+	\item Assurance that $u_V$ gets close to $u$ as the dimension of $V$ increases, or at least is optimal in $V$ (cf Cea's lemma).
+	\item The accuracy loss from truncation at $N_i$.
+	\item Accuracy loss from the representation of the $\varphi_n^i$.
+	\item Optimal (or necessary) conditions on $N_i$ and $p$ given $M$.
+	\item Any timesaves that we can make computationally or analytically --- for example, identical $\ddom_i$ have identical eigenfunctions (computational), and we can compute some of the inner products if we choose our $\psi_m$ cleverly (analytical).
+\end{itemize}
+\end{document}
