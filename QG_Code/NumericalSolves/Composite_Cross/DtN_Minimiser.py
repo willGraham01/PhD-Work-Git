@@ -11,6 +11,8 @@ For documentation, see the aforementioned file.
 
 # sys.argv[1:] contains command line arguments. Index 0 is just the script name
 import argparse
+# for returning values to the command line
+import sys
 
 import numpy as np
 from numpy import exp, pi
@@ -29,7 +31,7 @@ from datetime import datetime
 # Saves the output of a given solve to a file that can then be read in at a later time
 def SaveRun(theta, omega, phiList, fname='', fileDump='./'):
     '''
-    Saves the output of the minimisation proceedure (the eigenpairs) to a .npz file, 
+    Saves the output of the minimisation proceedure (the eigenpairs) to a .npz file,
     which can then be read in by another script or notebook.
     INPUTS:
         theta: (2,) float, value of the quasi-momentum.
@@ -40,20 +42,21 @@ def SaveRun(theta, omega, phiList, fname='', fileDump='./'):
     OUTPUTS:
         outFile: str, name of file to which values were saved
     '''
-    
+
     M = ( phiList[-1].cMat.shape[0] - 1 ) // 2
     N = len(phiList)
     cVecStore = np.zeros((N, phiList[-1].cVec.shape[0]), dtype=complex)
     for n in range(N):
         cVecStore[n,:] = phiList[n].cVec
-    
+
     if not fname:
         #automatically create file name
         timeStamp = datetime.now()
-        outFile = fileDump + timeStamp.strftime("%Y-%m-%d_%H-%M_PhiList-M") + str(int(M)) + '.npz'
+        outFile = fileDump + timeStamp.strftime("%Y-%m-%d_%H-%M_PhiList-M") \
+			+ str(int(M)) + '-N' + str(N) + '.npz'
     else:
         outFile = fileDump + fname
-    
+
     np.savez(outFile, theta=theta, omega=omega, M=int(M), cVecs=cVecStore, N=N)
     return outFile
 
@@ -67,7 +70,7 @@ def Real2Comp(x):
     OUTPUTS:
         z: (n,) complex, z[j] = x[2j] + i*x[2j+1]
     '''
-    
+
     z = np.zeros((len(x)//2,), dtype=complex)
     z = x[np.arange(0, len(x), 2)] + 1.j*x[np.arange(1, len(x), 2)]
     return z
@@ -78,7 +81,7 @@ def Comp2Real(z):
     Given a vector z of length (n,) of complex numbers, return a real array x where
     z[j] = x[2j] + i*x[2j+1]
     '''
-    
+
     x = np.zeros((2*len(z),), dtype=float)
     x[np.arange(0, len(x), 2)] = np.real(z)
     x[np.arange(1, len(x), 2)] = np.imag(z)
@@ -96,7 +99,7 @@ def BetterStartGuess(M, n, info):
     OUTPUTS:
         cc0: (2(2M+1)**2,) float, the starting guess to use based off the previous runs.
     '''
-    
+
     # get coefficients in lower-dimensional solve
     cVecOld = info['cVecs'][n,:]
     MOld = info['M']
@@ -108,7 +111,7 @@ def BetterStartGuess(M, n, info):
     # reshape into vector for output
     cVec = cMat.reshape(((2*M+1)**2,))
     cc0 = Comp2Real(cVec)
-    
+
     return cc0
 
 #%% FourierFunction class
@@ -128,19 +131,19 @@ class FourierFunction:
         boundaryNorm
         set_lambda
     '''
-    
+
     def __init__(self, theta, omega, c):
         '''
         Create an instance with the Fourier coefficients passed in the matrix or vector c.
         INPUTS:
             theta: (2,) float, value of the quasimomentum.
             omega: float, value of omega.
-            c: (2M+1,2M+1) complex double, the Fourier coefficients of this function. 
+            c: (2M+1,2M+1) complex double, the Fourier coefficients of this function.
             If c is of shape  ((2M+1)^2,), then this is interpretted column-wise, as above.
         OUTPUTS:
             FourierFunction instance, with theta, omega, M, cMat, cVec, and lbda all set.
         '''
-        
+
         self.theta = theta
         self.omega = omega
         if c.ndim==2:
@@ -155,9 +158,9 @@ class FourierFunction:
             self.cMat = c.reshape((2*self.M+1,2*self.M+1))
         else:
             raise ValueError('Unexpected number of dimensions in c array, got %d, expected 1 or 2' % c.ndim)
-        self.set_lambda() 
+        self.set_lambda()
         return
-       
+
     def __str__(self):
         '''
         Default print output when instance of class is passed to print()
@@ -166,7 +169,7 @@ class FourierFunction:
         rFig[0].show()
         iFig[0].show()
         return 'FourierFunction with M = %d' % self.M
-    
+
     def val(self, x):
         '''
         Evaluates the FourierFunction at the point(s) x
@@ -175,12 +178,12 @@ class FourierFunction:
         OUTPUTS:
             xVals: (l,) complex, values of the FourierFunction at the input x.
         '''
-        
+
         mInts = np.arange(-self.M, self.M+1)
         if x.ndim==2:
             xVals = np.zeros(x.shape[0], dtype=complex)
             # it's a for loop because I can't wrap 3D vectorisation around my head
-            for l in range(x.shape[0]):           
+            for l in range(x.shape[0]):
                 expAX = exp(2.j*pi*x[l,0]*mInts)
                 expBY = exp(2.j*pi*x[l,1]*mInts)
                 # expAX[i] = e^{2i\pi x[l]*(i-M)}, similarly for expBY
@@ -191,7 +194,7 @@ class FourierFunction:
                 fTerms = expMat * self.cMat
                 # then sum all the terms in the matrix!
                 xVals[l] = np.copy(fTerms.sum())
-        elif x.ndim==1:           
+        elif x.ndim==1:
             expAX = exp(2.j*pi*x[0]*mInts)
             expBY = exp(2.j*pi*x[1]*mInts)
             # expAX[i] = e^{2i\pi x[l]*(i-M)}, similarly for expBY
@@ -205,33 +208,33 @@ class FourierFunction:
         else:
             raise ValueError('Unexpected dimension of x, got %d, expected 1 or 2', x.ndim)
         return xVals
-    
+
     def norm(self):
         '''
         Computes the L2(Omega) norm of the function.
         INPUTS:
-        
+
         OUTPUTS:
             nVal: float, value of the L2(Omega) norm of this function.
         '''
-        
+
         return np.sqrt( np.sum( np.abs( self.cVec )**2 ) )
-    
+
     def boundaryNorm(self):
         '''
         Computes the L2(\partial Omega) norm of the function.
         INPUTS:
-        
+
         OUTPUTS:
             nVal: float, value of the boundary-norm of this function.
         '''
-        
+
         matProd = np.matmul(self.cMat, np.conjugate(self.cMat).T) + np.matmul(self.cMat.T, np.conjugate(self.cMat))
         sumValue = np.sum( np.real( matProd ) )
         nVal = np.sqrt( 2.*sumValue )
-        
+
         return  nVal
-    
+
     def ip(self, f):
         '''
         Evaulates the L2(\Omega) inner product of the FourierFunction with another instance f of the class
@@ -240,9 +243,9 @@ class FourierFunction:
         OUTPUTS:
             inP: complex, value of the inner product <self, f>.
         '''
-        
+
         return np.sum( self.cVec * np.conjugate(f.cVec) )
-    
+
     def plot(self, N=250, levels=15):
         '''
         Creates a heatmap of the function's real and imaginary parts, returning the figure handles for each.
@@ -252,7 +255,7 @@ class FourierFunction:
         OUTPUTS:
             rF, aF: figure handles, handles for heatmaps of the function over the region Omega.
         '''
-        
+
         rF, rAx = plt.subplots()
         iF, iAx = plt.subplots()
         for a in [rAx, iAx]:
@@ -296,10 +299,10 @@ def J(c, theta, omega):
     OUTPUTS:
         Jval: float, value of the objective function J
     '''
-    
+
     M = (np.sqrt(c.shape[0]) - 1) // 2
     sqCoeffs = np.abs(c)*np.abs(c)
-    
+
     alpha = beta = np.arange(-M, M+1)
     # this is a ((2M+1)**2,2) numpy array of all combinations of alpha, beta that we need to use,
     # these are stacked by [a0, b0], [a0, b1], ..., [a0, B(2M+1)], [a1, b0] etc, IE as \mathbf{c} is.
@@ -321,9 +324,9 @@ def J_Jac(cc, theta, omega):
         theta: (2,) float, value of the quasi-momentum
         omega: float, value of omega
     OUTPUTS:
-        jacVal: (2(2M+1)^2,) float, value of the Jacobian of the objective function J    
+        jacVal: (2(2M+1)^2,) float, value of the Jacobian of the objective function J
     '''
-    
+
     M = (np.sqrt(cc.shape[0]//2) - 1) // 2
     alpha = beta = np.arange(-M, M+1)
     # this is a ((2M+1)**2,2) numpy array of all combinations of alpha, beta that we need to use,
@@ -349,11 +352,11 @@ def J_Hess(cc, theta, omega):
         theta: (2,) float, value of the quasi-momentum
         omega: float, value of omega
     OUTPUTS:
-        hessVal: (2(2M+1)^2,2(2M+1)^2) float, value of the Hessian of the objective function J     
+        hessVal: (2(2M+1)^2,2(2M+1)^2) float, value of the Hessian of the objective function J
     '''
-    
+
     M = (np.sqrt(cc.shape[0]//2) - 1) // 2
-    
+
     alpha = beta = np.arange(-M, M+1)
     # this is a ((2M+1)**2,2) numpy array of all combinations of alpha, beta that we need to use,
     # these are stacked by [a0, b0], [a0, b1], ..., [a0, B(2M+1)], [a1, b0] etc, IE as \mathbf{c} is.
@@ -382,10 +385,10 @@ def J_PlusJac(cc, theta, omega):
         jVal: float, value of the objective function J
         jacVal: (2(2M+1)^2,) float, value of the Jacobian of J
     '''
-    
+
     M = (np.sqrt(cc.shape[0]//2) - 1) // 2
     sqCoeffs = np.abs(Real2Comp(cc))**2
-    
+
     alpha = beta = np.arange(-M, M+1)
     # this is a ((2M+1)**2,2) numpy array of all combinations of alpha, beta that we need to use,
     # these are stacked by [a0, b0], [a0, b1], ..., [a0, B(2M+1)], [a1, b0] etc, IE as \mathbf{c} is.
@@ -397,10 +400,10 @@ def J_PlusJac(cc, theta, omega):
     # it should now just be a case of a sum of element-wise vector products
     jVal = np.sum(sqCoeffs * prods)
     # now we realise that jacVal[0::2] = 2 * cc[0::2] * prods (element-wise), and
-    # jacVal[1::2] = 2 * cc[1::2] * prods    
+    # jacVal[1::2] = 2 * cc[1::2] * prods
     jacVal = np.zeros_like(cc, dtype=float)
     jacVal[0::2] = 2. * cc[0::2] * prods
-    jacVal[1::2] = 2. * cc[1::2] * prods    
+    jacVal[1::2] = 2. * cc[1::2] * prods
     return jVal, jacVal
 
 #%% Pertaining to the constraints on the optimisiation problem
@@ -427,7 +430,7 @@ def FirstJacRow(cc):
         beta = (j//2) % (2*M+1) #gets beta from j/2 = beta + (2M+1)*alpha
         alpha = (j//2) // (2*M+1) #gets alpha from j/2 = beta + (2M+1)*alpha
         matMeth[j] = 2.* ( np.sum(cMatImag[alpha,:]) + np.sum(cMatImag[:,beta]) )
-    
+
     return matMeth
 
 # Builds the Hessian of the vector of constraints dotted with the vector of Lagrange multipliers
@@ -449,8 +452,8 @@ def BuildHessian(cc):
     H[0::2,0::2] = Hsmall
     H[1::2,1::2] = Hsmall
     return H
-     
-# Kronecker delta function       
+
+# Kronecker delta function
 def KronDelta(i,j):
     '''
     Kronecker delta: 1 if i==j, 0 otherwise.
@@ -472,9 +475,9 @@ def BuildConstraints(n, prevPhis=[]):
     OUTPUTS:
         Fun: lambda cc: the function fun(cc) above, taking cc as input and returning shape (2*n-1,).
         Jac: lambda cc: the function Jac(cc) above, taking cc as input and returning shape (2*n-1, len(cc)).
-        Hess: lambda (cc,v): the function Hess(cc,v) described above, taking (cc,v) 
+        Hess: lambda (cc,v): the function Hess(cc,v) described above, taking (cc,v)
         as input and returning shape (len(cc),len(cc))
-        equalityVector: (2*n-1,) float, the zero vector except with index 0 element set to 1/4 
+        equalityVector: (2*n-1,) float, the zero vector except with index 0 element set to 1/4
         for the boundary norm constraint.
     '''
 
@@ -484,14 +487,14 @@ def BuildConstraints(n, prevPhis=[]):
         raise ValueError('Unexpected number of previous functions provided (got %d, expected %d)' \
                          % (len(prevPhis),n-1))
 
-    
+
     def Fun(cc):
         '''
         Takes cc as argument, and returns the vector of constraint expressions.
         '''
-    
+
         J = cc.shape[0]
-        M = int((np.sqrt(J//2) - 1) // 2)        
+        M = int((np.sqrt(J//2) - 1) // 2)
         cMat = Real2Comp(cc).reshape((2*M+1,2*M+1))
         constraints = np.zeros((2*n-1,), dtype=float)
         constraints[0] = np.sum(np.real( \
@@ -502,7 +505,7 @@ def BuildConstraints(n, prevPhis=[]):
         # NB: range(start, stop, step)
         for i in range(1,2*n-1,2):
             # cc[0::2]*cc_k[0::2] + cc[1::2]*cc_k[1::2], where 0<i is odd, and k = (i+1)//2
-            k = (i+1)//2 
+            k = (i+1)//2
             cc_k = Comp2Real(prevPhis[k-1].cVec) #note -1 since varphi_k is stored in prevPhis[k-1]
             constraints[i] = np.sum( cc[0::2]*cc_k[0::2] + cc[1::2]*cc_k[1::2] )
         for i in range (2,2*n-1,2):
@@ -511,12 +514,12 @@ def BuildConstraints(n, prevPhis=[]):
             cc_k = Comp2Real(prevPhis[k-1].cVec) #again, -1 due to offsets
             constraints[i] = np.sum( cc[1::2]*cc_k[0::2] - cc[0::2]*cc_k[1::2] )
         return constraints
-    
+
     def Jac(cc):
         '''
         Takes cc as argument, and returns the Jacobian of Fun(cc)
         '''
-    
+
         jac = np.zeros(((2*n-1), len(cc)), dtype=float)
         jac[0,:] = FirstJacRow(cc)
         # now the rows that come from the orthogonality constraints
@@ -531,22 +534,22 @@ def BuildConstraints(n, prevPhis=[]):
             inds = np.arange(len(cc_k)) + pows
             jac[i,:] = -pows * cc_k[inds]
         return jac
-    
+
     def Hess(cc, v):
         '''
         Takes cc and the array of Lagrange multipliers v as arguments, returning the Hessian of dot(fun(cc), v).
         '''
         return BuildHessian(cc) * v[0]
-    
+
     equalityVector = np.zeros((2*n-1,), dtype=float)
     equalityVector[0] = 0.5 # this is the (square of the) norm on the boundary constraint, all others are zero
-    
+
     return Fun, Jac, Hess, equalityVector
 
 #%% Command-line executions
 
 if __name__=='__main__':
-	
+
 	parser = argparse.ArgumentParser(description='Approximation of eigenvalues and eigenfunctions for the Dirichlet-to-Neumann map, for the Cross-in-plane geometry.')
 	parser.add_argument('-M', type=int, help='<Required> Order of the highest of Fourier mode to truncate series at.', required=True)
 	parser.add_argument('-N', type=int, help='<Required> Number of eigenfunctions and eigenvalues to find (starting from lowest eigenvalue)', required=True)
@@ -559,10 +562,10 @@ if __name__=='__main__':
 	parser.add_argument('-noJH', action='store_true', help='Solver will not use analytic Jacobian or Hessian')
 	parser.add_argument('-prevInfo', default='', type=str, help='Path to file storing information that is to be used for initial guesses in this run')
 	parser.add_argument('-lOff', action='store_true', help='Suppress printing of progress and solver log to the screen')
-	
+
 	# extract input arguments and get the setup ready
 	args = parser.parse_args()
-	
+
 	# There will be (2M+1)^2 Fourier modes, the "highest" being of order M
 	M = args.M
 	# We want to find this many eigenfunctions and eigenvectors
@@ -571,80 +574,92 @@ if __name__=='__main__':
 	    raise ValueError('(2M+1)^2 (%d) < (%d) N: cannot find orthogonal functions. ABORT' % ((2*M+1)**2, N))
 	else:
 		print('Will find %d eigenpairs, approximating with %d-dimensional Fourier space' % (N, (2*M+1)**2))
-	
+
 	# quasi-momentum value
 	theta = np.array([args.t1, args.t2], dtype=float) * pi
 	# value of omega
 	omega = args.omega
-	print('Read omega = %.3f and theta = [%.3f, %.3f]\pi' % (omega, theta[0], theta[1]))	
-	
+	print('Read omega = %.3f and theta = [%.3f, %.3f]\pi' % (omega, args.t1, args.t2))	
+
 	# create solver options handle
-	options = {'maxiter' : args.nIts, 'disp' : args.lOff}
-	
+	options = {'maxiter' : args.nIts, 'disp' : (not args.lOff) }
+
 	# create store for eigenfunctions
 	phiList = []
-	
+
 	# check to see if previous information was provided
+	# first, establish the default behaviour
+	nPrev = 0
 	if args.prevInfo:
 		# empty string evaluates to false, so if previous run information was provided, we get to here
 		# load previous run information
 		prevInfo = np.load(args.prevInfo)
-		print('Found previous information file: ' + args.prevInfo)
-	else:
-		# no previous information given, so we'll have to use the default starting guess of the constant function with boundary norm 1
-		cc0 = np.zeros(((2*M+1)**2,), dtype=complex)
-		cc0[2*(M+1)*(M)] += 0.5
-		cc0 = Comp2Real(cc0)
-	
+		# how many previous functions are provided?
+		# If we we want more than before, we'll still need the ignorant starting guess
+		# cVecs are stored row-wise, so number of rows = number of previous guesses available
+		nPrev = np.shape(prevInfo['cVecs'])[0]
+		print('Found previous information file: ' + args.prevInfo + ', containing %d eigenfunctions' % nPrev)
+
+	# If there is no previous information given, or we want more e'funcs than prevInfo provides,
+	# we'll have to use the default starting guess: the constant function with boundary norm 1
+	cc0Def = np.zeros(((2*M+1)**2,), dtype=complex)
+	cc0Def[2*(M+1)*(M)] += 0.5
+	cc0Def = Comp2Real(cc0Def)
+
 	# all options are setup, commence the solve
 	if (not args.noJH) and (not args.lOff):
 		# use the analytic Jacobian and Hessian, and print the log to the screen
 		print('Beginning solve: using analytic Jacobian & Hessian')
-		
+
 		# returns the functional J and it's Jacobian as a tuple
 		Jopt = lambda cc: J_PlusJac(cc, theta, omega)
 		# find each eigenfunction in sequence
 		for n in range(N):
 			print(' ----- \n [%d] Start time:' % (n+1), end=' ')
 			print(datetime.now().strftime("%H:%M"))
-			
+
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
-			
+
 			# starting guess update if better information was provided
-			if args.prevInfo:
+			if n < nPrev:
 				cc0 = BetterStartGuess(M, n, prevInfo)
 				fPrev = FourierFunction(prevInfo['theta'], prevInfo['omega'], prevInfo['cVecs'][n,:])
-			
+			else:
+				# no previous information (either not provided or out of previous functions)
+				# try using the default starting guess
+				cc0 = cc0Def
+
 			t0 = time.time()
 			# SLSQP doesn't use the Hessian btw, so we just don't pass it in
 			result = minimize(Jopt, cc0, jac=True, constraints=min_constraints, \
 					 options=options, method='SLSQP')
 			t1 = time.time()
-			
+
 			# construct answer as FourierFunction
 			cVec = Real2Comp(result.x)
 			f = FourierFunction(theta, omega, cVec)
 			phiList.append(f)
-			
+
 			# print log info
 			print(' Boundary norm of varphi_%d: %.2e' % (n+1, f.boundaryNorm()))
-			if args.prevInfo:
+			if n < nPrev:
 				print(' \lambda_%d: %.5f     -     Change from previous: %.3e' % (n+1, f.lbda, fPrev.lbda - f.lbda))
 			else:
 				print(' \lambda_%d: %.5f' % (n+1, f.lbda))
 			print(' Runtime: approx %d mins (%s seconds)' % (np.round((t1-t0)/60), t1-t0))
-			
+
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
+				sys.exit(1)
 				break
-			
+
 			print(' ----- ')
 	elif (not args.noJH):
 		# use the analytic Jacobian and Hessian, do not print log to screen
-		
+
 		# returns the functional J and it's Jacobian as a tuple
 		Jopt = lambda cc: J_PlusJac(cc, theta, omega)
 		# find each eigenfunction in sequence
@@ -652,71 +667,81 @@ if __name__=='__main__':
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
-			
+
 			# starting guess update if better information was provided
-			if args.prevInfo:
+			if n < nPrev:
 				cc0 = BetterStartGuess(M, n, prevInfo)
 				fPrev = FourierFunction(prevInfo['theta'], prevInfo['omega'], prevInfo['cVecs'][n,:])
-			
+			else:
+				# no previous information (either not provided or out of previous functions)
+				# try using the default starting guess
+				cc0 = cc0Def
+
 			t0 = time.time()
 			# SLSQP doesn't use the Hessian btw, so we just don't pass it in
 			result = minimize(Jopt, cc0, jac=True, constraints=min_constraints, \
 					 options=options, method='SLSQP')
 			t1 = time.time()
-			
+
 			# construct answer as FourierFunction
 			cVec = Real2Comp(result.x)
 			f = FourierFunction(theta, omega, cVec)
 			phiList.append(f)
-			
+
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction [n=%d], terminate loop early' % (n+1))
+				sys.exit(1)
 				break
 	elif (not args.lOff):
 		# do not use analytic Jacobian and Hessian, but do print to the screen
 		print('Beginning solve: NOT USING analytic Jacobian & Hessian')
-		
+
 		# returns the functional J
 		Jopt = lambda cc: J(Real2Comp(cc), theta, omega)
 		# find each eigenfunction in sequence
 		for n in range(N):
 			print(' ----- \n [%d] Start time:' % (n+1), end=' ')
 			print(datetime.now().strftime("%H:%M"))
-			
+
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
-			
+
 			# starting guess update if better information was provided
-			if args.prevInfo:
+			if n < nPrev:
 				cc0 = BetterStartGuess(M, n, prevInfo)
 				fPrev = FourierFunction(prevInfo['theta'], prevInfo['omega'], prevInfo['cVecs'][n,:])
-			
+			else:
+				# no previous information (either not provided or out of previous functions)
+				# try using the default starting guess
+				cc0 = cc0Def
+
 			t0 = time.time()
 			# SLSQP doesn't use the Hessian btw, so we just don't pass it in
 			result = minimize(Jopt, cc0, constraints=min_constraints, \
 					 options=options, method='SLSQP')
 			t1 = time.time()
-			
+
 			# construct answer as FourierFunction
 			cVec = Real2Comp(result.x)
 			f = FourierFunction(theta, omega, cVec)
 			phiList.append(f)
-			
+
 			# print log info
 			print(' Boundary norm of varphi_%d: %.2e' % (n+1, f.boundaryNorm()))
-			if args.prevInfo:
+			if n < nPrev:
 				print(' \lambda_%d: %.5f     -     Change from previous: %.3e' % (n+1, f.lbda, fPrev.lbda - f.lbda))
 			else:
 				print(' \lambda_%d: %.5f' % (n+1, f.lbda))
 			print(' Runtime: approx %d mins (%s seconds)' % (np.round((t1-t0)/60), t1-t0))
-			
+
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
+				sys.exit(1)
 				break
-			
+
 			print(' ----- ')
 	else:
 		# do not use analytic Jacobian and Hessian, do not print to screen
@@ -728,18 +753,22 @@ if __name__=='__main__':
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
-			
+
 			# starting guess update if better information was provided
-			if args.prevInfo:
+			if n < nPrev:
 				cc0 = BetterStartGuess(M, n, prevInfo)
 				fPrev = FourierFunction(prevInfo['theta'], prevInfo['omega'], prevInfo['cVecs'][n,:])
-			
+			else:
+				# no previous information (either not provided or out of previous functions)
+				# try using the default starting guess
+				cc0 = cc0Def
+
 			t0 = time.time()
 			# SLSQP doesn't use the Hessian btw, so we just don't pass it in
 			result = minimize(Jopt, cc0, constraints=min_constraints, \
 					 options=options, method='SLSQP')
 			t1 = time.time()
-			
+
 			# construct answer as FourierFunction
 			cVec = Real2Comp(result.x)
 			f = FourierFunction(theta, omega, cVec)
@@ -748,10 +777,15 @@ if __name__=='__main__':
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
+				sys.exit(1)
 				break
-	
+
 	# run is now complete, save the output
 	infoFile = SaveRun(theta, omega, phiList, fname=args.fOut, fileDump=args.fDump)
-	
+
 	# inform the user of completion of the script
 	print('Completed, output file saved to:' + infoFile)
+	
+	with open('DtN-Minimiser-ConveyerFile.txt', 'w') as fh:
+		   fh.write("%s" % infoFile)
+	sys.exit(0)
