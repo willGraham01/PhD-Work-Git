@@ -579,7 +579,7 @@ if __name__=='__main__':
 	theta = np.array([args.t1, args.t2], dtype=float) * pi
 	# value of omega
 	omega = args.omega
-	print('Read omega = %.3f and theta = [%.3f, %.3f]\pi' % (omega, args.t1, args.t2))	
+	print('Read omega = %.3f and theta = [%.3f, %.3f]\pi' % (omega, args.t1, args.t2))
 
 	# create solver options handle
 	options = {'maxiter' : args.nIts, 'disp' : (not args.lOff) }
@@ -590,6 +590,7 @@ if __name__=='__main__':
 	# check to see if previous information was provided
 	# first, establish the default behaviour
 	nPrev = 0
+	nStart = 0
 	if args.prevInfo:
 		# empty string evaluates to false, so if previous run information was provided, we get to here
 		# load previous run information
@@ -599,14 +600,27 @@ if __name__=='__main__':
 		# cVecs are stored row-wise, so number of rows = number of previous guesses available
 		nPrev = np.shape(prevInfo['cVecs'])[0]
 		print('Found previous information file: ' + args.prevInfo + ', containing %d eigenfunctions' % nPrev)
+		# note: if the previous M was the same, we don't need to bother recomputing the N functions we've been given!
+		if prevInfo['M'] == M:
+			# don't bother recomputing stuff for those N that we already have!
+			print('Supplied first %d eigenfunctions for M = %d.' % (nPrev, M))
+			print('Will only search for varphi_%d through varphi_%d.' % (nPrev+1, N))
+			for n in range(nPrev):
+				cc0 = BetterStartGuess(M, n, prevInfo)
+				phiList.append( FourierFunction(prevInfo['theta'], prevInfo['omega'], prevInfo['cVecs'][n,:]) )
+			# then, inform the loops that we can start computing from n=nStart, rather than n=0
+			nStart = nPrev
 
 	# If there is no previous information given, or we want more e'funcs than prevInfo provides,
 	# we'll have to use the default starting guess: the constant function with boundary norm 1
 	cc0Def = np.zeros(((2*M+1)**2,), dtype=complex)
 	cc0Def[2*(M+1)*(M)] += 0.5
 	cc0Def = Comp2Real(cc0Def)
-
-	# all options are setup, commence the solve
+	
+	# flag failed convergence if it happens
+	noConv = False
+	
+    # all options are setup, commence the solve
 	if (not args.noJH) and (not args.lOff):
 		# use the analytic Jacobian and Hessian, and print the log to the screen
 		print('Beginning solve: using analytic Jacobian & Hessian')
@@ -614,7 +628,7 @@ if __name__=='__main__':
 		# returns the functional J and it's Jacobian as a tuple
 		Jopt = lambda cc: J_PlusJac(cc, theta, omega)
 		# find each eigenfunction in sequence
-		for n in range(N):
+		for n in range(nStart, N):
 			print(' ----- \n [%d] Start time:' % (n+1), end=' ')
 			print(datetime.now().strftime("%H:%M"))
 
@@ -653,7 +667,7 @@ if __name__=='__main__':
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
-				sys.exit(1)
+				noConv = True
 				break
 
 			print(' ----- ')
@@ -663,7 +677,7 @@ if __name__=='__main__':
 		# returns the functional J and it's Jacobian as a tuple
 		Jopt = lambda cc: J_PlusJac(cc, theta, omega)
 		# find each eigenfunction in sequence
-		for n in range(N):
+		for n in range(nStart, N):
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
@@ -691,7 +705,7 @@ if __name__=='__main__':
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction [n=%d], terminate loop early' % (n+1))
-				sys.exit(1)
+				noConv = True
 				break
 	elif (not args.lOff):
 		# do not use analytic Jacobian and Hessian, but do print to the screen
@@ -700,7 +714,7 @@ if __name__=='__main__':
 		# returns the functional J
 		Jopt = lambda cc: J(Real2Comp(cc), theta, omega)
 		# find each eigenfunction in sequence
-		for n in range(N):
+		for n in range(nStart, N):
 			print(' ----- \n [%d] Start time:' % (n+1), end=' ')
 			print(datetime.now().strftime("%H:%M"))
 
@@ -739,7 +753,7 @@ if __name__=='__main__':
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
-				sys.exit(1)
+				noConv = True
 				break
 
 			print(' ----- ')
@@ -749,7 +763,7 @@ if __name__=='__main__':
 		# returns the functional J
 		Jopt = lambda cc: J(Real2Comp(cc), theta, omega)
 		# find each eigenfunction in sequence
-		for n in range(N):
+		for n in range(nStart, N):
 			# setup constraints
 			Fun_n, Jac_n, Hess_n, eqV_n = BuildConstraints(n+1, prevPhis=phiList)
 			min_constraints = NonlinearConstraint(Fun_n, eqV_n, eqV_n, jac=Jac_n, hess=Hess_n)
@@ -777,15 +791,16 @@ if __name__=='__main__':
 			if result.status!=0:
 				# this run failed to converge, break loop
 				print(' Failed to find eigenfunction, terminate loop early')
-				sys.exit(1)
+				noConv = True
 				break
 
-	# run is now complete, save the output
-	infoFile = SaveRun(theta, omega, phiList, fname=args.fOut, fileDump=args.fDump)
-
-	# inform the user of completion of the script
-	print('Completed, output file saved to:' + infoFile)
-	
-	with open('DtN-Minimiser-ConveyerFile.txt', 'w') as fh:
-		   fh.write("%s" % infoFile)
-	sys.exit(0)
+	# run is now complete - save the output if we converged!
+	if (not noConv):
+		infoFile = SaveRun(theta, omega, phiList, fname=args.fOut, fileDump=args.fDump)
+		# inform the user of completion of the script
+		print('Completed, output file saved to:' + infoFile)
+		with open('DtN-Minimiser-ConveyerFile.txt', 'w') as fh:
+			fh.write("%s" % infoFile)
+			sys.exit(0)
+	else:
+		sys.exit(1)

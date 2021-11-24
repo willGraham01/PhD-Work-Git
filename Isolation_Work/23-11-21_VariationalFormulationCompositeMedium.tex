@@ -1,0 +1,91 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\input imports all commands from the target files
+\input{../../PhD-Thesis/Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\DtN}{\mathcal{D}}
+\newcommand{\di}{\DtN_{\qm, \omega}^i}
+\newcommand{\dplus}{\DtN_{\qm, \omega}^+}
+\newcommand{\dminus}{\DtN_{\qm, \omega}^-}
+
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom=\left[0,1\right)^2$ be our usual domain filled with a singular structure $\graph$, separated by $\graph$ into the pairwise-disjoint connected components $\ddom_i$.
+
+Consider the constrained problem of finding $\omega^2$ such that
+\begin{align} \label{eq:MinProblem}
+	\omega^2 &= \inf\clbracs{ \integral{\ddom}{\abs{\tgrad_{\compMes}u}^2}{\compMes}, \ u\in\tgradSob{\ddom}{\compMes} \setVert \norm{u}_{\ltwo{\ddom}{\compMes}} = 1}.
+\end{align}
+
+\begin{theorem}
+	Suppose that \eqref{eq:MinProblem} has a minimising function $v\in\tgradSob{\ddom}{\compMes}$.
+	Then this $v$ satisfies the system
+	\begin{subequations} \label{eq:GraphSystem}
+		\begin{align} 
+			\bracs{\laplacian_\qm + \omega^2}v &= 0 \quad &\text{in each } \ddom_i, \\
+			-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 v_{jk} &= \omega^2 v_{jk} + \bracs{\grad v\vert_{\partial\ddom^+} - \grad v\vert_{\partial\ddom^-}}\cdot n_{jk}, \quad &\text{on each } I_{jk}, \\
+			\sum_{j\con k}\bracs{\pdiff{}{n} + \rmi\qm_{jk}}v_{jk}\bracs{v_j} &= 0, \quad &\text{at each } v_j\in\vertSet.
+		\end{align}
+	\end{subequations}
+\end{theorem}
+\begin{proof}
+	Our approach utilises the method of Lagrange multipliers.
+	To this end, let $\xi$ be our Lagrange multiplier, and consider the functional
+	\begin{align*}
+		J\sqbracs{u,\xi} &= \integral{\ddom}{\abs{\tgrad_{\compMes}u}^2}{\compMes} - \xi\bracs{ \norm{u}_{\ltwo{\ddom}{\compMes}} - 1 }. 
+	\end{align*}
+	The variation from $v$ of $J$ is then the functional
+	\begin{align*}
+		V\sqbracs{\phi,\xi} &= \diff{}{\eps} J\sqbracs{v+\eps\phi,\xi}\big\vert_{\eps=0}
+		= \integral{\ddom}{ \tgrad_{\compMes}v\cdot\overline{\tgrad_{\compMes}\phi} + \overline{\tgrad_{\compMes} u}\cdot\tgrad_{\compMes}\phi }{\compMes}
+		- \xi\int_{\ddom}{ v\cdot\overline{\phi} + \overline{v}\cdot\phi }{\compMes},
+	\end{align*}
+	and we have that $V\sqbracs{\phi,\xi} = 0$ for every $\phi\in\smooth{\ddom}$, since $v$ is the minimising function of \eqref{eq:MinProblem}.
+	
+	In particular, notice that $V\sqbracs{v,\xi}=0$, and thus
+	\begin{align*}
+		0 &= 2\bracs{ \integral{\ddom}{ \abs{\tgrad_{\compMes}v}^2 }{\compMes} - \xi\integral{\ddom}{\abs{v}^2}{\compMes}}
+		= 2\bracs{\omega^2 - \xi\times1}, \\
+		\implies \xi &= \omega^2,
+	\end{align*}
+	providing the value of the Lagrange multiplier.
+	
+	Next, we take $\phi$ whose support is contained in one of the bulk regions $\ddom_i$.
+	By a method similar to our derivation of the quantum graph problem, we will obtain that \tstk{check by parts formula for when conjugations are reversed! Also confirm that we get that $v$ has sufficient regularity for us to do the by parts in the first place!}
+	\begin{align*}
+		V\sqbracs{\phi,\omega^2} = 0
+		&= -\integral{\ddom_i}{ \overline{\phi}\bracs{\laplacian_{\qm}+\omega^2}v + \phi\overline{\bracs{\laplacian_{\qm}+\omega^2}v} }{\lambda_2},
+	\end{align*}
+	which will hold for every such $\phi$ with compact support in $\ddom_i$, which provides the first (bulk) equation we seek (take $\phi$ to have no real, then no imaginary part).
+	
+	Now, take $\phi$ to have support that straddles one of the edges $I_{jk}$.
+	Again following a similar process to that in our derivation, we will arrive at \tstk{check signs of traces!}
+	\begin{align*}
+		V\sqbracs{\phi,\omega^2} = 0
+		&= \integral{I_{jk}}{ \tgrad_{jk}v\cdot\overline{\tgrad_{jk}\phi} - \omega^2 u\overline{\phi} + \overline{\tgrad_{jk}v}\cdot\tgrad_{jk}\phi - \omega^2\overline{v}\phi }{\lambda_{jk}} \\
+		&\quad + \integral{I_{jk}}{ \bracs{\tgrad v\cdot n^+}^+\overline{\phi} + \bracs{\overline{\tgrad_{jk}v}\cdot n^+}^+\phi - \bracs{\tgrad v\cdot n^-}^-\overline{\phi} - \bracs{\overline{\tgrad_{jk}v}\cdot n^-}^-\phi }{\lambda_{jk}},
+	\end{align*}
+	which will reduce to our second equation.
+	
+	Finally, consider $\phi$ that have support now containing the vertices, and we'll end up with the final equation after following the steps in our derivation again.
+	This completes the proof.
+\end{proof}
+
+What can we say now?
+Well, if our operator $-\laplacian_{\qm}$ is self-adjoint (in some appropriate space, so we'd need to give $\tgradSob{\ddom}{\compMes}$ a formal norm etc) then we can just apply the min-max principle to obtain the eigenvalues!
+We have something of a compromise here: we still have to construct the solution in the bulk regions (so aren't entirely on the graph) but don't have to expand the majority of our computational effort to handle them --- in fact, we just approximate with a basis and solve the min-max problem for $-\laplacian_{\qm}$!
+
+\end{document}
