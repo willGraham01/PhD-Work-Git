@@ -1,0 +1,14 @@
+TEST: FDM thinks that, with N=31 gridpoints in each direction, that omega=4.075999077339437 is an eigenvalue with quasimomentum = 0.
+Let's see what the spectral method spits out at each stage, for varying M, N.
+
+We can use previous information files to help us out here.
+Let's examine what happens for 1 <= N <= 20 and 1 <= M <= 11 (the max. I want to push my PC to).
+
+Values will be recorded here with appropriate titles, and we can even use previous info to aid us!
+
+Filename convention for stored DtN e'functions:
+
+./eFuncDump/Mx-Ny.npz where x,y are replaced by the values of M and N used in the run.
+
+Results file is just
+results.txt

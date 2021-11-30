@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# This script will create a mesh from the file ./FEM_CrossGraphSetup.msh,
-# assemble the FEM stiffness matrices,
-# and compute (a proportion of the total number of) eigenvalues and eigenvectors
-# of the operator, saving the outputs to files at each stage.
-
-# See the Documentation folder for details.
-
 source activate PythonBasics
 
 cd /home/will/Documents/PhD/PhD-Work-Git/QG_Code/NumericalSolves/Composite_Cross/

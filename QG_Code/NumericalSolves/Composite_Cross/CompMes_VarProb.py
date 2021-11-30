@@ -561,14 +561,14 @@ def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
 	OUTPUTS:
 		uRealStore: (N,2M^2) float, the solutions to the minimisation problem stacked row-wise
 		omegaSqStore: (N,) float, the values of omega^2, or the objective function at the solution
-		noConv: bool, if True then the method failed to converge
+		noConv: int, the run failed to converge for n=noConv (which will terminate the loop early). If noConv=-1, then all eigenfunctions were found sucessfully
 	'''
 	
 	# create solver options handle
 	options = {'maxiter' : nIts, 'disp' : (not lOff) }
 	
-	# create flag for no convergence
-	noConv = False
+	# create flag for no convergence: assume everything went well
+	noConv = -1
 	
 	## Initialise storage for the solutions
 	# (l,2m) + (l,2m+1) is the coefficient u^l_m
@@ -608,7 +608,7 @@ def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
 	print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
 	if resultJ.status!=0:
 		# didn't converge, flag this
-		noConv = True
+		noConv = 0
 		print('Failed to converge when finding e-function n=0')
 	else:
 		# for every eigenfunction and value that we want above the first
@@ -626,7 +626,7 @@ def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
 			print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
 			if resultJ.status!=0:
 				# didn't converge, flag and break loop
-				noConv = True
+				noConv = n
 				print('Failed to converge when finding e-function n=%d' % n)
 				break
 	
