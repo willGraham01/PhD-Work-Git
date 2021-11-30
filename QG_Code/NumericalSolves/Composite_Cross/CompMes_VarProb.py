@@ -545,42 +545,27 @@ class Poly2D:
         rF.colorbar(rCon)
         iF.colorbar(iCon)
         return [rF, rAx], [iF, iAx]
+
+#%% Wrapper for command-line execution, so that imports can also be used
+
+def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
+	'''
+	Solves the variational problem with the parameters provided.
+	Wrapper function for command-line script
+	INPUTS:
+		M: int, M-1 is the highest order term in the polynomial approximation
+		N: int, number of eigenfunctions (and values) to find
+		theta: (2,) float, value of the quasi-momentum
+		nIts: int, maximum number of iterations for minimise solve
+		log: bool, if True then minimiser will NOT write progress to screen
+	OUTPUTS:
+		uRealStore: (N,2M^2) float, the solutions to the minimisation problem stacked row-wise
+		omegaSqStore: (N,) float, the values of omega^2, or the objective function at the solution
+		noConv: bool, if True then the method failed to converge
+	'''
 	
-#%% Command-line execution
-
-if __name__=='__main__':
-
-	parser = argparse.ArgumentParser(description='Approximation of eigenvalues and eigenfunctions for the Dirichlet-to-Neumann map, for the Cross-in-plane geometry.')
-	parser.add_argument('-M', type=int, help='<Required> M-1 is the highest order term of the polynomial approximation.', required=True)
-	parser.add_argument('-N', type=int, help='<Required> Number of eigenfunctions and eigenvalues to find (starting from lowest eigenvalue)', required=True)
-	parser.add_argument('-fn', default='', type=str, help='Output file name, if blank filename will be auto-generated')
-	parser.add_argument('-fd', default='./Poly2D_Results/', type=str, help='Directory to save output file to.')
-	parser.add_argument('-t1', default=0.0, type=float, help='QM_1 will be set to this value multiplied by pi.')
-	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
-	parser.add_argument('-nIts', default=2500, type=int, help='Maximum number of iterations for solver')
-	parser.add_argument('-lOff', action='store_true', help='Suppress printing of progress and solver log to the screen')
-
-	# extract input arguments and get the setup ready
-	args = parser.parse_args()
-
-	# There will be (2M+1)^2 Fourier modes, the "highest" being of order M
-	M = args.M
-	# We want to find this many eigenfunctions
-	N = args.N
-	# There are a total of 2M (periodicity) + N-1 (orthogonality) + 1 (norm) constraints,
-	# and we have a space of dimension M^2.
-	# We should check if we can actually find a solution to this problem
-	if M**2 < 2*M + N:
-	    raise ValueError('M^2 (%d) < (%d) 2M + N: cannot find orthogonal functions. ABORT' % (M**2, N))
-	else:
-		print('Will find %d eigenpairs, approximating with %d-dimensional Polynomial space' % (N, M**2))
-
-	# quasi-momentum value
-	theta = np.array([args.t1, args.t2], dtype=float) * pi
-	print('Read theta = [%.3f, %.3f]\pi' % (args.t1, args.t2))
-
 	# create solver options handle
-	options = {'maxiter' : args.nIts, 'disp' : (not args.lOff) }
+	options = {'maxiter' : nIts, 'disp' : (not lOff) }
 	
 	# create flag for no convergence
 	noConv = False
@@ -620,7 +605,7 @@ if __name__=='__main__':
 	uRealStore[0,:] = resultJ.x
 	# save the eigenvalue
 	omegaSqStore[0] = resultJ.fun
-	print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)//60), t1-t0))
+	print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
 	if resultJ.status!=0:
 		# didn't converge, flag this
 		noConv = True
@@ -638,12 +623,49 @@ if __name__=='__main__':
 			uRealStore[n,:] = resultJ.x
 			# save eigenvalue
 			omegaSqStore[n] = resultJ.fun
-			print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)//60), t1-t0))
+			print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
 			if resultJ.status!=0:
 				# didn't converge, flag and break loop
 				noConv = True
 				print('Failed to converge when finding e-function n=%d' % n)
-				break   
+				break
+	
+	return uRealStore, omegaSqStore, noConv
+	
+#%% Command-line execution
+
+if __name__=='__main__':
+
+	parser = argparse.ArgumentParser(description='Approximation of eigenvalues and eigenfunctions for the Dirichlet-to-Neumann map, for the Cross-in-plane geometry.')
+	parser.add_argument('-M', type=int, help='<Required> M-1 is the highest order term of the polynomial approximation.', required=True)
+	parser.add_argument('-N', type=int, help='<Required> Number of eigenfunctions and eigenvalues to find (starting from lowest eigenvalue)', required=True)
+	parser.add_argument('-fn', default='', type=str, help='Output file name, if blank filename will be auto-generated')
+	parser.add_argument('-fd', default='./CompMesVarProb_Results/', type=str, help='Directory to save output file to.')
+	parser.add_argument('-t1', default=0.0, type=float, help='QM_1 will be set to this value multiplied by pi.')
+	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
+	parser.add_argument('-nIts', default=2500, type=int, help='Maximum number of iterations for solver')
+	parser.add_argument('-lOff', action='store_true', help='Suppress printing of progress and solver log to the screen')
+
+	# extract input arguments and get the setup ready
+	args = parser.parse_args()
+
+	# There will be (2M+1)^2 Fourier modes, the "highest" being of order M
+	M = args.M
+	# We want to find this many eigenfunctions
+	N = args.N
+	# There are a total of 2M (periodicity) + N-1 (orthogonality) + 1 (norm) constraints,
+	# and we have a space of dimension M^2.
+	# We should check if we can actually find a solution to this problem
+	if M**2 < 2*M + N:
+	    raise ValueError('M^2 (%d) < (%d) 2M + N: cannot find orthogonal functions. ABORT' % (M**2, N))
+	else:
+		print('Will find %d eigenpairs, approximating with %d-dimensional Polynomial space' % (N, M**2))
+
+	# quasi-momentum value
+	theta = np.array([args.t1, args.t2], dtype=float) * pi
+	print('Read theta = [%.3f, %.3f]\pi' % (args.t1, args.t2))
+
+	uRealStore, _, noConv = SolveVarProb(M, N, theta, nIts=args.nIts, lOff=args.lOff)
 	
 	# run is now complete - save the output if we converged!
 	if (not noConv):
