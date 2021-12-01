@@ -186,3 +186,12 @@ if __name__=='__main__':
 	for n in range(N):
 		bands.append(GetBand(n+1, allEvals, removeFailed=True))
 	
+	for bi, b in enumerate(bands):
+		f, a = PlotEvals(b, pType='surf', title=r'$\omega$ values in band %d' % (bi+1))
+		f.show()
+	
+	# NOTABLE OBSERVATIONS:
+		# QM symmetry points look like they're giving the extremities of the spectral bands
+		# don't yet know if the bands will overlap
+		# low point at qm=0, high point at qm=(+/pi,+/pi) for any combination
+		# symmetry in omega wrt qm components is displayed, which is expected

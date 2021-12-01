@@ -18,21 +18,24 @@ The quasi-momentum and value of alpha3 have to be manually set within the script
 #import sys
 # sys.argv[1:] contains command line arguments. Index 0 is just the script name
 import argparse
+import sys
 
 # imports for construction and analysis
 import numpy as np
-from numpy.random import choice, uniform
-from scipy.linalg import eig
+#from numpy.random import choice, uniform
+#from scipy.linalg import eig
+from scipy.sparse.linalg import eigs
 
 import matplotlib.pyplot as plt
 from matplotlib import rc, cm
 rc('text', usetex=True)
-from mpl_toolkits.mplot3d import Axes3D
+#from mpl_toolkits.mplot3d import Axes3D
 
 # for saving data
 from datetime import datetime
 
-# CONSTRUCTION OF FDM functions
+#%% CONSTRUCTION OF FDM functions
+
 def RegionalFDM(M, region, N, theta, log=False):
     '''
     Construct the FDM rows that correspond to gridpoints i,j in the region Omega_region.
@@ -275,7 +278,6 @@ def v3FDM(M, a3, N, tol=1e-8, log=True):
         M[Mrow,:] /= a3
     return
 
-# ANALYSIS/CHECKING functions
 def B(N):
     '''
     Constructs the matrix B defined above.
@@ -302,6 +304,8 @@ def Beta(z, N):
     '''
     
     return z * B(N)
+
+#%% Output formatting and checking functions
 
 # This function is mainly a reality check to ensure that InsertSlaveNodes does it's job correctly.
 def CheckPeriodicBCs(N, U, tol=1e-8):
@@ -403,7 +407,22 @@ def IsSymmetric(A, rtol=1e-5, atol=1e-8):
     '''
     return np.allclose(A, A.T, rtol=rtol, atol=atol)
 
-# PLOTTING AND VISUALISATION functions, although I doubt these will see use
+def SmallestValuesIndex(a, k=19):
+    '''
+    Return the indices of the k smallest values in the array a. By default, k is the minimum of 19 and len(a).
+    INPUTS:
+        a: (n,) float, values to search
+        k: (optional) int, the indices corresponding to the k-smallest values in a will be returned
+    OUTPUTS:
+        inds: (k,) int, the indices corresponding to the k-smallest values in a
+    Note that inds will not be sorted in ascending order, in general a[inds[i-1]] !< a[inds[i]].
+    '''
+    if k>len(a):
+        return np.argpartition(a, len(a))
+    return np.argpartition(a, k)[:k]
+
+#%% PLOTTING AND VISUALISATION functions, although I doubt these will see use
+
 def InsertSlaveNodes(N, U, mat=True):
     '''
     Given a (N-1)^2 solution vector U, insert the values at the periodic "slave" meshpoints to form a N*N matrix, 
@@ -539,58 +558,24 @@ def PlotEvals(wVals, N=0, autoPlotWidow=False):
     
     return fig, ax
 
-def SmallestValuesIndex(a, k=19):
-    '''
-    Return the indices of the k smallest values in the array a. By default, k is the minimum of 19 and len(a).
-    INPUTS:
-        a: (n,) float, values to search
-        k: (optional) int, the indices corresponding to the k-smallest values in a will be returned
-    OUTPUTS:
-        inds: (k,) int, the indices corresponding to the k-smallest values in a
-    Note that inds will not be sorted in ascending order, in general a[inds[i-1]] !< a[inds[i]].
-    '''
-    if k>len(a):
-        return np.argpartition(a, len(a))
-    return np.argpartition(a, k)[:k]
-
-# COMMAND LINE SCRIPT
-if __name__=='__main__':
-	
-	parser = argparse.ArgumentParser(description='FDM assembly and eigenvalue solve, for the Cross-in-plane geometry.')
-	parser.add_argument('-N', type=int, help='<Required> Number of meshpoints in each dimension.', required=True)
-	parser.add_argument('-t1', default=0.0, type=float, help='QM_1 will be set to this value multiplied by pi.')
-	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
-	parser.add_argument('-a3', default=0.0, type=float, help='Coupling constant value at v_3.')
-	parser.add_argument('-l', action='store_true', help='Print log to screen whilst constructing FDM.')
-	parser.add_argument('-sEvals', action='store_false', help='Computed eigenvalues will NOT be saved - overwrites default behaviour.')
-	parser.add_argument('-sEvecs', action='store_true', help='Computed eigenvectors will not be saved.')
-	
-	args = parser.parse_args()
-	# number of meshpoints
-	# this is defined up here to save an argument being passed to M2C every time we want to use it
-	N = args.N
-	if N%2==0:
-	    print('N = %d is not even, using N=%d instead' % (N, N+1))
-	    N += 1
-	else:
-		print('Read N=%d' % (N))
-	# mesh width
-	h = 1./(N-1)
-	# quasi-momentum value
-	theta = np.array([args.t1, args.t2], dtype=float)
-	print('Quasi-momentum set as: ', theta, '\pi')
-	theta *= np.pi
-	# coupling constant at v_3
-	alpha3 = args.a3
-	print('Read alpha_3 as: ', alpha3)
-	# toggle whether log will write to screen
-	logOn = args.l
-	# settings for preserving the values computed
-	saveEvals = args.sEvals
-	saveEvecs = args.sEvecs
-	
-	# gridpoint placements
-	x = y = np.linspace(0.,1.,num=N)
+#%% Command-line wrapper for easier solves
+def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True, saveEvecs=False):
+	'''
+	Computes the least nEvals eigenvalues and eigenfunctions of the Cross-In-Plane geometry, via finite difference approximation.
+	INPUTS:
+		N: int, number of meshpoints in each dimension, should be odd
+		theta: (2,) float, value of the quasimomentum
+		alpha3: float, value of the coupling constant at v_0/v_3
+		lOff: bool, if True then log is suppressed from printing
+		nEvals: int, number of eigenvalues to compute (from closest to 0 ascending)
+		checks: bool, if True, then check whether solutions are periodic and FDM is Hermitian, etc
+		saveEvals: bool, whether or not to save the computed eigenvalues to a file
+		saveEvecs: bool, whether or not to save the computed eigenvectors to a file
+	OUTPUTS:
+		eVals: (nEvals, ) float, (real) computed eigenvalues
+		eVecs: (N^2, nEvals) complex, complex valued computed eigenvectors
+		saveStrVal: str, the filename that the eigenvalues were saved to. Returned even if saving was supressed.
+	'''
 	
 	# Function to change column <- matrix indices
 	def M2C(i,j):
@@ -603,7 +588,7 @@ if __name__=='__main__':
 	    '''
 	    
 	    return j + (N-1)*i
-
+	
 	# Begin assembly script here.
 	sizeFDM = (N-1)*(N-1)
 	# Initalise FDM
@@ -623,70 +608,169 @@ if __name__=='__main__':
 	    
 	# Assemble row entry for v_3
 	v3FDM(FDM, alpha3, N, log=logOn)
-	
-	# Is it Hermitian?
-	if IsHermitian(FDM):
-	    print('FDM is Hermitian')
-	elif IsSymmetric(FDM):
-	    print('FDM is symmetric')
-	else:
-	    print('FDM is NOT Symmetric nor Hermitian, see FDM - FDM.H below:')
-	    diff = FDM - Herm(FDM)
-	    print('Max real difference: ', np.max(np.abs(np.real(diff))))
-	    print('Max imag difference: ', np.max(np.abs(np.imag(diff))))
-	
+
 	# Compute e'values and e'vectors.
 	# NOTE: if alpha_3 is zero, will need to insert B(N) for a generalised eigenvalue problem
-	# Otherwise, we can just pass FDM into eig
+	# Otherwise, we can just pass FDM into eig or eigs
+	###scipy.sparse.linalg.eigs(A, k=6, M=None, sigma=None, which='LM', v0=None, ncv=None, maxiter=None, tol=0, return_eigenvectors=True, Minv=None, OPinv=None, OPpart=None)
 	print('Eigenvalue solving, this may take a while...', end='')
 	if np.abs(alpha3)<=1e-8:
-		wVals, wVecs = eig(FDM, B(N))
+		#wVals, wVecs = eig(FDM, B(N))
+		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=0.)
 	else:
-		wVals, wVecs = eig(FDM)
+		#wVals, wVecs = eig(FDM)
+		wVals, wVecs = eigs(FDM, k=nEvals, M=None, sigma=0.)
 	print(' finished')
-	
-	# reconstruct every solution and check that the result is periodic (slave boundaries have been matched correctly)
-	p = 0; lrFail = 0; tbFail = 0
-	for w in range(len(wVals)):
-	    wV = InsertSlaveNodes(N, wVecs[:,w], mat=True)
-	    tf = CheckPeriodicBCs(N, wV)
-	    if (tf[0] and tf[1]):
-	        # this solution is fine upon reconstruction
-	        p += 1
-	    elif tf[0]:
-	        # lr boundary fine, tb boundary not periodic
-	        tbFail += 1
-	        print('E-vec at index %d not periodic Top <-> Bottom' % (w))
-	    elif tf[1]:
-	        # tb boundary fine, lr boundary not periodic
-	        lrFail += 1
-	        print('E-vec at index %d not periodic Left <-> Right' % (w))
-	    else:
-	        # no periodicity on either solution!
-	        lrFail += 1
-	        tbFail += 1
-	        print('E-vec at index %d not periodic in either direction' % (w))
+
+	# if we were told to run checks for Hermitian ness, etc, run them here
+	if checks:
+		# Is it Hermitian?
+		if IsHermitian(FDM):
+		    print('FDM is Hermitian')
+		elif IsSymmetric(FDM):
+		    print('FDM is symmetric')
+		else:
+		    print('FDM is NOT Symmetric nor Hermitian, see FDM - FDM.H below:')
+		    diff = FDM - Herm(FDM)
+		    print('Max real difference: ', np.max(np.abs(np.real(diff))))
+		    print('Max imag difference: ', np.max(np.abs(np.imag(diff))))
+			
+		# reconstruct every solution and check that the result is periodic (slave boundaries have been matched correctly)
+		p = 0; lrFail = 0; tbFail = 0
+		for w in range(len(wVals)):
+		    wV = InsertSlaveNodes(N, wVecs[:,w], mat=True)
+		    tf = CheckPeriodicBCs(N, wV)
+		    if (tf[0] and tf[1]):
+		        # this solution is fine upon reconstruction
+		        p += 1
+		    elif tf[0]:
+		        # lr boundary fine, tb boundary not periodic
+		        tbFail += 1
+		        print('E-vec at index %d not periodic Top <-> Bottom' % (w))
+		    elif tf[1]:
+		        # tb boundary fine, lr boundary not periodic
+		        lrFail += 1
+		        print('E-vec at index %d not periodic Left <-> Right' % (w))
+		    else:
+		        # no periodicity on either solution!
+		        lrFail += 1
+		        tbFail += 1
+		        print('E-vec at index %d not periodic in either direction' % (w))
 
 	# clear infs and NaN evals
 	eVals, tf = Purge(wVals)
 	eVecs = wVecs[:,tf]
 	realTF = RealEvalIndices(eVals, tol=1e-8)
+	
+	if logOn:
+		print('----- Analysis ----- \n #E-vals found: %d' % (len(wVals)))
+		print('#Inf/NaN values: %d' % (len(wVals)-len(eVals)))
+		print('#Real eigenvalues: %d' % (np.sum(realTF)))
+		print('Reconstructed solutions: Periodic %d / LR fail %d / TB fail %d / Both fail %d' %
+		      (p,lrFail,tbFail,lrFail+tbFail+p-len(wVals)))
+		print('-----')
 
-	print('----- Analysis ----- \n #E-vals found: %d' % (len(wVals)))
-	print('#Inf/NaN values: %d' % (len(wVals)-len(eVals)))
-	print('#Real eigenvalues: %d' % (np.sum(realTF)))
-	print('Reconstructed solutions: Periodic %d / LR fail %d / TB fail %d / Both fail %d' %
-	      (p,lrFail,tbFail,lrFail+tbFail+p-len(wVals)))
-	print('-----')
-
-	# save the eigenvalues and a record of the quasi-momentum. Also throw in N for good measure
+	# save the eigenvalues and a record of the quasi-momentum. Also throw in N for good measure.
+	# Always generate this string, and return it, even if we don't save the eigenvalues
+	saveStrVal = 'EvalsN-' + str(N) + '_' + datetime.today().strftime('%Y-%m-%d-%H-%M') + '.npz'
 	if saveEvals:
-	    saveStr = './EvalDump/EvalsN-' + str(N) + '_' + datetime.today().strftime('%Y-%m-%d-%H-%M') + '.npz'
-	    np.savez(saveStr, eVals=eVals, qm=theta, N=N)
-	    print('Saved eigenvalues to file:', saveStr)
+	    np.savez(saveStrVal, eVals=eVals, qm=theta, N=N)
+	    print('Saved eigenvalues to file:', saveStrVal)
 	else:
 		print('sEvals flagged: computed eigenvalues HAVE NOT been saved')
 	if saveEvecs:
-	    saveStr = './EvalDump/EvecsN-' + str(N) + '_' + datetime.today().strftime('%Y-%m-%d-%H-%M') + '.npz'
-	    np.savez(saveStr, eVecs=eVecs, qm=theta, N=N)
-	    print('Saved eigenvalues to file:', saveStr)
+	    saveStrVec = 'EvecsN-' + str(N) + '_' + datetime.today().strftime('%Y-%m-%d-%H-%M') + '.npz'
+	    np.savez(saveStrVec, eVecs=eVecs, qm=theta, N=N)
+	    print('Saved eigenvctors to file:', saveStrVec)
+		
+	return eVals, eVecs, saveStrVal
+
+#%% COMMAND LINE SCRIPT
+if __name__=='__main__':
+	
+	parser = argparse.ArgumentParser(description='FDM assembly and eigenvalue solve, for the Cross-in-plane geometry.')
+	parser.add_argument('-N', type=int, help='<Required> Number of meshpoints in each dimension.', required=True)
+	parser.add_argument('-t1', default=0.0, type=float, help='QM_1 will be set to this value multiplied by pi.')
+	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
+	parser.add_argument('-nEvals', default=3, type=int, help='Number of eigenvalues to compute (from 0 ascending)')
+	parser.add_argument('-a3', default=0.0, type=float, help='Coupling constant value at v_3.')
+	parser.add_argument('-lOff', action='store_true', help='Suppress printing of log to screen.')
+	parser.add_argument('-fn', default='', type=str, help='Filename for eigenvalues that are computed.')
+	parser.add_argument('-fd', default='./FDM_Results/', type=str, help='Path to directory in which results files should be placed')
+	parser.add_argument('-c', action='store_true', help='Perform checks on periodicity of functions and properties of FDM')
+	parser.add_argument('-sEvecs', action='store_false', help='Computed eigenvectors will NOT be saved.')
+	
+	args = parser.parse_args()
+	# number of meshpoints
+	# this is defined up here to save an argument being passed to M2C every time we want to use it
+	N = args.N
+	if N%2==0:
+	    print('N = %d is not even, using N=%d instead' % (N, N+1))
+	    N += 1
+	else:
+		print('Read N=%d' % (N))
+
+	# quasi-momentum value
+	theta = np.array([args.t1, args.t2], dtype=float)
+	print('Quasi-momentum set as: ', theta, '\pi')
+	theta *= np.pi
+	# coupling constant at v_3
+	print('Read alpha_3 as: ', args.a3)
+	# toggle whether log will write to screen, given input
+	# lOff is true when passed from the command line, so want "not" this
+	logOn = not args.lOff
+	# settings for preserving the values computed are just as below:
+	# saveEvals = args.sEvals
+	# saveEvecs = args.sEvecs
+	
+	# Function to change column <- matrix indices
+	# needs to be defined in main so that other functions can utilise this!
+	def M2C(i,j):
+ 	    '''
+ 	    Provides the column index in U for the gridpoint u_{i,j}.
+ 	    INPUTS:
+ 	        i,j: int, gridpoint indices
+ 	    OUTPUTS:
+ 	        c: int, index such that U[c] = u_{i,j}
+ 	    '''
+ 	    
+ 	    return j + (N-1)*i
+	
+	 # compute eigenvalues and eigenvectors. 
+	 # Suppress FDM_FindEvals method of saving so that we can save in a manner that befits our scripts 
+	evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, logOn, nEvals=args.nEvals, checks=args.c, saveEvals=False, saveEvecs=False)
+	
+	# now save these like you intended to before
+	if not args.fn:
+		# no filename provided for output, use auto-generated one
+		fName = args.fd + saveStr
+		fNameVecs = args.fd + 'eVec' + saveStr[4:]
+	else:
+		fName = args.fd + args.fn
+		fNameVecs = args.fd + args.fn
+		# if we also want to save the eigenfunctions, we need to record the
+		# value of theta and noConv again, then list the coefficients.
+		# Also, make a csv file to contain this data based off fName
+		try:
+			# try finding where in the string the file extension begins,
+			# and inserting funcs there to generate a filename for the 
+			extensionIndex = fName.rfind('.')
+			funcFilename = fName[:extensionIndex] + '-funcs' + fName[extensionIndex:]
+		except:
+			# if you couldn't find where the file extension is,
+			# just append to the end of the string
+			funcFilename = fName + '-funcs'
+	
+	# save eigenvalues to file
+	writeOut = np.hstack((np.array([args.t1, args.t2], dtype=float), evs))
+	with open(fName, 'ab') as f:
+		np.savetxt(f, [writeOut], delimiter=',')
+	# save vectors too, if requested
+	if args.sEvecs:
+		# eigenvectors are stored column-wise!
+		for n in range(np.shape(evecs)[1]):
+			writeOut = np.hstack((np.array([args.t1, args.t2], dtype=float), evecs[:,n]))
+			with open(fNameVecs, 'ab') as f:
+				np.savetxt(f, [writeOut], delimiter=',')
+	# exit with completion
+	sys.exit(0)
