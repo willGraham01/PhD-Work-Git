@@ -22,7 +22,7 @@ import sys
 
 # imports for construction and analysis
 import numpy as np
-#from numpy.random import choice, uniform
+
 #from scipy.linalg import eig
 from scipy.sparse.linalg import eigs
 
@@ -35,6 +35,20 @@ rc('text', usetex=True)
 from datetime import datetime
 
 #%% CONSTRUCTION OF FDM functions
+
+	
+# Function to change column <- matrix indices
+# needs to be definedso that other functions can utilise this!
+def M2C(i,j,N):
+ 	    '''
+ 	    Provides the column index in U for the gridpoint u_{i,j}.
+ 	    INPUTS:
+ 	        i,j: int, gridpoint indices
+ 	    OUTPUTS:
+ 	        c: int, index such that U[c] = u_{i,j}
+ 	    '''
+ 	    
+ 	    return j + (N-1)*i
 
 def RegionalFDM(M, region, N, theta, log=False):
     '''
@@ -75,7 +89,7 @@ def RegionalFDM(M, region, N, theta, log=False):
     for j in jR:
         for i in iR:
             # this is the row that we are going to set
-            Mrow = M2C(i,j)
+            Mrow = M2C(i,j,N)
             # u_{i,j} prefactor is placed on the diagonal
             M[Mrow, Mrow] = sqMagTheta + 4/(h*h)
             # now place u_{i-1,j} and u_{i+1,j} prefactors
@@ -83,15 +97,15 @@ def RegionalFDM(M, region, N, theta, log=False):
             # loop to the other side of the domain
             iLeft = (i-1) % (N-1)
             iRight = (i+1) % (N-1)
-            leftIndex = M2C(iLeft, j)
-            rightIndex = M2C(iRight, j)
+            leftIndex = M2C(iLeft, j, N)
+            rightIndex = M2C(iRight, j, N)
             M[Mrow, leftIndex] = - ( 1./h - 1.j*theta[0] ) / h
             M[Mrow, rightIndex] = - ( 1./h + 1.j*theta[0] ) / h
             # now place u_{i,j-1} and u_{i,j+1} prefactors, again accounting for periodic boundary
             jUp = (j+1) % (N-1)
             jDown = (j-1) % (N-1)
-            upIndex = M2C(i,jUp)
-            downIndex = M2C(i,jDown)
+            upIndex = M2C(i,jUp, N)
+            downIndex = M2C(i,jDown, N)
             M[Mrow, upIndex] = - ( 1./h + 1.j*theta[1] ) / h
             M[Mrow, downIndex] = - ( 1./h - 1.j*theta[1] ) / h
             # this completes the construction of this row of the FDM, we now have that
@@ -134,7 +148,7 @@ def HorEdgeFDM(M, edge, N, theta, log=False):
     # The i + N*j th row of FDM contains the equation for the gridpoint u_{i,j}.
     for i in iR:
         # get row index
-        Mrow = M2C(i,j)
+        Mrow = M2C(i,j,N)
         # u_{i,j} prefactor is placed on the diagonal
         M[Mrow, Mrow] = theta[0]*theta[0] + 2./h + 2./(h*h)
         # now place u_{i-1,j} and u_{i+1,j} prefactors
@@ -142,15 +156,15 @@ def HorEdgeFDM(M, edge, N, theta, log=False):
         # loop to the other side of the domain
         iLeft = (i-1) % (N-1)
         iRight = (i+1) % (N-1)
-        leftIndex = M2C(iLeft, j)
-        rightIndex = M2C(iRight, j)
+        leftIndex = M2C(iLeft, j, N)
+        rightIndex = M2C(iRight, j, N)
         M[Mrow, leftIndex] = - ( 1./h - 1.j*theta[0] ) / h
         M[Mrow, rightIndex] = - ( 1./h + 1.j*theta[0] ) / h
         # now place u_{i,j-1} and u_{i,j+1} prefactors, again accounting for periodic boundary
         jUp = (j+1) % (N-1)
         jDown = (j-1) % (N-1)
-        upIndex = M2C(i, jUp)
-        downIndex = M2C(i, jDown)
+        upIndex = M2C(i, jUp, N)
+        downIndex = M2C(i, jDown, N)
         M[Mrow, upIndex] = - 1./h
         M[Mrow, downIndex] = - 1./h
         # this completes the construction of this row of the FDM, we now have that
@@ -193,7 +207,7 @@ def VerEdgeFDM(M, edge, N, theta, log=False):
     # The i + N*j th row of FDM contains the equation for the gridpoint u_{i,j}.
     for j in jR:
         # get row index
-        Mrow = M2C(i,j)
+        Mrow = M2C(i,j,N)
         # u_{i,j} prefactor is placed on the diagonal
         M[Mrow, Mrow] = theta[1]*theta[1] + 2./h + 2./(h*h)
         # now place u_{i-1,j} and u_{i+1,j} prefactors
@@ -201,15 +215,15 @@ def VerEdgeFDM(M, edge, N, theta, log=False):
         # loop to the other side of the domain
         iLeft = (i-1) % (N-1)
         iRight = (i+1) % (N-1)
-        leftIndex = M2C(iLeft, j)
-        rightIndex = M2C(iRight, j)
+        leftIndex = M2C(iLeft, j, N)
+        rightIndex = M2C(iRight, j, N)
         M[Mrow, leftIndex] = - 1./h
         M[Mrow, rightIndex] = - 1./h
         # now place u_{i,j-1} and u_{i,j+1} prefactors, again accounting for periodic boundary
         jUp = (j+1) % (N-1)
         jDown = (j-1) % (N-1)
-        upIndex = M2C(i, jUp)
-        downIndex = M2C(i, jDown)
+        upIndex = M2C(i, jUp, N)
+        downIndex = M2C(i, jDown, N)
         M[Mrow, upIndex] = - ( 1./h + 1.j*theta[1] ) / h
         M[Mrow, downIndex] = - ( 1./h - 1.j*theta[1] ) / h
         # this completes the construction of this row of the FDM, we now have that
@@ -244,17 +258,17 @@ def v3FDM(M, a3, N, tol=1e-8, log=True):
     h = 1./(N-1)
     # v_3 always lies at gridpoint (i,j) = (N//2, N//2)
     i = j = N//2
-    Mrow = M2C(i,j)
+    Mrow = M2C(i,j,N)
     
     # determine indices that will be used for neighbouring points
     iLeft = (i-1) % (N-1)
     iRight = (i+1) % (N-1)
     jUp = (j+1) % (N-1)
     jDown = (j-1) % (N-1)
-    leftIndex = M2C(iLeft, j)
-    rightIndex = M2C(iRight, j)
-    upIndex = M2C(i, jUp)
-    downIndex = M2C(i, jDown)
+    leftIndex = M2C(iLeft, j, N)
+    rightIndex = M2C(iRight, j, N)
+    upIndex = M2C(i, jUp, N)
+    downIndex = M2C(i, jDown, N)
     
     M[Mrow, Mrow] = 4./h
     M[Mrow, leftIndex] = - 1./h
@@ -288,7 +302,7 @@ def B(N):
     '''
     
     B = np.eye((N-1)*(N-1), dtype=complex)
-    row = M2C(N//2, N//2)
+    row = M2C(N//2, N//2, N)
     B[row, row] = 0. + 0.j
     return B
 
@@ -484,8 +498,9 @@ def PlotFn(N, U, levels=10):
     if levels >= N:
         print('Number of contour levels exceeds or equals N!')
     # make contour plots
-    rCon = rAx.contourf(x, y, np.real(u), levels=levels)
-    iCon = iAx.contourf(x, y, np.imag(u), levels=levels)
+	# remember matplotlib convention! X, Y, Z triples where Z has shape (M,N) where X of shape (N,) and Y of shape (M) - need to transpose our data
+    rCon = rAx.contourf(x, y, np.real(u).T, levels=levels)
+    iCon = iAx.contourf(x, y, np.imag(u).T, levels=levels)
     # make colourbars
     rFig.colorbar(rCon)
     iFig.colorbar(iCon)
@@ -506,7 +521,7 @@ def PlotFn3D(N, U):
 
     # gridpoints used
     x = y = np.linspace(0,1, num=N)
-    X, Y = np.meshgrid(x,y)
+ #   X, Y = np.meshgrid(x,y)
     # restore "slave" meshpoints
     u = InsertSlaveNodes(N, U, mat=True)
     # plot handles
@@ -522,9 +537,10 @@ def PlotFn3D(N, U):
     rAx.set_title(r'$\Re (u)$')
     iAx.set_title(r'$\Im (u)$')
     
-    # make contour plots
-    rCon = rAx.plot_surface(X, Y, np.real(u), cmap=cm.viridis, linewidth=0)
-    iCon = iAx.plot_surface(X, Y, np.imag(u), cmap=cm.viridis, linewidth=0)
+    # make surface plots
+	# remember matplotlib convention! X, Y, Z triples where Z has shape (M,N) where X of shape (N,) and Y of shape (M) - need to transpose our data
+    rCon = rAx.plot_surface(x, y, np.real(u).T, cmap=cm.viridis, linewidth=0)
+    iCon = iAx.plot_surface(x, y, np.imag(u).T, cmap=cm.viridis, linewidth=0)
     # make colourbars
     rFig.colorbar(rCon)
     iFig.colorbar(iCon)
@@ -559,7 +575,7 @@ def PlotEvals(wVals, N=0, autoPlotWidow=False):
     return fig, ax
 
 #%% Command-line wrapper for easier solves
-def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True, saveEvecs=False):
+def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, checks=False, saveEvals=True, saveEvecs=False):
 	'''
 	Computes the least nEvals eigenvalues and eigenfunctions of the Cross-In-Plane geometry, via finite difference approximation.
 	INPUTS:
@@ -576,19 +592,7 @@ def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True
 		eVecs: (N^2, nEvals) complex, complex valued computed eigenvectors
 		saveStrVal: str, the filename that the eigenvalues were saved to. Returned even if saving was supressed.
 	'''
-	
-	# Function to change column <- matrix indices
-	def M2C(i,j):
-	    '''
-	    Provides the column index in U for the gridpoint u_{i,j}.
-	    INPUTS:
-	        i,j: int, gridpoint indices
-	    OUTPUTS:
-	        c: int, index such that U[c] = u_{i,j}
-	    '''
-	    
-	    return j + (N-1)*i
-	
+	 
 	# Begin assembly script here.
 	sizeFDM = (N-1)*(N-1)
 	# Initalise FDM
@@ -596,18 +600,18 @@ def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True
 	
 	# Assemble row entries for each region
 	for r in range(4):
-	    RegionalFDM(FDM, r+1, N, theta, log=logOn)
+	    RegionalFDM(FDM, r+1, N, theta, log=checks)
 	
 	# Assemble row entries for each horizontal edge
 	for he in [23,34]:
-	    HorEdgeFDM(FDM, he, N, theta, log=logOn)
+	    HorEdgeFDM(FDM, he, N, theta, log=checks)
 	
 	# Assemble row entries for each vertical edge
 	for ve in [31,53]:
-	    VerEdgeFDM(FDM, ve, N, theta, log=logOn)
+	    VerEdgeFDM(FDM, ve, N, theta, log=checks)
 	    
 	# Assemble row entry for v_3
-	v3FDM(FDM, alpha3, N, log=logOn)
+	v3FDM(FDM, alpha3, N, log=checks)
 
 	# Compute e'values and e'vectors.
 	# NOTE: if alpha_3 is zero, will need to insert B(N) for a generalised eigenvalue problem
@@ -616,10 +620,14 @@ def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True
 	print('Eigenvalue solving, this may take a while...', end='')
 	if np.abs(alpha3)<=1e-8:
 		#wVals, wVecs = eig(FDM, B(N))
-		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=0.)
+		# if solving with SciPy's sparse library, we need B(N) +ve semi-definite and sigma to be specified,
+		# see https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigs.html
+		# also some discussions about discrepencies between eigs and eig...
+		# B(N) here is defo symmetric and +ve semi-definite though...
+		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=3.)
 	else:
 		#wVals, wVecs = eig(FDM)
-		wVals, wVecs = eigs(FDM, k=nEvals, M=None, sigma=0.)
+		wVals, wVecs = eigs(FDM, k=nEvals, sigma=1.)
 	print(' finished')
 
 	# if we were told to run checks for Hermitian ness, etc, run them here
@@ -662,12 +670,12 @@ def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True
 	eVecs = wVecs[:,tf]
 	realTF = RealEvalIndices(eVals, tol=1e-8)
 	
-	if logOn:
+	if (not lOff):
 		print('----- Analysis ----- \n #E-vals found: %d' % (len(wVals)))
 		print('#Inf/NaN values: %d' % (len(wVals)-len(eVals)))
 		print('#Real eigenvalues: %d' % (np.sum(realTF)))
-		print('Reconstructed solutions: Periodic %d / LR fail %d / TB fail %d / Both fail %d' %
-		      (p,lrFail,tbFail,lrFail+tbFail+p-len(wVals)))
+		if checks:
+			print('Reconstructed solutions: Periodic %d / LR fail %d / TB fail %d / Both fail %d' % (p,lrFail,tbFail,lrFail+tbFail+p-len(wVals)))
 		print('-----')
 
 	# save the eigenvalues and a record of the quasi-momentum. Also throw in N for good measure.
@@ -676,8 +684,6 @@ def FDM_FindEvals(N, theta, alpha3, lOff, nEvals=3, checks=False, saveEvals=True
 	if saveEvals:
 	    np.savez(saveStrVal, eVals=eVals, qm=theta, N=N)
 	    print('Saved eigenvalues to file:', saveStrVal)
-	else:
-		print('sEvals flagged: computed eigenvalues HAVE NOT been saved')
 	if saveEvecs:
 	    saveStrVec = 'EvecsN-' + str(N) + '_' + datetime.today().strftime('%Y-%m-%d-%H-%M') + '.npz'
 	    np.savez(saveStrVec, eVecs=eVecs, qm=theta, N=N)
@@ -698,11 +704,11 @@ if __name__=='__main__':
 	parser.add_argument('-fn', default='', type=str, help='Filename for eigenvalues that are computed.')
 	parser.add_argument('-fd', default='./FDM_Results/', type=str, help='Path to directory in which results files should be placed')
 	parser.add_argument('-c', action='store_true', help='Perform checks on periodicity of functions and properties of FDM')
-	parser.add_argument('-sEvecs', action='store_false', help='Computed eigenvectors will NOT be saved.')
+	parser.add_argument('-sEvecs', action='store_true', help='Computed eigenvectors will be saved.')
 	
 	args = parser.parse_args()
+	
 	# number of meshpoints
-	# this is defined up here to save an argument being passed to M2C every time we want to use it
 	N = args.N
 	if N%2==0:
 	    print('N = %d is not even, using N=%d instead' % (N, N+1))
@@ -716,29 +722,10 @@ if __name__=='__main__':
 	theta *= np.pi
 	# coupling constant at v_3
 	print('Read alpha_3 as: ', args.a3)
-	# toggle whether log will write to screen, given input
-	# lOff is true when passed from the command line, so want "not" this
-	logOn = not args.lOff
-	# settings for preserving the values computed are just as below:
-	# saveEvals = args.sEvals
-	# saveEvecs = args.sEvecs
-	
-	# Function to change column <- matrix indices
-	# needs to be defined in main so that other functions can utilise this!
-	def M2C(i,j):
- 	    '''
- 	    Provides the column index in U for the gridpoint u_{i,j}.
- 	    INPUTS:
- 	        i,j: int, gridpoint indices
- 	    OUTPUTS:
- 	        c: int, index such that U[c] = u_{i,j}
- 	    '''
- 	    
- 	    return j + (N-1)*i
 	
 	 # compute eigenvalues and eigenvectors. 
 	 # Suppress FDM_FindEvals method of saving so that we can save in a manner that befits our scripts 
-	evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, logOn, nEvals=args.nEvals, checks=args.c, saveEvals=False, saveEvecs=False)
+	evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, args.lOff, nEvals=args.nEvals, checks=args.c, saveEvals=False, saveEvecs=False)
 	
 	# now save these like you intended to before
 	if not args.fn:

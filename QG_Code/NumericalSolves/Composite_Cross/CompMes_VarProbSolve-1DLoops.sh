@@ -13,7 +13,7 @@ tDim=0
 N=1
 M=15
 # in case you want to take several slices at once
-tStart=1
+tStart=0
 #tEnd=$tStart
 tEnd=$(($nPts-1))
 # master file name
@@ -36,8 +36,8 @@ if [[ "${tEnd}" -lt 9 ]]; then
     cat ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop?-funcs.csv > $masterFName
 # between 10 and 99 files requires ? and ?? to match all output file names
 else
-    cat ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop?.csv ./TEMP-nPts${nPts}-t$((${tDim}+1))loop??.csv > $masterName
-    cat ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop?-funcs.csv ./TEMP-nPts${nPts}-t$((${tDim}+1))loop??-funcs.csv > $masterFName
+    cat ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop?.csv ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop??.csv > $masterName
+    cat ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop?-funcs.csv ./CompMes_VP_Results/TEMP-nPts${nPts}-t$((${tDim}+1))loop??-funcs.csv > $masterFName
 fi
 
 echo "Cleaning up temporary files"
