@@ -13,11 +13,11 @@ import sys
 import numpy as np
 from numpy import pi
 
-from CompMes_VarProb import SolveVarProb
+from CompMes_VarProb import SolveVarProb, GlobalVarProbSolve
 
 #%% Wrapper for main-line function
 
-def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False, dimSpecs=[False, 0, 0]):
+def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=10, nIts_inner=2500, lOff=False, saveFuncs=False, dimSpecs=[False, 0, 0]):
 	'''
 	Loops over the quasi-momentum values in sequence, writing the eigenvalues to an output file.
 	Otuput is .csv with noConv, theta/pi, omega_1,..., omega_N on each row.
@@ -26,7 +26,8 @@ def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False
 		fName: str, file or path to file for eigenvalues to be stored in
 		M: int, M-1 is the highest order polynomial term used in the approximation of the eigenfunctions
 		N: int, the number of eigenvalues to get for each value of theta
-		nIts: int, max number of iterations for the minimiser
+		nIts: int, max number of iterations for the BasinHopping algorithm
+		nIts_inner: int, max number of iterations for minimise solve at each step of BasinHopping
 		lOff: bool, if True then the log will NOT print to the screen
 		saveFuncs: bool, if True then a second file will be created containing the eigenfunction coefficients
 		dimSpecs: list(bool, int, int), if 1st entry is True, we only loop over the dimension of theta specificed by the 2nd entry. In this case, the 3rd entry sets the value for the fixed QM component as np.linspace(-1,1,nPts)[tFixed]*pi.
@@ -69,7 +70,8 @@ def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False
 					print( ' << Beginning: (%d) of (%d) >>' % (i,nPts-1))
 				# Generate QM vector
 				theta = np.array([t1, tFixed], dtype=float) * pi
-				uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
+				#uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
+				uReal, omegaSq, noConv = GlobalVarProbSolve(M, N, theta, nIts=nIts, nIts_inner=nIts_inner, lOff=lOff)
 				
 				if noConv>-0.5:
 					# if we didn't converge, we should record this value of theta for later
@@ -97,8 +99,8 @@ def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False
 					print( ' << Beginning: (%d) of (%d) >>' % (j,nPts-1))
 				# Generate QM vector
 				theta = np.array([tFixed, t2], dtype=float) * pi
-				uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
-				
+				#uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
+				uReal, omegaSq, noConv = GlobalVarProbSolve(M, N, theta, nIts=nIts, nIts_inner=nIts_inner, lOff=lOff)				
 				if noConv>-0.5:
 					# if we didn't converge, we should record this value of theta for later
 					# this happens when noConv > -1, so give some leyway for save precision
@@ -126,8 +128,8 @@ def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False
 					print( ' << Beginning: (%d,%d) of (%d,%d) >>' % (i,j,nPts-1,nPts-1))
 				# Generate QM vector
 				theta = np.array([t1, t2], dtype=float) * pi
-				uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
-				
+				#uReal, omegaSq, noConv = SolveVarProb(M, N, theta, nIts=nIts, lOff=lOff)
+				uReal, omegaSq, noConv = GlobalVarProbSolve(M, N, theta, nIts=nIts, nIts_inner=nIts_inner, lOff=lOff)
 				if noConv>-0.5:
 					# if we didn't converge, we should record this value of theta for later
 					# this happens when noConv > -1, so give some leyway for save precision
@@ -152,13 +154,14 @@ def EvalThetaLoop(nPts, fName, M=15, N=3, nIts=5000, lOff=False, saveFuncs=False
 
 if __name__=='__main__':
 
-	parser = argparse.ArgumentParser(description='Computation of eigenvalues of the Composite Measure problem, in the Cross-In-Plane geometry, via the variaitonal formulation.')
+	parser = argparse.ArgumentParser(description='Computation of eigenvalues of the Composite Measure problem, in the Cross-In-Plane geometry, via the variaitonal formulation. Uses BasinHopping algorithm.')
 	parser.add_argument('-fn', default='', type=str, help='Output file name, if blank filename will be auto-generated')
 	parser.add_argument('-fd', default='./CompMes_VP_Results/', type=str, help='Directory to save output file to.')
 	parser.add_argument('-nPts', default=11, type=int, help='[Default 11] Number of gridpoints in each dimension of the quasi-momentum to use.')
 	parser.add_argument('-M', default=15, type=int, help='[Default 15] M-1 is the highest order term of the polynomial approximation.')
 	parser.add_argument('-N', default=2, type=int, help='[Default 2] Number of eigenfunctions and eigenvalues to find (starting from lowest eigenvalue)')
-	parser.add_argument('-nIts', default=5000, type=int, help='[Default 5000] Maximum number of iterations for solver')
+	parser.add_argument('-nIts', default=10, type=int, help='Maximum number of iterations for BasinHopping')
+	parser.add_argument('-nIts_inner', default=2500, type=int, help='Maximum number of iterations for minimise')
 	parser.add_argument('-lOff', action='store_true', help='Suppress printing of progress and solver log to the screen')
 	parser.add_argument('-funcs', action='store_true', help='Write out the eigenfunctions that are found, as well as the eigenfunctions')
 	parser.add_argument('-oneD', action='store_true', help='Only loop over theta values in one dimension. Default will be dimension 0, using theta2=-pi')
@@ -181,7 +184,7 @@ if __name__=='__main__':
 	dSpec = [args.oneD, args.tDim, args.tFixed]
 	
 	# Perform loop at these variable values
-	badList = EvalThetaLoop(args.nPts, resultsFile, M=args.M, N=args.N, nIts=args.nIts, lOff=args.lOff, saveFuncs=args.funcs, dimSpecs=dSpec)
+	badList = EvalThetaLoop(args.nPts, resultsFile, M=args.M, N=args.N, nIts=args.nIts, nIts_inner=args.nIts_inner, lOff=args.lOff, saveFuncs=args.funcs, dimSpecs=dSpec)
 	
 	print('Did not converge for %d values of theta' % (len(badList)))
 	for t in badList:

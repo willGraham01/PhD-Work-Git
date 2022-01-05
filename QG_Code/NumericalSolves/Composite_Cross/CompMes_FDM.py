@@ -624,7 +624,7 @@ def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, checks=False, saveEval
 		# see https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigs.html
 		# also some discussions about discrepencies between eigs and eig...
 		# B(N) here is defo symmetric and +ve semi-definite though...
-		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=3.)
+		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=1.)
 	else:
 		#wVals, wVecs = eig(FDM)
 		wVals, wVecs = eigs(FDM, k=nEvals, sigma=1.)

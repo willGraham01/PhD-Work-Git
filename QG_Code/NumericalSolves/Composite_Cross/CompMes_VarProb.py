@@ -17,6 +17,7 @@ import numpy as np
 from numpy import pi
 
 from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint
+from scipy.optimize import basinhopping
 
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -545,9 +546,135 @@ class Poly2D:
         rF.colorbar(rCon)
         iF.colorbar(iCon)
         return [rF, rAx], [iF, iAx]
+    
+    def ip(self, p):
+        '''
+		Computes the inner product (L^2(compMes)) of this Poly2D with another Poly2D, p.
+		Note that p must have the same values of M and theta to self.
+		INPUTS:
+			p: Poly2D, computes the inner product <self, p>_L^2(compMes)
+		OUTPUTS:
+			iVal: complex, the value of the inner product <self, p>_L^2(compMes)
+		'''
+		
+        if (self.M!=p.M) or (not np.any(np.isclose(self.theta,p.theta))):
+            raise ValueError('Cannot compute inner product for Poly2D with different M or theta values')
+        ip, _ = TLambdaStores(self.M, self.theta)
+        iVal = np.sum( np.outer(self.uCoeffs, np.conjugate(p.uCoeffs)) * ip )
+        return iVal
 
-#%% Wrapper for command-line execution, so that imports can also be used
+#%% Solver for analysis export: allows us to solve the variational problem starting from a certain state
+def VarProb(M, N, theta, nIts=2500, prevUs=[], x0=[], lOff=False):
+	'''
+	Solves the variational problem with the parameters provided.
+	INPUTS:
+		M: int, M-1 is the highest order term in the polynomial approximation
+		N: int, number of eigenfunctions (and values) to find
+		theta: (2,) float, value of the quasi-momentum
+		nIts: int, maximum number of iterations for minimise solve
+		prevUs: list of Poly2D, storing the eigenfunctions that we previously found. If this is passed, we will find the next N eigenvalues, rather than starting from the 0th eigenvalue
+		x0: (M*M,) complex, starting guess for convergence scheme. If blank, we use the constant function as the starting guess
+		log: bool, if True then minimiser will NOT write progress to screen
+	OUTPUTS:
+		uRealStore: (N,2M^2) float, the computed solutions to the minimisation problem stacked row-wise
+		omegaSqStore: (N,) float, the values of omega^2, or the objective function at the solution
+		noConv: int, the run failed to converge for n=noConv (which will terminate the loop early). If noConv=-1, then all eigenfunctions were found sucessfully
+	'''	
+	
+	# create solver options handle
+	options = {'maxiter' : nIts, 'disp' : (not lOff) }
+	
+	# create flag for no convergence: assume everything went well
+	noConv = -1
+	
+	# deterine additional information that has been passed in
+	nPrev = len(prevUs) # we have been given this many previous eigenfunctions
+	## Initialise storage for the solutions
+	# (l,2m) + (l,2m+1) is the coefficient u^l_m
+	if nPrev==0:
+		# if we were given no previous eigenfunctions, setup storage as usual
+		uRealStore = np.zeros((N, 2*M*M), dtype=float)
+	else:
+		# if we were given some previous eigenfunctions, setup storage differently
+		uRealStore = np.zeros((N+nPrev, 2*M*M), dtype=float)
+		# store the previous eigenfunctions in our storage matrix
+		for i,p in enumerate(prevUs):
+			uRealStore[i,:] = Comp2Real(p.uCoeffs)
+	# we are always trying to find N eigenvalues
+	omegaSqStore = np.zeros((N,), dtype=float)
+	
+	# Compute inner products
+	ip, ipDT = TLambdaStores(M, theta)
+	# Set objective function
+	JandJacOpt = lambda UU: JandJac(UU, ipDT)
+	# If provided, use the given initial guess, otherwise use the constant function
+	if np.any(x0):
+		UU0 = Comp2Real(x0)
+	else:	
+		# Set initial guess to be the constant function
+		U0 = np.zeros((M*M,), dtype=complex)
+		U0[0] += 1./np.sqrt(3.)
+		UU0 = Comp2Real(U0)
+	
+	## Solving begins
 
+	# We can setup the norm constraint independently
+	nonLinCon, _ = NormConstraint(M, ip)
+	
+	if not lOff:
+		print('Beginning solve [n]...')
+	
+	# find the first eigenfunction, either u^0 or u^nPrev depending on our inputs, outside the loop
+		print(' ----- \n %d + [0] ' % nPrev)
+	if nPrev==0:
+		# no previous eigenvalues to pass in 
+		linCon, _ = BuildLinearConstraint(M, ip)
+	else:
+		# pass in the eigenvalues that we already were given
+		linCon, _ = BuildLinearConstraint(M, ip, prevUs=uRealStore[:nPrev,:])
+	t0 = time.time()
+	resultJ = minimize(JandJacOpt, UU0, constraints=[linCon, nonLinCon], jac=True, options=options, method='SLSQP')
+	t1 = time.time()
+	# save the coefficients for use in the next solve, note we save these to row nPrev regardless of whether or not we had any previous eigenfunctions passed in
+	uRealStore[nPrev,:] = resultJ.x
+	# save the eigenvalue
+	omegaSqStore[0] = resultJ.fun
+	if not lOff:
+		print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
+	if resultJ.status!=0:
+		# didn't converge, flag this
+		noConv = 0
+		print('Failed to converge when finding e-function n=%d+0' % nPrev)
+	else:
+		# for every eigenfunction and value that we want above the first
+		for n in range(1,N):
+			if not lOff:
+				print(' ----- \n [%d]' % n)
+			# setup and solve minimisation problem, we are now constrained by the eigenfunctions previously passed in and the ones we have computed
+			linCon, _ = BuildLinearConstraint(M, ip, prevUs=uRealStore[:nPrev+n,:])
+			t0 = time.time()
+			resultJ = minimize(JandJacOpt, UU0, constraints=[linCon, nonLinCon], jac=True, options=options, method='SLSQP')
+			t1 = time.time()
+			# save coefficients
+			uRealStore[nPrev+n,:] = resultJ.x
+			# save eigenvalue
+			omegaSqStore[n] = resultJ.fun
+			if not lOff:
+				print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
+			if resultJ.status!=0:
+				# didn't converge, flag and break loop
+				noConv = n
+				print('Failed to converge when finding e-function n=%d+%d' % (nPrev,n))
+				break
+	
+	# do not return the eigenfunctions that were already passed in as known
+	if not lOff:
+		print('NOTE: noConv is relative to 1st eigenvalue computed, GIVEN previous eigenfunctions that were passsed.')
+	return uRealStore[nPrev:,:], omegaSqStore, noConv
+
+#%% Wrappers for command-line execution, so that imports can also be used
+
+# Solve via local minimisation: faster, but will become inaccurate a lot quicker
 def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
 	'''
 	Solves the variational problem with the parameters provided.
@@ -631,6 +758,100 @@ def SolveVarProb(M, N, theta, nIts=2500, lOff=False):
 				break
 	
 	return uRealStore, omegaSqStore, noConv
+
+# Global minimisation via BasinHopping: slower, but will give us a better answer
+def GlobalVarProbSolve(M, N, theta, nIts=10, nIts_inner=2500, lOff=False):
+	'''
+	Solves the variational problem with the parameters provided, using BasinHopping method for global minimisation.
+	Note that this will be more accurate than just using SciPy's minimise function, however will take considerably longer!
+	Serves as a wrapper function for command-line script.
+	INPUTS:
+		M: int, M-1 is the highest order term in the polynomial approximation
+		N: int, number of eigenfunctions (and values) to find
+		theta: (2,) float, value of the quasi-momentum
+		nIts: int, maximum number of iterations for BasinHopping solve
+		nIts_inner: int, maximum number of iterations for minimise solve
+		lOff: bool, if True then minimiser will NOT write progress to screen
+	OUTPUTS:
+		uRealStore: (N,2M^2) float, the solutions to the minimisation problem stacked row-wise
+		omegaSqStore: (N,) float, the values of omega^2, or the objective function at the solution
+		noConv: int, the run failed to converge for n=noConv (which will terminate the loop early). If noConv=-1, then all eigenfunctions were found sucessfully
+	'''	# create solver options handle
+	options = {'maxiter' : nIts_inner, 'disp' : False }
+	
+	# create flag for no convergence: assume everything went well
+	noConv = -1
+	
+	## Initialise storage for the solutions
+	# (l,2m) + (l,2m+1) is the coefficient u^l_m
+	uRealStore = np.zeros((N, 2*M*M), dtype=float)
+	omegaSqStore = np.zeros((N,), dtype=float)
+	
+	# Compute inner products
+	ip, ipDT = TLambdaStores(M, theta)
+	# Set objective function
+	JandJacOpt = lambda UU: JandJac(UU, ipDT)
+	# Set initial guess to be the constant function
+	U0 = np.zeros((M*M,), dtype=complex)
+	U0[0] += 1./np.sqrt(3.)
+	UU0 = Comp2Real(U0)
+	
+	# setup kwargs dictionary to be passed into minimize on iterations
+	# NOTE: we'll need to redefine the constraints value each time we move onto a new eVal
+	minKWs = {}
+	minKWs['jac'] = True
+	minKWs['options'] = options
+	minKWs['method'] = 'SLSQP'	
+	## Solving begins
+	
+	# solve each minimisation problem in sequence,
+	# starting with finding u^1, which adheres to no orthogonality conditions,
+	# up to finding u^n, which adheres to N-1 orthogonality conditions
+	
+	# We can setup the norm constraint independently though
+	nonLinCon, _ = NormConstraint(M, ip)
+	
+	print('Beginning solve [n]...')
+	
+	# for ease, we find u^1 outside the loop
+	print(' ----- \n [0] ')
+	linCon, _ = BuildLinearConstraint(M,ip)
+	minKWs['constraints'] = [linCon, nonLinCon]
+	t0 = time.time()
+	resultJ = basinhopping(JandJacOpt, UU0, niter=nIts, minimizer_kwargs=minKWs, niter_success=5, disp=not lOff)
+	t1 = time.time()
+	# save the coefficients for use in the next solve
+	uRealStore[0,:] = resultJ.x
+	# save the eigenvalue
+	omegaSqStore[0] = resultJ.fun
+	print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
+	if resultJ.lowest_optimization_result.status!=0:
+		# didn't converge, flag this
+		noConv = 0
+		print('Failed to converge when finding e-function n=0')
+	else:
+		# for every eigenfunction and value that we want above the first
+		for n in range(1,N):
+			print(' ----- \n [%d]' % n)
+			# setup and solve minimisation problem with n constraints
+			linCon, _ = BuildLinearConstraint(M, ip, prevUs=uRealStore[:n,:])
+			minKWs['constraints'] = [linCon, nonLinCon]
+			t0 = time.time()
+			resultJ = basinhopping(JandJacOpt, UU0, niter=nIts, minimizer_kwargs=minKWs, niter_success=5, disp=not lOff)
+			t1 = time.time()
+			# save coefficients
+			uRealStore[n,:] = resultJ.x
+			# save eigenvalue
+			omegaSqStore[n] = resultJ.fun
+			print('Runtime: approx %d mins (%s seconds) \n -----' % (np.round((t1-t0)/60), t1-t0))
+			if resultJ.lowest_optimization_result.status!=0:
+				# didn't converge, flag and break loop
+				noConv = n
+				print('Failed to converge when finding e-function n=%d' % n)
+				break
+	
+	return uRealStore, omegaSqStore, noConv
+
 	
 #%% Command-line execution
 
@@ -643,7 +864,9 @@ if __name__=='__main__':
 	parser.add_argument('-fd', default='./CompMesVarProb_Results/', type=str, help='Directory to save output file to.')
 	parser.add_argument('-t1', default=0.0, type=float, help='QM_1 will be set to this value multiplied by pi.')
 	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
-	parser.add_argument('-nIts', default=2500, type=int, help='Maximum number of iterations for solver')
+	parser.add_argument('-local', action='store_true', help='If passed, we will only solve for a single local solution, rather than attempting to find a global minimiser.')
+	parser.add_argument('-nIts', default=10, type=int, help='Maximum number of iterations for BasinHopping')
+	parser.add_argument('-nIts_inner', default=2500, type=int, help='Maximum number of iterations for minimise')
 	parser.add_argument('-lOff', action='store_true', help='Suppress printing of progress and solver log to the screen')
 
 	# extract input arguments and get the setup ready
@@ -665,7 +888,12 @@ if __name__=='__main__':
 	theta = np.array([args.t1, args.t2], dtype=float) * pi
 	print('Read theta = [%.3f, %.3f]\pi' % (args.t1, args.t2))
 
-	uRealStore, _, noConv = SolveVarProb(M, N, theta, nIts=args.nIts, lOff=args.lOff)
+	if args.local:
+		# local solve requested, not recommended though
+		print('Local solve requested')
+		uRealStore, _, noConv = SolveVarProb(M, N, theta, nIts=args.nIts_inner, lOff=args.lOff)
+	else:
+		uRealStore, _, noConv = GlobalVarProbSolve(M, N, theta, nIts=args.nIts, nIts_inner=args.nIts_inner, lOff=args.lOff)
 	
 	# run is now complete - save the output if we converged!
 	if (not noConv):

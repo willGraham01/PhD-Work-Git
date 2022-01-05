@@ -99,7 +99,11 @@ def GetBand(band, evs, removeFailed=True):
 		# being -1 if everything converged.
 		# Thus, we need noConv < 0 for band 1's value to be trusted,
 		# noConv <1 for band 2's value, etc
-		convInds = evs[:,0] < (band-1) - 0.5 #account for saving and conversion errors
+		# account for saving and conversion errors by giving 0.5 leeway
+		allGood = evs[:,0] < -0.5  # these indicies had no convergence issues
+		goodToBand = evs[:,0] - band > -0.5 # these indicies had convergence issues, but after this band
+		convInds = np.logical_or(allGood, goodToBand)
+		#convInds = evs[:,0] < (band-1) - 0.5 
 		# slice out bad eigenvalues
 		bandInfo = bandInfo[convInds,:]
 		print('Removed %d bad eigenvalues in band %d' % (np.shape(evs)[0]-np.sum(convInds), band))
@@ -156,7 +160,7 @@ def PlotEvals(evs, pType='scatter', title=''):
 		if np.char.equal('scatter', pType):	
 			dataDisp = ax.scatter(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], c=evs[:,2], cmap=plt.cm.viridis)
 		elif np.char.equal('surf', pType):
-			dataDisp = ax.plot_trisurf(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], cmap=plt.cm.viridis)
+			dataDisp = ax.plot_trisurf(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], cmap=plt.cm.viridis, linewidth=0, antialiased=False)
 		else:
 			raise ValueError('Unrecognised plot type %s, valid types are scatter, surf, contour, heat')
 	

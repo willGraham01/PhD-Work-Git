@@ -70,13 +70,14 @@ def AppendEvalRuns(infoArrays):
 		stack = np.vstack(infoArrays)
 	return stack
 
-def GetBand(band, evs):
+def GetBand(band, evs, tol=1e-8):
 	'''
 	Extracts the band-th eigenvalue from each row in evs.
 	Converts to real numbers, and throws an error up if there is an eigenvalue which cannot be cast to a real number.
 	INPUTS:
 		band: int, band number to extract eigenvalues of (starting from band 1)
 		evs: (nRuns,2+n) float, rows corresponding to nRun eigenvalue runs in which n eigenvalues were computed
+		tol: float, eigenvalues with an imaginary component >tol are flagged bad and removed
 	OUTPUTS:
 		bandInfo: (nRuns,3) float, columns 0,1 are the quasimomentum values corresponding to the eigenvalue at column 2.
 	'''
@@ -88,7 +89,7 @@ def GetBand(band, evs):
 		raise ValueError('Want band %d but only have information up to band %d' % (band, nEvals))
 		
 	# check for imaginary eigenvalues
-	tf = RealEvalIndices(evs[:,1+band])
+	tf = RealEvalIndices(evs[:,1+band], tol=tol)
 	if not tf.all():
 		# at least one eigenvalue was removed for being too imaginary, report this
 		print('Removed %d bad eigenvalues from band %d' % (np.shape(evs)[0]-np.sum(tf),band))
