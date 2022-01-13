@@ -575,7 +575,7 @@ def PlotEvals(wVals, N=0, autoPlotWidow=False):
     return fig, ax
 
 #%% Command-line wrapper for easier solves
-def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, checks=False, saveEvals=True, saveEvecs=False):
+def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, sigma=1., checks=False, saveEvals=True, saveEvecs=False):
 	'''
 	Computes the least nEvals eigenvalues and eigenfunctions of the Cross-In-Plane geometry, via finite difference approximation.
 	INPUTS:
@@ -584,6 +584,7 @@ def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, checks=False, saveEval
 		alpha3: float, value of the coupling constant at v_0/v_3
 		lOff: bool, if True then log is suppressed from printing
 		nEvals: int, number of eigenvalues to compute (from closest to 0 ascending)
+		sigma: float, find eigenvalues near sigma when solving
 		checks: bool, if True, then check whether solutions are periodic and FDM is Hermitian, etc
 		saveEvals: bool, whether or not to save the computed eigenvalues to a file
 		saveEvecs: bool, whether or not to save the computed eigenvectors to a file
@@ -624,10 +625,10 @@ def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, checks=False, saveEval
 		# see https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigs.html
 		# also some discussions about discrepencies between eigs and eig...
 		# B(N) here is defo symmetric and +ve semi-definite though...
-		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=1.)
+		wVals, wVecs = eigs(FDM, k=nEvals, M=B(N), sigma=sigma)
 	else:
 		#wVals, wVecs = eig(FDM)
-		wVals, wVecs = eigs(FDM, k=nEvals, sigma=1.)
+		wVals, wVecs = eigs(FDM, k=nEvals, sigma=sigma)
 	print(' finished')
 
 	# if we were told to run checks for Hermitian ness, etc, run them here
@@ -700,6 +701,7 @@ if __name__=='__main__':
 	parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
 	parser.add_argument('-nEvals', default=3, type=int, help='Number of eigenvalues to compute (from 0 ascending)')
 	parser.add_argument('-a3', default=0.0, type=float, help='Coupling constant value at v_3.')
+	parser.add_argument('-sigma', defualt=1.0, type=float, help='Eigenvalue solve offset, eigenvalues will be computed near this value.')
 	parser.add_argument('-lOff', action='store_true', help='Suppress printing of log to screen.')
 	parser.add_argument('-fn', default='', type=str, help='Filename for eigenvalues that are computed.')
 	parser.add_argument('-fd', default='./FDM_Results/', type=str, help='Path to directory in which results files should be placed')
@@ -725,7 +727,7 @@ if __name__=='__main__':
 	
 	 # compute eigenvalues and eigenvectors. 
 	 # Suppress FDM_FindEvals method of saving so that we can save in a manner that befits our scripts 
-	evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, args.lOff, nEvals=args.nEvals, checks=args.c, saveEvals=False, saveEvecs=False)
+	evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, args.lOff, nEvals=args.nEvals, sigma=args.sigma, checks=args.c, saveEvals=False, saveEvecs=False)
 	
 	# now save these like you intended to before
 	if not args.fn:

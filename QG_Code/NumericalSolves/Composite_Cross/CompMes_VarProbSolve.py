@@ -13,6 +13,8 @@ import sys
 import numpy as np
 from numpy import pi
 
+import time
+
 from CompMes_VarProb import SolveVarProb, GlobalVarProbSolve
 
 #%% Wrapper for main-line function
@@ -184,11 +186,14 @@ if __name__=='__main__':
 	dSpec = [args.oneD, args.tDim, args.tFixed]
 	
 	# Perform loop at these variable values
+	tStart = time.time()
 	badList = EvalThetaLoop(args.nPts, resultsFile, M=args.M, N=args.N, nIts=args.nIts, nIts_inner=args.nIts_inner, lOff=args.lOff, saveFuncs=args.funcs, dimSpecs=dSpec)
+	tEnd = time.time()
 	
 	print('Did not converge for %d values of theta' % (len(badList)))
 	for t in badList:
 		print(t)
+	print('Loop runtime was approx %d mins (%s seconds) \n -----' % (np.round((tEnd-tStart)/60), tEnd-tStart))
 	if badList:
 		# at least one run failed, exit with fail (1)
 		sys.exit(1)
