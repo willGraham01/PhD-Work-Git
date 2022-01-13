@@ -7,10 +7,10 @@ source activate PythonBasics
 cd /home/will/Documents/PhD/PhD-Work-Git/QG_Code/NumericalSolves/Composite_Cross/
 
 # parameters to keep constant throughout
-nPts=25
+nPts=51
 tDim=0
-N=31
-nEvals=3
+N=71
+nEvals=10
 # in case you want to take several slices at once
 tStart=0
 #tEnd=$tStart
@@ -18,12 +18,15 @@ tEnd=$(($nPts-1))
 # master file name
 masterName="./FDM_Results/nPts${nPts}-N${N}-t1loops${tStart}-${tEnd}.csv"
 masterFName="./FDM_Results/nPts${nPts}-N${N}-t1loops${tStart}-${tEnd}-funcs.csv"
+# in case you want to set the value of alpha3?
+#a=1.0
+a=0.0
 
 # Compute the eigenvalues and eigenfunctions, and save to files
 echo "Starting 1D loops now."
 for t in $(seq $tStart $tEnd); do
     fname="TEMP-nPts${nPts}-t$((${tDim}+1))loop${t}.csv"
-    python CompMes_FDMSolve.py -fn $fname -nPts $nPts -N $N -nEvals $nEvals -funcs -oneD -tDim $tDim -tFixed $t
+    python CompMes_FDMSolve.py -fn $fname -nPts $nPts -N $N -nEvals $nEvals -a $a -funcs -oneD -tDim $tDim -tFixed $t
     echo "Saved to file: $fname"
 done
 
