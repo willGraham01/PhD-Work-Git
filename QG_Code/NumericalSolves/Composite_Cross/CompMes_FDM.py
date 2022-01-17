@@ -650,7 +650,7 @@ def FDM_SparseAssembly(N, theta, alpha3):
         colM += lCs
         
     # Assemble row entry for v_3
-    lData, lRs, lCs = v3FDM(alpha3, N)
+    lData, lRs, lCs = SparseV3(alpha3, N)
     Mdata += lData
     rowM += lRs
     colM += lCs
