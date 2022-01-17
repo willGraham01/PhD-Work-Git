@@ -168,18 +168,18 @@ def TranslateFDM(u):
 
 if __name__=="__main__":
 
-	parser = argparse.ArgumentParser(description='FDM convergence rate test: checks the speed of convergence with the mesh size to analytic eigenfunctions.')
-	parser.add_argument('-Nmax', default=100, type=int, help='Max. number of meshpoints to use in each dimension.')
-	parser.add_argument('-Nmin', default=11, type=int, help='Max. number of meshpoints to use in each dimension.')
-	parser.add_argument('-Nstep', default=4, type=int, help='Incriment for number of meshpoints. Should be even.')
-	parser.add_argument('-n', default=1, type=int, help='Index n in analytic solution.')
-	parser.add_argument('-m', default=1, type=int, help='Index m in analytic solution.')
-	parser.add_argument('-nEvals', default=5, type=int, help='Number of eigenvalues to compute nearby analytic solution.')
-	parser.add_argument('-a3', default=0.0, type=float, help='Coupling constant value at v_3.')
-	parser.add_argument('-fOut', default='./', type=str, help='File location to save outputs to.')
-	parser.add_argument('-plotU', action='store_true', help='Create additional plot of the analytic solution.')
-	parser.add_argument('-plotBest', action='store_true', help='Plot the best approximation, that was found, to the eigenfunction.')
-	parser.add_argument('-logH', action='store_true', help='Plot the log of the error against the mesh width h rather than the number of mesh points N.')
+	parser = argparse.ArgumentParser(description='FDM convergence rate test: checks the speed of convergence to analytic eigenfunctions, by successively increasing the number of gridpoints N in the mesh. Produces plots showing the rate of convergence.')
+	parser.add_argument('-Nmax', default=100, type=int, help='<Default 100> Max. number of meshpoints to use in each dimension.')
+	parser.add_argument('-Nmin', default=11, type=int, help='<Default 11> Min. number of meshpoints to use in each dimension. To ensure reasonable approximations, should be no less than 11.')
+	parser.add_argument('-Nstep', default=4, type=int, help='<Default 4> Incriment for N number of meshpoints. Should be even.')
+	parser.add_argument('-n', default=1, type=int, help='<Default 1> Index n in analytic solution.')
+	parser.add_argument('-m', default=1, type=int, help='<Default 1> Index m in analytic solution.')
+	parser.add_argument('-nEvals', default=5, type=int, help='<Default 5> Number of eigenvalues to compute near to analytic eigenvalue. Computing more "nearby" eigenvalues can help when the mesh is coarse.')
+	parser.add_argument('-a3', default=0.0, type=float, help='<Default 0.> Coupling constant value at v_3.')
+	parser.add_argument('-fOut', default='./', type=str, help='<Default .> File location to save outputs to.')
+	parser.add_argument('-plotU', action='store_true', help='If passed, creates a plot of the analytic solution in the same directory as the convergence rate plots.')
+	parser.add_argument('-plotBest', action='store_true', help='If passed, creates a plot of the best numerical approximation to the eigenfunction that was computed.')
+	parser.add_argument('-logH', action='store_true', help='If passed, the convergence rate plot will be created with the log of the error against the mesh width h rather than the number of mesh points N.')
 	
 	args = parser.parse_args()	
 	# check compatibility
