@@ -597,7 +597,7 @@ def SparseB(N):
     row = M2C(N//2, N//2, N)
     # B is just diagonal ones except at v3
     Bdata = np.ones(((N-1)*(N-1)), dtype=complex)
-    Bdata[row, row] = 0. + 0.j
+    Bdata[row] = 0. + 0.j
     B = dia_matrix((Bdata,np.array([0])), shape=((N-1)*(N-1),(N-1)*(N-1)), dtype=complex)
     
     return B
@@ -944,7 +944,7 @@ def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, sigma=1., checks=False
     
     # assemble and solve either with sparse matrices or without
     if sparseSolve:
-        FDM, B = FDM_SparseAssembly(N, theta, alpha3)
+        FDM, Bmat = FDM_SparseAssembly(N, theta, alpha3)
         # Compute e'values and e'vectors.
         # NOTE: if alpha_3 is zero, will need to insert B(N) for a generalised eigenvalue problem
         # if solving with SciPy's sparse library, we need B(N) +ve semi-definite and sigma to be specified,
@@ -954,7 +954,7 @@ def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, sigma=1., checks=False
         # Otherwise, we can just pass FDM into eigs
         print('Eigenvalue solving, this may take a while...', end='')
         if np.abs(alpha3)<=1e-8:
-            wVals, wVecs = eigs(FDM, k=nEvals, M=B, sigma=sigma)
+            wVals, wVecs = eigs(FDM, k=nEvals, M=Bmat, sigma=sigma)
         else:
             wVals, wVecs = eigs(FDM, k=nEvals, sigma=sigma)
         print(' finished')        

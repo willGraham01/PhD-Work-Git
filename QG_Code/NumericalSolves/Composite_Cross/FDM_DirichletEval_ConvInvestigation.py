@@ -171,7 +171,8 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='FDM convergence rate test: checks the speed of convergence to analytic eigenfunctions, by successively increasing the number of gridpoints N in the mesh. Produces plots showing the rate of convergence.')
     parser.add_argument('-Nmax', default=100, type=int, help='<Default 100> Max. number of meshpoints to use in each dimension.')
     parser.add_argument('-Nmin', default=11, type=int, help='<Default 11> Min. number of meshpoints to use in each dimension. To ensure reasonable approximations, should be no less than 11.')
-    parser.add_argument('-Nstep', default=4, type=int, help='<Default 4> Incriment for N number of meshpoints. Should be even.')
+    parser.add_argument('-Nstep', default=4, type=int, help='<Default 4> Incriment for N number of meshpoints. Should be even. If Nlogscale is passed, this becomes the number of evenly-spaced points to use')
+    parser.add_argument('-Nlogscale', action='store_true', help='If passed, Nmin and Nmax are taken to correspond to orders of magnitude for the number of gridpoints. Nstep is ignored in if passed.')
     parser.add_argument('-n', default=1, type=int, help='<Default 1> Index n in analytic solution.')
     parser.add_argument('-m', default=1, type=int, help='<Default 1> Index m in analytic solution.')
     parser.add_argument('-nEvals', default=5, type=int, help='<Default 5> Number of eigenvalues to compute near to analytic eigenvalue. Computing more "nearby" eigenvalues can help when the mesh is coarse.')
@@ -211,7 +212,12 @@ if __name__=="__main__":
     if m%2==0:
         theta[1] = 0.
     # decide on the values of N that you want to use
-    NVals = np.arange(args.Nmin,args.Nmax,args.Nstep,dtype=int)
+    if args.Nlogscale:
+        # interpret as orders of magnitude
+        NVals = np.array(10**np.arange(args.Nmin, args.Nmax)+1)
+    else:
+        # interpret as a sequence of N values
+        NVals = np.arange(args.Nmin,args.Nmax,args.Nstep,dtype=int)
     # tell the numerical scheme to find values near to the analytic eigenvalue first
     sigma = lbda
     # how many eigenvalues and eigenvectors to find. 1 should suffice since we're starting near the analytic answer, however if worried we can always find more just to check there's no weird behaviour going on
