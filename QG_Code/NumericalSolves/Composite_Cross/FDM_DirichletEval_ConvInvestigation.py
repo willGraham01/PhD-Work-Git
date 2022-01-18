@@ -53,7 +53,7 @@ from matplotlib import rc
 rc('text', usetex=True)
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from CompMes_FDM import FDM_FindEvals, RealEvalIndices, PlotFn, InsertSlaveNodes
+from CompMes_FDM import FDM_FindEvals, RealEvalIndices, InsertSlaveNodes
 
 #%%
 
@@ -177,11 +177,13 @@ if __name__=="__main__":
     parser.add_argument('-m', default=1, type=int, help='<Default 1> Index m in analytic solution.')
     parser.add_argument('-nEvals', default=5, type=int, help='<Default 5> Number of eigenvalues to compute near to analytic eigenvalue. Computing more "nearby" eigenvalues can help when the mesh is coarse.')
     parser.add_argument('-a3', default=0.0, type=float, help='<Default 0.> Coupling constant value at v_3.')
-    parser.add_argument('-fOut', default='./', type=str, help='<Default .> File location to save outputs to.')
+    parser.add_argument('-fOut', default='./', type=str, help='<Default .> File location to save outputs (all plots and numerical data) to.')
+    parser.add_argument('-sd', action='store_true', help='If passed, writes the error and N values out to an .npz file.')
     parser.add_argument('-plotU', action='store_true', help='If passed, creates a plot of the analytic solution in the same directory as the convergence rate plots.')
     parser.add_argument('-plotBest', action='store_true', help='If passed, creates a plot of the best numerical approximation to the eigenfunction that was computed.')
     parser.add_argument('-logH', action='store_true', help='If passed, the convergence rate plot will be created with the log of the error against the mesh width h rather than the number of mesh points N.')
     parser.add_argument('-NoSparse', action='store_false', help='If passed, FDMs will be constructed without using sparse storage. Not recommended.')
+    parser.add_argument('-load', default='', type=str, help='If provided with the path to an .npz file, the data to be plotted will be loaded from this file rather than computed by the script. The .npz file should contain two arrays of the same length, NVals (ints) and sqErrors (float). Passing a filename will suppress the use of Nmax, Nmin, Nstep, Nlogscale, n, m, nEvals, and sd.')
     
     args = parser.parse_args()    
     # check compatibility
@@ -221,15 +223,11 @@ if __name__=="__main__":
     # tell the numerical scheme to find values near to the analytic eigenvalue first
     sigma = lbda
     # how many eigenvalues and eigenvectors to find. 1 should suffice since we're starting near the analytic answer, however if worried we can always find more just to check there's no weird behaviour going on
-    nToFind = 5
-    # do you want to plot all the eigenfunctions that you found too?
-    plotEFs = False
+    nToFind = args.nEvals
     # do you want to plot the *best* (in terms of error) approximate solution?
     plotBest = args.plotBest; levels = 10
     # create error in eigenvalue plots?
     errorPlots = True
-    # on log plots, use the mesh width h (True) or the number of gridpoints N (False)
-    logWithH = args.logH
     # storage for the eigenvalues and the eigenvectors that were found will be in a dictionary, whose keys match the values in NVals
     # each value will be a list containing the (square) eigenvalue found and the corresponding eigenfunction approximation
     results = {}
@@ -241,45 +239,49 @@ if __name__=="__main__":
         saveStr = now + '_AnalyticSol.pdf'
         uF.savefig(saveStr, bbox_inches='tight')
     
-#%% Perform runs with varying N to gather the data required
-
-    # compute the approximation from the FDM
-    for N in NVals:
-        print('   SOLVING N=%d    ' % N)
-        sqEvals, eVecs, _ = FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=nToFind, sigma=sigma, checks=False, saveEvals=False, saveEvecs=False, sparseSolve=args.NoSparse)
-        if nToFind==1:
-            # convert to arrays of different shape just to make conversions easier
-            sqEvals = np.asarray([sqEvals])
-            eVecs = eVecs.reshape((eVecs.shape[0],1))
-        results[N] = [sqEvals, eVecs]
-    
-    # now analyse the results... first check that our eigenvalues were all real
-    # this will store the difference from the correct eigenvalue for each N
-    sqErrors = np.zeros_like(NVals, dtype=float)
-    for i, N in enumerate(NVals):
-        nRealEvals = RealEvalIndices(results[N][0])
-        if np.sum(nRealEvals)==nToFind:
-            # everything was real, so convergence is good
-            # cast eigenvalues to floats safely
-            results[N][0] = np.real(results[N][0])
-        else:
-            # at least one eigenvalue is bad...
-            raise ValueError('%d non-real eigenvalues found for N=%d' % (np.sum(nRealEvals), N))
-            
-        # identify the eigenvalue found that is closest to the true lbda
-        sqDiffs = lbda - results[N][0]
-        bestEvalInd = np.argmin(np.abs(sqDiffs))
-        # record the error in the eigenvalue
-        sqErrors[i] = np.abs(sqDiffs[bestEvalInd])
-        print('N=%d: closest eigenvalue is at index %d with difference of %.5e' % (N, bestEvalInd, sqErrors[i]))
-        bestEF = results[N][1][:,bestEvalInd]
-        # append the best index to the list so we can easily recover the correct eigenvalue later
-        results[N].append(bestEvalInd)
+#%% Was the data provided in an .npz file?
+    if args.load:
+        # filename was provided, load this data instead
+        loadedData = np.load(args.load)
+        NVals = loadedData['NVals']
+        sqErrors = loadedData['sqErrors']
+    else:
+        # Perform runs with varying N to gather the data required, computing approximations from the FDM
+        for N in NVals:
+            print('   SOLVING N=%d    ' % N)
+            sqEvals, eVecs, _ = FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=nToFind, sigma=sigma, checks=False, saveEvals=False, saveEvecs=False, sparseSolve=args.NoSparse)
+            if nToFind==1:
+                # convert to arrays of different shape just to make conversions easier
+                sqEvals = np.asarray([sqEvals])
+                eVecs = eVecs.reshape((eVecs.shape[0],1))
+            results[N] = [sqEvals, eVecs]
         
-        # plot the approximation to the eigenfunction for me, translating due to the domain
-        if plotEFs:
-            PlotFn(N, TranslateFDM(bestEF))
-            
+        # now analyse the results... first check that our eigenvalues were all real
+        # this will store the difference from the correct eigenvalue for each N
+        sqErrors = np.zeros_like(NVals, dtype=float)
+        for i, N in enumerate(NVals):
+            nRealEvals = RealEvalIndices(results[N][0])
+            if np.sum(nRealEvals)==nToFind:
+                # everything was real, so convergence is good
+                # cast eigenvalues to floats safely
+                results[N][0] = np.real(results[N][0])
+            else:
+                # at least one eigenvalue is bad...
+                raise ValueError('%d non-real eigenvalues found for N=%d' % (np.sum(nRealEvals), N))
+                
+            # identify the eigenvalue found that is closest to the true lbda
+            sqDiffs = lbda - results[N][0]
+            bestEvalInd = np.argmin(np.abs(sqDiffs))
+            # record the error in the eigenvalue
+            sqErrors[i] = np.abs(sqDiffs[bestEvalInd])
+            print('N=%d: closest eigenvalue is at index %d with difference of %.5e' % (N, bestEvalInd, sqErrors[i]))
+            bestEF = results[N][1][:,bestEvalInd]
+            # append the best index to the list so we can easily recover the correct eigenvalue later
+            results[N].append(bestEvalInd)
+        # if requested, save data to file
+        if args.sd:
+            np.savez(now+'saveData', NVals=NVals, sqErrors=sqErrors)
+                
 #%% Create the remaining plots that you asked for
     
     # plot the error as a function of N?
@@ -289,19 +291,27 @@ if __name__=="__main__":
         erAx.set_xlabel(r'Number of gridpoints in each dimension, $N$')
         erAx.set_ylabel(r'$\vert 2\pi^2 - \omega_N^2 \vert$')
         erAx.set_title(r'Error in eigenvalue against number of meshpoints')
-        # now do it on log axes against the mesh width h = 1/(N-1)
-        if logWithH:
+        # now plot error on log axes against the log of either the mesh width h = 1/(N-1) or N
+        if args.logH:
             logFig, logAx = plt.subplots(1)
-            logAx.plot(1/(NVals-1), np.log(sqErrors))
+            logAx.plot(np.log(1./(NVals-1)), np.log(sqErrors))
             logAx.set_xlabel(r'Mesh width, $h$')
             logAx.set_ylabel(r'$\log\left(\vert 2\pi^2 - \omega_N^2 \vert\right)$')
             logAx.set_title(r'Error in eigenvalue against number of meshpoints')
+            # print to screen the best fit line for convergence rate approximations
+            polyFit = np.polyfit(np.log(1./(NVals-1)), np.log(sqErrors), 1)
+            print('Estimated ln(Error) = c_0 + c_1*ln(h);')
+            print(' c_0: %.5f \n c_1: %.5f' % (polyFit[-1], polyFit[0]))
         else:
             logFig, logAx = plt.subplots(1)
-            logAx.plot(NVals, np.log(sqErrors))
-            logAx.set_xlabel(r'Number of gridpoints in each dimension, $N$')
+            logAx.plot(np.log(NVals), np.log(sqErrors))
+            logAx.set_xlabel(r'Log of number of gridpoints in each dimension, $\log(N)$')
             logAx.set_ylabel(r'$\log\left(\vert 2\pi^2 - \omega_N^2 \vert\right)$')
             logAx.set_title(r'Error in eigenvalue against number of meshpoints')
+            # print to screen the best fit line for convergence rate approximations
+            polyFit = np.polyfit(np.log(NVals), np.log(sqErrors), 1)
+            print('Estimated ln(Error) = k_0 + k_1*ln(N);')
+            print(' k_0: %.5f \n k_1: %.5f' % (polyFit[-1], polyFit[0]))
         erFig.savefig(now + '_Error.pdf', bbox_inches='tight')
         logFig.savefig(now + '_LogError.pdf', bbox_inches='tight')
             
