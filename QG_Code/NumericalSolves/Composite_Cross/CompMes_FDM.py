@@ -922,7 +922,7 @@ def PlotEvals(wVals, N=0, autoPlotWidow=False):
     return fig, ax
 
 #%% Command-line wrapper for easier solves
-def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, sigma=1., checks=False, saveEvals=True, saveEvecs=False, sparseSolve=False):
+def FDM_FindEvals(N, theta, alpha3, lOff=False, nEvals=3, sigma=1., checks=False, saveEvals=True, saveEvecs=False, sparseSolve=True):
     '''
     Computes the least nEvals eigenvalues and eigenfunctions of the Cross-In-Plane geometry, via finite difference approximation.
     INPUTS:

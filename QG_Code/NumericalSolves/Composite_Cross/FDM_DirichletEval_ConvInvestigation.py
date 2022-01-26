@@ -40,6 +40,7 @@ This provides us with the eigenfunction and eigenvalue
 Ammendum: later, we add the functionality to look for any solution indexed by n and m.
 
 """
+
 import argparse
 import sys
 
@@ -198,7 +199,7 @@ if __name__=="__main__":
         sys.exit(1)
 
     # get timestamp for saving plots later
-    now = args.fOut + datetime.today().strftime('%Y-%m-%d-%H-%M')
+    now = args.fOut + 'FDM_' + datetime.today().strftime('%Y-%m-%d-%H-%M')
     # define the analytic constants here
     n = args.n
     m = args.m
