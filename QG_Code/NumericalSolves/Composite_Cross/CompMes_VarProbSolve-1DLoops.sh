@@ -14,8 +14,8 @@ tDim=0
 N=5
 M=12
 # in case you want to take several slices at once
-tStart=9
-tEnd=9
+tStart=11
+tEnd=11
 #tEnd=$(($nPts-1))
 # master file name
 masterName="./CompMes_VP_Results/nPts${nPts}-N${N}-t1loops${tStart}-${tEnd}.csv"

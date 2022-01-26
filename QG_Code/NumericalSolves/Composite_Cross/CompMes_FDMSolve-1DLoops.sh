@@ -9,7 +9,8 @@ cd /home/will/Documents/PhD/PhD-Work-Git/QG_Code/NumericalSolves/Composite_Cross
 # parameters to keep constant throughout
 nPts=51
 tDim=0
-N=71
+# check sparse matrices in use when setting this parameter!
+N=301
 nEvals=10
 # in case you want to take several slices at once
 tStart=0

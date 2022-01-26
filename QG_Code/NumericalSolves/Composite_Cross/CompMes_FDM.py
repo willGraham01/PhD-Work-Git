@@ -1071,7 +1071,7 @@ if __name__=='__main__':
     # number of meshpoints
     N = args.N
     if N%2==0:
-        print('N = %d is not even, using N=%d instead' % (N, N+1))
+        print('N = %d is even, using N=%d instead' % (N, N+1))
         N += 1
     else:
         print('Read N=%d' % (N))
