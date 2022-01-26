@@ -1,0 +1,111 @@
+\documentclass[11pt]{report}
+
+\usepackage{url}
+\usepackage[margin=2.5cm]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper} %or letterpaper or a5paper or ...
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\input imports all commands from the target files
+\input{../../PhD-Thesis/Preamble/PreambleMaths.tex} %maths commands, variables, and other packages
+
+%labelling hacks
+\newcommand\labelthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\aop}{\mathcal{A}}
+\newcommand{\hcal}{\mathcal{H}}
+\newcommand{\lcal}{\mathcal{L}}
+%-------------------------------------------------------------------------
+%DOCUMENT STARTS
+
+\begin{document}
+
+Let $\ddom=\left[0,1\right)^2$ be our usual domain filled with a singular structure $\graph$, separated by $\graph$ into the pairwise-disjoint connected components $\ddom_i, i\in\Lambda$ for some finite index set $\Lambda$.
+Set $N = \abs{\vertSet}$ to be the number of vertices, and $L=\abs{\Lambda}$ be the number of bulk regions.
+Also denote by $\compMes = \lambda_2 + \ddmes$, and for coupling constants $\alpha_j>0$ at the vertices $v_j$ let $\nu = \sum_{v_j\in\vertSet}\alpha_j\delta_{v_j}$ be a weighted sum of point-mass measures centred at the vertices.
+On an edge $I_{jk}$, we denote by $\ddom_+$ the bulk region in the direction $n_{jk}$ from $I_{jk}$, and $\ddom_-$ the bulk region in the direction $-n_{jk}$ from $I_{jk}$.
+Denote by $n^{\pm}$ the unit exterior normal to $\ddom_{\pm}$ (noting that $n^{\pm}=\mp n_{jk}$), and write $\pdiff{u^{\pm}}{n^{\pm}}$ to be the normal derivative on $\partial\ddom_{\pm}$ of the function $u$ restricted to $\ddom_{\pm}$.
+
+The ``strong formulation" of our composite medium problem is
+\begin{subequations} \label{eq:StrongForm}
+	\begin{align}
+		-\laplacian_{\qm}u &= \omega^2 u, &\qquad\text{in } \ddom_i, \ \forall i\in\Lambda, \\
+		-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} - \bracs{\pdiff{u^+}{n^+} + \pdiff{u^-}{n^-}} &= \omega^2 u_{jk},  &\qquad\text{on every } I_{jk}\in\edgeSet, \\
+		\sum_{j\con k}\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}(v_j) &= 0, &\qquad\text{at every } v_j\in\vertSet,
+	\end{align}
+\end{subequations}
+where the function $u$ is $\gradgradSob{\ddom_i}{\lambda_2}$ for every $i$, $H^2(I_{jk})$ for every $I_{jk}$, is continuous (in the sense of traces) across $I_{jk}$, and is continuous at the vertices $v_j$.
+Recall that this problem was derived from the variational problem of finding $u\in\tgradSob{\ddom}{\compMes}$ such that
+\begin{align} \label{eq:WeakForm}
+	\integral{\ddom}{ \tgrad_{\compMes}u\cdot\overline{\tgrad_{\compMes}} }{\compMes} &=
+	\omega^2\integral{\ddom}{ u\overline{\phi} }{\compMes}, \quad\forall\phi\in\smooth{\ddom}.
+\end{align}
+
+We are interested in constructing an extended space $\hcal$ in which the problem \eqref{eq:StrongForm} reads as a standard eigenvalue problem $\aop u = \omega^2 u$ for some operator $\aop$ on $\hcal$.
+With this in mind, consider the space
+\begin{align*}
+	\hcal &= \bracs{\bigoplus_{i\in\Lambda}\gradgradSob{\ddom_i}{\lambda_2}} \oplus H^2\bracs{\graph} \oplus \ltwo{\ddom}{\nu},
+\end{align*}
+viewed as a subspace of
+\begin{align*}
+	\lcal := \bracs{\bigoplus_{i\in\Lambda}\ltwo{\ddom_i}{\lambda_2}} \oplus L^2\bracs{\graph} \oplus \ltwo{\ddom}{\nu},
+\end{align*}
+where we denote an element $u$ of $\lcal$ by the $\bracs{L+\abs{\edgeSet}+N}$-``vector"
+\begin{align*}
+	u &= \bracs{\clbracs{u_{\ddom_i}}_{i\in\Lambda}, \clbracs{u_{jk}}_{I_{jk}\in\edgeSet}, \clbracs{u(v_j)}_{v_j\in\vertSet}}^\top.
+\end{align*}
+Note that $\ltwo{\ddom}{\nu}\cong\complex^N$.
+Define the operator $\aop$ by
+\begin{align*}
+	\dom\bracs{\aop} &= \hcal, \\
+	\aop u &= 
+	\begin{pmatrix}	
+	\clbracs{-\laplacian_{\qm}u_{\ddom_i}}_{i\in\Lambda} \\
+	\clbracs{-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} - \bracs{\tgrad u_{\ddom_+}\cdot n^+ + \tgrad u_{\ddom_-}\cdot n^-} }_{I_{jk}\in\edgeSet} \\
+	\clbracs{\sum_{j\con k}\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}(v_j)}_{v_j\in\vertSet}
+	\end{pmatrix}
+	\in\lcal,
+\end{align*}
+and (setting aside questions about the nature of the spectrum, etc) consider the eigenvalue problem
+\begin{align*}
+	\aop u = \omega^2 u,
+\end{align*}
+which without much effort can be shown to be equivalent to
+\begin{subequations} \label{eq:aopEvalProb}
+	\begin{align}
+		-\laplacian_{\qm}u &= \omega^2 u, &\qquad\text{in } \ddom_i, \ \forall i\in\Lambda, \\
+		-\bracs{\diff{}{y}+\rmi\qm_{jk}}^2 u_{jk} - \bracs{\tgrad u_{\ddom_+}\cdot n^+ + \tgrad u_{\ddom_-}\cdot n^-} &= \omega^2 u_{jk},  &\qquad\text{on every } I_{jk}\in\edgeSet, \\
+		\sum_{j\con k}\bracs{\pdiff{}{n}+\rmi\qm_{jk}}u_{jk}(v_j) &= \omega^2\alpha_j u(v_j), &\qquad\text{at every } v_j\in\vertSet.		
+	\end{align}
+\end{subequations}
+Here, we denote by $\tgrad u_{\ddom_+}\cdot n^+$ the trace of the $\qm$-shifted gradient $\tgrad$ of the function $u_{\ddom_{\pm}}\cdot n^{\pm}$ onto $I_{jk}$.
+
+Note that \eqref{eq:aopEvalProb} is not equivalent to \eqref{eq:StrongForm}, as functions in $\hcal$ are not required to adhere to continuity across the skeleton (hence the $\tgrad$ terms rather than just normal derivatives) nor continuity at the vertices (the notation $u(v_j)$ is just some value in $\complex$ that $u\in\hcal$ takes at each $v_j$).
+We can then ask if there is a form from which $\aop$ can be defined, with this in mind, notice that
+\begin{align*}
+	\ip{\aop u}{\phi}_{\lcal} &= \sum_{i\in\Lambda}\integral{\ddom_i}{ \tgrad u_{\ddom_i}\cdot\overline{\tgrad\phi} }{\lambda_2}
+	+ \sum_{v_j\in\vertSet}\sum_{j\conLeft k}\integral{\ddom}{ \bracs{\diff{}{y}+\rmi\qm_{jk}}u\overline{\bracs{\diff{}{y}+\rmi\qm_{jk}}\phi} }{\lambda_{jk}} \\
+	&= \sum_{i\in\Lambda}\ip{ \tgrad u }{ \tgrad\phi }_{\ltwo{\ddom_i}{\lambda_i}}
+	+ \sum_{v_j\in\vertSet}\sum_{j\conLeft k}\ip{ \bracs{\diff{}{y}+\rmi\qm_{jk}}u }{ \bracs{\diff{}{y}+\rmi\qm_{jk}}\phi }_{\ltwo{I_{jk}}{\lambda_{jk}}},
+\end{align*}
+so if we define (for $u\in\hcal$)
+\begin{align*}
+	\tgrad_{\hcal} u &:= \bracs{\clbracs{\tgrad u_{\ddom_i}}_{i\in\Lambda}, \clbracs{\bracs{\diff{}{y}+\rmi\qm_{jk}}u_{jk}}_{I_{jk}\in\edgeSet}, \clbracs{0}_{v_j\in\vertSet}}^\top,
+\end{align*}
+we have that
+\begin{align*}
+	\ip{\aop u}{\phi}_{\lcal} &= \ip{\tgrad_{\hcal} u}{\tgrad_{\hcal}\phi}_{\lcal}.
+\end{align*}
+Thus, we can define $\aop$ from the bilinear form $b(u,v) = \ip{\tgrad_{\hcal} u}{\tgrad_{\hcal}\phi}_{\lcal}$ for $u,v\in\hcal$, and write the eigenvalue problem for $\aop$ as
+\begin{align} \label{eq:aopWeakEvalProb}
+	\ip{\tgrad_{\hcal} u}{\tgrad_{\hcal}\phi}_{\lcal} &= \omega^2\ip{u}{\phi}_{\lcal}.
+\end{align}
+
+The similarities between \eqref{eq:StrongForm} and \eqref{eq:aopEvalProb} are apparent --- if we take $\alpha_j=0$ for every $j$, then \eqref{eq:WeakForm} and \eqref{eq:aopWeakEvalProb} are the same problem, and our ``definition" of $\tgrad_{\hcal} u$ for $u\in\hcal$ coincides with $\tgrad_{\compMes}u$ for $u\in\tgradSob{\ddom}{\compMes}$.
+We even have that the set of $u\in\tgradSob{\ddom}{\compMes}$ that solve \eqref{eq:WeakForm} is a subset of $\hcal$.
+
+Furthermore, if we then ``switch on" the $\alpha_j>0$, then $\tgrad_{\hcal} u$ still coincides with what we expect the tangential gradient in $\tgradSob{\ddom}{(\compMes+\nu)}$ to be.
+The equations \eqref{eq:WeakForm} (replacing $\compMes$ with $\compMes+\nu$) and \eqref{eq:aopWeakEvalProb} are identical, and the problem \eqref{eq:aopEvalProb} (restricted to $\tgradSob{\ddom}{(\compMes+\nu)}$) reduces to what my current ``guess" at the analogue of \eqref{eq:StrongForm} with the point masses included would be.
+
+\end{document}

@@ -1058,13 +1058,13 @@ if __name__=='__main__':
     parser.add_argument('-t2', default=0.0, type=float, help='QM_2 will be set to this value multiplied by pi.')
     parser.add_argument('-nEvals', default=3, type=int, help='Number of eigenvalues to compute (from 0 ascending)')
     parser.add_argument('-a3', default=0.0, type=float, help='Coupling constant value at v_3.')
-    parser.add_argument('-sigma', defualt=1.0, type=float, help='Eigenvalue solve offset, eigenvalues will be computed near this value.')
+    parser.add_argument('-sigma', default=1.0, type=float, help='Eigenvalue solve offset, eigenvalues will be computed near this value.')
     parser.add_argument('-lOff', action='store_true', help='Suppress printing of log to screen.')
     parser.add_argument('-fn', default='', type=str, help='Filename for eigenvalues that are computed.')
     parser.add_argument('-fd', default='./FDM_Results/', type=str, help='Path to directory in which results files should be placed')
     parser.add_argument('-c', action='store_true', help='Perform checks on periodicity of functions and properties of FDM')
     parser.add_argument('-sEvecs', action='store_true', help='Computed eigenvectors will be saved.')
-    parser.add_argument('-sparse', action='store_true', help='Use sparse storage for matrices.')
+    parser.add_argument('-noSparse', action='store_false', help='Do not use sparse matrices - not recommended.')
     
     args = parser.parse_args()
     
@@ -1085,7 +1085,7 @@ if __name__=='__main__':
     
      # compute eigenvalues and eigenvectors. 
      # Suppress FDM_FindEvals method of saving so that we can save in a manner that befits our scripts 
-    evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, args.lOff, nEvals=args.nEvals, sigma=args.sigma, checks=args.c, saveEvals=False, saveEvecs=False, sparseSolve=args.sparse)
+    evs, evecs, saveStr = FDM_FindEvals(N, theta, args.a3, args.lOff, nEvals=args.nEvals, sigma=args.sigma, checks=args.c, saveEvals=False, saveEvecs=False, sparseSolve=args.noSparse)
     
     # now save these like you intended to before
     if not args.fn:
