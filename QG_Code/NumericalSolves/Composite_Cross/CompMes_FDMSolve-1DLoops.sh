@@ -10,7 +10,7 @@ cd /home/will/Documents/PhD/PhD-Work-Git/QG_Code/NumericalSolves/Composite_Cross
 nPts=51
 tDim=0
 # check sparse matrices in use when setting this parameter!
-N=301
+N=251
 nEvals=10
 # in case you want to take several slices at once
 tStart=0
@@ -27,7 +27,10 @@ a=0.0
 echo "Starting 1D loops now."
 for t in $(seq $tStart $tEnd); do
     fname="TEMP-nPts${nPts}-t$((${tDim}+1))loop${t}.csv"
-    python CompMes_FDMSolve.py -fn $fname -nPts $nPts -N $N -nEvals $nEvals -a $a -funcs -oneD -tDim $tDim -tFixed $t
+    # if functions are also wanted - not recommended for large N>70
+    #python CompMes_FDMSolve.py -fn $fname -nPts $nPts -N $N -nEvals $nEvals -a $a -funcs -oneD -tDim $tDim -tFixed $t
+    # if eigenfunctions are not to be saved
+    python CompMes_FDMSolve.py -fn $fname -nPts $nPts -N $N -nEvals $nEvals -a $a -oneD -tDim $tDim -tFixed $t
     echo "Saved to file: $fname"
 done
 

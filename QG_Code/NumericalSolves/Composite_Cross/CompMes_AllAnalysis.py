@@ -695,8 +695,8 @@ def BandsWithMultiplicity(ev, VP=True, rtol=1e-5, atol=1e-8):
 if __name__=="__main__":
 	
 	# proceedures to carry out
-	compareSpectrums = False # plot spectral bands from each method on same axis, and create a figure for it
-	multFilter = True # account for multiplicity of eigenvalues before carrying out plotting
+	compareSpectrums = True # plot spectral bands from each method on same axis, and create a figure for it
+	multFilter = False # account for multiplicity of eigenvalues before carrying out plotting
 	omegaQMPlots = False # plot omega as a function of theta 1 and theta 2 for each method
 	nonSimplePlots = False # plot eigenfunctions corresponding to eigenvalues of multiplicity greater than 1
 	
@@ -716,9 +716,9 @@ if __name__=="__main__":
 	
 	# information about eigenvalues
 	#FDM_searchPath = FDM_fd + 'nPts51-N71-alpha1.csv'
-	FDM_searchPath = FDM_fd + 'nPts51-N71-10evals.csv'
+	FDM_searchPath = FDM_fd + 'nPts51-N251-10evals.csv'
 	#FDM_searchPath = FDM_fd + 'nPts51-N71.csv'
-	FDM_ev, FDM_ef = FDM_Load(FDM_searchPath, funsToo=True)
+	FDM_ev, FDM_ef = FDM_Load(FDM_searchPath, funsToo=False)
 	N = 71 #this is the number of gridpoints we used
 	
 	VP_searchPath = VP_fd + 'nPts25-local-M12-N5-t1loops0-24.csv'
