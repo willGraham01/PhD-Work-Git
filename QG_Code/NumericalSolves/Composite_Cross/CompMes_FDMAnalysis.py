@@ -9,7 +9,12 @@ Python file and script containing methods to produce eigenvalue plots from the o
     CompMesProb_EvalFinder.py [variational problem solver]
 """
 
+# sys.argv[1:] contains command line arguments. Index 0 is just the script name
+import argparse
+# for returning values to the command line
+import sys
 import glob
+from datetime import datetime
 
 import numpy as np
 from numpy import pi
@@ -109,20 +114,38 @@ def LoadAllFromKey(searchPath, funsToo=False):
     
     allFiles = glob.glob(searchPath, recursive=False)
     evList = []
-    fList = []
-    for fname in allFiles:
-        e, F = ReadEvals_FDM(fname, funsToo=funsToo)
-        # record e'val array
-        evList.append(e)
-        # extend list of vector arrays
-        fList.append(F)
-    # combine e'value arrays
-    allEvals = AppendEvalRuns(evList)
-    # only return vectors if they were asked for
+    # only return the eigenfunctions if they were asked for
     if funsToo:
-        allVecs = AppendEvalRuns(fList) #note that this works as intended for arrays!
+        fList = []
+        for fname in allFiles:
+            e, F = ReadEvals_FDM(fname, funsToo=True)
+            # order the eigenvalues into ascending order by real part
+            # we need to save this order so that the eigenfunctions are correctly re-ordered
+            order = np.argsort(np.real(e[:,2:]))
+            # now sort the eigenvalues
+            e[:,2:] = np.sort_complex(e[:,2:])
+            # record e'val array
+            evList.append(e)
+            # now order the eigenfunctions properly
+            for row in order.shape[0]:
+                # order[row,:] is the order that F[row*nEvals:(row+1)*nEvals,:] should be in
+                F[row*nEvals:(row+1)*nEvals,:] = F[row*nEvals+order[row,:],:]
+            # extend list of vector arrays
+            fList.append(F)
+        # combine e'value arrays
+        allEvals = AppendEvalRuns(evList)
+        # combine e'vctor arrays
+        allVecs = AppendEvalRuns(fList)
     else:
         allVecs = None
+        for fname in allFiles:
+            e, _ = ReadEvals_FDM(fname, funsToo=False)
+            # order the eigenvalues into ascending order by np.sort_complex
+            e[:,2:] = np.sort_complex(e[:,2:])
+            # record e'val array
+            evList.append(e)
+        # combine e'value arrays
+        allEvals = AppendEvalRuns(evList)        
     return allEvals, allVecs
 
 #%% Data analysis/ handling
@@ -247,7 +270,7 @@ def PlotEvals(evs, pType='scatter', title=''):
         if np.char.equal('scatter', pType):    
             dataDisp = ax.scatter(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], c=evs[:,2], cmap=plt.cm.viridis)
         elif np.char.equal('surf', pType):
-            dataDisp = ax.plot_trisurf(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], cmap=plt.cm.viridis)
+            dataDisp = ax.plot_trisurf(evs[:,0]/pi, evs[:,1]/pi, evs[:,2], cmap=plt.cm.viridis, linewidth=0, antialiased=False)
         else:
             raise ValueError('Unrecognised plot type %s, valid types are scatter, surf, contour, heat')
     
@@ -262,12 +285,13 @@ def PlotEvals(evs, pType='scatter', title=''):
         
     return fig, ax
 
-def PlotBands(bands, markQMExtremes=False):
+def PlotBands(bands, markQMExtremes=False, intermediateExtremes=False):
     '''
     Creates a plot of the spectral bands.
     INPUTS:
         bands: list of (3,) floats, each entry in the list is a set of coordinates (qm_1, qm_2, omega) where omega is the eigenvalue in this band corresponding to the QM value (qm_1,qm_2)
-        markQMExtremes: bool, if True then the eigenvalues corresponding to symmetry points of the QM will be marked on each band
+        markQMExtremes: bool, if True then the eigenvalues corresponding to QM = (0,0) and (-pi,-pi) will be highlighted on the plot.
+        intermediateExtremes: bool, if True then eigenvalues corresponding to QM = (-pi,0) and (0,-pi) will be highlighted on the plot
     OUTPUTS:
         fig, ax: matplotlib figure handles, containing a plot of the spectral bands
     '''
@@ -288,7 +312,7 @@ def PlotBands(bands, markQMExtremes=False):
     ax.set_yticklabels(yticklabels)
     
     # mark QM extreme values if requested
-    if markQMExtremes:
+    if markQMExtremes or intermediateExtremes:
         # extreme QM values are (0,0) and (-pi,-pi).
         # but we might also want to mark (-pi,0) and (0,-pi) too.
         for b,band in enumerate(bands):
@@ -306,50 +330,75 @@ def PlotBands(bands, markQMExtremes=False):
             # find where QM = (-pi,0)
             pzRow = np.logical_and(p1,z2)
             # it is possible that the symmetry points had convergence fails, so only attempt to plot them if they were included in the array
-            if zzRow.any():
+            if zzRow.any() and markQMExtremes:
                 ax.scatter(band[zzRow,-1], height, marker='o', c='red', s=2)
-            else:
+            elif markQMExtremes:
                 print('Band %d, (0,0) not found' % b)
-            if ppRow.any():
+            if ppRow.any() and markQMExtremes:
                 ax.scatter(band[ppRow,-1], height, marker='o', c='red', s=2)
-            else:
+            elif markQMExtremes:
                 print('Band %d, (-pi,-pi) not found' % b)
-            if zpRow.any():
+            if zpRow.any() and intermediateExtremes:
                 ax.scatter(band[zpRow,-1], height, marker='o', c='red', s=2)
-            else:
+            elif intermediateExtremes:
                 print('Band %d, (0,-pi) not found' % b)
-            if pzRow.any():
+            if pzRow.any() and intermediateExtremes:
                 ax.scatter(band[pzRow,-1], height, marker='o', c='red', s=2)
-            else:
+            elif intermediateExtremes:
                 print('Band %d, (-pi,0) not found' % b)
     return fig, ax
 
 #%% Command-line execution
 
 if __name__=='__main__':
+
+    parser = argparse.ArgumentParser(description='Plotting and results analysis script for the Cross-in-Plane geometry eigenvalues, computed via the Finite Difference Scheme.')
+    parser.add_argument('path_to_file', type=str, help='<Required> Path to file containing results of FDM eigenvalue solve.')
+    parser.add_argument('-fOut', default='./FDM_Results/', type=str, help='<Default .> File location to save plot outputs to.')
+    parser.add_argument('-e', action='store_true', help='If passed,  eigenvalues corresponding to extreme QM values [0,0] and [-pi,-pi] will be highlighted in spectral plot.')
+    parser.add_argument('-i', action='store_true', help='If passed,  eigenvalues corresponding to extreme QM values [-pi,0] and [0,-pi] will be highlighted in spectral plot.')
+    parser.add_argument('-b', action='store_true', help='Create and save plots of the eigenvalues as functions of the QM.')
+    parser.add_argument('-maxB', const=5, nargs='?', type=int, help='Only create plots for bands 0 through to maxB-1. Defaults to 5 if no value is passed with the flag.')
+    parser.add_argument('-multi', action='store_true', help='If passed, filter the eigenvalues to remove those with multiplicity greater than 1.')
+    parser.add_argument('-t', default='surf', choices=['contour', 'heat', 'scatter', 'surf'], help='Type of plot to make for eigenvalues against QM. Options are')
+
+    # extract input arguments and get the setup ready
+    args = parser.parse_args() 
+ 
+    # get timestamp for saving plots later
+    now = args.fOut + 'FDM_' + datetime.today().strftime('%Y-%m-%d-%H-%M')
     
-    fDump = './FDM_Results/'
-    searchPath = fDump + 'nPts51-N251-10evals.csv'
+    # load the data that we have been passed
+    searchPath = args.path_to_file #'nPts51-N251-10evals.csv'
+    
     allEvals, allEvecs = LoadAllFromKey(searchPath, funsToo=False)
     
     # this is the number of bands we tried to compute
     nEvals = np.shape(allEvals)[1] - 2
-    # get all the bands, since we don't expect to have many, just use a list
-    bands = []
-    for n in range(nEvals):
-        bands.append(GetBand(n+1, allEvals, tol=1e-5))
+    # get all the bands, and put them into a list
+    if args.multi:
+        bands = Multiplicities(allEvals)
+    else:    
+        bands = []
+        for n in range(nEvals):
+            bands.append(GetBand(n+1, allEvals, tol=1e-5))
+    # if we don't want all the bands involved, truncate now
+    if args.maxB:
+        bands = bands[0:args.maxB]
+        
+#%% Now create the figures that were requested
     
-    bandsNM = Multiplicities(allEvals)
+    # spectral band plot
+    specFig, specAx = PlotBands(bands, markQMExtremes=args.e, intermediateExtremes=args.i)
+    specFig.savefig(now + '_SpectralBands.pdf', bbox_inches='tight')
+    plt.close(specFig)
     
-    # for bi, b in enumerate(bands):
-    #     f, a = PlotEvals(b, pType='heat', title=r'$\omega$ values in band %d' % (bi+1))
-    #     f.show()
+    # if you want to plot the eigenvalues as functions of QM
+    if args.b:
+        for bi, b in enumerate(bands):
+            f, a = PlotEvals(b, pType=args.t, title=r'$\omega$ values in band %d' % (bi))
+            f.savefig(now + '_Band%d.pdf' % bi, bbox_inches='tight')
     
-    fig, ax = PlotBands(bands, markQMExtremes=True)
-    figNM, axNM = PlotBands(bandsNM, markQMExtremes=True)
-    
-    # NOTABLE OBSERVATIONS:
-        # QM symmetry points look like they're giving the extremities of the spectral bands
-        # don't yet know if the bands will overlap
-        # low point at qm=0, high point at qm=(+/pi,+/pi) for any combination
-        # symmetry in omega wrt qm components is displayed, which is expected
+    # close all figure windows
+    plt.close('all')
+    sys.exit(0)
