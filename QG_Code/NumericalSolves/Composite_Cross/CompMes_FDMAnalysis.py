@@ -285,13 +285,14 @@ def PlotEvals(evs, pType='scatter', title=''):
         
     return fig, ax
 
-def PlotBands(bands, markQMExtremes=False, intermediateExtremes=False):
+def PlotBands(bands, markQMExtremes=False, intermediateExtremes=False, lines=False):
     '''
     Creates a plot of the spectral bands.
     INPUTS:
         bands: list of (3,) floats, each entry in the list is a set of coordinates (qm_1, qm_2, omega) where omega is the eigenvalue in this band corresponding to the QM value (qm_1,qm_2)
         markQMExtremes: bool, if True then the eigenvalues corresponding to QM = (0,0) and (-pi,-pi) will be highlighted on the plot.
         intermediateExtremes: bool, if True then eigenvalues corresponding to QM = (-pi,0) and (0,-pi) will be highlighted on the plot
+        lines: bool, if True then spectral bands will be plotted as lines between the extreme values. This is recommended only for file compression when a large number of eigenvalues are to be plotted and saved to .pdf. Additionally, one should check that the bands appear to be continuous lines before toggling this option.
     OUTPUTS:
         fig, ax: matplotlib figure handles, containing a plot of the spectral bands
     '''
@@ -305,8 +306,14 @@ def PlotBands(bands, markQMExtremes=False, intermediateExtremes=False):
     yticks = np.arange(nBands, dtype=float)/nBands
     yticklabels = np.arange(nBands, dtype=int)
     # plot each band, increasing the 'height' on the y-axis as we move to the next band
-    for b,band in enumerate(bands):
-        ax.scatter(band[:,2], np.zeros_like(band[:,2])+yticks[b], marker='x', s=1, c='blue', label='Band %d' % b)
+    if not lines:
+        for b,band in enumerate(bands):
+            ax.scatter(band[:,2], np.zeros_like(band[:,2])+yticks[b], marker='x', s=1, c='blue', label='Band %d' % b)
+    else:
+        # plot spectrum as lines rather than scatter
+        for b,band in enumerate(bands):
+            wData = np.array( [np.min(band[:,2]), np.max(band[:,2]) ] )
+            ax.plot(wData, np.zeros_like(wData)+yticks[b], '-b', label='Band %d' % b)
     # set custom labels for axis
     ax.set_yticks(yticks)
     ax.set_yticklabels(yticklabels)
@@ -357,6 +364,7 @@ if __name__=='__main__':
     parser.add_argument('-fOut', default='./FDM_Results/', type=str, help='<Default .> File location to save plot outputs to.')
     parser.add_argument('-e', action='store_true', help='If passed,  eigenvalues corresponding to extreme QM values [0,0] and [-pi,-pi] will be highlighted in spectral plot.')
     parser.add_argument('-i', action='store_true', help='If passed,  eigenvalues corresponding to extreme QM values [-pi,0] and [0,-pi] will be highlighted in spectral plot.')
+    parser.add_argument('-l', action='store_true', help='If passed, plots bands using lines between extreme eigenvalues, rather than scatter. .pdf output will be smaller in size, but should only be used if the spectrum is known to consist of (or previous plots demonstrate that it consists of) continuous bands.')
     parser.add_argument('-b', action='store_true', help='Create and save plots of the eigenvalues as functions of the QM.')
     parser.add_argument('-maxB', const=5, nargs='?', type=int, help='Only create plots for bands 0 through to maxB-1. Defaults to 5 if no value is passed with the flag.')
     parser.add_argument('-multi', action='store_true', help='If passed, filter the eigenvalues to remove those with multiplicity greater than 1.')
@@ -389,7 +397,7 @@ if __name__=='__main__':
 #%% Now create the figures that were requested
     
     # spectral band plot
-    specFig, specAx = PlotBands(bands, markQMExtremes=args.e, intermediateExtremes=args.i)
+    specFig, specAx = PlotBands(bands, markQMExtremes=args.e, intermediateExtremes=args.i, lines=args.l)
     specFig.savefig(now + '_SpectralBands.pdf', bbox_inches='tight')
     plt.close(specFig)
     
