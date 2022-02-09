@@ -9,6 +9,20 @@
 \usetikzlibrary{patterns}
 \usetikzlibrary{calc}
 
+%hexagon drawing variables
+\def\ly{0.866025} %sin(pi/3) = sqrt(3)/2
+\def\lx{0.5} %cos(pi/3) = 0.5
+\def\hexSize{5} %size of the hexagon that'll be the extent of the fibre cross section
+\def\coreSize{0.2} %size of hollow cores
+\def\coreSep{0.5} %separation between core CENTRES HORIZONTALLY
+\def\coreSepHeight{0.4464} %separation between core CENTRES VERTICALLY
+
+\newcommand{\hexagon}[4]{
+\begin{scope}[shift={#2}]
+	\draw[#3, fill=#4] (-#1*\lx, #1*\ly) -- (#1*\lx, #1*\ly) -- (#1,0) -- (#1*\lx, -#1*\ly) -- (-#1*\lx, -#1*\ly) -- (-#1,0) -- cycle;
+\end{scope}
+} %\hexagon{centre-to-corner-length}{shift (x,y)}{line spec}{fill colour} [none is allowed for fillcolour]
+
 \begin{document}
 <>
 \end{document}

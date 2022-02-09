@@ -108,6 +108,7 @@ def LoadAllFromKey(searchPath, funsToo=False):
     Loads all eigenvalue information from the given search-path into a single eigenvalue array
     INPUTS:
         searchPath: str, string to expand and load eigenvalue information from
+        funsToo: bool, if True then load the eigenfunctions too, mainly for plotting purposes
     OUTPUTS:
         allEvals: (nRuns,2+nEvals) complex, eigenvalue information arrays
     '''
@@ -127,6 +128,7 @@ def LoadAllFromKey(searchPath, funsToo=False):
             # record e'val array
             evList.append(e)
             # now order the eigenfunctions properly
+            nEvals = np.shape(e)[1] - 2
             for row in order.shape[0]:
                 # order[row,:] is the order that F[row*nEvals:(row+1)*nEvals,:] should be in
                 F[row*nEvals:(row+1)*nEvals,:] = F[row*nEvals+order[row,:],:]
